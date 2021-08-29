@@ -4,7 +4,7 @@
 ,{"id":2,"name":"Find the Heir","questline":"Main Questline"}
 ,{"id":3,"name":"Breaking the Siege of Kvatch","questline":"Main Questline"}
 ,{"id":4,"name":"The Battle for Castle Kvatch","questline":"Main Questline"}
-,{"id":5,"name":"Weynon Priory","questline":"Main Questline"}
+,{"id":5,"name":"Weynon Priory","questline":"Main Questline","link":"https://en.uesp.net/wiki/Oblivion:Weynon_Priory_(quest)"}
 ,{"id":6,"name":"The Path of Dawn","questline":"Main Questline"}
 ,{"id":7,"name":"Dagon Shrine","questline":"Main Questline"}
 ,{"id":8,"name":"Spies","questline":"Main Questline"}
