@@ -6,9 +6,12 @@ var savedata;
 var version = 1;
 
 // classes that have a standard layout and can use most of the generic functions.
-var standardclasses = ["book","skill","store"];
+var standardclasses = ["quest","book","skill","store"];
 
+
+//functions that create the page
 function init(){
+	var questdata = fetch("./data/quests.js").then(response=>response.json()).then(bookdata => initQuests(bookdata.data));
 	var bookdata = fetch("./data/books.js").then(response=>response.json()).then(bookdata => initBooks(bookdata.data));
 	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(bookdata => initSkills(bookdata.data))
 	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(bookdata => initStores(bookdata.data))
@@ -19,8 +22,10 @@ function init(){
 	}});
 }
 
-//functions that create the page
-
+function initQuests(qdata){
+	globalquestdata = qdata
+	initMulti(qdata,"quest","questline");
+}
 function initBooks(booksdata){
 	globalbookdata = booksdata
 	initMulti(booksdata,"book","skill");
@@ -131,24 +136,36 @@ function resetProgress(shouldConfirm=false){
 	if(doit){
 		savedata = new Object();
 		savedata.version = version;
+		
+		
+		savedata.quest = {};
+		for(datum of globalquestdata){
+			//add entry to savedata
+			savedata.quest[datum.id] = false;
+		}
+		
 		savedata.book = {};
 		for(datum of globalbookdata){
 			//add entry to savedata
 			savedata.book[datum.id] = false;
 		}
-		savedata.locations = {};
+		
 		savedata.skill = {};
 		for(datum of globalskilldata){
 			//add entry to savedata
 			savedata.skill[datum.id] = false;
 		}
+		
 		savedata.store = {};
 		for(datum of globalstoredata){
 			//add entry to savedata
 			savedata.store[datum.id] = false;
 		}
+		
+		savedata.locations = {};
 		savedata.misc = {};
 		savedata.misc.placesfound = 0;
+		savedata.misc.nirnroot = 0;
 		
 		updateUIFromSaveData();
 		recalculateProgressAndSave();
@@ -169,7 +186,8 @@ function recalculateProgressAndSave(){
 	}
 	total += 367;
 	checked += parseInt(savedata.misc.placesfound);
-	
+	total += 306;
+	checked += parseInt(savedata.misc.nirnroot);
 	document.getElementById("totalProgressPercent").innerHTML = (checked / total * 100).toString();
 	saveCookie();
 }
@@ -216,6 +234,9 @@ function checkboxClicked(event){
 	}
 	if(event.target.id == "placesfoundcheck") {
 		savedata["misc"]["placesfound"] = event.target.valueAsNumber;
+	}
+	if(event.target.id == "nirnrootcheck") {
+		savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
 	}
 	recalculateProgressAndSave();
 }
