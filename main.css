@@ -1,5 +1,5 @@
 body{
-	background-color: #FFF2CC;
+	background-color: #E5D9B9;
 	column-width: 25em;
 }
 
@@ -7,15 +7,22 @@ body{
 	font-size: 3em;
 	font-weight: bold;
 	position: fixed;
-	background-color: #FFF2CC;
+	background-color: #E5D9B9;
 }
 
 .h2{
-	font-size: 2.5em;
+	font-size: 2.2em;
+	font-weight: bold;
+}
+
+.section{
+	padding-top: .5em;
+	max-width: 25em;
+	background-color: #FBEFD5;
 }
 
 .category{
-	max-width: 25em;
+	
 }
 
 .categoryTitle{
