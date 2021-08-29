@@ -11,23 +11,28 @@ function LinkedElement(element, classname, id){
 function  replaceElements(){
 	
 	//step 2: create the stuff.
-	for (const element of document.getElementsByClassName("replaceable")){
-		const checklistid = element.getAttribute("clid")
+	var replaceableParts = document.getElementsByClassName("replaceable");
+	while(replaceableParts.length > 0){
+		const element = replaceableParts[0];
+		const checklistid = element.getAttribute("clid");
 		//step 1: get the target element data.
 		var elementjson = null;
 		var elementclass = null;
 		var elementid = null;
 		for (const classname of standardclasses()){
-			if(checklistid.startsWith(classname)){
+			if(checklistid?.startsWith(classname)){
 				elementid = parseInt(checklistid.substring(classname.length));
 				elementjson = jsondata[classname].find(x=>x.id == elementid);
 				elementclass = classname;
-				break;
+				//break;
 			}
 		}
 		
 		if(elementclass == null || elementjson == null){
-			return;
+			//skip this iteration and move to the next one.
+			element.classList.remove("replaceable");
+			replaceableParts = document.getElementsByClassName("replaceable");
+			continue;
 		}
 		//step 2: create the internal stuff.
 		element.innerText = "";
