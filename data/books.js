@@ -17,11 +17,17 @@
 ,{"id":14,"name":"Reality & Other Falsehoods","skill":"Alteration"}
 ,{"id":15,"name":"Sithis","skill":"Alteration"}
 
-,{"id":16,"name":"The Armorer's Challenge","skill":"Athletics"}
-,{"id":17,"name":"Cherim's Heart of Anequina","skill":"Athletics"}
-,{"id":18,"name":"Heavy Armor Repair","skill":"Athletics"}
-,{"id":19,"name":"Last Scabbard of Akrash","skill":"Athletics"}
-,{"id":20,"name":"Light Armor Repair","skill":"Athletics"}
+,{"id":16,"name":"The Armorer's Challenge","skill":"Armorer"}
+,{"id":17,"name":"Cherim's Heart of Anequina","skill":"Armorer"}
+,{"id":18,"name":"Heavy Armor Repair","skill":"Armorer"}
+,{"id":19,"name":"Last Scabbard of Akrash","skill":"Armorer"}
+,{"id":20,"name":"Light Armor Repair","skill":"Armorer"}
+
+,{"id":42,"name":"The Argonian Account, Book 1","skill":"Athletics"}
+,{"id":43,"name":"Beggar","skill":"Athletics"}
+,{"id":44,"name":"A Dance in Fire, v3","skill":"Athletics"}
+,{"id":45,"name":"The Ransom of Zarek","skill":"Athletics"}
+,{"id":46,"name":"The Red Kitchen Reader","skill":"Athletics"}
 
 ,{"id":21,"name":"2920, Morning Star (v1)","skill":"Blade"}
 ,{"id":22,"name":"Battle of Sancre Tor","skill":"Blade"}
