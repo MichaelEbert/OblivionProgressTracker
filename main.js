@@ -213,15 +213,10 @@ function updateUIFromSaveData(){
 			setParentChecked(checkbox);
 		}
 	}
+	
+	document.getElementById("placesfoundcheck").value = savedata["misc"]["placesfound"];
+	document.getElementById("nirnrootcheck").value = savedata["misc"]["nirnroot"];
 
-}
-
-function updateSaveDataFromUI(){
-	for (classname in standardclasses()) {
-		for(id in savedata[classname]){
-			savedata[classname][id] = document.getElementById("book"+id+"check").checked;
-		}
-	}
 }
 
 function setParentChecked(checkbox){
