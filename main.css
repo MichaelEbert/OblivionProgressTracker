@@ -1,0 +1,30 @@
+body{
+	background-color: #FFF2CC;
+}
+
+.progress{
+	font-size: 3em;
+	font-weight: bold;
+	position: fixed;
+	float: right;
+}
+
+.h2{
+	font-size: 2.5em;
+}
+
+.category{
+	max-width: 400px;
+}
+
+.categoryTitle{
+	font-size: 1.5em;
+	border-bottom: 2px solid gray;
+}
+
+.checked{
+	background-color: lightgreen;
+}
+
+
+

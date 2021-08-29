@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<script src="main.js"></script>
+	<title>Interactive Oblivion Checklist</title>
+</head>
+<body>
+<div id="progress" class="progress">Total Progress: <span id="totalProgressPercent">0</span>%</div>
+<br/><br/><br/><br/>
+<div id="skillsection"><h2>Skills</h2></div>
+<div id="booksection"><h2>Books</h2></div>
+<div id="storesection"><h2>Stores invested in</h2></div>
+
+<div id="other">
+	<h2>Other</h2>
+	<!--don't feel like doing this rn-->
+	<div id="placesfound">placesfound (367)<input type="number" id="placesfoundcheck"/></div>
+	<div id="nirnroot">Nirnroot (306)<input type="number" id="nirnrootcheck"/></div>
+	<script>
+	document.getElementById("placesfoundcheck").addEventListener('change',checkboxClicked);
+	document.getElementById("nirnrootcheck").addEventListener('change',checkboxClicked);
+	</script>
+</div>
+<button id="resetbutton" onclick="resetProgress(true)">reset progress</button>
+
+
+<script>
+init()
+</script>
+</body></html>
