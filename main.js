@@ -1,7 +1,4 @@
-var globalbookdata;
-var globalskilldata;
-var globalquestdata;
-var globalstoredata;
+var jsondata = {quest:null,book:null,skill:null,store:null}
 var savedata;
 var version = 2;
 
@@ -23,19 +20,19 @@ function init(){
 }
 
 function initQuests(qdata){
-	globalquestdata = qdata
+	jsondata.quest = qdata
 	initMulti(qdata,"quest","questline");
 }
 function initBooks(booksdata){
-	globalbookdata = booksdata
+	jsondata.book = booksdata
 	initMulti(booksdata,"book","skill");
 }
 function initSkills(skilldata){
-	globalskilldata = skilldata
+	jsondata.skill = skilldata
 	initMulti(skilldata,"skill","specialization");
 }
 function initStores(skilldata){
-	globalstoredata = skilldata
+	jsondata.store = skilldata
 	initMulti(skilldata,"store","city");
 }
 //common functions
@@ -137,29 +134,12 @@ function resetProgress(shouldConfirm=false){
 		savedata = new Object();
 		savedata.version = version;
 		
-		
-		savedata.quest = {};
-		for(datum of globalquestdata){
-			//add entry to savedata
-			savedata.quest[datum.id] = false;
-		}
-		
-		savedata.book = {};
-		for(datum of globalbookdata){
-			//add entry to savedata
-			savedata.book[datum.id] = false;
-		}
-		
-		savedata.skill = {};
-		for(datum of globalskilldata){
-			//add entry to savedata
-			savedata.skill[datum.id] = false;
-		}
-		
-		savedata.store = {};
-		for(datum of globalstoredata){
-			//add entry to savedata
-			savedata.store[datum.id] = false;
+		for(classname of standardclasses){
+			savedata[classname] = {};
+			for(datum of jsondata[classname]){
+				//add entry to savedata
+				savedata[classname][datum.id] = false;
+			}
 		}
 		
 		savedata.locations = {};
@@ -188,7 +168,10 @@ function recalculateProgressAndSave(){
 	checked += parseInt(savedata.misc.placesfound);
 	total += 306;
 	checked += parseInt(savedata.misc.nirnroot);
-	document.getElementById("totalProgressPercent").innerHTML = (checked / total * 100).toString();
+	
+	//round progress to 2 decimal places
+	var progress = Math.round((checked / total * 100)*100)/100;
+	document.getElementById("totalProgressPercent").innerHTML = progress.toString();
 	saveCookie();
 }
 
