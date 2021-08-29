@@ -3,7 +3,7 @@ var globalskilldata;
 var globalquestdata;
 var globalstoredata;
 var savedata;
-var version = 1;
+var version = 2;
 
 // classes that have a standard layout and can use most of the generic functions.
 var standardclasses = ["quest","book","skill","store"];
