@@ -1,9 +1,24 @@
 var jsondata = {quest:null,book:null,skill:null,store:null}
 var savedata;
 var version = 2;
+var totalweight;
+
+var classes = [
+	{name:"quest",standard:true,weight:50}
+	,{name:"book",standard:true,weight:8}
+	,{name:"skill",standard:true,weight:15}
+	,{name:"store",standard:true,weight:5}	
+	,{name:"misc",standard:false,weight:10}
+]
 
 // classes that have a standard layout and can use most of the generic functions.
-var standardclasses = ["quest","book","skill","store"];
+function standardclasses(){
+	return classes.filter(x=>x.standard).map(x=>x.name);
+}
+
+totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
+
+
 
 
 //functions that create the page
@@ -134,7 +149,7 @@ function resetProgress(shouldConfirm=false){
 		savedata = new Object();
 		savedata.version = version;
 		
-		for(classname of standardclasses){
+		for(classname of standardclasses()){
 			savedata[classname] = {};
 			for(datum of jsondata[classname]){
 				//add entry to savedata
@@ -153,30 +168,45 @@ function resetProgress(shouldConfirm=false){
 }
 
 function recalculateProgressAndSave(){
-	//bleh theres a betteer way to do this
-	var total = 0;
-	var checked = 0;
-	for (classname of standardclasses) {
-		for (id in savedata[classname]){
-			if(savedata[classname][id] == true){
-				checked += 1;
+	//bleh theres a better way to do this
+	var percentCompleteSoFar = 0.0;
+	for (klass of classes) {
+		if(klass.standard){
+			var classtotal = 0;
+			var classchecked = 0;
+			for (id in savedata[klass.name]){
+				if(savedata[klass.name][id] == true){
+					classchecked += 1;
+				}
+				classtotal +=1;
 			}
-			total +=1;
+			
+			//update overview and totals
+			document.getElementById("overview"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
+			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight/totalweight);
+		}
+		else if (klass.name == "misc") {
+			//TODO FIX
+			var classtotal = 367;
+			var classchecked = parseInt(savedata.misc.placesfound);
+			document.getElementById("overviewplaces").innerText = classchecked.toString() + "/" + classtotal.toString();
+			percentCompleteSoFar += (classchecked/classtotal) * (8/totalweight);
+			
+			classtotal = 306;
+			classchecked = parseInt(savedata.misc.nirnroot);
+			document.getElementById("overviewnirnroot").innerText = classchecked.toString() + "/" + classtotal.toString();
+			percentCompleteSoFar += (classchecked/classtotal) * (2/totalweight);
 		}
 	}
-	total += 367;
-	checked += parseInt(savedata.misc.placesfound);
-	total += 306;
-	checked += parseInt(savedata.misc.nirnroot);
 	
 	//round progress to 2 decimal places
-	var progress = Math.round((checked / total * 100)*100)/100;
+	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	document.getElementById("totalProgressPercent").innerHTML = progress.toString();
 	saveCookie();
 }
 
 function updateUIFromSaveData(){
-	for(classname of standardclasses){
+	for(classname of standardclasses()){
 		for(id in savedata[classname]){
 			var checkbox = document.getElementById(classname+id+"check");
 			checkbox.checked = savedata[classname][id];
@@ -187,7 +217,7 @@ function updateUIFromSaveData(){
 }
 
 function updateSaveDataFromUI(){
-	for (classname in standardclasses) {
+	for (classname in standardclasses()) {
 		for(id in savedata[classname]){
 			savedata[classname][id] = document.getElementById("book"+id+"check").checked;
 		}
@@ -207,7 +237,7 @@ function checkboxClicked(event){
 	var parentid = event.target.parentElement.id;
 
 	//extract what it is from the parent id so we can update progress
-	for (const classname of standardclasses){
+	for (const classname of standardclasses()){
 		if(parentid.startsWith(classname)){
 			var rowid = parseInt(parentid.substring(classname.length));
 			savedata[classname][rowid] = event.target.checked;
