@@ -1,12 +1,13 @@
 body{
 	background-color: #FFF2CC;
+	column-width: 25em;
 }
 
 .progress{
 	font-size: 3em;
 	font-weight: bold;
 	position: fixed;
-	float: right;
+	background-color: #FFF2CC;
 }
 
 .h2{
@@ -14,7 +15,7 @@ body{
 }
 
 .category{
-	max-width: 400px;
+	max-width: 25em;
 }
 
 .categoryTitle{
