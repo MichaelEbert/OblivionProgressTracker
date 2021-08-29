@@ -1,6 +1,5 @@
 body{
 	background-color: #E5D9B9;
-	column-width: 25em;
 }
 
 .progress{
@@ -16,13 +15,13 @@ body{
 }
 
 .section{
-	padding-top: .5em;
-	max-width: 25em;
+	margin: 1em;
 	background-color: #FBEFD5;
+	column-width: 25em;
 }
 
 .category{
-	
+	break-inside: avoid;
 }
 
 .categoryTitle{
