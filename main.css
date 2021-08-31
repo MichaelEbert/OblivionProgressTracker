@@ -2,6 +2,14 @@ body{
 	background-color: #E5D9B9;
 }
 
+br{
+	margin-bottom: 0.2em;
+}
+
+:target {
+	border: .5em solid red;
+}
+
 .progress{
 	font-size: 3em;
 	font-weight: bold;
@@ -33,5 +41,13 @@ body{
 	background-color: lightgreen;
 }
 
+.spellname{
+	font-weight: bold;
+	color: darkyellow;
+}
 
+.npc{
+	font-weight: bold;
+	color: darkgreen;
+}
 

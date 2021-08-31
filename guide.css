@@ -1,0 +1,20 @@
+/*overrides for guide pages*/
+.section{
+	margin: 1em;
+	background-color: #FBEFD5;
+	column-width: auto;
+}
+
+.sectionTitle{
+	font-size: 1.5em;
+	border-bottom: 2px solid gray;
+}
+
+.subtitle{
+	font-weight: bold;
+}
+
+.replaceableError{
+	color: red;
+	text-decoration:underline;
+}

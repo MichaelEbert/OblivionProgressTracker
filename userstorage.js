@@ -37,7 +37,7 @@ function loadJsonData(){
 	return Promise.all([skilldata,bookdata,storedata])
 }
 
-var version = 2;
+var version = 3;
 var totalweight;
 
 var classes = [

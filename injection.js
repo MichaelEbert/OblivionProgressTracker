@@ -9,8 +9,6 @@ function LinkedElement(element, classname, id){
 
 //initial function to replace element with checkbox n stuff.
 function  replaceElements(){
-	
-	//step 2: create the stuff.
 	var replaceableParts = document.getElementsByClassName("replaceable");
 	while(replaceableParts.length > 0){
 		const element = replaceableParts[0];
@@ -27,16 +25,17 @@ function  replaceElements(){
 				//break;
 			}
 		}
-		
+
 		if(elementclass == null || elementjson == null){
 			//skip this iteration and move to the next one.
 			element.classList.remove("replaceable");
+			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
 			continue;
 		}
 		//step 2: create the internal stuff.
 		element.innerText = "";
-		var newElement = initSingleSpan(elementjson, elementclass, elementid)
+		var newElement = initInjectedElement(elementjson, elementclass, elementid)
 		element.replaceWith(newElement);
 		//step 3: load current data from cookies
 		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
@@ -53,7 +52,7 @@ function updateUIFromSaveData2(){
 	}
 }
 
-function initSingleSpan(rowdata, classname, elementid){
+function initInjectedElement(rowdata, classname, elementid){
 	var rowhtml = document.createElement("span");
 	rowhtml.classList.add(classname);
 	rowhtml.setAttribute("clid",classname+elementid);
@@ -68,7 +67,7 @@ function initSingleSpan(rowdata, classname, elementid){
 	else{
 		linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
 	}
-	linky.innerText = rowdata.name;
+	linky.innerText =  "[" + classname + "] " + rowdata.name;
 	linky.target = "_blank";
 	rName.appendChild(linky);
 	rowhtml.appendChild(rName);
