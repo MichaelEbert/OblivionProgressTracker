@@ -35,6 +35,7 @@ function goToNext(){
 
 
 function play(){
+	window.speechSynthesis.cancel();
 	speech.text = currentLineText;
 	window.speechSynthesis.speak(speech);
 	
