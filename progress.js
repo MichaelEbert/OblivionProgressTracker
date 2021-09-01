@@ -1,27 +1,6 @@
 
 //progress functions
 var savedata;
-function loadProgressFromCookie(){
-	try{
-		let progressValue = document.cookie
-		.split('; ')
-		.find(row => row.startsWith("progress="))
-		.split('=')[1];
-		savedata = JSON.parse(progressValue);
-		if(savedata.version != version){
-			alert("Save data is out of date. Percentages may be wrong.")
-		}
-		document.dispatchEvent(new Event("progressLoad"));
-		return true;
-	}
-	catch{
-		return false;
-	}
-}
-
-function saveProgress(){
-	saveCookie("progress",savedata);
-}
 
 function saveCookie(name,value){
 	//save for 10 years
@@ -30,6 +9,76 @@ function saveCookie(name,value){
 	document.cookie = name+"="+JSON.stringify(value)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
 
 }
+
+function loadCookie(name){
+	try{
+		let progressValue = document.cookie
+		.split('; ')
+		.find(row => row.startsWith("progress="))
+		.split('=')[1];
+		return JSON.parse(progressValue);
+		
+	}
+	catch{
+		return false;
+	}
+}
+
+function loadProgressFromCookie(){
+	var compressed = loadCookie("progress");
+	
+	if(compressed){
+		//expand cookie data back to nice, usable form.
+		savedata = {};
+		for(propname in compressed){
+			if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
+				savedata[propname] = {};
+				var elements = compressed[propname];
+				var i = 0;
+				while(i < elements.length){
+					if(elements[i] != null){
+						savedata[propname][i] = (elements[i] == 1);
+					}
+					i+=1;
+				}
+			}
+			else{
+				savedata[propname] = compressed[propname];
+			}
+		}
+		
+		if(savedata.version != version){
+			alert("Save data is out of date. Percentages may be wrong.")
+		}
+		document.dispatchEvent(new Event("progressLoad"));
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function saveProgress(){
+	//savedata is in the format where IDs are an associative array of boolean values. 
+	//change this to linear array of int values so its smaller.
+	compressed = {};
+	compressed.version = savedata.version;
+	for(propname in savedata){
+		if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
+			compressed[propname] = [];
+			var elements = savedata[propname];
+			for(elementPropName in elements){
+				compressed[propname][parseInt(elementPropName)] = elements[elementPropName] == 1 ?1:0;
+			}
+		}
+		else{
+			compressed[propname] = savedata[propname];
+		}
+	}	
+	saveCookie("progress",compressed);
+}
+
+
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
 function loadJsonData(){
@@ -40,7 +89,7 @@ function loadJsonData(){
 	return Promise.all([questdata,skilldata,bookdata,storedata])
 }
 
-var version = 3;
+var version = 4;
 var totalweight;
 
 var classes = [

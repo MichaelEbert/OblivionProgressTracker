@@ -123,5 +123,5 @@ function checkboxClicked2(event){
 	if(event.target.id == "nirnrootcheck") {
 		savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
 	}
-	saveCookie();
+	saveProgress();
 }
