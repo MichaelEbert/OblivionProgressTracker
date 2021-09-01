@@ -6,6 +6,10 @@ br{
 	margin-bottom: 0.2em;
 }
 
+ol li ol{
+	list-style-type: lower-alpha;
+}
+
 :target {
 	border: .5em solid red;
 }
