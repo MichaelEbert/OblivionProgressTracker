@@ -29,6 +29,7 @@
 	text-decoration:underline;
 }
 
+/*on guide pages, we want links to stay blue so they'll stand out.*/
 .questName a,
 .bookName a,
 .storeName a,

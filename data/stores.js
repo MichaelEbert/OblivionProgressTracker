@@ -22,7 +22,7 @@
 ,{"id":18,"name":"Olav","city":"Bruma"}
 ,{"id":19,"name":"Olfand","city":"Bruma"}
 ,{"id":20,"name":"Ongar the World-Weary","city":"Bruma"}
-,{"id":21,"name":"Selena Orania","city":"Bruma"}
+,{"id":21,"name":"Selena Orania","city":"Bruma","notes":"Must be invested in before A Plot Revealed"}
 ,{"id":22,"name":"Sjkorta","city":"Bruma"}
 ,{"id":23,"name":"Suurootan","city":"Bruma"}
 
@@ -90,17 +90,17 @@
 ,{"id":79,"name":"Sinderion","city":"Skingrad"}
 
 ,{"id":80,"name":"Abhuki","city":"Other"}
-,{"id":81,"name":"Andreas Draconis","city":"Other"}
+,{"id":81,"name":"Andreas Draconis","city":"Other","notes":"Must be invested in before Next of Kin"}
 ,{"id":82,"name":"Candice Corgine","city":"Other"}
 ,{"id":83,"name":"Christophe Marane","city":"Other"}
 ,{"id":84,"name":"Davela Hlaren","city":"Other"}
 ,{"id":85,"name":"Engorm","city":"Other"}
-,{"id":86,"name":"Etira Moslin","city":"Other"}
+,{"id":86,"name":"Etira Moslin","city":"Other","notes":"Must be invested in before A Shadow Over Hackdirt"}
 ,{"id":87,"name":"Foroch","city":"Other"}
-,{"id":88,"name":"Kirsten","city":"Other"}
+,{"id":88,"name":"Kirsten","city":"Other","notes":"Must be invested in before Mephala's quest"}
 ,{"id":89,"name":"Malene","city":"Other"}
 ,{"id":90,"name":"Manheim Maulhand","city":"Other"}
 ,{"id":91,"name":"Nerussa","city":"Other"}
 ,{"id":92,"name":"S'thasa","city":"Other"}
-,{"id":93,"name":"Vlanhonder Moslin","city":"Other"}
+,{"id":93,"name":"Vlanhonder Moslin","city":"Other","notes":"Must be invested in before A Shadow Over Hackdirt"}
 ]}
