@@ -86,7 +86,8 @@ function loadJsonData(){
 	var bookdata = fetch("./data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
 	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
 	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
-	return Promise.all([questdata,skilldata,bookdata,storedata])
+	var savedata = fetch("./data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
+	return Promise.all([questdata,skilldata,bookdata,storedata,savedata])
 }
 
 var version = 4;
@@ -114,5 +115,29 @@ function resetProgressForTree(classname, jsonTreeList){
 		else{
 			resetProgressForTree(classname, element.elements);
 		}
+	}
+}
+
+function resetProgress(shouldConfirm=false){
+	var doit = true;
+	if(shouldConfirm){
+		doit = confirm("press OK to reset data");
+	}
+	if(doit){
+		savedata = new Object();
+		savedata.version = version;
+		
+		for(classname of standardclasses()){
+			savedata[classname] = {};
+			resetProgressForTree(classname, jsondata[classname].elements);
+		}
+		
+		savedata.save={};
+		savedata.misc = {};
+		savedata.misc.placesfound = 0;
+		savedata.misc.nirnroot = 0;
+		
+		updateUIFromSaveData();
+		recalculateProgressAndSave();
 	}
 }

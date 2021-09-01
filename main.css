@@ -26,6 +26,7 @@ br{
 	margin: 1em;
 	background-color: #FBEFD5;
 	column-width: 24em;
+	padding: 0.5em;
 }
 
 .category{
@@ -55,5 +56,10 @@ br{
 .npc{
 	font-weight: bold;
 	color: darkgreen;
+}
+
+.nirnroot{
+	font-weight: bold;
+	color:seagreen;
 }
 

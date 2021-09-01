@@ -125,30 +125,6 @@ function initSingle(rowdata, classname){
 // Functions that deal with progress
 //===========================
 
-function resetProgress(shouldConfirm=false){
-	var doit = true;
-	if(shouldConfirm){
-		doit = confirm("press OK to reset data");
-	}
-	if(doit){
-		savedata = new Object();
-		savedata.version = version;
-		
-		for(classname of standardclasses()){
-			savedata[classname] = {};
-			resetProgressForTree(classname, jsondata[classname].elements);
-		}
-		
-		savedata.locations = {};
-		savedata.misc = {};
-		savedata.misc.placesfound = 0;
-		savedata.misc.nirnroot = 0;
-		
-		updateUIFromSaveData();
-		recalculateProgressAndSave();
-	}
-}
-
 function recalculateProgressAndSave(){
 	//bleh theres a better way to do this
 	var percentCompleteSoFar = 0.0;

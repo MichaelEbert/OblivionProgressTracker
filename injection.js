@@ -15,7 +15,10 @@ function findRecursive(findfunc, elementList){
 			}
 		}
 		else{
-			return findRecursive(findfunc, element.elements);
+			var mayberesult = findRecursive(findfunc, element.elements);
+			if(mayberesult){
+				return mayberesult;
+			}
 		}
 	}
 }
@@ -27,6 +30,7 @@ function  replaceElements(){
 		const element = replaceableParts[0];
 		const checklistid = element.getAttribute("clid");
 		//step 1: get the target element data.
+		var found = false;
 		var elementjson = null;
 		var elementclass = null;
 		var elementid = null;
@@ -35,11 +39,20 @@ function  replaceElements(){
 				elementid = parseInt(checklistid.substring(classname.length));
 				elementjson = findRecursive(x=>x.id == elementid, jsondata[classname].elements);
 				elementclass = classname;
-				//break;
+				found=true;
+				break;
+			}
+		}
+		if(!found){
+			if(checklistid?.startsWith("save")){
+				elementid = checklistid.substring("save".length);
+				elementjson = findRecursive(x=>x.id == elementid, jsondata["save"].elements);
+				elementclass = "save";
+				found=true;
 			}
 		}
 
-		if(elementclass == null || elementjson == null){
+		if(!found){
 			//skip this iteration and move to the next one.
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
@@ -56,12 +69,35 @@ function  replaceElements(){
 	updateUIFromSaveData2();
 }
 
+function linkNPCs(){
+	var npcs = document.getElementsByClassName("npc");
+	for(element of npcs){
+		var linky = document.createElement("a");
+		//TODO: NPC overrides
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+element.innerText;
+		linky.innerText = element.innerText;
+		element.innerText = "";
+		element.appendChild(linky);
+	}
+}
+
 function updateUIFromSaveData2(){
 	//since these pages may contain multiple references to teh same object, we need to
 	//do this from the element side, not from the data side.
 	for(const linkedElement of linkedElements){
-			linkedElement.element.children[1].checked = savedata[linkedElement.classname][linkedElement.id];
-			setParentChecked(linkedElement.element.children[1]);
+		var checkbox = Array.from(linkedElement.element.children).find(x=>x.tagName=="INPUT");
+		if(checkbox.type=="checkbox"){
+			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
+			if(checkbox.checked){
+				linkedElement.element.classList.add("checked");
+			}
+			else{
+				linkedElement.element.classList.remove("checked");
+			}
+		}
+		else{
+			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
+		}
 	}
 }
 
@@ -87,21 +123,27 @@ function initInjectedElement(rowdata, classname, elementid){
 	
 	//checkbox
 	var rcheck = document.createElement("input")
-	rcheck.type="checkbox"
+	if(rowdata.type){
+		rcheck.type= rowdata.type;
+		rcheck.addEventListener('change',checkboxClicked2);
+		rcheck.size=4;
+	}
+	else{
+		rcheck.type="checkbox";
+		rcheck.addEventListener('click',checkboxClicked2);
+	}
 	rcheck.classList.add(classname+"Check")
-	rcheck.addEventListener('click',checkboxClicked2);
-	rcheck.id = rowhtml.id+"check"
 	rowhtml.appendChild(rcheck)
 	
 	return rowhtml;
 }
 
-function setParentChecked(checkbox){
-	if(checkbox.checked){
-		checkbox.parentElement.classList.add("checked");
+function setParentChecked(item){
+	if(item.checked){
+		item.parentElement.classList.add("checked");
 	}
 	else{
-		checkbox.parentElement.classList.remove("checked");
+		item.parentElement.classList.remove("checked");
 	}
 }
 
@@ -109,19 +151,31 @@ function checkboxClicked2(event){
 	var parentid = event.target.parentElement.getAttribute("clid");
 
 	//extract what it is from the parent id so we can update progress
+	var found = false;
 	for (const classname of standardclasses()){
 		if(parentid.startsWith(classname)){
 			var rowid = parseInt(parentid.substring(classname.length));
 			savedata[classname][rowid] = event.target.checked;
 			setParentChecked(event.target);
+			found=true;
 			break;
 		}
 	}
-	if(event.target.id == "placesfoundcheck") {
-		savedata["misc"]["placesfound"] = event.target.valueAsNumber;
+	if(!found){
+		if(parentid.startsWith("save")){
+			var rowid = parentid.substring("save".length);
+			savedata["save"][rowid] = event.target.valueAsNumber;
+			found=true;
+		}
+		
+		if(event.target.id == "placesfoundcheck") {
+			savedata["misc"]["placesfound"] = event.target.valueAsNumber;
+		}
+		if(event.target.id == "nirnrootcheck") {
+			savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
+		}
 	}
-	if(event.target.id == "nirnrootcheck") {
-		savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
-	}
+	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
+	updateUIFromSaveData2();
 	saveProgress();
 }
