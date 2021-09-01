@@ -109,6 +109,14 @@ function initSingle(rowdata, classname){
 	rcheck.id = rowhtml.id+"check"
 	rowhtml.appendChild(rcheck)
 	
+	//notes
+	if(rowdata.notes){
+		var notesIcon = document.createElement("span");
+		notesIcon.title = rowdata.notes;
+		notesIcon.innerText = "⚠"
+		rowhtml.appendChild(notesIcon);
+	}
+	
 	return rowhtml;
 }
 
@@ -128,9 +136,7 @@ function resetProgress(shouldConfirm=false){
 		
 		for(classname of standardclasses()){
 			savedata[classname] = {};
-			for(datalist of jsondata[classname]){
-				resetProgressForTree(classname, datalist);
-			}
+			resetProgressForTree(classname, jsondata[classname].elements);
 		}
 		
 		savedata.locations = {};
