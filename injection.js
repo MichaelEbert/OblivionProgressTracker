@@ -7,6 +7,19 @@ function LinkedElement(element, classname, id){
 	this.id = id;
 }
 
+function findRecursive(findfunc, elementList){
+	for(element of elementList){
+		if(element.id != undefined && element.id != null){
+			if(findfunc(element)){
+					return element;
+			}
+		}
+		else{
+			return findRecursive(findfunc, element.elements);
+		}
+	}
+}
+
 //initial function to replace element with checkbox n stuff.
 function  replaceElements(){
 	var replaceableParts = document.getElementsByClassName("replaceable");
@@ -20,7 +33,7 @@ function  replaceElements(){
 		for (const classname of standardclasses()){
 			if(checklistid?.startsWith(classname)){
 				elementid = parseInt(checklistid.substring(classname.length));
-				elementjson = jsondata[classname].find(x=>x.id == elementid);
+				elementjson = findRecursive(x=>x.id == elementid, jsondata[classname].elements);
 				elementclass = classname;
 				//break;
 			}
@@ -81,6 +94,15 @@ function initInjectedElement(rowdata, classname, elementid){
 	rowhtml.appendChild(rcheck)
 	
 	return rowhtml;
+}
+
+function setParentChecked(checkbox){
+	if(checkbox.checked){
+		checkbox.parentElement.classList.add("checked");
+	}
+	else{
+		checkbox.parentElement.classList.remove("checked");
+	}
 }
 
 function checkboxClicked2(event){

@@ -11,8 +11,7 @@ function loadProgressFromCookie(){
 		if(savedata.version != version){
 			alert("Save data is out of date. Percentages may be wrong.")
 		}
-		updateUIFromSaveData();
-		recalculateProgressAndSave();
+		document.dispatchEvent(new Event("progressLoad"));
 		return true;
 	}
 	catch{
@@ -20,11 +19,15 @@ function loadProgressFromCookie(){
 	}
 }
 
-function saveCookie(){
+function saveProgress(){
+	saveCookie("progress",savedata);
+}
+
+function saveCookie(name,value){
 	//save for 10 years
 	var expiry = new Date()
 	expiry.setDate(expiry.getDate()+365*10);
-	document.cookie = "progress="+JSON.stringify(savedata)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
+	document.cookie = name+"="+JSON.stringify(value)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
 
 }
 

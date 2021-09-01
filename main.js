@@ -2,6 +2,7 @@
 // Functions that generate the page
 //===========================
 function init(){
+	document.addEventListener("progressLoad",updateUIFromSaveData);
 	loadJsonData().then(()=>{
 		initMultiV2(jsondata.quest,"quest","questline");
 		initMultiV2(jsondata.book,"book","skill");
@@ -11,7 +12,6 @@ function init(){
 			resetProgress();
 	}});
 }
-//common functions
 
 const classNamesForLevels = ["section","category","subcategory"]
 
@@ -112,16 +112,10 @@ function initSingle(rowdata, classname){
 	return rowhtml;
 }
 
-function resetProgressForTree(classname, jsonTreeList){
-	for(element of jsonTreeList){
-		if(element.id != undefined && element.id != null){
-			savedata[classname][element.id] = false;
-		}
-		else{
-			resetProgressForTree(classname, element.elements);
-		}
-	}
-}
+
+//==========================
+// Functions that deal with progress
+//===========================
 
 function resetProgress(shouldConfirm=false){
 	var doit = true;
@@ -184,7 +178,7 @@ function recalculateProgressAndSave(){
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	document.getElementById("totalProgressPercent").innerHTML = progress.toString();
-	saveCookie();
+	saveProgress();
 }
 
 function updateUIFromSaveData(){
@@ -198,7 +192,7 @@ function updateUIFromSaveData(){
 	
 	document.getElementById("placesfoundcheck").value = savedata["misc"]["placesfound"];
 	document.getElementById("nirnrootcheck").value = savedata["misc"]["nirnroot"];
-
+	recalculateProgressAndSave();
 }
 
 function setParentChecked(checkbox){
