@@ -1,4 +1,4 @@
-{"version":1,"data":[
+{"version":1,"elements":[
 {"id":0,"name":"Enilroth","city":"Anvil"}
 ,{"id":1,"name":"Felen Relas","city":"Anvil"}
 ,{"id":2,"name":"Maenlorn","city":"Anvil"}

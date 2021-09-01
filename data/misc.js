@@ -1,4 +1,4 @@
-{"version":1,"data":[
+{"version":1,"elements":[
 {"id":"0","name":"Kvatch Gate","category":"Oblivion Gates","subcategory":"Main Quest Pt. 1"}
 ,{"id":"1","name":"12 Fixed Single Fame Gates","category":"Oblivion Gates","subcategory":"Map Exploration","type":"number"}
 ,{"id":"2","name":"5 Fixed Double Fame Gates","category":"Oblivion Gates","subcategory":"Map Exploration","type":"number"}

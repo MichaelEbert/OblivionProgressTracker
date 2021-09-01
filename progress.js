@@ -30,11 +30,11 @@ function saveCookie(){
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
 function loadJsonData(){
-	var questdata = fetch("./data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d.data);
-	var bookdata = fetch("./data/books.js").then(response=>response.json()).then(d => jsondata.book = d.data);
-	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d.data);
-	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(d => jsondata.store = d.data);
-	return Promise.all([skilldata,bookdata,storedata])
+	var questdata = fetch("./data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
+	var bookdata = fetch("./data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
+	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
+	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
+	return Promise.all([questdata,skilldata,bookdata,storedata])
 }
 
 var version = 3;
@@ -53,3 +53,14 @@ function standardclasses(){
 	return classes.filter(x=>x.standard).map(x=>x.name);
 }
 totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
+
+function resetProgressForTree(classname, jsonTreeList){
+	for(element of jsonTreeList){
+		if(element.id != undefined && element.id != null){
+			savedata[classname][element.id] = false;
+		}
+		else{
+			resetProgressForTree(classname, element.elements);
+		}
+	}
+}

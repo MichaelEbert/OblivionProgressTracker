@@ -1,4 +1,4 @@
-{"version":1,"data":[
+{"version":1,"elements":[
 {"id":1,"name":"The Black Arrow, v 1","skill":"Acrobatics"}
 ,{"id":2,"name":"A Dance in Fire, v1","skill":"Acrobatics"}
 ,{"id":3,"name":"A Dance in Fire, v4","skill":"Acrobatics"}

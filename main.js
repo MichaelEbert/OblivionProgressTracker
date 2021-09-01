@@ -1,30 +1,55 @@
-	
-
-//functions that create the page
+//==========================
+// Functions that generate the page
+//===========================
 function init(){
 	loadJsonData().then(()=>{
-		initMulti(jsondata.quest,"quest","questline");
-		initMulti(jsondata.book,"book","skill");
-		initMulti(jsondata.skill,"skill","specialization");
-		initMulti(jsondata.store,"store","city");
+		initMultiV2(jsondata.quest,"quest","questline");
+		initMultiV2(jsondata.book,"book","skill");
+		initMultiV2(jsondata.skill,"skill","specialization");
+		initMultiV2(jsondata.store,"store","city");
 		if(loadProgressFromCookie() == false){
 			resetProgress();
 	}});
 }
-
-function initQuests(qdata){
-	jsondata.quest = qdata
-	initMulti(qdata,"quest","questline");
-}
-function initBooks(booksdata){
-	jsondata.book = booksdata
-	initMulti(booksdata,"book","skill");
-}
-function initSkills(skilldata){
-	jsondata.skill = skilldata
-	initMulti(skilldata,"skill","specialization");
-}
 //common functions
+
+const classNamesForLevels = ["section","category","subcategory"]
+
+function initMultiV2(multidata, classname, categoryName){
+	if(multidata.version == 1){
+		initMulti(multidata.elements,classname, categoryName);
+	}
+	else {
+		var section = document.getElementById(classname+"section");
+		initMultiV2internal(multidata.elements, classname, section,1);
+	}
+}
+
+function initMultiV2internal(multidata, classname, parentNode, depth){
+	for(datum of multidata) {
+		//only leaf nodes have IDs
+		if(datum.id != undefined && datum.id != null){
+			parentNode.appendChild(initSingle(datum, classname));
+		}
+		else{
+			// not a leaf node, so create a subtree, with a title n stuff.
+			var subtreeName = datum.name.replaceAll(" ","_");
+			var subtreeRoot = document.createElement("div");
+			subtreeRoot.classList.add(classNamesForLevels[depth]);
+			subtreeRoot.id = parentNode.id + "_" + subtreeName;
+			
+			var subtreeTitle = document.createElement("div");
+			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
+			subtreeTitle.innerText = datum.name;
+			subtreeRoot.appendChild(subtreeTitle);
+			
+			initMultiV2internal(datum.elements, classname, subtreeRoot, depth+1);
+			parentNode.appendChild(subtreeRoot);
+		}
+	}
+}
+
+//init a non-leaf element
 function initMulti(multidata, classname, categoryName){
 	var section = document.getElementById(classname+"section");
 	multidata.sort((a,b)=>{
@@ -55,6 +80,7 @@ function initMulti(multidata, classname, categoryName){
 	}
 }
 
+//init a single leaf element
 function initSingle(rowdata, classname){
 	var rowhtml = document.createElement("div")
 	rowhtml.classList.add(classname)
@@ -86,6 +112,17 @@ function initSingle(rowdata, classname){
 	return rowhtml;
 }
 
+function resetProgressForTree(classname, jsonTreeList){
+	for(element of jsonTreeList){
+		if(element.id != undefined && element.id != null){
+			savedata[classname][element.id] = false;
+		}
+		else{
+			resetProgressForTree(classname, element.elements);
+		}
+	}
+}
+
 function resetProgress(shouldConfirm=false){
 	var doit = true;
 	if(shouldConfirm){
@@ -97,9 +134,8 @@ function resetProgress(shouldConfirm=false){
 		
 		for(classname of standardclasses()){
 			savedata[classname] = {};
-			for(datum of jsondata[classname]){
-				//add entry to savedata
-				savedata[classname][datum.id] = false;
+			for(datalist of jsondata[classname]){
+				resetProgressForTree(classname, datalist);
 			}
 		}
 		

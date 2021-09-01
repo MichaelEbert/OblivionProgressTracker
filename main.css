@@ -25,7 +25,7 @@ br{
 .section{
 	margin: 1em;
 	background-color: #FBEFD5;
-	column-width: 25em;
+	column-width: 24em;
 }
 
 .category{
@@ -35,6 +35,12 @@ br{
 .categoryTitle{
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
+}
+
+.subcategoryTitle{
+	font-style: italic;
+	color: grey;
+	padding-top: 0.2em;
 }
 
 .checked{

@@ -1,4 +1,4 @@
-{"version":1,"data":[
+{"version":1,"elements":[
 {"id":0,"name":"Armorer","specialization":"Combat"}
 ,{"id":1,"name":"Athletics","specialization":"Combat"}
 ,{"id":2,"name":"Blade","specialization":"Combat"}
