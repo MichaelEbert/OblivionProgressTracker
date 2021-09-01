@@ -6,14 +6,18 @@
 }
 
 .sectionTitle{
+	text-align: center;
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
+}
+
+.category{
+	margin-left: 2em;
 }
 
 .categoryTitle{
 	font-size:1.2em;
 	font-weight: bold;
-	margin-left: 2em;
 }
 
 .subtitle{
@@ -23,4 +27,11 @@
 .replaceableError{
 	color: red;
 	text-decoration:underline;
+}
+
+.questName a,
+.bookName a,
+.storeName a,
+.npc a{
+	color: blue;
 }
