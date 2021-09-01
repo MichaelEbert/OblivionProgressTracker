@@ -39,7 +39,7 @@ function  replaceElements(){
 				elementid = parseInt(checklistid.substring(classname.length));
 				elementjson = findRecursive(x=>x.id == elementid, jsondata[classname].elements);
 				elementclass = classname;
-				found=true;
+				if(elementjson){found=true;}
 				break;
 			}
 		}
