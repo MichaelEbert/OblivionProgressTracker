@@ -31,4 +31,13 @@
 		,{"id":23,"name":"Leyawiin House for Sale"}
 		,{"id":24,"name":"Rosethorn Hall"}
 	]}
+	,{"name":"Horses","weight":1,"elements":[
+		 {"id":17,"name":"White Horse"}
+		,{"id":17,"name":"Bay Horse"}
+		,{"id":17,"name":"Paint Horse"}
+		,{"id":17,"name":"Black Horse"}
+		,{"id":17,"name":"Chestnut Horse"}
+		,{"id":17,"name":"Paint Horse"}
+		,{"id":17,"name":"Bay Horse"}
+	]}
 ]}
