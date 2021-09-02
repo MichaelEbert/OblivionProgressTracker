@@ -129,7 +129,7 @@ function findOnTree(root,findfunc){
 	}
 	else{
 		for(e of root.elements){
-			var mayberesult = findRecursive(findfunc, element.elements);
+			const mayberesult = findOnTree(e, findfunc);
 			if(mayberesult){
 				return mayberesult;
 			}

@@ -21,7 +21,7 @@ function  replaceElements(){
 		for (const classname of standardclasses()){
 			if(checklistid?.startsWith(classname)){
 				elementid = parseInt(checklistid.substring(classname.length));
-				elementjson = findRecursive(jsondata[classname],(x=>x.id == elementid));
+				elementjson = findOnTree(jsondata[classname],(x=>x.id == elementid));
 				elementclass = classname;
 				if(elementjson){found=true;}
 				break;
@@ -30,7 +30,7 @@ function  replaceElements(){
 		if(!found){
 			if(checklistid?.startsWith("save")){
 				elementid = checklistid.substring("save".length);
-				elementjson = findRecursive(jsondata["save"], x=>x.id == elementid);
+				elementjson = findOnTree(jsondata["save"], x=>x.id == elementid);
 				elementclass = "save";
 				found=true;
 			}

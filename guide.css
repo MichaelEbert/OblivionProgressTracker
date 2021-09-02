@@ -24,6 +24,10 @@
 	font-weight: bold;
 }
 
+.check{
+	float: none;
+}
+
 .replaceableError{
 	color: red;
 	text-decoration:underline;
