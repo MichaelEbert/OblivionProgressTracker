@@ -7,22 +7,6 @@ function LinkedElement(element, classname, id){
 	this.id = id;
 }
 
-function findRecursive(findfunc, elementList){
-	for(element of elementList){
-		if(element.id != undefined && element.id != null){
-			if(findfunc(element)){
-					return element;
-			}
-		}
-		else{
-			var mayberesult = findRecursive(findfunc, element.elements);
-			if(mayberesult){
-				return mayberesult;
-			}
-		}
-	}
-}
-
 //initial function to replace element with checkbox n stuff.
 function  replaceElements(){
 	var replaceableParts = document.getElementsByClassName("replaceable");
@@ -37,7 +21,7 @@ function  replaceElements(){
 		for (const classname of standardclasses()){
 			if(checklistid?.startsWith(classname)){
 				elementid = parseInt(checklistid.substring(classname.length));
-				elementjson = findRecursive(x=>x.id == elementid, jsondata[classname].elements);
+				elementjson = findRecursive(jsondata[classname],(x=>x.id == elementid));
 				elementclass = classname;
 				if(elementjson){found=true;}
 				break;
@@ -46,7 +30,7 @@ function  replaceElements(){
 		if(!found){
 			if(checklistid?.startsWith("save")){
 				elementid = checklistid.substring("save".length);
-				elementjson = findRecursive(x=>x.id == elementid, jsondata["save"].elements);
+				elementjson = findRecursive(jsondata["save"], x=>x.id == elementid);
 				elementclass = "save";
 				found=true;
 			}
@@ -104,6 +88,7 @@ function updateUIFromSaveData2(){
 function initInjectedElement(rowdata, classname, elementid){
 	var rowhtml = document.createElement("span");
 	rowhtml.classList.add(classname);
+	rowhtml.classList.add("item");
 	rowhtml.setAttribute("clid",classname+elementid);
 	
 	//name
@@ -127,12 +112,16 @@ function initInjectedElement(rowdata, classname, elementid){
 		rcheck.type= rowdata.type;
 		rcheck.addEventListener('change',checkboxClicked2);
 		rcheck.size=4;
+		if(rowdata.max){
+			rcheck.max = rowdata.max;
+		}
 	}
 	else{
 		rcheck.type="checkbox";
 		rcheck.addEventListener('click',checkboxClicked2);
 	}
 	rcheck.classList.add(classname+"Check")
+	rcheck.classList.add("check")
 	rowhtml.appendChild(rcheck)
 	
 	return rowhtml;

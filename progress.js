@@ -87,35 +87,87 @@ function loadJsonData(){
 	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
 	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
 	var savedata = fetch("./data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
-	return Promise.all([questdata,skilldata,bookdata,storedata,savedata])
+	var miscdata = fetch("./data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
+	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata]).then(()=>computeTotalWeight());
 }
 
 var version = 4;
 var totalweight;
 
+//class names and static weights
 var classes = [
 	{name:"quest",standard:true,weight:50}
 	,{name:"book",standard:true,weight:8}
 	,{name:"skill",standard:true,weight:15}
 	,{name:"store",standard:true,weight:5}	
-	,{name:"misc",standard:false,weight:10}
+	,{name:"misc",standard:false,weight:0}
+	,{name:"saves",standard:false,weight:0}
 ]
 
 // classes that have a standard layout and can use most of the generic functions.
 function standardclasses(){
 	return classes.filter(x=>x.standard).map(x=>x.name);
 }
-totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
 
-function resetProgressForTree(classname, jsonTreeList){
-	for(element of jsonTreeList){
-		if(element.id != undefined && element.id != null){
-			savedata[classname][element.id] = false;
+//is node.elements undefined or null?
+function elementsUndefinedOrNull(node){
+	// in JS, undefined == null (but not undefined === null)
+	return (node.elements == null);
+}
+
+//find an element of the tree.
+//root: root node to run on
+//findfunc: function that returns 'true' if element matches.
+function findOnTree(root,findfunc){
+	if(root.id != null ){
+		if(findfunc(root)){
+			return root;
 		}
 		else{
-			resetProgressForTree(classname, element.elements);
+			return null;
 		}
 	}
+	else{
+		for(e of root.elements){
+			var mayberesult = findRecursive(findfunc, element.elements);
+			if(mayberesult){
+				return mayberesult;
+			}
+		}
+	}
+}
+//run a function on leaves in a tree and sum the results.
+//rootNode: root node to run on
+//runFunc: function to run on leaves
+//startVal: starting value of result
+//isLeafFunc: function to determine if leaf. default is elements prop null or undefined.
+function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull){
+	var newval = startVal;
+	if(isLeafFunc(rootNode)){
+		newval += runFunc(rootNode);
+	}
+	else{
+		for(node of rootNode.elements){
+			newval = runOnTree(node,runFunc,newval,isLeafFunc);
+		}
+	}
+	return newval;
+}
+
+//compute total weight. Needed so we can get a percentage.
+function computeTotalWeight(){
+	totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
+	totalweight = runOnTree(jsondata.misc,(e=>parseInt(e.weight)),totalweight,(e=>e.weight != null));
+}
+
+function resetProgressForTree(classname, jsonNode){
+	runOnTree(jsonNode,(e=>{
+		if(e.type == "number"){
+			savedata[classname][e.id] = 0;
+		}
+		else{
+			savedata[classname][e.id] = false;
+		}}),0,(e=>e.id != null));
 }
 
 function resetProgress(shouldConfirm=false){
@@ -129,13 +181,12 @@ function resetProgress(shouldConfirm=false){
 		
 		for(classname of standardclasses()){
 			savedata[classname] = {};
-			resetProgressForTree(classname, jsondata[classname].elements);
+			resetProgressForTree(classname, jsondata[classname]);
 		}
 		
 		savedata.save={};
 		savedata.misc = {};
-		savedata.misc.placesfound = 0;
-		savedata.misc.nirnroot = 0;
+		resetProgressForTree("misc",jsondata.misc);
 		
 		updateUIFromSaveData();
 		recalculateProgressAndSave();

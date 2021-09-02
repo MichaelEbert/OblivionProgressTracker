@@ -52,6 +52,19 @@ ol li ol{
 	background-color: lightgreen;
 }
 
+.item{
+	padding:0.1em;
+	margin:0.2em;
+}
+
+.item:hover{
+	background-color: #66666611;
+}
+
+.check{
+	float: right;
+}
+
 .spellname{
 	font-weight: bold;
 	color: darkyellow;

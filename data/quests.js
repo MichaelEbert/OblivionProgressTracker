@@ -1,6 +1,6 @@
 {"version":2,"elements":[
 	{"name":"Main Questline","elements":[
-		{"id":0,"name":"Tutorial"}
+		 {"id":0,"name":"Tutorial"}
 		,{"id":1,"name":"Deliver the Amulet"}
 		,{"id":2,"name":"Find the Heir"}
 		,{"id":3,"name":"Breaking the Siege of Kvatch"}
@@ -21,7 +21,7 @@
 		,{"id":18,"name":"Imperial Dragon Armor"}
 	]},
 	{"name":"Journal-Filled","elements":[
-		{"id":19,"name":"Cast out of the Thieves Guild"}
+		 {"id":19,"name":"Cast out of the Thieves Guild"}
 		,{"id":20,"name":"Expelled from the Fighters Guild"}
 		,{"id":21,"name":"The Arena"}
 		,{"id":22,"name":"Whispers of Death"}
@@ -32,15 +32,15 @@
 			
 		]},
 		{"name":"Suspension Quests","elements":[
-			{"id":24,"name":"A Dark Exile","notes":"Do these before joining the Black Hand"}
+			 {"id":24,"name":"A Dark Exile","notes":"Do these before joining the Black Hand"}
 			,{"id":25,"name":"Another Dark Exile","notes":"Do these before joining the Black Hand"}
 		]},
 		{"name":"Misc. Quests","elements":[
-			{"id":26,"name":"The Renegade Shadowscale"}
+			 {"id":26,"name":"The Renegade Shadowscale"}
 			,{"id":27,"name":"Darkness Eternal"}
 		]},
 		{"name":"Contract Quests","elements":[
-			{"id":28,"name":"Welcome to the Family"}
+			 {"id":28,"name":"Welcome to the Family"}
 			,{"id":29,"name":"A Watery Grave"}
 			,{"id":30,"name":"Blood of the Damned"}
 			,{"id":31,"name":"Accidents Happen"}
@@ -60,7 +60,7 @@
 			,{"id":45,"name":"The Purification"}
 		]},
 		{"name":"Black Hand Quests","elements":[
-			{"id":46,"name":"The Dead Drop"}
+			 {"id":46,"name":"The Dead Drop"}
 			,{"id":47,"name":"Affairs of a Wizard"}
 			,{"id":48,"name":"Next of Kin"}
 			,{"id":49,"name":"Broken Vows"}
@@ -73,7 +73,7 @@
 		]}
 	]},
 	{"name":"Fighters Guild","elements":[
-		{"id":56,"name":"Join the Fighters Guild"}
+		 {"id":56,"name":"Join the Fighters Guild"}
 		,{"id":57,"name":"A Rat Problem"}
 		,{"id":58,"name":"The Unfortunate Shopkeeper"}
 		,{"id":59,"name":"The Desolate Mine"}
@@ -95,7 +95,7 @@
 		,{"id":75,"name":"The Hist"}
 	]},
 	{"name":"Villages and Inns","elements":[
-		{"id":76,"name":"A Venerable Vintage"}
+		 {"id":76,"name":"A Venerable Vintage"}
 		,{"id":77,"name":"Bear Season"}
 		,{"id":78,"name":"Go Fish"}
 		,{"id":79,"name":"Goblin Trouble"}
@@ -109,7 +109,7 @@
 	]},
 	{"name":"Mages Guild","elements":[
 		{"name":"Initiation Quests","elements":[
-			{"id":87,"name":"Join the Mages Guild"}
+			 {"id":87,"name":"Join the Mages Guild"}
 			,{"id":88,"name":"Bravil Recommendation"}
 			,{"id":89,"name":"Leyawiin Recommendation"}
 			,{"id":90,"name":"Cheydinhal Recommendation"}
@@ -120,14 +120,14 @@
 			,{"id":95,"name":"Anvil Recommendation"}
 		]},
 		{"name":"Suspension Quests","elements":[
-			{"id":96,"name":"Mages Guild Suspension"}
+			 {"id":96,"name":"Mages Guild Suspension"}
 			,{"id":97,"name":"Mages Guild Second Suspension"}
 		]},
 		{"name":"Misc. Quests","elements":[
 			{"id":98,"name":"Alchemy Acquisitions"}
 		]},
 		{"name":"Post-Initiation Quests","elements":[
-			{"id":99,"name":"A Mage's Staff"}
+			 {"id":99,"name":"A Mage's Staff"}
 			,{"id":100,"name":"Ulterior Motives"}
 			,{"id":101,"name":"Vahtacen's Secret"}
 			,{"id":102,"name":"Necromancer's Moon"}
@@ -141,7 +141,7 @@
 		]}
 	]},
 	{"name":"Daedric Shrines","elements":[	
-		{"id":110,"name":"Azura"}
+		 {"id":110,"name":"Azura"}
 		,{"id":111,"name":"Boethia"}
 		,{"id":112,"name":"Clavicus Vile"}
 		,{"id":113,"name":"Hermaeus Mora"}
@@ -158,7 +158,7 @@
 		,{"id":124,"name":"Vaermina"}
 	]},
 	{"name":"Thieves Guild","elements":[
-		{"id":125,"name":"Finding the Thieves Guild"}
+		 {"id":125,"name":"Finding the Thieves Guild"}
 		,{"id":126,"name":"May the Best Thief Win"}
 		,{"id":127,"name":"Blood Price"}
 		,{"id":128,"name":"Independent Thievery"}
@@ -182,7 +182,7 @@
 		,{"id":146,"name":"The Ultimate Heist"}
 	]},
 	{"name":"Master Training","elements":[
-		{"id":147,"name":"Acrobatics Training"}
+		 {"id":147,"name":"Acrobatics Training"}
 		,{"id":148,"name":"Alchemy Training"}
 		,{"id":149,"name":"Alteration Training"}
 		,{"id":150,"name":"Armorer Training"}

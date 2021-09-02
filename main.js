@@ -8,6 +8,7 @@ function init(){
 		initMultiV2(jsondata.book,"book","skill");
 		initMultiV2(jsondata.skill,"skill","specialization");
 		initMultiV2(jsondata.store,"store","city");
+		initMultiV2(jsondata.misc,"misc","");
 		if(loadProgressFromCookie() == false){
 			resetProgress();
 	}});
@@ -28,7 +29,7 @@ function initMultiV2(multidata, classname, categoryName){
 function initMultiV2internal(multidata, classname, parentNode, depth){
 	for(datum of multidata) {
 		//only leaf nodes have IDs
-		if(datum.id != undefined && datum.id != null){
+		if(datum.id != null){
 			parentNode.appendChild(initSingle(datum, classname));
 		}
 		else{
@@ -82,13 +83,15 @@ function initMulti(multidata, classname, categoryName){
 
 //init a single leaf element
 function initSingle(rowdata, classname){
-	var rowhtml = document.createElement("div")
-	rowhtml.classList.add(classname)
-	rowhtml.id = classname+rowdata.id.toString()
+	var rowhtml = document.createElement("div");
+	rowhtml.classList.add(classname);
+	rowhtml.classList.add("item");
+	rowhtml.id = classname+rowdata.id.toString();
+	rowhtml.addEventListener('click',rowClicked);
 	
 	//name
-	var rName = document.createElement("span")
-	rName.classList.add(classname+"Name")
+	var rName = document.createElement("span");
+	rName.classList.add(classname+"Name");
 	var linky = document.createElement("a");
 	if(rowdata.link){
 		linky.href = rowdata.link;
@@ -99,13 +102,24 @@ function initSingle(rowdata, classname){
 	linky.innerText = rowdata.name;
 	linky.target = "_blank";
 	rName.appendChild(linky);
-	rowhtml.appendChild(rName)
+	rowhtml.appendChild(rName);
 	
 	//checkbox
 	var rcheck = document.createElement("input")
-	rcheck.type="checkbox"
+	if(rowdata.type){
+		rcheck.type= rowdata.type;
+		rcheck.addEventListener('change',checkboxClicked);
+		rcheck.size=4;
+		if(rowdata.max){
+			rcheck.max = rowdata.max;
+		}
+	}
+	else{
+		rcheck.type="checkbox";
+		rcheck.addEventListener('click',checkboxClicked);
+	}
 	rcheck.classList.add(classname+"Check")
-	rcheck.addEventListener('click',checkboxClicked);
+	rcheck.classList.add("check")
 	rcheck.id = rowhtml.id+"check"
 	rowhtml.appendChild(rcheck)
 	
@@ -125,6 +139,70 @@ function initSingle(rowdata, classname){
 // Functions that deal with progress
 //===========================
 
+//get the completed items and total items for a single ID'd element in the json.
+function sumCompletionSingleElement(element,classname){
+	var totalElements;
+	var completedElements;
+	if(element.type == "number"){
+		completedElements = savedata[classname][element.id];
+		if(element.max){
+			totalElements = element.max;
+		}
+		else{
+			totalElements = Math.max(1,completedElements);
+		}
+	}
+	else{
+		//we're a checkbox
+		totalElements = 1;
+		const completed = savedata[classname][element.id];
+		if(completed){
+			completedElements = 1;
+		}
+		else{
+			completedElements = 0;
+		}
+	}
+	return [completedElements,totalElements];	
+}
+
+//get the sum of completed items and total items under this element in the json.
+//can't use runOnTree because we get 2 inner results and we cant add taht in 1 step
+function sumCompletionItems(jsonNode,classname){
+	if(jsonNode.id != null){
+		return sumCompletionSingleElement(jsonNode,classname);
+	}
+	else{
+		var completed = 0;
+		var total = 0;
+		for( element of jsonNode.elements){
+			const innerResult = sumCompletionItems(element,classname);
+			completed += innerResult[0];
+			total += innerResult[1];
+		}
+		return [completed,total];
+	}
+}
+
+// given a json node with a weight, sums the completion of all items
+// under that node.
+// additionally, updates subtotal HTML elements if it can find them.
+function getSubtotalCompletion(subtotalJsonNode,classname){
+	const weight = subtotalJsonNode.weight;
+	const [items,total] = sumCompletionItems(subtotalJsonNode,classname);
+	
+	//try to find subtotals
+	const overviewId = "overview"+classname+"_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
+	const maybeItem = document.getElementById(overviewId);
+	if(maybeItem){
+		//add this to correct subtotal slot
+		maybeItem.innerText = items.toString() + "/" + total.toString();
+	}
+	
+	// and finally, return weighted progress for total progress.
+	return (items/total)*weight;
+}
+
 function recalculateProgressAndSave(){
 	//bleh theres a better way to do this
 	var percentCompleteSoFar = 0.0;
@@ -141,21 +219,31 @@ function recalculateProgressAndSave(){
 			
 			//update overview and totals
 			document.getElementById("overview"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
-			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight/totalweight);
+			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
 		}
 		else if (klass.name == "misc") {
+			// we need to start from the json because of nested weights
+			var classtotal;
+			var classchecked;
+			var classweight;
+			percentCompleteSoFar += runOnTree(jsondata.misc, e=>getSubtotalCompletion(e,"misc"), 0, e=>e.weight != null);
+
 			//TODO FIX
-			var classtotal = 367;
-			var classchecked = parseInt(savedata.misc.placesfound);
-			document.getElementById("overviewplaces").innerText = classchecked.toString() + "/" + classtotal.toString();
-			percentCompleteSoFar += (classchecked/classtotal) * (8/totalweight);
-			
-			classtotal = 306;
-			classchecked = parseInt(savedata.misc.nirnroot);
-			document.getElementById("overviewnirnroot").innerText = classchecked.toString() + "/" + classtotal.toString();
-			percentCompleteSoFar += (classchecked/classtotal) * (2/totalweight);
+			//classtotal = 367;
+			//classchecked = parseInt(savedata.misc.placesfound);
+			//document.getElementById("overviewplaces").innerText = classchecked.toString() + "/" + classtotal.toString();
+			//percentCompleteSoFar += (classchecked/classtotal) * (8/totalweight);
+			//
+			//classtotal = 306;
+			//classchecked = parseInt(savedata.misc.nirnroot);
+			//document.getElementById("overviewnirnroot").innerText = classchecked.toString() + "/" + classtotal.toString();
+			//percentCompleteSoFar += (classchecked/classtotal) * (2/totalweight);
 		}
 	}
+	
+	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
+	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
+	percentCompleteSoFar = percentCompleteSoFar / totalweight;
 	
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
@@ -171,9 +259,19 @@ function updateUIFromSaveData(){
 			setParentChecked(checkbox);
 		}
 	}
+	var classname = "misc";
+	runOnTree(jsondata[classname], (element=>{
+		const checkbox = document.getElementById(classname+element.id+"check");
+		var x = savedata[classname][element.id]
+		if(element.type == "number"){
+			checkbox.value = x;
+		}
+		else{
+			checkbox.checked = x;
+			setParentChecked(checkbox);
+		}
+	}),0,(e=>e.id != null));
 	
-	document.getElementById("placesfoundcheck").value = savedata["misc"]["placesfound"];
-	document.getElementById("nirnrootcheck").value = savedata["misc"]["nirnroot"];
 	recalculateProgressAndSave();
 }
 
@@ -189,20 +287,46 @@ function setParentChecked(checkbox){
 function checkboxClicked(event){
 	var parentid = event.target.parentElement.id;
 
+	var found=false;
 	//extract what it is from the parent id so we can update progress
 	for (const classname of standardclasses()){
 		if(parentid.startsWith(classname)){
 			var rowid = parseInt(parentid.substring(classname.length));
 			savedata[classname][rowid] = event.target.checked;
 			setParentChecked(event.target);
+			found=true;
 			break;
 		}
 	}
-	if(event.target.id == "placesfoundcheck") {
-		savedata["misc"]["placesfound"] = event.target.valueAsNumber;
+	if(!found){
+		for(const classname of ["save","misc"]){
+			if(parentid.startsWith(classname)){
+				var rowid = parentid.substring(classname.length);
+				if(event.target.type == "checkbox"){
+					savedata[classname][rowid] = event.target.checked;
+				}
+				else{
+					savedata[classname][rowid] = event.target.valueAsNumber;
+				}
+				found=true;
+				break;
+			}
+		}
 	}
-	if(event.target.id == "nirnrootcheck") {
-		savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
-	}
+	
 	recalculateProgressAndSave();
+}
+
+// when user clicks on the row, not the checkbox
+function rowClicked(event){
+	var checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	if(checkbox.type == "number"){
+		checkbox.focus();
+		checkbox.select();
+	}
+	else{
+		event.target = checkbox;
+		checkbox.checked = !checkbox.checked;
+		checkboxClicked(event);
+	}
 }
