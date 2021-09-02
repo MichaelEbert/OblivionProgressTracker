@@ -24,6 +24,11 @@
 	font-weight: bold;
 }
 
+.item{
+	margin:0em;
+	padding:0em;
+}
+
 .check{
 	float: none;
 }
