@@ -284,37 +284,41 @@ function setParentChecked(checkbox){
 	}
 }
 
-function checkboxClicked(event){
-	var parentid = event.target.parentElement.id;
 
+function userInputData(htmlRowId, checkbox){
 	var found=false;
 	//extract what it is from the parent id so we can update progress
 	for (const classname of standardclasses()){
-		if(parentid.startsWith(classname)){
-			var rowid = parseInt(parentid.substring(classname.length));
-			savedata[classname][rowid] = event.target.checked;
-			setParentChecked(event.target);
+		if(htmlRowId.startsWith(classname)){
+			var rowid = parseInt(htmlRowId.substring(classname.length));
+			savedata[classname][rowid] = checkbox.checked;
+			setParentChecked(checkbox);
 			found=true;
 			break;
 		}
 	}
 	if(!found){
 		for(const classname of ["save","misc"]){
-			if(parentid.startsWith(classname)){
-				var rowid = parentid.substring(classname.length);
-				if(event.target.type == "checkbox"){
-					savedata[classname][rowid] = event.target.checked;
+			if(htmlRowId.startsWith(classname)){
+				var rowid = htmlRowId.substring(classname.length);
+				if(checkbox.type == "checkbox"){
+					savedata[classname][rowid] = checkbox.checked;
 				}
 				else{
-					savedata[classname][rowid] = event.target.valueAsNumber;
+					savedata[classname][rowid] = checkbox.valueAsNumber;
 				}
 				found=true;
 				break;
 			}
 		}
 	}
-	
 	recalculateProgressAndSave();
+}
+
+
+function checkboxClicked(event){
+	var parentid = event.target.parentElement.id;
+	userInputData(parentid, event.target);
 }
 
 // when user clicks on the row, not the checkbox
@@ -325,8 +329,7 @@ function rowClicked(event){
 		checkbox.select();
 	}
 	else{
-		event.target = checkbox;
 		checkbox.checked = !checkbox.checked;
-		checkboxClicked(event);
+		userInputData(event.target.id, checkbox);
 	}
 }

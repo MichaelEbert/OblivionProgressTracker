@@ -1,5 +1,6 @@
 body{
 	background-color: #E5D9B9;
+	
 }
 
 br{
@@ -29,12 +30,13 @@ ol li ol{
 .section{
 	margin: 1em;
 	background-color: #FBEFD5;
-	column-width: 24em;
+	column-width: 18em;
 	padding: 0.5em;
 }
 
 .category{
 	break-inside: avoid;
+	break-after: always;
 }
 
 .categoryTitle{
@@ -48,17 +50,20 @@ ol li ol{
 	padding-top: 0.2em;
 }
 
-.checked{
-	background-color: lightgreen;
-}
-
 .item{
 	padding:0.1em;
 	margin:0.2em;
 }
 
 .item:hover{
-	background-color: #66666611;
+	background-color: #66666640;
+}
+
+.item.checked:hover{
+	background-color: #80DD80;
+}
+.checked{
+	background-color: lightgreen;
 }
 
 .check{
