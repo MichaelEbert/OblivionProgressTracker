@@ -70,6 +70,10 @@ ol li ol{
 	float: right;
 }
 
+input[type="number"]{
+	width: 4em;
+}
+
 .spellname{
 	font-weight: bold;
 	color: darkyellow;
