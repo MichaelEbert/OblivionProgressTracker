@@ -101,7 +101,8 @@ function initInjectedElement(rowdata, classname, elementid){
 	else{
 		linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
 	}
-	linky.innerText =  "[" + classname + "] " + rowdata.name;
+	const titleClassname = classname[0].toUpperCase() + classname.slice(1);
+	linky.innerText =  "[" + titleClassname + "] " + rowdata.name;
 	linky.target = "_blank";
 	rName.appendChild(linky);
 	rowhtml.appendChild(rName);
