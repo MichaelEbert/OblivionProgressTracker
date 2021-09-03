@@ -2,6 +2,7 @@
 //progress functions
 var savedata;
 var settings;
+var version = 5;
 function saveCookie(name,value){
 	//save for 10 years
 	var expiry = new Date()
@@ -95,7 +96,6 @@ function loadJsonData(){
 	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata]).then(()=>computeTotalWeight());
 }
 
-var version = 4;
 var totalweight;
 
 //class names and static weights
