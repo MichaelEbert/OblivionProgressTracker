@@ -303,6 +303,7 @@ function userInputData(htmlRowId, checkbox){
 				var rowid = htmlRowId.substring(classname.length);
 				if(checkbox.type == "checkbox"){
 					savedata[classname][rowid] = checkbox.checked;
+					setParentChecked(checkbox);
 				}
 				else{
 					savedata[classname][rowid] = checkbox.valueAsNumber;

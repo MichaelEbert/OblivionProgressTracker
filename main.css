@@ -15,11 +15,15 @@ ol li ol{
 	border: .5em solid red;
 }
 
+.topbar{
+	position: fixed;
+	background-color: #E5D9B9;
+	padding:0.5em;
+}
+
 .progress{
 	font-size: 3em;
 	font-weight: bold;
-	position: fixed;
-	background-color: #E5D9B9;
 }
 
 .h2{
