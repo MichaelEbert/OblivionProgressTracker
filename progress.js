@@ -86,13 +86,13 @@ function saveProgress(){
 
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
-function loadJsonData(){
-	var questdata = fetch("/data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
-	var bookdata = fetch("/data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
-	var skilldata = fetch("/data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
-	var storedata = fetch("/data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
-	var savedata = fetch("/data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
-	var miscdata = fetch("/data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
+function loadJsonData(basedir="."){
+	var questdata = fetch(basedir+"/data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
+	var bookdata = fetch(basedir+"/data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
+	var skilldata = fetch(basedir+"/data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
+	var storedata = fetch(basedir+"/data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
+	var savedata = fetch(basedir+"/data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
+	var miscdata = fetch(basedir+"/data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
 	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata]).then(()=>computeTotalWeight());
 }
 

@@ -19,7 +19,7 @@ function generateBookPage(booknumber){
 var tries = 0;
 function fallbackIngameImage(eventArgs){
 	if(tries < 3){
-		eventArgs.target.src = "/data/minipages/in-game-placeholder.png";	
+		eventArgs.target.src = "./../in-game-placeholder.png";	
 		tries += 1;
 	}
 }
