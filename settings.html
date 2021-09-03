@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<link rel="stylesheet" type="text/css" href="guide.css"/>
+	<script src="progress.js"></script>
+	<title>Settings — Interactive Oblivion Checklist</title>
+</head>
+<body>
+<div class="h2">Settings</div>
+<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
+<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
+
+<script>
+loadProgressFromCookie();
+loadJsonData();
+
+document.getElementById("fileinput").addEventListener('change',importProgress);
+
+function exportProgress(){
+	//from stackoverflow
+	const progressString = new Blob([JSON.stringify(savedata)], {type:"text/plain"});
+	const element = document.createElement('a');
+	element.href = window.URL.createObjectURL(progressString);
+	element.download = "oblivionProgressTracker.save"
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
+	window.URL.revokeObjectURL(progressString);
+}
+
+function importProgress(eventargs){
+	var filedata = document.getElementById("fileinput").files[0].text();
+	filedata.then(x => {
+		savedata = JSON.parse(x);
+		saveProgress();
+		alert("progress imported");
+	});
+}
+
+
+</script>
+</body>
+</html>
