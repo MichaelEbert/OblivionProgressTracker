@@ -45,7 +45,7 @@ function  replaceElements(){
 		}
 		//step 2: create the internal stuff.
 		element.innerText = "";
-		var newElement = initInjectedElement(elementjson, elementclass, elementid)
+		var newElement = initInjectedElement(elementjson, elementclass)
 		element.replaceWith(newElement);
 		//step 3: load current data from cookies
 		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
@@ -85,21 +85,27 @@ function updateUIFromSaveData2(){
 	}
 }
 
-function initInjectedElement(rowdata, classname, elementid){
+function initInjectedElement(rowdata, classname){
 	var rowhtml = document.createElement("span");
 	rowhtml.classList.add(classname);
 	rowhtml.classList.add("item");
-	rowhtml.setAttribute("clid",classname+elementid);
+	rowhtml.setAttribute("clid",classname+rowdata.id);
 	
 	//name
 	var rName = document.createElement("span");
 	rName.classList.add(classname+"Name");
 	var linky = document.createElement("a");
-	if(rowdata.link){
-		linky.href = rowdata.link;
+	
+	if(settings.minipageCheck && classname == "book"){
+		linky.href="/data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
 	}
 	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
+		if(rowdata.link){
+			linky.href = rowdata.link;
+		}
+		else{
+			linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
+		}
 	}
 	const titleClassname = classname[0].toUpperCase() + classname.slice(1);
 	linky.innerText =  "[" + titleClassname + "] " + rowdata.name;

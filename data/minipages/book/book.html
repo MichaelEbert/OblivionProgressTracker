@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="/main.css"/>
+	<link rel="stylesheet" type="text/css" href="/guide.css"/>
+	<script src="/progress.js"></script>
+	<script src="./bookpage.js"></script>
+	<title>Book — Interactive Oblivion Checklist</title>
+</head>
+<body>
+
+<div class="h2" id="title"></div>
+<div class="section" id="section_skill">
+<div class="sectionTitle">Skill</div>
+<p id="skillp"></p>
+</div>
+<div class="section" id="section_gameimage">
+<div class="sectionTitle">In-Game Image</div>
+<img id="gameImage"src=""/>
+</div>
+<div class="section" id="section_uesp">
+<div class="sectionTitle"><a id="uespLink" href="">UESP Link</a></div>
+</div>
+<script>
+document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
+var id = new URLSearchParams(window.location.search).get("id")
+loadJsonData().then(()=>generateBookPage(id));
+</script>
+</body>
+</html>

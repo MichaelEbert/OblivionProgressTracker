@@ -8,14 +8,29 @@
 </head>
 <body>
 <div class="h2">Settings</div>
+<input type="checkbox" id="minipageCheck"/> Link books to local page (instead of direct to UESP)<br/>
 <button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 <button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 
 <script>
 loadProgressFromCookie();
-loadJsonData();
-
 document.getElementById("fileinput").addEventListener('change',importProgress);
+document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
+
+if(settings.minipageCheck){
+	document.getElementById("minipageCheck").checked = true;
+}
+else{
+	document.getElementById("minipageCheck").checked = false;
+}
+
+function onSettingChange(event){
+	var settingsVal = event.target.id;
+	if(event.target.checked){
+		settings[settingsVal] = event.target.checked;
+	}
+	saveCookie("settings",settings);	
+}
 
 function exportProgress(){
 	//from stackoverflow
@@ -37,6 +52,7 @@ function importProgress(eventargs){
 		alert("progress imported");
 	});
 }
+
 
 
 </script>

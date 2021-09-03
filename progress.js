@@ -1,7 +1,7 @@
 
 //progress functions
 var savedata;
-
+var settings;
 function saveCookie(name,value){
 	//save for 10 years
 	var expiry = new Date()
@@ -12,19 +12,23 @@ function saveCookie(name,value){
 
 function loadCookie(name){
 	try{
-		let progressValue = document.cookie
+		let cookieValue = document.cookie
 		.split('; ')
-		.find(row => row.startsWith("progress="))
+		.find(row => row.startsWith(name+"="))
 		.split('=')[1];
-		return JSON.parse(progressValue);
-		
+		return JSON.parse(cookieValue);
 	}
 	catch{
-		return false;
+		return null;
 	}
 }
 
 function loadProgressFromCookie(){
+	settings = loadCookie("settings");
+	if(settings == null){
+		settings = {};
+	}
+	
 	var compressed = loadCookie("progress");
 	
 	if(compressed){
@@ -82,12 +86,12 @@ function saveProgress(){
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
 function loadJsonData(){
-	var questdata = fetch("./data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
-	var bookdata = fetch("./data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
-	var skilldata = fetch("./data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
-	var storedata = fetch("./data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
-	var savedata = fetch("./data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
-	var miscdata = fetch("./data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
+	var questdata = fetch("/data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
+	var bookdata = fetch("/data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
+	var skilldata = fetch("/data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
+	var storedata = fetch("/data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
+	var savedata = fetch("/data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
+	var miscdata = fetch("/data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
 	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata]).then(()=>computeTotalWeight());
 }
 
