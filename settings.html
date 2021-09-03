@@ -10,6 +10,7 @@
 <div class="h2">Settings</div>
 <a href="/index.html">Back to checklist</a><br/>
 <input type="checkbox" id="minipageCheck"/> Link books to local page (instead of direct to UESP)<br/>
+<input type="checkbox" id="iframeCheck"/> enable opening in iframe<br/>
 <button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 <button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 
@@ -17,6 +18,7 @@
 loadProgressFromCookie();
 document.getElementById("fileinput").addEventListener('change',importProgress);
 document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
+document.getElementById("iframeCheck").addEventListener('change',onSettingChange);
 
 if(settings.minipageCheck){
 	document.getElementById("minipageCheck").checked = true;
@@ -25,11 +27,16 @@ else{
 	document.getElementById("minipageCheck").checked = false;
 }
 
+if(settings.iframeCheck){
+	document.getElementById("iframeCheck").checked = true;
+}
+else{
+	document.getElementById("iframeCheck").checked = false;
+}
+
 function onSettingChange(event){
 	var settingsVal = event.target.id;
-	if(event.target.checked){
-		settings[settingsVal] = event.target.checked;
-	}
+	settings[settingsVal] = event.target.checked;
 	saveCookie("settings",settings);	
 }
 

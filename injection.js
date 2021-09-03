@@ -7,6 +7,13 @@ function LinkedElement(element, classname, id){
 	this.id = id;
 }
 
+
+function initInjection(){
+	replaceElements();
+	linkNPCs();
+	initIframe();
+}
+
 //initial function to replace element with checkbox n stuff.
 function  replaceElements(){
 	var replaceableParts = document.getElementsByClassName("replaceable");
@@ -60,6 +67,13 @@ function linkNPCs(){
 		//TODO: NPC overrides
 		linky.href="https://en.uesp.net/wiki/Oblivion:"+element.innerText;
 		linky.innerText = element.innerText;
+		if(settings.iframeCheck){
+			linky.target="myframe";
+		}
+		else{
+			linky.target="_blank";
+		}
+		
 		element.innerText = "";
 		element.appendChild(linky);
 	}
@@ -107,9 +121,14 @@ function initInjectedElement(rowdata, classname){
 			linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
 		}
 	}
+	if(settings.iframeCheck){
+		linky.target="myframe";
+	}
+	else{
+		linky.target="_blank";
+	}
 	const titleClassname = classname[0].toUpperCase() + classname.slice(1);
 	linky.innerText =  "[" + titleClassname + "] " + rowdata.name;
-	linky.target = "_blank";
 	rName.appendChild(linky);
 	rowhtml.appendChild(rName);
 	
@@ -174,4 +193,29 @@ function checkboxClicked2(event){
 	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
 	updateUIFromSaveData2();
 	saveProgress();
+}
+
+function initIframe(){
+if(settings.iframeCheck){
+	//var iframeSpacer = document.createElement("div");
+	//iframeSpacer.style.position="fixed";
+	//iframeSpacer.style.width = "100%";
+	//iframeSpacer.style.margin="1em";
+	
+
+	var myframe = document.createElement("iframe");
+	myframe.name="myframe";
+	myframe.id="myframe";
+	myframe.style.float="right";
+	myframe.style.position="fixed";
+	myframe.style.marginLeft="70%";
+	myframe.style.backgroundColor="#FBEFD5";
+	myframe.style.border="1px solid black";
+	myframe.style.marginRight="2em";
+	
+	myframe.height="320";
+	myframe.width="512";
+	//iframeSpacer.appendChild(myframe);
+	document.body.prepend(myframe);
+}
 }
