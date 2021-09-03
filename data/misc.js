@@ -1,11 +1,17 @@
 {"version":2,"elements":[
 	{"name":"Oblivion Gates","weight":5,"elements":[
-		 {"id":0,"name":"Kvatch Gate","category":"Oblivion Gates","subcategory":"Main Quest Pt. 1"}
-		,{"id":1,"name":"12 Fixed Single Fame Gates","subcategory":"Map Exploration","type":"number"}
-		,{"id":2,"name":"5 Fixed Double Fame Gates","subcategory":"Map Exploration","type":"number"}
-		,{"id":3,"name":"40 Random Gates","subcategory":"Map Exploration","type":"number"}
-		,{"id":4,"name":"Bruma Gate","subcategory":"Main Quest Pt. 2"}
-		,{"id":5,"name":"Great Gate","subcategory":"Main Quest Pt. 2"}
+		{"name":"Main Quest Pt. 1","elements":[
+			{"id":0,"name":"Kvatch Gate","category":"Oblivion Gates"}
+		]}
+		,{"name":"Map Exploration","elements":[
+			 {"id":1,"name":"12 Fixed Single Fame Gates","type":"number","max":40}
+			,{"id":2,"name":"5 Fixed Double Fame Gates","type":"number","max":5}
+			,{"id":3,"name":"40 Random Gates","type":"number","max":40}
+		]}
+		,{"name":"Main Quest Pt. 2","elements":[
+			 {"id":4,"name":"Bruma Gate"}
+			,{"id":5,"name":"Great Gate"}
+		]}
 	]}
 	,{"name":"Places Found","elements":[{"id":"places","name":"Places Found","weight":8,"type":"number","max":367}]}
 	,{"name":"Nirnroot","elements":[{"id":"nirnroot","name":"Nirnroot","weight":2,"type":"number","max":306}]}
@@ -32,12 +38,12 @@
 		,{"id":24,"name":"Rosethorn Hall"}
 	]}
 	,{"name":"Horses","weight":1,"elements":[
-		 {"id":17,"name":"White Horse"}
-		,{"id":17,"name":"Bay Horse"}
-		,{"id":17,"name":"Paint Horse"}
-		,{"id":17,"name":"Black Horse"}
-		,{"id":17,"name":"Chestnut Horse"}
-		,{"id":17,"name":"Paint Horse"}
-		,{"id":17,"name":"Bay Horse"}
+		 {"id":26,"name":"White Horse"}
+		,{"id":27,"name":"Bay Horse"}
+		,{"id":28,"name":"Paint Horse"}
+		,{"id":29,"name":"Black Horse"}
+		,{"id":30,"name":"Chestnut Horse"}
+		,{"id":31,"name":"Paint Horse"}
+		,{"id":32,"name":"Bay Horse 2"}
 	]}
 ]}
