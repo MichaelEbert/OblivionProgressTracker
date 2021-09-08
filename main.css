@@ -1,6 +1,9 @@
+html{
+	font-family: serif;
+}
+
 body{
 	background-color: #E5D9B9;
-	
 }
 
 br{
@@ -11,8 +14,13 @@ ol li ol{
 	list-style-type: lower-alpha;
 }
 
+li{
+	margin-bottom:0.3em;
+	margin-top:0.3em;
+}
+
 :target {
-	border: .5em solid red;
+	border: .4em solid red;
 }
 
 .topbar{
