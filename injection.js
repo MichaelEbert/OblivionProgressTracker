@@ -100,9 +100,14 @@ function updateUIFromSaveData2(){
 }
 
 function initInjectedElement(rowdata, classname){
+	if(rowdata == null){
+		console.log("null rowdata for class"+classname);
+		return;
+	}
 	var rowhtml = document.createElement("span");
 	rowhtml.classList.add(classname);
 	rowhtml.classList.add("item");
+	
 	rowhtml.setAttribute("clid",classname+rowdata.id);
 	
 	//name
