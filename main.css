@@ -42,6 +42,11 @@ td{
 	padding:0.5em;
 }
 
+.main{
+	float:left;
+	max-width:1000px;
+}
+
 .progress{
 	font-size: 3em;
 	font-weight: bold;
@@ -112,5 +117,16 @@ input[type="number"]{
 .nirnroot{
 	font-weight: bold;
 	color:seagreen;
+}
+
+.iframe{
+	float: right;
+	background-color: #FBEFD5;
+	border: 1px solid black;
+	margin-right: 2em;
+}
+
+.sidebar{
+	position:fixed;
 }
 

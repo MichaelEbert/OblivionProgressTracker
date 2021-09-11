@@ -211,16 +211,17 @@ if(settings.iframeCheck){
 	var myframe = document.createElement("iframe");
 	myframe.name="myframe";
 	myframe.id="myframe";
-	myframe.style.float="right";
-	myframe.style.position="fixed";
-	myframe.style.marginLeft="70%";
-	myframe.style.backgroundColor="#FBEFD5";
-	myframe.style.border="1px solid black";
-	myframe.style.marginRight="2em";
+	myframe.classList.add("iframe");
 	
 	myframe.height="320";
 	myframe.width="512";
 	//iframeSpacer.appendChild(myframe);
-	document.body.prepend(myframe);
+	var sidebar = document.getElementById("sidebar");
+	if(sidebar != null){
+		sidebar.prepend(myframe);
+	}
+	else{
+		document.body.prepend(myframe);
+	}
 }
 }
