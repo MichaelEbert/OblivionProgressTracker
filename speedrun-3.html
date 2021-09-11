@@ -10,9 +10,19 @@
 	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
 </head>
 <body>
+<div id="topbar" class="topbar">
+	<div id="links">
+		<a href="./index.html">Checklist</a>
+		<a href="./glitches.html">Glitches</a>
+		<a href="./casual.html">Casual Guide</a>
+		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
+		<a href="./settings.html">Settings</a>
+	</div>
+</div>
+<br/>
+<article id="main" class="main">
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
-<a href="./index.html">back to checklist</a><br/>
 <button onclick="initSpeak()">Enable speech</button>
 <!--<div id="toc">
 Table of Contents
@@ -283,7 +293,7 @@ under the first building.</li>
 	<li>Dialogue: Seer’s Stone.</li>
 	</ol></li>
 <li>Exit dialogue and talk to <span class="npc">Dagail </span>again.</li>
-<li>This completes <span class="replaceable" clid="quest87">Leyawiin Recommendation</span></li>
+<li>This completes <span class="replaceable" clid="quest89">Leyawiin Recommendation</span></li>
 </ol>
 </div>
 
@@ -910,7 +920,10 @@ You should now have 56 Stores Invested In.
 <br>
 
 </div>
+</article><!-- main end-->
 
+<div class="sidebar" id="sidebar">
+</div>
 <script>
 loadProgressFromCookie();
 loadJsonData().then(()=>initInjection());
