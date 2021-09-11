@@ -23,7 +23,7 @@
 ,{"id":19,"name":"Olfand","city":"Bruma"}
 ,{"id":20,"name":"Ongar the World-Weary","city":"Bruma"}
 ,{"id":21,"name":"Selena Orania","city":"Bruma","notes":"Must be invested in before A Plot Revealed"}
-,{"id":22,"name":"Sjkorta","city":"Bruma"}
+,{"id":22,"name":"Skjorta","city":"Bruma"}
 ,{"id":23,"name":"Suurootan","city":"Bruma"}
 
 ,{"id":24,"name":"Borba gra-Uzgash","city":"Cheydinhal"}
