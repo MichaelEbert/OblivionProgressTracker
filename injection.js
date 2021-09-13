@@ -116,7 +116,7 @@ function initInjectedElement(rowdata, classname){
 	var linky = document.createElement("a");
 	
 	if(settings.minipageCheck && classname == "book"){
-		linky.href="/data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
+		linky.href="./data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
 	}
 	else{
 		if(rowdata.link){
