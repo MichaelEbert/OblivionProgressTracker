@@ -203,10 +203,9 @@ function checkboxClicked2(event){
 
 function initIframe(){
 if(settings.iframeCheck){
-	//var iframeSpacer = document.createElement("div");
-	//iframeSpacer.style.position="fixed";
-	//iframeSpacer.style.width = "100%";
-	//iframeSpacer.style.margin="1em";
+	var resizableContainer = document.createElement("div");
+	resizableContainer.classList.add("resizableContainer");
+	resizableContainer.id = "iframeContainer";
 	
 
 	var myframe = document.createElement("iframe");
@@ -214,15 +213,13 @@ if(settings.iframeCheck){
 	myframe.id="myframe";
 	myframe.classList.add("iframe");
 	
-	myframe.height="320";
-	myframe.width="512";
-	//iframeSpacer.appendChild(myframe);
+	resizableContainer.appendChild(myframe);
 	var sidebar = document.getElementById("sidebar");
 	if(sidebar != null){
-		sidebar.prepend(myframe);
+		sidebar.prepend(resizableContainer);
 	}
 	else{
-		document.body.prepend(myframe);
+		document.body.prepend(resizableContainer);
 	}
 }
 }

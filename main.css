@@ -42,9 +42,38 @@ td{
 	padding:0.5em;
 }
 
+.contentContainer{
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.resizableContainer{
+	resize: both;
+	overflow:hidden;
+	
+}
+
+/*you can't resize iframes, so we use this to give it a nice resizable handle*/
+#iframeContainer{
+	border: 1px solid black;
+	height: 500px;
+	width: 500px;
+	position: sticky;
+	top: 1em;
+}
+
+.iframe{
+	background-color: #FBEFD5;
+	border: 1px solid gray;
+	width: calc( 100% - 2px);
+	height: 100%
+}
+
+.sidebar{
+	
+}
 .main{
-	float:left;
-	max-width:1000px;
+	flex-shrink: 1
 }
 
 .progress{
@@ -117,16 +146,5 @@ input[type="number"]{
 .nirnroot{
 	font-weight: bold;
 	color:seagreen;
-}
-
-.iframe{
-	float: right;
-	background-color: #FBEFD5;
-	border: 1px solid black;
-	margin-right: 2em;
-}
-
-.sidebar{
-	position:fixed;
 }
 
