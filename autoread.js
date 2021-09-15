@@ -48,15 +48,13 @@ function initSpeak(){
 }
 
 function addSpeakBox(){
-	var outerSpeechBox = document.createElement("div");
-	outerSpeechBox.style.position="fixed";
-	outerSpeechBox.style.width = "100%";
-	outerSpeechBox.style.margin="1em";
+	
 	var speechBox = document.createElement("div");
 	speechBox.style.float="right";
 	speechBox.style.backgroundColor="#FBEFD5";
 	speechBox.style.border="1px solid black";
 	speechBox.style.marginRight="2em";
+	
 	
 	var sbTitle = document.createElement("div");
 	sbTitle.innerText = "Speech settings";
@@ -72,7 +70,19 @@ function addSpeakBox(){
 	sbNext.addEventListener('click',goToNext);
 	speechBox.appendChild(sbNext);
 
+	var outerSpeechBox = document.getElementById("sidebar");
+	if(outerSpeechBox){
+		speechBox.style.position="sticky";
+		speechBox.style.top="1em";
+	}
+	else{
+		var outerSpeechBox = document.createElement("div");
+		outerSpeechBox.style.position="fixed";
+		outerSpeechBox.style.width = "100%";
+		outerSpeechBox.style.margin="1em";
+		document.body.prepend(outerSpeechBox);
+	}
 	outerSpeechBox.appendChild(speechBox);
-	document.body.prepend(outerSpeechBox);
+	
 
 }
