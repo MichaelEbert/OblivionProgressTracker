@@ -66,13 +66,13 @@ function  replaceElements(){
 function getNpcData(npcElement){
 	var maybeFormId = element.getAttribute("formId");
 	if(!(maybeFormId == null)){
-		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formid == maybeFormId);
+		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formId == maybeFormId);
 		if(!(maybeNpcData == null)){
 			return maybeNpcData;
 		}
 		else{
 			//npc data not found for this formid
-			console.log("npc data not found for formId "+maybeFormId);
+			console.error("npc data not found for formId "+maybeFormId);
 			return null;
 		}
 	}
@@ -93,7 +93,10 @@ function linkNPCs(){
 	var npcs = document.getElementsByClassName("npc");
 	for(element of npcs){
 		const npcData = getNpcData(element);
-		const linky = createLinkElement(npcData, "npc", false);
+		if(npcData == null){
+			continue;
+		}
+		const linky = createLinkElement(npcData, "npc");
 		
 		element.innerText = "";
 		element.appendChild(linky);
@@ -102,7 +105,7 @@ function linkNPCs(){
 
 function initInjectedElement(rowdata, classname){
 	if(rowdata == null){
-		console.log("null rowdata for class"+classname);
+		console.error("null rowdata for class"+classname);
 		return;
 	}
 	var rowhtml = document.createElement("span");
@@ -141,7 +144,7 @@ function initInjectedElement(rowdata, classname){
 
 //create link for a json object. 
 //classname is for minipages. ex: book, npc, etc.
-function createLinkElement(jsonobject, classname, includeClassname = true){
+function createLinkElement(jsonobject, classname){
 	const linky = document.createElement("a");
 	
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
@@ -171,16 +174,7 @@ function createLinkElement(jsonobject, classname, includeClassname = true){
 		linky.target="_blank";
 	}
 	
-	var titleClassname; 
-	if(includeClassname){
-		//convert class name to title case
-		titleClassname = "[" + classname[0].toUpperCase() + classname.slice(1) + "] ";
-	}
-	else{
-		titleClassname = "";
-	}
-	
-	linky.innerText = titleClassname + jsonobject.name;
+	linky.innerText = jsonobject.name;
 	return linky;
 }
 
