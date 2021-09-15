@@ -244,7 +244,7 @@
 			,{"id":193,"name":"The Collector"}
 			,{"id":194,"name":"Nothing You Can Possess"}
 			,{"id":195,"name":"Secrets of the Ayleids"}
-			,{"id":196,"name":"The Order of the Virtuous Blood"}
+			,{"id":196,"name":"Order of the Virtuous Blood"}
 			,{"id":197,"name":"Imperial Corruption"}
 			,{"id":198,"name":"An Unexpected Voyage"}
 			,{"id":199,"name":"Origin of the Gray Prince"}

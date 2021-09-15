@@ -48,6 +48,7 @@ function  replaceElements(){
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
+			console.log("replaceable element "+checklistid+" not found in reference");
 			continue;
 		}
 		//step 2: create the internal stuff.
@@ -116,7 +117,7 @@ function initInjectedElement(rowdata, classname){
 	var linky = document.createElement("a");
 	
 	if(settings.minipageCheck && classname == "book"){
-		linky.href="/data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
+		linky.href="./data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
 	}
 	else{
 		if(rowdata.link){
