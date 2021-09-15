@@ -120,11 +120,15 @@ function elementsUndefinedOrNull(node){
 	return (node.elements == null);
 }
 
+function idNotNull(e){
+	return !(e?.id == null)
+}
+
 //find an element of the tree.
 //root: root node to run on
 //findfunc: function that returns 'true' if element matches.
-function findOnTree(root,findfunc){
-	if(root.id != null ){
+function findOnTree(root,findfunc,isLeafFunc=idNotNull){
+	if(isLeafFunc(root)){
 		if(findfunc(root)){
 			return root;
 		}
@@ -134,8 +138,8 @@ function findOnTree(root,findfunc){
 	}
 	else{
 		for(e of root.elements){
-			const mayberesult = findOnTree(e, findfunc);
-			if(mayberesult){
+			const mayberesult = findOnTree(e, findfunc, isLeafFunc);
+			if(!(mayberesult == null)){
 				return mayberesult;
 			}
 		}

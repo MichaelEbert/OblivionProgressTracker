@@ -156,7 +156,7 @@ function createLinkElement(jsonobject, classname){
 		usableId = jsonobject.id;
 	}
 	
-	const useMinipage = settings.minipageCheck && classname == "book" && !(usableId == null);
+	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && !(usableId == null);
 	if(useMinipage){
 		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
 	}

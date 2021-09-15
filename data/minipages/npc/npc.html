@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="../../../main.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../guide.css"/>
+	<script src="./../../../progress.js"></script>
+	<script src="./npcpage.js"></script>
+	<title>NPC — Interactive Oblivion Checklist</title>
+</head>
+<body>
+
+<div class="h2" id="title"></div>
+<div class="section" id="section_race">
+<div class="sectionTitle">Race</div>
+<p id="racep"></p>
+</div>
+<div class="section" id="section_gameimage">
+<div class="sectionTitle">In-Game Image</div>
+<img id="gameImage"src=""/>
+</div>
+<div class="section" id="section_schedule">
+<div class="sectionTitle">Schedule</div>
+</div>
+<div class="section" id="section_uesp">
+<div class="sectionTitle"><a id="uespLink" href="">UESP Link</a></div>
+</div>
+<script>
+document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
+var id = new URLSearchParams(window.location.search).get("id")
+loadJsonData("../../..").then(()=>generatePage(id));
+</script>
+</body>
+</html>
