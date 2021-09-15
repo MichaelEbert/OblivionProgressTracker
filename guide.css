@@ -1,4 +1,8 @@
 /*overrides for guide pages*/
+img{
+	float: right;
+}
+
 .section{
 	margin: 1em;
 	background-color: #FBEFD5;
@@ -13,6 +17,7 @@
 
 .category{
 	margin-left: 2em;
+	overflow: auto;
 }
 
 .categoryTitle{
@@ -65,4 +70,19 @@
 
 .store a::before{
 	content: "[Store] ";
+}
+
+.spellname{
+	font-weight: bold;
+	color: orange;
+}
+
+.npc{
+	font-weight: bold;
+	color: darkgreen;
+}
+
+.nirnroot{
+	font-weight: bold;
+	color:seagreen;
 }

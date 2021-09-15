@@ -133,18 +133,3 @@ input[type="number"]{
 	width: 4em;
 }
 
-.spellname{
-	font-weight: bold;
-	color: darkyellow;
-}
-
-.npc{
-	font-weight: bold;
-	color: darkgreen;
-}
-
-.nirnroot{
-	font-weight: bold;
-	color:seagreen;
-}
-
