@@ -48,6 +48,7 @@ function  replaceElements(){
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
+			console.log("replaceable element "+checklistid+" not found in reference");
 			continue;
 		}
 		//step 2: create the internal stuff.
