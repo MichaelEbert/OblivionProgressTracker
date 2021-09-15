@@ -93,7 +93,8 @@ function loadJsonData(basedir="."){
 	var storedata = fetch(basedir+"/data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
 	var savedata = fetch(basedir+"/data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
 	var miscdata = fetch(basedir+"/data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
-	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata]).then(()=>computeTotalWeight());
+	var npcdata = fetch(basedir+"/data/npcs.js").then(response=>response.json()).then(d => jsondata.npc = d);
+	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata,npcdata]).then(()=>computeTotalWeight());
 }
 
 var totalweight;
@@ -188,7 +189,7 @@ function resetProgress(shouldConfirm=false){
 			resetProgressForTree(classname, jsondata[classname]);
 		}
 		
-		savedata.save={};
+		savedata.save = {};
 		savedata.misc = {};
 		resetProgressForTree("misc",jsondata.misc);
 		

@@ -61,42 +61,42 @@ function  replaceElements(){
 	updateUIFromSaveData2();
 }
 
+
+// given a <span class="npc"></span>, attempt to get NPC data.
+function getNpcData(npcElement){
+	var maybeFormId = element.getAttribute("formId");
+	if(!(maybeFormId == null)){
+		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formid == maybeFormId);
+		if(!(maybeNpcData == null)){
+			return maybeNpcData;
+		}
+		else{
+			//npc data not found for this formid
+			console.log("npc data not found for formId "+maybeFormId);
+			return null;
+		}
+	}
+	
+	//element didn't have a formid. search by name.
+	//maybe we can look up by name
+	var npcName = element.innerText;
+	var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.name.toLowerCase() == npcName.toLowerCase())
+	if(!(maybeNpcData == null)){
+		return maybeNpcData;
+	}
+
+	//npc data not found by name. could just be missing from our constants data, so provide name for auto-uesp.
+	return {name:npcName};
+}
+
 function linkNPCs(){
 	var npcs = document.getElementsByClassName("npc");
 	for(element of npcs){
-		var linky = document.createElement("a");
-		//TODO: NPC overrides
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+element.innerText;
-		linky.innerText = element.innerText;
-		if(settings.iframeCheck){
-			linky.target="myframe";
-		}
-		else{
-			linky.target="_blank";
-		}
+		const npcData = getNpcData(element);
+		const linky = createLinkElement(npcData, "npc", false);
 		
 		element.innerText = "";
 		element.appendChild(linky);
-	}
-}
-
-function updateUIFromSaveData2(){
-	//since these pages may contain multiple references to teh same object, we need to
-	//do this from the element side, not from the data side.
-	for(const linkedElement of linkedElements){
-		var checkbox = Array.from(linkedElement.element.children).find(x=>x.tagName=="INPUT");
-		if(checkbox.type=="checkbox"){
-			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
-			if(checkbox.checked){
-				linkedElement.element.classList.add("checked");
-			}
-			else{
-				linkedElement.element.classList.remove("checked");
-			}
-		}
-		else{
-			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
-		}
 	}
 }
 
@@ -114,28 +114,8 @@ function initInjectedElement(rowdata, classname){
 	//name
 	var rName = document.createElement("span");
 	rName.classList.add(classname+"Name");
-	var linky = document.createElement("a");
 	
-	if(settings.minipageCheck && classname == "book"){
-		linky.href="./data/minipages/"+classname+"/"+classname+".html?id="+rowdata.id;
-	}
-	else{
-		if(rowdata.link){
-			linky.href = rowdata.link;
-		}
-		else{
-			linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
-		}
-	}
-	if(settings.iframeCheck){
-		linky.target="myframe";
-	}
-	else{
-		linky.target="_blank";
-	}
-	const titleClassname = classname[0].toUpperCase() + classname.slice(1);
-	linky.innerText =  "[" + titleClassname + "] " + rowdata.name;
-	rName.appendChild(linky);
+	rName.appendChild(createLinkElement(rowdata, classname));
 	rowhtml.appendChild(rName);
 	
 	//checkbox
@@ -157,6 +137,71 @@ function initInjectedElement(rowdata, classname){
 	rowhtml.appendChild(rcheck)
 	
 	return rowhtml;
+}
+
+//create link for a json object. 
+//classname is for minipages. ex: book, npc, etc.
+function createLinkElement(jsonobject, classname, includeClassname = true){
+	const linky = document.createElement("a");
+	
+	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
+	var usableId;
+	if(!(jsonobject.formId == null)){
+		usableId = jsonobject.formId;
+	}
+	else{
+		usableId = jsonobject.id;
+	}
+	
+	const useMinipage = settings.minipageCheck && classname == "book" && !(usableId == null);
+	if(useMinipage){
+		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
+	}
+	else if(jsonobject.link){
+		linky.href = jsonobject.link;
+	}
+	else{
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+jsonobject.name.replaceAll(" ","_");
+	}
+	
+	if(settings.iframeCheck){
+		linky.target="myframe";
+	}
+	else{
+		linky.target="_blank";
+	}
+	
+	var titleClassname; 
+	if(includeClassname){
+		//convert class name to title case
+		titleClassname = "[" + classname[0].toUpperCase() + classname.slice(1) + "] ";
+	}
+	else{
+		titleClassname = "";
+	}
+	
+	linky.innerText = titleClassname + jsonobject.name;
+	return linky;
+}
+
+function updateUIFromSaveData2(){
+	//since these pages may contain multiple references to teh same object, we need to
+	//do this from the element side, not from the data side.
+	for(const linkedElement of linkedElements){
+		var checkbox = Array.from(linkedElement.element.children).find(x=>x.tagName=="INPUT");
+		if(checkbox.type=="checkbox"){
+			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
+			if(checkbox.checked){
+				linkedElement.element.classList.add("checked");
+			}
+			else{
+				linkedElement.element.classList.remove("checked");
+			}
+		}
+		else{
+			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
+		}
+	}
 }
 
 function setParentChecked(item){
