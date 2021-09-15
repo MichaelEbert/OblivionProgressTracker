@@ -54,6 +54,9 @@ function  replaceElements(){
 		//step 2: create the internal stuff.
 		element.innerText = "";
 		var newElement = initInjectedElement(elementjson, elementclass)
+		if(element.getAttribute("disabled") == "true"){
+			newElement.children[1].disabled = true;
+		}
 		element.replaceWith(newElement);
 		//step 3: load current data from cookies
 		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
