@@ -106,8 +106,9 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
 			promises.push(generatePromiseFunc(basedir,klass));
 		}
 	}
-	
-	promises.push(fetch(basedir+"/data/npc.json").then(response=>response.json()).then(d => jsondata.npc = d));
+	if(classFilter({name:"npc"})){
+		promises.push(fetch(basedir+"/data/npc.json").then(response=>response.json()).then(d => jsondata.npc = d));
+	}
 	return Promise.allSettled(promises).then(()=>computeTotalWeight());
 }
 
@@ -200,7 +201,10 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 //compute total weight. Needed so we can get a percentage.
 function computeTotalWeight(){
 	totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
-	totalweight = runOnTree(jsondata.misc,(e=>parseInt(e.weight)),totalweight,(e=>e.weight != null));
+	try{
+		totalweight = runOnTree(jsondata.misc,(e=>parseInt(e.weight)),totalweight,(e=>e.weight != null));
+	}
+	catch{}
 }
 
 function resetProgressForTree(classname, jsonNode){

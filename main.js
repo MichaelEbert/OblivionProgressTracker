@@ -322,7 +322,13 @@ function checkboxClicked(event){
 
 // when user clicks on the row, not the checkbox
 function rowClicked(event){
-	var checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	var checkbox;
+	if(event.target.tagName=="INPUT"){
+		return;
+	}
+	else{
+	 checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	}
 	if(checkbox.type == "number"){
 		checkbox.focus();
 		checkbox.select();
