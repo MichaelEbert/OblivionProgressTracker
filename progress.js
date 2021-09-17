@@ -95,7 +95,8 @@ function generatePromiseFunc(basedir, klass){
 			.then(json=>{
 				jsondata[klass.name] = json;
 				console.log(klass.name+" loaded");
-			});
+			})
+			.catch(err =>console.log(err));
 }
 
 function loadJsonData(basedir="."){
@@ -148,7 +149,7 @@ function elementsUndefinedOrNull(node){
 }
 
 function idNotNull(e){
-	return e.id != null || e.formId != null;
+	return e != null && (e.id != null || e.formId != null);
 }
 
 //find an element of the tree.
