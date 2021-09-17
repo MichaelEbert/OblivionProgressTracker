@@ -21,60 +21,67 @@
        ,{"name":"Imperial Dragon Armor","formId":"0x000ADE3F"}
 	]}
     ,{"name":"Journal-Filled","elements":[
-	    {"name":"Cast out of the Thieves Guild","formId":"0x0001E868"}
-       ,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27"}
-       ,{"name":"The Arena","formId":"0x000E0C91"}
-       ,{"name":"Whispers of Death","formId":"0x00030064"}
+	    {"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Do this quest once before you finish the Thieves Guild. You can never finish this quest, but you need to get it in your journal for true 100%."}
+       ,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Do this quest once before you finish the Thieves Guild. You can never finish this quest, but you need to get it in your journal for true 100%."}
+       ,{"name":"The Arena","formId":"0x000E0C91","notes":"Can't technically be completed, but do the quest until becoming the Arena Grand Champion."}
+       ,{"name":"Whispers of Death","formId":"0x00030064","notes":"Cannot be completed, can only be done over and over again. You must at least get this quest in your journal for 100%"}
     ]}
     ,{"name":"Dark Brotherhood","elements":[
-	    {"name":"Initiation Quests","elements":[{"name":"A Knife in the Dark","formId":"0x000224EB"}]}
-       ,{"name":"Suspension Quests","elements":[{"name":"A Dark Exile","notes":"Do these before joining the Black Hand","formId":"0x00026DE0"}
-       ,{"name":"Another Dark Exile","notes":"Do these before joining the Black Hand","formId":"0x00026DE1"}]}
-       ,{"name":"Misc. Quests","elements":[{"name":"The Renegade Shadowscale","formId":"0x00035589"}
-       ,{"name":"Darkness Eternal","formId":"0x0004CE4C"}]}
-       ,{"name":"Contract Quests","elements":[{"name":"Welcome to the Family","formId":"0x00023DD6"}
-       ,{"name":"A Watery Grave","formId":"0x000232CF"}
-       ,{"name":"Blood of the Damned","formId":"0x000232D0"}
-       ,{"name":"Accidents Happen","formId":"0x000232D1"}
-       ,{"name":"No Rest for the Wicked","formId":"0x000232D4"}
-       ,{"name":"Scheduled for Execution","formId":"0x000239E1"}
-       ,{"name":"To Serve Sithis","formId":"0x00023DD7"}
-       ,{"name":"The Assassinated Man","formId":"0x000253B9"}
-       ,{"name":"My Brother's Keeper","formId":"0x000253BA"}
-       ,{"name":"The Lonely Wanderer","formId":"0x000253BB"}
-       ,{"name":"Enter the Eliminator","formId":"0x000253BC"}
-       ,{"name":"Bad Medicine","formId":"0x000253BD"}
-       ,{"name":"The Night Mother's Child","formId":"0x000253BE"}
-       ,{"name":"Whodunit?","formId":"0x000253BF"}
-       ,{"name":"The Assassin's Gambit","formId":"0x000253C0"}
-       ,{"name":"Permanent Retirement","formId":"0x000253C1"}
-       ,{"name":"Of Secret and Shadow","formId":"0x000253C2"}
-       ,{"name":"The Purification","formId":"0x0002FF1C"}]}
-       ,{"name":"Black Hand Quests","elements":[{"name":"The Dead Drop","formId":"0x00030203"}
-       ,{"name":"Affairs of a Wizard","formId":"0x00007BF2"}
-       ,{"name":"Next of Kin","formId":"0x0003005F"}
-       ,{"name":"Broken Vows","formId":"0x0002FF1E"}
-       ,{"name":"Final Justice","formId":"0x0002FF20"}
-       ,{"name":"A Matter of Honor","formId":"0x0002FF22"}
-       ,{"name":"The Coldest Sleep","formId":"0x0002FF24"}
-       ,{"name":"A Kiss Before Dying","formId":"0x0002FF26"}
-       ,{"name":"Following a Lead","formId":"0x00030060"}
-       ,{"name":"Honor Thy Mother","formId":"0x00030062"}]}]}
-       ,{"name":"Fighters Guild","elements":[{"name":"Join the Fighters Guild","formId":"0x00024298"}
-       ,{"name":"A Rat Problem","formId":"0x00035713"}
+	    {"name":"Initiation Quests","elements":[
+            {"name":"A Knife in the Dark","formId":"0x000224EB"}]}
+       ,{"name":"Suspension Quests","elements":[
+            {"name":"A Dark Exile","notes":"Do these before joining the Black Hand","formId":"0x00026DE0"}
+            ,{"name":"Another Dark Exile","notes":"Do these before joining the Black Hand","formId":"0x00026DE1"}]}
+       ,{"name":"Misc. Quests","elements":[
+            {"name":"The Renegade Shadowscale","formId":"0x00035589","notes":"Do this before The Purification"}
+            ,{"name":"Darkness Eternal","formId":"0x0004CE4C","notes":"Make sure to get full Vampirism from Vicente before he dies in the Purification"}]}
+       ,{"name":"Contract Quests","elements":[
+            {"name":"Welcome to the Family","formId":"0x00023DD6"}
+            ,{"name":"A Watery Grave","formId":"0x000232CF"}
+            ,{"name":"Blood of the Damned","formId":"0x000232D0"}
+            ,{"name":"Accidents Happen","formId":"0x000232D1"}
+            ,{"name":"No Rest for the Wicked","formId":"0x000232D4"}
+            ,{"name":"Scheduled for Execution","formId":"0x000239E1"}
+            ,{"name":"To Serve Sithis","formId":"0x00023DD7"}
+            ,{"name":"The Assassinated Man","formId":"0x000253B9"}
+            ,{"name":"My Brother's Keeper","formId":"0x000253BA"}
+            ,{"name":"The Lonely Wanderer","formId":"0x000253BB"}
+            ,{"name":"Enter the Eliminator","formId":"0x000253BC"}
+            ,{"name":"Bad Medicine","formId":"0x000253BD"}
+            ,{"name":"The Night Mother's Child","formId":"0x000253BE"}
+            ,{"name":"Whodunit?","formId":"0x000253BF"}
+            ,{"name":"The Assassin's Gambit","formId":"0x000253C0"}
+            ,{"name":"Permanent Retirement","formId":"0x000253C1"}
+            ,{"name":"Of Secret and Shadow","formId":"0x000253C2"}
+            ,{"name":"The Purification","formId":"0x0002FF1C","notes":"Do The Renegade Shadowscale"}]}
+       ,{"name":"Black Hand Quests","elements":[
+           {"name":"The Dead Drop","formId":"0x00030203"}
+            ,{"name":"Affairs of a Wizard","formId":"0x00007BF2"}
+            ,{"name":"Next of Kin","formId":"0x0003005F","notes":"Invest in Andreas Draconis before doing this quest."}
+            ,{"name":"Broken Vows","formId":"0x0002FF1E"}
+            ,{"name":"Final Justice","formId":"0x0002FF20"}
+            ,{"name":"A Matter of Honor","formId":"0x0002FF22"}
+            ,{"name":"The Coldest Sleep","formId":"0x0002FF24"}
+            ,{"name":"A Kiss Before Dying","formId":"0x0002FF26"}
+            ,{"name":"Following a Lead","formId":"0x00030060"}
+            ,{"name":"Honor Thy Mother","formId":"0x00030062"}]}
+    ]}
+    ,{"name":"Fighters Guild","elements":[
+        {"name":"Join the Fighters Guild","formId":"0x00024298"}
+       ,{"name":"A Rat Problem","formId":"0x00035713","notes":"Rat out Quill-Weave to get the Fame."}
        ,{"name":"The Unfortunate Shopkeeper","formId":"0x00035714"}
-       ,{"name":"The Desolate Mine","formId":"0x00027F8E"}
-       ,{"name":"Unfinished Business","formId":"0x00024297"}
+       ,{"name":"The Desolate Mine","formId":"0x00027F8E","notes":"All 3 other members must survive to get 1 fame."}
+       ,{"name":"Unfinished Business","formId":"0x00024297","notes":"You need to rat out Maglir to get 1 fame."}
        ,{"name":"Drunk and Disorderly","formId":"0x0002429C"}
-       ,{"name":"Den of Thieves","formId":"0x00035715"}
+       ,{"name":"Den of Thieves","formId":"0x00035715","notes":"Complete Newheim's Flagon quest along with this one."}
        ,{"name":"Amelion's Debt","formId":"0x00035718"}
        ,{"name":"The Master's Son","formId":"0x0002D154"}
        ,{"name":"More Unfinished Business","formId":"0x0002D71A"}
-       ,{"name":"Azani Blackheart","formId":"0x0002D71B"}
+       ,{"name":"Azani Blackheart","formId":"0x0002D71B","notes":"Visit Arpenia before starting this quest."}
        ,{"name":"The Wandering Scholar","formId":"0x00035716"}
        ,{"name":"The Fugitives","formId":"0x00035719"}
        ,{"name":"Trolls of Forsaken Mine","formId":"0x0002D71C"}
-       ,{"name":"The Stone of St. Alessia","formId":"0x00035717"}
+       ,{"name":"The Stone of St. Alessia","formId":"0x00035717","notes":"Visit Sedor before starting this quest."}
        ,{"name":"The Noble's Daughter","formId":"0x0003571A"}
        ,{"name":"Mystery at Harlun's Watch","formId":"0x0003571B"}
        ,{"name":"Information Gathering","formId":"0x000356C8"}
@@ -93,11 +100,12 @@
        ,{"name":"Zero Visibility","formId":"0x0002F86B"}
     ]}
     ,{"name":"Mages Guild","elements":[
-        {"name":"Initiation Quests","elements":[{"name":"Join the Mages Guild","formId":"0x0002CD10"}
+        {"name":"Initiation Quests","elements":[
+            {"name":"Join the Mages Guild","formId":"0x0002CD10"}
        ,{"name":"Bravil Recommendation","formId":"0x0002D936"}
        ,{"name":"Leyawiin Recommendation","formId":"0x0002D93C"}
        ,{"name":"Cheydinhal Recommendation","formId":"0x0002D410"}
-       ,{"name":"Fingers of the Mountain","formId":"0x000224E1"}
+       ,{"name":"Fingers of the Mountain","formId":"0x000224E1","notes":"Give the book to Teekeeus during the first quest to get 2 fame instead of 1."}
        ,{"name":"Fingers of the Mountain, Part II","formId":"0x00028C05"}
        ,{"name":"Bruma Recommendation","formId":"0x0002CBC8"}
        ,{"name":"Skingrad Recommendation","formId":"0x0002D28B"}
@@ -111,7 +119,7 @@
        ,{"name":"Necromancer's Moon","formId":"0x00036300"}
        ,{"name":"Liberation or Apprehension?","formId":"0x0000395F"}
        ,{"name":"Information at a Price","formId":"0x00003960"}
-       ,{"name":"A Plot Revealed","formId":"0x00003961"}
+       ,{"name":"A Plot Revealed","formId":"0x00003961","notes":"Invest in Selena Orania before doing this quest."}
        ,{"name":"The Bloodworm Helm","formId":"0x0000C039"}
        ,{"name":"The Necromancer's Amulet","formId":"0x0000C03A"}
        ,{"name":"Ambush","formId":"0x0000C03B"}
@@ -124,7 +132,7 @@
        ,{"name":"Hermaeus Mora","formId":"0x000146AF"}
        ,{"name":"Hircine","formId":"0x000146A5"}
        ,{"name":"Malacath","formId":"0x000146A6"}
-       ,{"name":"Mephala","formId":"0x000146A7"}
+       ,{"name":"Mephala","formId":"0x000146A7","notes":"Invest in Kirsten before doing this quest."}
        ,{"name":"Meridia","formId":"0x000146A8"}
        ,{"name":"Molag Bal","formId":"0x000146B0"}
        ,{"name":"Namira","formId":"0x000146A9"}
@@ -132,12 +140,12 @@
        ,{"name":"Peryite","formId":"0x000146AB"}
        ,{"name":"Sanguine","formId":"0x000146AC"}
        ,{"name":"Sheogorath","formId":"0x000146AD"}
-       ,{"name":"Vaermina","formId":"0x000146AE"}
+       ,{"name":"Vaermina","formId":"0x000146AE","notes":"Get Palla, volume 1 in final room next to orb while doing this quest."}
     ]}
     ,{"name":"Thieves Guild","elements":[
         {"name":"Finding the Thieves Guild","formId":"0x000355DF"}
        ,{"name":"May the Best Thief Win","formId":"0x000355E1"}
-       ,{"name":"Blood Price","formId":"0x000BF021"}
+       ,{"name":"Blood Price","formId":"0x000BF021","notes":"If a quest on this list has a Blood Price quest directly below, then you must do the Blood Price for that quest before completing it."}
        ,{"name":"Independent Thievery","formId":"0x0001EE46"}
        ,{"name":"Untaxing the Poor","formId":"0x0003486D"}
        ,{"name":"The Elven Maiden","formId":"0x00034EA2"}
@@ -156,8 +164,9 @@
        ,{"name":"Blood Price","formId":"0x000BF023"}
        ,{"name":"Boots of Springheel Jak","formId":"0x00036337"}
        ,{"name":"Blood Price","formId":"0x000BF025"}
-       ,{"name":"The Ultimate Heist","formId":"0x00036338"}]}
-       ,{"name":"Master Training","elements":[{"name":"Acrobatics Training","formId":"0x0018BA2B"}
+       ,{"name":"The Ultimate Heist","formId":"0x00036338","notes":"Get Fire and Darkness book in Hall of Epochs before finishing this quest. 2920, Second Seed (v5) on a bookshelf top shelf in Imperial Battlemage’s Chambers."}
+    ]}
+    ,{"name":"Master Training","elements":[{"name":"Acrobatics Training","formId":"0x0018BA2B"}
        ,{"name":"Alchemy Training","formId":"0x0018BA2A"}
        ,{"name":"Alteration Training","formId":"0x0018BA2C"}
        ,{"name":"Armorer Training","formId":"0x0018BA2D"}
@@ -179,49 +188,58 @@
        ,{"name":"Sneak Training","formId":"0x0018BA3A"}
        ,{"name":"Speechcraft Training","formId":"0x0018BA3B"}
     ]}
-    ,{"name":"Main Cities","elements":[{"name":"Anvil","elements":[{"name":"Newheim's Flagon","formId":"0x00002E60"}
-       ,{"name":"Where Spirits Have Lease","formId":"0x0003636F"}
-       ,{"name":"The Siren's Deception","formId":"0x0003AF05"}
-       ,{"name":"The Ghost Ship of Anvil","formId":"0x00095A68"}]}
-       ,{"name":"Bravil","elements":[{"name":"Caught in the Hunt","formId":"0x0001F426"}
-       ,{"name":"Through A Nightmare, Darkly","formId":"0x0002CA50"}
-       ,{"name":"The Forlorn Watchman","formId":"0x00033E93"}
-       ,{"name":"Buying a house in Bravil","formId":"0x00085480"}]}
-       ,{"name":"Bruma","elements":[{"name":"Two Sides of the Coin","formId":"0x00017837"}
-       ,{"name":"A Brotherhood Betrayed","formId":"0x00017839"}
-       ,{"name":"Lifting the Vale","formId":"0x00017835"}
-       ,{"name":"Buying a house in Bruma","formId":"0x00085481"}]}
-       ,{"name":"Cheydinhal","elements":[{"name":"A Brush with Death","formId":"0x00017606"}
-       ,{"name":"Buying a house in Cheydinhal","formId":"0x00085483"}
-       ,{"name":"Corruption and Conscience","formId":"0x00017838"}
-       ,{"name":"The Wayward Knight","formId":"0x00031B77"}]}
-       ,{"name":"Chorrol","elements":[{"name":"The Killing Field","formId":"0x000224C7"}
-       ,{"name":"Separated at Birth","formId":"0x00023E85"}
-       ,{"name":"Legacy Lost","formId":"0x0002B8DB"}
-       ,{"name":"Sins of the Father","formId":"0x0002BA46"}
-       ,{"name":"A Shadow Over Hackdirt","formId":"0x00027815"}
-       ,{"name":"Canvas the Castle","formId":"0x0003151E"}
-       ,{"name":"Buying a house in Chorrol","formId":"0x00085482"}]}
-       ,{"name":"Imperial City","elements":[{"name":"Buy a house in the Imperial City","formId":"0x00085485"}
-       ,{"name":"Unfriendly Competition","formId":"0x00016718"}
-       ,{"name":"The Collector","formId":"0x0002AB4A"}
-       ,{"name":"Nothing You Can Possess","formId":"0x0002B19E"}
-       ,{"name":"Secrets of the Ayleids","formId":"0x0002E5BE"}
-       ,{"name":"Order of the Virtuous Blood","formId":"0x0001D21C"}
-       ,{"name":"Imperial Corruption","formId":"0x00035CA8"}
-       ,{"name":"An Unexpected Voyage","formId":"0x0000C1B8"}
-       ,{"name":"Origin of the Gray Prince","formId":"0x00038ED6"}
-       ,{"name":"Vampire Cure","formId":"0x0003E933"}]}
-       ,{"name":"Leyawiin","elements":[{"name":"Raid on Greyland","formId":"0x00181C6B"}
-       ,{"name":"Tears of the Savior","formId":"0x00022E5A"}
-       ,{"name":"Whom Gods Annoy","formId":"0x00035A95"}
-       ,{"name":"Mazoga the Orc","formId":"0x0008596C"}
-       ,{"name":"Knights of the White Stallion","formId":"0x0008596D"}
-       ,{"name":"Buying a house in Leyawiin","formId":"0x0008547F"}]}
-       ,{"name":"Skingrad","elements":[{"name":"Paranoia","formId":"0x00028D83"}
-       ,{"name":"Buying a house in Skringrad","formId":"0x00085484"}
-       ,{"name":"Helping Hands","formId":"0x000B97DD"}
-       ,{"name":"The Rosethorn Cache","formId":"0x000B6C0C"}
-       ,{"name":"Seeking Your Roots","formId":"0x0004E936"}]}
+    ,{"name":"Main Cities","elements":[
+        {"name":"Anvil","elements":[
+            {"name":"Newheim's Flagon","formId":"0x00002E60"}
+            ,{"name":"Where Spirits Have Lease","formId":"0x0003636F"}
+            ,{"name":"The Siren's Deception","formId":"0x0003AF05","notes":"Don't allow the Sirens to be killed prematurely or else you don't get any fame."}
+            ,{"name":"The Ghost Ship of Anvil","formId":"0x00095A68"}]}
+       ,{"name":"Bravil","elements":[
+            {"name":"Caught in the Hunt","formId":"0x0001F426","notes":"Don't let Aleron Loche die prematurely or else you don't get 1 fame."}
+            ,{"name":"Through A Nightmare, Darkly","formId":"0x0002CA50","notes":"Make sure to get The Lunar Lorkhan in the Dreamworld before leaving it."}
+            ,{"name":"The Forlorn Watchman","formId":"0x00033E93"}
+            ,{"name":"Buying a house in Bravil","formId":"0x00085480"}]}
+       ,{"name":"Bruma","elements":[
+            {"name":"Two Sides of the Coin","formId":"0x00017837","notes":"Don't let Arnora die before you talk to Jorundr or else you don't get 1 fame."}
+            ,{"name":"A Brotherhood Betrayed","formId":"0x00017839","notes":"Don't let a quest NPC die prematurely or let Raynil Dralas escape or else you don't get 1 fame."}
+            ,{"name":"Lifting the Vale","formId":"0x00017835"}
+            ,{"name":"Buying a house in Bruma","formId":"0x00085481"}]}
+       ,{"name":"Cheydinhal","elements":[
+            {"name":"A Brush with Death","formId":"0x00017606"}
+            ,{"name":"Buying a house in Cheydinhal","formId":"0x00085483"}
+            ,{"name":"Corruption and Conscience","formId":"0x00017838","notes":"Don't kill Ulrich Leland or else you don't get 1 fame."}
+            ,{"name":"The Wayward Knight","formId":"0x00031B77","notes":"Farwil must live in order to get 2 fame."}]}
+       ,{"name":"Chorrol","elements":[
+            {"name":"The Killing Field","formId":"0x000224C7"}
+            ,{"name":"Separated at Birth","formId":"0x00023E85"}
+            ,{"name":"Legacy Lost","formId":"0x0002B8DB"}
+            ,{"name":"Sins of the Father","formId":"0x0002BA46","notes":"Don't give the Honorblade of Chorrol to Fathis Ules or else you don't get 1 fame."}
+            ,{"name":"A Shadow Over Hackdirt","formId":"0x00027815","notes":"Invest in merchants Etira Moslin and Vlanhonder Moslin before doing this quest."}
+            ,{"name":"Canvas the Castle","formId":"0x0003151E","notes":"Turn in the true culprit to get 1 fame."}
+            ,{"name":"Buying a house in Chorrol","formId":"0x00085482"}]}
+       ,{"name":"Imperial City","elements":[
+            {"name":"Buy a house in the Imperial City","formId":"0x00085485"}
+            ,{"name":"Unfriendly Competition","formId":"0x00016718"}
+            ,{"name":"The Collector","formId":"0x0002AB4A"}
+            ,{"name":"Nothing You Can Possess","formId":"0x0002B19E"}
+            ,{"name":"Secrets of the Ayleids","formId":"0x0002E5BE"}
+            ,{"name":"Order of the Virtuous Blood","formId":"0x0001D21C","notes":"Don't kill Roland Jenseric or else you don't get 1 fame."}
+            ,{"name":"Imperial Corruption","formId":"0x00035CA8"}
+            ,{"name":"An Unexpected Voyage","formId":"0x0000C1B8"}
+            ,{"name":"Origin of the Gray Prince","formId":"0x00038ED6","notes":"Do this before fighting him in the Arena."}
+            ,{"name":"Vampire Cure","formId":"0x0003E933"}]}
+       ,{"name":"Leyawiin","elements":[
+            {"name":"Raid on Greyland","formId":"0x00181C6B"}
+            ,{"name":"Tears of the Savior","formId":"0x00022E5A"}
+            ,{"name":"Whom Gods Annoy","formId":"0x00035A95"}
+            ,{"name":"Mazoga the Orc","formId":"0x0008596C"}
+            ,{"name":"Knights of the White Stallion","formId":"0x0008596D"}
+            ,{"name":"Buying a house in Leyawiin","formId":"0x0008547F"}]}
+       ,{"name":"Skingrad","elements":[
+            {"name":"Paranoia","formId":"0x00028D83","notes":"Show Glarthir's note to a town guard and have him executed to get 1 fame."}
+            ,{"name":"Buying a house in Skringrad","formId":"0x00085484"}
+            ,{"name":"Helping Hands","formId":"0x000B97DD"}
+            ,{"name":"The Rosethorn Cache","formId":"0x000B6C0C"}
+            ,{"name":"Seeking Your Roots","formId":"0x0004E936"}]}
     ]}
 ]}
