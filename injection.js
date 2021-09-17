@@ -42,6 +42,23 @@ function  replaceElements(){
 				found=true;
 			}
 		}
+		if(!found){
+			//try formId
+			if(checklistid?.startsWith("0x")){
+				for(propname in jsondata){
+					if(jsondata[propname]?.elements != null){
+						var maybeJson = findOnTree(jsondata[propname], (x=>x.formId == checklistid));
+						if(maybeJson != null){
+							elementid = maybeJson.id;
+							elementjson = maybeJson;
+							elementclass = propname;
+							found=true;
+							break;
+						}
+					}
+				}
+			}
+		}
 
 		if(!found){
 			//skip this iteration and move to the next one.
@@ -65,12 +82,12 @@ function  replaceElements(){
 }
 
 
-// given a <span class="npc"></span>, attempt to get NPC data.
+// given a <span class="npc">, attempt to get NPC data.
 function getNpcData(npcElement){
 	var maybeFormId = element.getAttribute("formId");
-	if(!(maybeFormId == null)){
+	if(maybeFormId != null){
 		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formId == maybeFormId);
-		if(!(maybeNpcData == null)){
+		if(maybeNpcData != null){
 			return maybeNpcData;
 		}
 		else{
@@ -84,7 +101,7 @@ function getNpcData(npcElement){
 	//maybe we can look up by name
 	var npcName = element.innerText;
 	var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.name.toLowerCase() == npcName.toLowerCase())
-	if(!(maybeNpcData == null)){
+	if(maybeNpcData != null){
 		return maybeNpcData;
 	}
 
@@ -100,7 +117,6 @@ function linkNPCs(){
 			continue;
 		}
 		const linky = createLinkElement(npcData, "npc");
-		
 		element.innerText = "";
 		element.appendChild(linky);
 	}
@@ -152,14 +168,14 @@ function createLinkElement(jsonobject, classname){
 	
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
 	var usableId;
-	if(!(jsonobject.formId == null)){
+	if(jsonobject.formId != null){
 		usableId = jsonobject.formId;
 	}
 	else{
 		usableId = jsonobject.id;
 	}
 	
-	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && !(usableId == null);
+	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && usableId != null;
 	if(useMinipage){
 		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
 	}

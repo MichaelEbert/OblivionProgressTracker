@@ -86,15 +86,42 @@ function saveProgress(){
 
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
+
+//this needs to be a separate func because byref closure shenanigans
+function generatePromiseFunc(basedir, klass){
+	return fetch(basedir+"/data/"+klass.name+".json")
+			.then(resp=>resp.json())
+			.then(json=>mergeData(json,basedir))
+			.then(json=>{
+				jsondata[klass.name] = json;
+				console.log(klass.name+" loaded");
+			});
+}
+
 function loadJsonData(basedir="."){
-	var questdata = fetch(basedir+"/data/quests.js").then(response=>response.json()).then(d => jsondata.quest = d);
-	var bookdata = fetch(basedir+"/data/books.js").then(response=>response.json()).then(d => jsondata.book = d);
-	var skilldata = fetch(basedir+"/data/skills.js").then(response=>response.json()).then(d => jsondata.skill = d);
-	var storedata = fetch(basedir+"/data/stores.js").then(response=>response.json()).then(d => jsondata.store = d);
-	var savedata = fetch(basedir+"/data/saves.js").then(response=>response.json()).then(d => jsondata.save = d);
-	var miscdata = fetch(basedir+"/data/misc.js").then(response=>response.json()).then(d => jsondata.misc = d);
-	var npcdata = fetch(basedir+"/data/npcs.js").then(response=>response.json()).then(d => jsondata.npc = d);
-	return Promise.all([questdata,skilldata,bookdata,storedata,savedata,miscdata,npcdata]).then(()=>computeTotalWeight());
+	var promises = [];
+	for(var klass of classes){
+		promises.push(generatePromiseFunc(basedir,klass));
+	}
+	
+	promises.push(fetch(basedir+"/data/npc.json").then(response=>response.json()).then(d => jsondata.npc = d));
+	return Promise.allSettled(promises).then(()=>computeTotalWeight());
+}
+
+function mergeSingleNode(node,mapping){
+	node.id = mapping.find(x=>x.formId == node.formId).id;
+}
+
+//turn a bunch of json data from different files into a single js object.
+async function mergeData(jsonTree, basedir="."){
+	if(jsonTree.version >= 3){
+		//jsonTree is by formId. load IDs.
+		const mapFilename = "mapping_"+jsonTree.name.toLowerCase()+"_v"+jsonTree.version+".json";
+		const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
+		runOnTree(jsonTree, (y=>mergeSingleNode(y,mapJson)));
+		console.log("merged "+jsonTree.name);
+	}
+	return jsonTree;
 }
 
 var totalweight;
@@ -106,7 +133,7 @@ var classes = [
 	,{name:"skill",standard:true,weight:15}
 	,{name:"store",standard:true,weight:5}	
 	,{name:"misc",standard:false,weight:0}
-	,{name:"saves",standard:false,weight:0}
+	,{name:"save",standard:false,weight:0}
 ]
 
 // classes that have a standard layout and can use most of the generic functions.
@@ -121,7 +148,7 @@ function elementsUndefinedOrNull(node){
 }
 
 function idNotNull(e){
-	return !(e?.id == null)
+	return e.id != null || e.formId != null;
 }
 
 //find an element of the tree.
@@ -137,6 +164,9 @@ function findOnTree(root,findfunc,isLeafFunc=idNotNull){
 		}
 	}
 	else{
+		if(root?.elements == null){
+			debugger;
+		}
 		for(e of root.elements){
 			const mayberesult = findOnTree(e, findfunc, isLeafFunc);
 			if(!(mayberesult == null)){
@@ -145,6 +175,7 @@ function findOnTree(root,findfunc,isLeafFunc=idNotNull){
 		}
 	}
 }
+
 //run a function on leaves in a tree and sum the results.
 //rootNode: root node to run on
 //runFunc: function to run on leaves

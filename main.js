@@ -17,6 +17,7 @@ function init(){
 const classNamesForLevels = ["section","category","subcategory"]
 
 function initMultiV2(multidata, classname, categoryName){
+	console.log(jsondata.quest.elements[0].elements[0].id);
 	if(multidata.version == 1){
 		initMulti(multidata.elements,classname, categoryName);
 	}
@@ -26,10 +27,15 @@ function initMultiV2(multidata, classname, categoryName){
 	}
 }
 
+//can't use runOnTree because we need to do additional stuff per-list, like subtree name.
 function initMultiV2internal(multidata, classname, parentNode, depth){
+	if(multidata == null){
+		console.log(parentNode);
+		debugger;
+	}
 	for(datum of multidata) {
 		//only leaf nodes have IDs
-		if(datum.id != null){
+		if(datum.id != null || datum.formId != null){
 			parentNode.appendChild(initSingle(datum, classname));
 		}
 		else{
@@ -83,10 +89,13 @@ function initMulti(multidata, classname, categoryName){
 
 //init a single leaf element
 function initSingle(rowdata, classname){
+	//this is here because we may want to switch over to formID.
+	var usableId = rowdata.id;
+	
 	var rowhtml = document.createElement("div");
 	rowhtml.classList.add(classname);
 	rowhtml.classList.add("item");
-	rowhtml.id = classname+rowdata.id.toString();
+	rowhtml.id = classname+usableId.toString();
 	rowhtml.addEventListener('click',rowClicked);
 	
 	//name
