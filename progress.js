@@ -99,10 +99,12 @@ function generatePromiseFunc(basedir, klass){
 			.catch(err =>console.log(err));
 }
 
-function loadJsonData(basedir="."){
+function loadJsonData(basedir=".",classFilter=(x=>true)){
 	var promises = [];
 	for(var klass of classes){
-		promises.push(generatePromiseFunc(basedir,klass));
+		if(classFilter(klass)){
+			promises.push(generatePromiseFunc(basedir,klass));
+		}
 	}
 	
 	promises.push(fetch(basedir+"/data/npc.json").then(response=>response.json()).then(d => jsondata.npc = d));

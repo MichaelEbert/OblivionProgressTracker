@@ -27,7 +27,7 @@
 <script>
 document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
 var id = new URLSearchParams(window.location.search).get("id")
-loadJsonData("../../..").then(()=>generatePage(id));
+loadJsonData("../../..",(x=>x.name=="npc")).then(()=>generatePage(id));
 </script>
 </body>
 </html>
