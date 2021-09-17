@@ -52,6 +52,9 @@ img{
 	color: inherit;
 }
 
+.save a::before{
+	content: "[Save] ";
+}
 .book{
 	color: magenta;
 }
