@@ -25,11 +25,11 @@ function  replaceElements(){
 		var elementjson = null;
 		var elementclass = null;
 		var elementid = null;
-		for (const classname of standardclasses()){
-			if(checklistid?.startsWith(classname)){
-				elementid = parseInt(checklistid.substring(classname.length));
-				elementjson = findOnTree(jsondata[classname],(x=>x.id == elementid));
-				elementclass = classname;
+		for (const klass of classes){
+			if(checklistid?.startsWith(klass.name)){
+				elementid = parseInt(checklistid.substring(klass.name.length));
+				elementjson = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
+				elementclass = klass.name;
 				if(elementjson){found=true;}
 				break;
 			}
@@ -246,7 +246,16 @@ function checkboxClicked2(event){
 			savedata["save"][rowid] = event.target.valueAsNumber;
 			found=true;
 		}
-		
+	}
+	if(!found){
+		if(parentid.startsWith("misc")){
+			var rowid = parentid.substring("misc".length);
+			savedata["misc"][rowid] = event.target.checked;
+			setParentChecked(event.target);
+			found=true;
+		}
+	}
+	if(!found){
 		if(event.target.id == "placesfoundcheck") {
 			savedata["misc"]["placesfound"] = event.target.valueAsNumber;
 		}

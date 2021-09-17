@@ -236,17 +236,6 @@ function recalculateProgressAndSave(){
 			var classchecked;
 			var classweight;
 			percentCompleteSoFar += runOnTree(jsondata.misc, e=>getSubtotalCompletion(e,"misc"), 0, e=>e.weight != null);
-
-			//TODO FIX
-			//classtotal = 367;
-			//classchecked = parseInt(savedata.misc.placesfound);
-			//document.getElementById("overviewplaces").innerText = classchecked.toString() + "/" + classtotal.toString();
-			//percentCompleteSoFar += (classchecked/classtotal) * (8/totalweight);
-			//
-			//classtotal = 306;
-			//classchecked = parseInt(savedata.misc.nirnroot);
-			//document.getElementById("overviewnirnroot").innerText = classchecked.toString() + "/" + classtotal.toString();
-			//percentCompleteSoFar += (classchecked/classtotal) * (2/totalweight);
 		}
 	}
 	
