@@ -2,7 +2,7 @@
 //progress functions
 var savedata;
 var settings;
-var version = 5;
+var version = 6;
 function saveCookie(name,value){
 	//save for 10 years
 	var expiry = new Date()

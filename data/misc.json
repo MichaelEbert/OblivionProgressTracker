@@ -46,4 +46,7 @@
 		,{"id":31,"name":"Paint Horse"}
 		,{"id":32,"name":"Bay Horse 2"}
 	]}
+	,{"name":"Artifacts","weight":0,"elements":[
+		{"id":33,"name":"Artifact"}
+	]}
 ]}

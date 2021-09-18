@@ -107,6 +107,8 @@ td{
 	font-style: italic;
 	color: grey;
 	padding-top: 0.2em;
+	padding-left:1em;
+	font-size:1.1em;
 }
 
 .item{
