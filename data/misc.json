@@ -38,13 +38,13 @@
 		,{"id":24,"name":"Rosethorn Hall"}
 	]}
 	,{"name":"Horses","weight":1,"elements":[
-		 {"id":26,"name":"White Horse"}
-		,{"id":27,"name":"Bay Horse"}
-		,{"id":28,"name":"Paint Horse"}
-		,{"id":29,"name":"Black Horse"}
-		,{"id":30,"name":"Chestnut Horse"}
-		,{"id":31,"name":"Paint Horse"}
-		,{"id":32,"name":"Bay Horse 2"}
+		 {"id":26,"name":"White Horse","city":"Anvil"}
+		,{"id":27,"name":"Bay Horse","city":"Bravil"}
+		,{"id":28,"name":"Paint Horse","city":"Bruma"}
+		,{"id":29,"name":"Black Horse","city":"Cheydinhal"}
+		,{"id":30,"name":"Chestnut Horse","city":"Chorrol"}
+		,{"id":31,"name":"Paint Horse","city":"Leyawiin"}
+		,{"id":32,"name":"Bay Horse 2","city":"Skingrad"}
 	]}
 	,{"name":"Artifacts","weight":0,"elements":[
 		{"id":33,"name":"Artifact"}
