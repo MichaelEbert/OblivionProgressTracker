@@ -72,3 +72,16 @@ function removeUselessSpans(root){
 		} 
 	}
 }
+
+// regex's to make stuff nicer:
+//remove excess font tags:
+//s/<font[^>]*>//g
+//s/</font>//g
+
+//move LI end tags to end of line
+//s/\r\n(\s*)</li>/</li>\r\n$1/g
+
+//move spaces outside of spans
+//s/<\/span><span[^>]*>//g
+//s/ </span>/</span> /g
+//s/<span[^>]*> / <span[^>]*>/g
