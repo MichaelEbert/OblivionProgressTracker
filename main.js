@@ -253,6 +253,10 @@ function updateUIFromSaveData(){
 	for(classname of standardclasses()){
 		for(id in savedata[classname]){
 			var checkbox = document.getElementById(classname+id+"check");
+			if(checkbox == null){
+				console.error("checkbox for element '"+classname+id+"' is null");
+				continue;
+			}
 			checkbox.checked = savedata[classname][id];
 			setParentChecked(checkbox);
 		}
