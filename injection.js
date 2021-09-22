@@ -332,7 +332,11 @@ function getElementReferenceLocation(obj){
 		if(parent.id != null && parent.id != ""){
 			//ignore duplicate sections of IDs
 			if(path.substring(1).startsWith(parent.id)){
-				path = "/"+path.substring(1+parent.id.length);
+				var abridgedPath = path.substring(1+parent.id.length);
+				if(abridgedPath[0] == "_"){
+					abridgedPath = abridgedPath.substring(1);
+				}
+				path = "/"+abridgedPath;
 			}
 			path = "/" + parent.id + path;
 			if(link == null) {
