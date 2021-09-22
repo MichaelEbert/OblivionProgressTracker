@@ -26,8 +26,7 @@ function goToNext(){
 		//update section
 		var sections = document.getElementsByClassName("section");
 		var thisSection = sections[currentSection];
-		var thislist = Array.from(thisSection.children).find(x=>x.tagName=="OL")
-		sectionLines = thislist.children;
+		sectionLines = thisSection.querySelectorAll("li")
 		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
 		currentLineText = sectionLines[currentLineIndex].innerText;
 	}
