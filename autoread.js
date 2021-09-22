@@ -16,8 +16,9 @@ function goToNext(){
 	
 	currentLineIndex +=1;
 	if(currentLineIndex < sectionLines?.length){
-		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
-		currentLineText = sectionLines[currentLineIndex].innerText;
+		let currentLine = sectionLines[currentLineIndex];
+		currentLine.style.backgroundColor="lightyellow";
+		currentLineText = currentLine.innerText;
 	}
 	else
 	{
@@ -26,10 +27,11 @@ function goToNext(){
 		//update section
 		var sections = document.getElementsByClassName("section");
 		var thisSection = sections[currentSection];
-		var thislist = Array.from(thisSection.children).find(x=>x.tagName=="OL")
-		sectionLines = thislist.children;
-		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
-		currentLineText = sectionLines[currentLineIndex].innerText;
+		sectionLines = thisSection.querySelectorAll("li")
+
+		let currentLine = sectionLines[currentLineIndex];
+		currentLine.style.backgroundColor="lightyellow";
+		currentLineText = currentLine.innerText;
 	}
 }
 
