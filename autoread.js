@@ -16,8 +16,9 @@ function goToNext(){
 	
 	currentLineIndex +=1;
 	if(currentLineIndex < sectionLines?.length){
-		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
-		currentLineText = sectionLines[currentLineIndex].innerText;
+		let currentLine = sectionLines[currentLineIndex];
+		currentLine.style.backgroundColor="lightyellow";
+		currentLineText = currentLine.innerText;
 	}
 	else
 	{
@@ -27,8 +28,10 @@ function goToNext(){
 		var sections = document.getElementsByClassName("section");
 		var thisSection = sections[currentSection];
 		sectionLines = thisSection.querySelectorAll("li")
-		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
-		currentLineText = sectionLines[currentLineIndex].innerText;
+
+		let currentLine = sectionLines[currentLineIndex];
+		currentLine.style.backgroundColor="lightyellow";
+		currentLineText = currentLine.innerText;
 	}
 }
 
