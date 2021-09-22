@@ -24,27 +24,24 @@ function fallbackIngameImage(eventArgs){
 
 function displayPageReferences(unsafeReferences){
 	console.log("MESSAGE LISTENED TO");
-	var referencesContainer = document.createElement('div');
+	var referencesContainer = document.createElement('table');
 	for(var appearance of event.data){
 		if(appearance.anchor == null || appearance.path == null){
 			continue;
 		}
-		var elementContainer = document.createElement('div');
-		elementContainer.style.borderBottom = "1px solid gray";
-		var nameElement = document.createElement('span');
+		var elementContainer = document.createElement('tr');
+		elementContainer.classList.add("referenceRow");
+		var nameElement = document.createElement('td');
 		nameElement.innerText = appearance.path;
-		var spacerElement = document.createElement('span');
-		spacerElement.style.width="2em";
-		spacerElement.style.display="inline-block";
+		var spacerElement = document.createElement('td');
 		var linkElement = document.createElement('a');
 		linkElement.innerText = appearance.anchor;
 		linkElement.href = "../../../speedrun-3.html#"+appearance.anchor;
 		linkElement.target="_top"
-		linkElement.style.float="right"
 		
 		elementContainer.appendChild(nameElement);
 		elementContainer.appendChild(spacerElement);
-		elementContainer.appendChild(linkElement);
+		spacerElement.appendChild(linkElement);
 		referencesContainer.appendChild(elementContainer);
 	}
 	document.getElementById("references")?.appendChild(referencesContainer);

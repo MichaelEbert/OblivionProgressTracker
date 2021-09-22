@@ -85,7 +85,7 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 		$currentPath.add($formattedTitle);
 		
 		$newId = [String]::join("_",$currentPath);
-		$speedrun[$i] = $line -replace 'class="section">',('class="section" id="'+$newId+'">');
+		$speedrun[$i] = $line -replace 'class="section"\s*>',('class="section" id="'+$newId+'">');
 	}
 	if($line -match 'class="category"'){
 		while($currentPath.count -gt 2){
@@ -98,11 +98,15 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 			continue;
 		}
 		$lineTitle -match 'categoryTitle">([^<]*)</div>'
+		
+		#truncate everything after first slash
+		$formattedTitle = $matches[1] -replace '/.*','';
 		#remove everything that's not letter or number
-		$formattedTitle = $matches[1] -replace '[^\w]',''
+		$formattedTitle = $formattedTitle -replace '[^\w]','';
+		
 		$currentPath.add($formattedTitle);
 		
 		$newId = [String]::join("_",$currentPath);
-		$speedrun[$i] = $line -replace 'class="category">',('class="category" id="'+$newId+'">');
+		$speedrun[$i] = $line -replace 'class="category"\s*>',('class="category" id="'+$newId+'">');
 	}
 }
