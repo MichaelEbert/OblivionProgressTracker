@@ -3,7 +3,7 @@ $storedata = convertfrom-json ([String]::Join("",(get-content "C:\Users\Michael\
 $stores = new-object -type system.collections.generic.list[object] ; foreach($x in $storedata.elements){foreach($y in $x.elements){$stores.add($y)}}
 
 $bookdata = convertfrom-json ([String]::Join("",(get-content "C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\data\book.json")))
-$books = new-object -type system.collections.generic.list[object] ; foreach($x in $bookdata.elements){$books.add($x)}
+$books = new-object -type system.collections.generic.list[object] ; recurseQuests $bookdata $books
 
 $questdata = convertfrom-json ([String]::Join("",(get-content "C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\data\quest.json")))
 function recurseQuests($root,$container){
@@ -44,7 +44,7 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
          $storeName = $Matches[2].trim()
          $storeobj = $books.find({param($x);return $x.name -eq $storeName})
          if($storeobj -ne $null){
-			 $speedrun[$i] = $bookPattern.replace($line,('clid="book'+($storeObj.id.ToString())+'"'),1);
+			 $speedrun[$i] = $bookPattern.replace($line,('clid="'+($storeObj.formId.ToString())+'"'),1);
          }
      }
 }
