@@ -269,24 +269,32 @@ function checkboxClicked2(event){
 }
 
 function initIframe(){
-if(settings.iframeCheck){
-	var resizableContainer = document.createElement("div");
-	resizableContainer.classList.add("resizableContainer");
-	resizableContainer.id = "iframeContainer";
-	
+	if(settings.iframeCheck){
+		var resizableContainer = document.createElement("div");
+		resizableContainer.classList.add("resizableContainer");
+		resizableContainer.id = "iframeContainer";
+		
 
-	var myframe = document.createElement("iframe");
-	myframe.name="myframe";
-	myframe.id="myframe";
-	myframe.classList.add("iframe");
-	
-	resizableContainer.appendChild(myframe);
-	var sidebar = document.getElementById("sidebar");
-	if(sidebar != null){
-		sidebar.prepend(resizableContainer);
+		var myframe = document.createElement("iframe");
+		myframe.name="myframe";
+		myframe.id="myframe";
+		myframe.classList.add("iframe");
+		
+		resizableContainer.appendChild(myframe);
+		var sidebar = document.getElementById("sidebar");
+		if(sidebar != null){
+			sidebar.prepend(resizableContainer);
+		}
+		else{
+			document.body.prepend(resizableContainer);
+		}
+		
+		//update all _blank links to open in iframe
+		var links = document.getElementsByTagName("A");
+		for(var lnk of links){
+			if(lnk.target == "_blank"){
+				lnk.target = "myframe";
+			}
+		}
 	}
-	else{
-		document.body.prepend(resizableContainer);
-	}
-}
 }
