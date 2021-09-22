@@ -52,14 +52,14 @@ img{
 	color: inherit;
 }
 
-.save a::before{
+.save a:before{
 	content: "[Save] ";
 }
 .book{
 	color: magenta;
 }
 
-.book a::before{
+.book a:before{
 	content: "[Book] ";
 }
 
@@ -67,11 +67,11 @@ img{
 	color: darkred;
 }
 
-.quest a::before{
+.quest a:before{
 	content: "[Quest] ";
 }
 
-.store a::before{
+.store a:before{
 	content: "[Store] ";
 }
 
