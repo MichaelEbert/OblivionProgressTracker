@@ -84,4 +84,4 @@ function removeUselessSpans(root){
 //move spaces outside of spans
 //s/<\/span><span[^>]*>//g
 //s/ </span>/</span> /g
-//s/<span[^>]*> / <span[^>]*>/g
+//s/(<span[^>]*>) / $1/g
