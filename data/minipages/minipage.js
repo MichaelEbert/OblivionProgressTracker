@@ -21,3 +21,33 @@ function fallbackIngameImage(eventArgs){
 		tries += 1;
 	}
 }
+
+function displayPageReferences(unsafeReferences){
+	console.log("MESSAGE LISTENED TO");
+	var referencesContainer = document.createElement('div');
+	for(var appearance of event.data){
+		if(appearance.anchor == null || appearance.path == null){
+			continue;
+		}
+		var elementContainer = document.createElement('div');
+		
+		var nameElement = document.createElement('span');
+		nameElement.innerText = appearance.path;
+		var spacerElement = document.createElement('span');
+		spacerElement.style.width="2em";
+		spacerElement.style.display="inline-block";
+		var linkElement = document.createElement('a');
+		linkElement.innerText = appearance.anchor;
+		linkElement.href = "../../../speedrun-3.html#"+appearance.anchor;
+		linkElement.target="_top"
+		linkElement.style.float="right"
+		
+		elementContainer.appendChild(nameElement);
+		elementContainer.appendChild(spacerElement);
+		elementContainer.appendChild(linkElement);
+		referencesContainer.appendChild(elementContainer);
+	}
+	document.getElementById("references")?.appendChild(referencesContainer);
+}
+
+window.addEventListener('message',event=>displayPageReferences(event.data), false);

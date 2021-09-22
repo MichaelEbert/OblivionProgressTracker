@@ -1,4 +1,4 @@
-
+"use strict"
 var linkedElements = [];
 
 function LinkedElement(element, classname, id){
@@ -45,7 +45,7 @@ function  replaceElements(){
 		if(!found){
 			//try formId
 			if(checklistid?.startsWith("0x")){
-				for(propname in jsondata){
+				for(var propname in jsondata){
 					if(jsondata[propname]?.elements != null){
 						var maybeJson = findOnTree(jsondata[propname], (x=>x.formId == checklistid));
 						if(maybeJson != null){
@@ -84,7 +84,7 @@ function  replaceElements(){
 
 // given a <span class="npc">, attempt to get NPC data.
 function getNpcData(npcElement){
-	var maybeFormId = element.getAttribute("formId");
+	var maybeFormId = npcElement.getAttribute("formId");
 	if(maybeFormId != null){
 		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formId == maybeFormId);
 		if(maybeNpcData != null){
@@ -99,7 +99,7 @@ function getNpcData(npcElement){
 	
 	//element didn't have a formid. search by name.
 	//maybe we can look up by name
-	var npcName = element.innerText;
+	var npcName = npcElement.innerText;
 	var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.name.toLowerCase() == npcName.toLowerCase())
 	if(maybeNpcData != null){
 		return maybeNpcData;
@@ -111,12 +111,13 @@ function getNpcData(npcElement){
 
 function linkNPCs(){
 	var npcs = document.getElementsByClassName("npc");
-	for(element of npcs){
+	for(var element of npcs){
 		const npcData = getNpcData(element);
 		if(npcData == null){
 			continue;
 		}
-		const linky = createLinkElement(npcData, "npc");
+		const linky = createLinkElement(npcData, "npc", true);
+		linky.addEventListener('click',pushNpcReferencesToMinipage);
 		element.innerText = "";
 		element.appendChild(linky);
 	}
@@ -163,7 +164,7 @@ function initInjectedElement(rowdata, classname){
 
 //create link for a json object. 
 //classname is for minipages. ex: book, npc, etc.
-function createLinkElement(jsonobject, classname){
+function createLinkElement(jsonobject, classname, forceMinipage=false){
 	const linky = document.createElement("a");
 	
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
@@ -175,7 +176,7 @@ function createLinkElement(jsonobject, classname){
 		usableId = jsonobject.id;
 	}
 	
-	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && usableId != null;
+	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
 	if(useMinipage){
 		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
 	}
@@ -297,4 +298,53 @@ function initIframe(){
 			}
 		}
 	}
+}
+
+function pushNpcReferencesToMinipage(event){
+	const npcData = getNpcData(event.target.parentElement);
+	const references = getAllReferencesOnPage(npcData);
+	const myframe = document.getElementById("myframe");
+	
+	myframe.addEventListener('load',()=>{
+		myframe.contentWindow.postMessage(references,"*");
+		console.log(references);
+	},{once:true});
+}
+
+function getAllReferencesOnPage(jsonObject){
+	var npcLinks = document.getElementsByClassName("npc");
+	var refs = [];
+	for(var link of npcLinks){
+		if(link.innerText == jsonObject.name){
+			//TODO: or formId
+			refs.push(getElementReferenceLocation(link));
+		}
+	}
+	return refs;
+}
+
+function getElementReferenceLocation(obj){
+	var parent = obj.parentElement;
+	var link = null;
+	var path = "";
+	
+	while(parent != document.body){
+		if(parent.id != null && parent.id != ""){
+			//ignore duplicate sections of IDs
+			if(path.substring(1).startsWith(parent.id)){
+				path = "/"+path.substring(1+parent.id.length);
+			}
+			path = "/" + parent.id + path;
+			if(link == null) {
+				link = parent.id.toString();
+			}
+		}
+		else if(parent.tagName == "LI"){
+			const index = Array.prototype.indexOf.call(parent.parentElement.children,parent);
+			path = "/"+(index+1)+path;
+		}
+		
+		parent = parent.parentElement;
+	}
+	return {anchor:link,path:path};
 }
