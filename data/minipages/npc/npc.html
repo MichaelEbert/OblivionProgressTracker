@@ -3,6 +3,7 @@
 	<meta charset="UTF-8"/>
 	<link rel="stylesheet" type="text/css" href="../../../main.css"/>
 	<link rel="stylesheet" type="text/css" href="../../../guide.css"/>
+	<link rel="stylesheet" type="text/css" href="../minipage.css"/>
 	<script src="./../../../progress.js"></script>
 	<script src="./npcpage.js"></script>
 	<title>NPC — Interactive Oblivion Checklist</title>
@@ -14,15 +15,23 @@
 <div class="sectionTitle">Race</div>
 <p id="racep"></p>
 </div>
-<div class="section" id="section_gameimage">
-<div class="sectionTitle">In-Game Image</div>
-<img id="gameImage"src=""/>
-</div>
+
 <div class="section" id="section_schedule">
 <div class="sectionTitle">Schedule</div>
 </div>
+
+<div class="section" id="section_notes">
+<div class="sectionTitle">Notes</div>
+<p id="notesp"></p>
+</div>
+
 <div class="section" id="section_uesp">
 <div class="sectionTitle"><a id="uespLink" href="">UESP Link</a></div>
+</div>
+
+<div class="section" id="section_gameimage">
+<div class="sectionTitle">In-Game Image</div>
+<img id="gameImage"src=""/>
 </div>
 <script>
 document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);

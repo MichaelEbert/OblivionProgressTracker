@@ -16,6 +16,10 @@ function generateBookPage(booknumber){
 		link = "https://en.uesp.net/wiki/Oblivion:"+book.name.replaceAll(" ","_");
 	}
 	document.getElementById("uespLink").href=link;
+	
+	if(book.notes != null){
+		document.getElementById("notesp").innerText = book.notes;
+	}
 }
 
 var tries = 0;

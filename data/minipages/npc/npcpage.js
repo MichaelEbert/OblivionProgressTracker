@@ -14,6 +14,10 @@ function generatePage(npcFormId){
 		link = "https://en.uesp.net/wiki/Oblivion:"+npc.name.replaceAll(" ","_");
 	}
 	document.getElementById("uespLink").href=link;
+	
+	if(npc.notes != null){
+		document.getElementById("notesp").innerText = npc.notes;
+	}
 }
 
 var tries = 0;

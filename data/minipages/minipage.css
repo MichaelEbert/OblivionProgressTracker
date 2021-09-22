@@ -1,0 +1,17 @@
+.contentContainer{
+	display: block;
+}
+
+.section{
+	margin: 0.2em;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.sectionTitle{
+	font-size: medium;
+}
+
+p{
+	margin: 0.2em;	
+}
