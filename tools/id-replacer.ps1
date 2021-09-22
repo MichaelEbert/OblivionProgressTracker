@@ -62,3 +62,47 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 }
 
 [System.IO.File]::WriteAllLines("C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\speedrun-3b.html",$speedrun,[System.Text.Encoding]::UTF8)
+
+$speedrun = get-content "C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\speedrun-3.html" -Encoding 'utf8'
+#ID generator
+$currentPath = new-object -type system.collections.generic.list[string];
+
+for($i = 0; $i -lt $speedrun.count;$i+=1){
+	$line = $speedrun[$i];
+	if($line -match 'class="section"'){
+		$currentPath.clear();
+		$currentPath.add("guide");
+		
+		#get the ID
+		$lineTitle = $speedrun[$i+1];
+		if(!($lineTitle -match 'sectionTitle')){
+			write-error "section title not after section, can't ID line $i"
+			continue;
+		}
+		$lineTitle -match 'sectionTitle">([^<]*)</div>'
+		#remove everything that's not letter or number
+		$formattedTitle = $matches[1] -replace '[^\w]',''
+		$currentPath.add($formattedTitle);
+		
+		$newId = [String]::join("_",$currentPath);
+		$speedrun[$i] = $line -replace 'class="section">',('class="section" id="'+$newId+'">');
+	}
+	if($line -match 'class="category"'){
+		while($currentPath.count -gt 2){
+			$currentPath.removeAt($currentPath.count - 1);
+		}
+		#get the ID
+		$lineTitle = $speedrun[$i+1];
+		if(!($lineTitle -match 'categoryTitle')){
+			write-error "category title not after section, can't ID line $i"
+			continue;
+		}
+		$lineTitle -match 'categoryTitle">([^<]*)</div>'
+		#remove everything that's not letter or number
+		$formattedTitle = $matches[1] -replace '[^\w]',''
+		$currentPath.add($formattedTitle);
+		
+		$newId = [String]::join("_",$currentPath);
+		$speedrun[$i] = $line -replace 'class="category">',('class="category" id="'+$newId+'">');
+	}
+}

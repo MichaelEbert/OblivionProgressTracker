@@ -30,7 +30,7 @@ function displayPageReferences(unsafeReferences){
 			continue;
 		}
 		var elementContainer = document.createElement('div');
-		
+		elementContainer.style.borderBottom = "1px solid gray";
 		var nameElement = document.createElement('span');
 		nameElement.innerText = appearance.path;
 		var spacerElement = document.createElement('span');
