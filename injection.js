@@ -84,7 +84,7 @@ function  replaceElements(){
 
 // given a <span class="npc">, attempt to get NPC data.
 function getNpcData(npcElement){
-	var maybeFormId = npcElement.getAttribute("formId");
+	var maybeFormId = npcElement.getAttribute("clid");
 	if(maybeFormId != null){
 		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formId == maybeFormId);
 		if(maybeNpcData != null){
