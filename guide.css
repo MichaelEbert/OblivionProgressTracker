@@ -23,8 +23,8 @@ img{
 }
 
 .sectionTitle:after {
-	content: "\2796"; /* Unicode character for "minus" sign (-) */
-	font-size: 13px;
+	content: "➖"; /* Unicode character for "minus" sign (-) */
+	font-size: 0.75em;
 	color: white;
 	float: right;
 	margin-left: 5px;
@@ -37,7 +37,7 @@ img{
 }
 
 .active:after {
-	content: '\02795'; /* Unicode character for "plus" sign (+) */
+	content: "➕"; /* Unicode character for "plus" sign (+) */
 }
 
 .category{
