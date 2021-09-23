@@ -32,7 +32,7 @@ img{
 }
 
 /* Collapsible section content. Note: visible by default */
-.collapsible-content {
+.collapsibleContent {
 	display: inline;
 	overflow: hidden;
 }
