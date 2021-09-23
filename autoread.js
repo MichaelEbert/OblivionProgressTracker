@@ -48,7 +48,7 @@ function initSpeak(){
 
 	// Disable the "Enable Speech" button
 	let enableSpeechBtn = document.getElementById("enable_speech_btn");
-	enableSpeechBtn.disabled = "disabled";
+	enableSpeechBtn.disabled = true;
 }
 
 function addSpeakBox(){
