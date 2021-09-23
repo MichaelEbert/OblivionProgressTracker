@@ -38,9 +38,15 @@ function play(){
 	window.speechSynthesis.cancel();
 	speech.text = currentLineText;
 	window.speechSynthesis.speak(speech);
-	
 }
 
+function playHotKey(event){
+	//change hotkey here if needed.
+	if (event.key == " " || event.type == "ontouchstart") {
+		goToNext();
+		play();
+	}
+}
 
 function initSpeak(){
 	speech = new SpeechSynthesisUtterance();
@@ -54,8 +60,7 @@ function addSpeakBox(){
 	speechBox.style.backgroundColor="#FBEFD5";
 	speechBox.style.border="1px solid black";
 	speechBox.style.marginRight="2em";
-	
-	
+		
 	var sbTitle = document.createElement("div");
 	sbTitle.innerText = "Speech settings";
 	speechBox.appendChild(sbTitle);
@@ -84,5 +89,6 @@ function addSpeakBox(){
 	}
 	outerSpeechBox.appendChild(speechBox);
 	
-
+	window.addEventListener('keydown', playHotKey, true);
+	window.addEventListener('ontouchstart', playHotKey, true);
 }
