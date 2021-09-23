@@ -10,9 +10,34 @@ img{
 }
 
 .sectionTitle{
+	background-color: #FBEFD5;
+	cursor:pointer;
 	text-align: center;
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
+	width:100%;
+}
+
+.sectionTitle:hover {
+	background-color: #cccccc;
+}
+
+.sectionTitle:after {
+	content: "➖"; /* Unicode character for "minus" sign (-) */
+	font-size: 0.75em;
+	color: white;
+	float: right;
+	margin-left: 5px;
+}
+
+/* Collapsible section content. Note: visible by default */
+.collapsibleContent {
+	display: inline;
+	overflow: hidden;
+}
+
+.active:after {
+	content: "➕"; /* Unicode character for "plus" sign (+) */
 }
 
 .category{
