@@ -8,20 +8,22 @@ namespace ShareApi
         public ProgressManager(){
             randomGen = new Random();
         }
-        //TODO: sqlselect
-        //TODO: sqlinsert
-        //TODO: tohexstring
 
         private string GenerateNewUrlAndInsert(Lazy<ProgressManagerSql> sql, byte[] key){
             //6-character base64 = 6*6 = 36 bits, pad to 40 = 5 bytes
             byte[] bytes = new byte[5];
             string newUrl;
-            bool ok = false;
+            bool ok;
+            int tries = 0;
             do{
                 randomGen.NextBytes(bytes);
-                newUrl = Convert.ToBase64String(bytes).Substring(0,6);
+                newUrl = Convert.ToBase64String(bytes).Substring(0,6).ToUpperInvariant();
                 newUrl = newUrl.Replace('+', '~').Replace('/', '_');
                 ok = sql.Value.SqlUrlInsert(key,newUrl);
+                if(tries++ > 10)
+                {
+                    throw new Exception("Could not place new url after 10 tries");
+                }
             }
             while(ok == false);
             //we have the new URL! and it is unique.
