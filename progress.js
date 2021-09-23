@@ -1,5 +1,6 @@
-
+"use strict"
 //progress functions
+
 var savedata;
 var settings;
 var version = 6;
@@ -35,7 +36,7 @@ function loadProgressFromCookie(){
 	if(compressed){
 		//expand cookie data back to nice, usable form.
 		savedata = {};
-		for(propname in compressed){
+		for(const propname in compressed){
 			if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
 				savedata[propname] = {};
 				var elements = compressed[propname];
@@ -66,13 +67,13 @@ function loadProgressFromCookie(){
 function saveProgress(){
 	//savedata is in the format where IDs are an associative array of boolean values. 
 	//change this to linear array of int values so its smaller.
-	compressed = {};
+	var compressed = {};
 	compressed.version = savedata.version;
-	for(propname in savedata){
+	for(const propname in savedata){
 		if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
 			compressed[propname] = [];
 			var elements = savedata[propname];
-			for(elementPropName in elements){
+			for(const elementPropName in elements){
 				compressed[propname][parseInt(elementPropName)] = elements[elementPropName] == 1 ?1:0;
 			}
 		}
@@ -171,7 +172,7 @@ function findOnTree(root,findfunc,isLeafFunc=idNotNull){
 		if(root?.elements == null){
 			debugger;
 		}
-		for(e of root.elements){
+		for(const e of root.elements){
 			const mayberesult = findOnTree(e, findfunc, isLeafFunc);
 			if(!(mayberesult == null)){
 				return mayberesult;
@@ -191,7 +192,7 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 		newval += runFunc(rootNode);
 	}
 	else{
-		for(node of rootNode.elements){
+		for(const node of rootNode.elements){
 			newval = runOnTree(node,runFunc,newval,isLeafFunc);
 		}
 	}
