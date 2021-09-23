@@ -41,8 +41,9 @@ function play(){
 }
 
 function playHotKey(event){
+	console.log(event.type)
 	//change hotkey here if needed.
-	if (event.key == " " || event.type == "ontouchstart") {
+	if (event.key == " " || event.type == "touchstart") {
 		goToNext();
 		play();
 	}
@@ -90,5 +91,5 @@ function addSpeakBox(){
 	outerSpeechBox.appendChild(speechBox);
 	
 	window.addEventListener('keydown', playHotKey, true);
-	window.addEventListener('ontouchstart', playHotKey, true);
+	window.addEventListener('touchstart', playHotKey, true);
 }
