@@ -10,6 +10,10 @@ br{
 	margin-bottom: 0.3em;
 }
 
+ol{
+	padding-left: 2em; /* default is like 40 px which is kinda large */
+}
+
 ol li ol{
 	list-style-type: lower-alpha;
 }
@@ -40,6 +44,7 @@ td{
 	position: fixed;
 	background-color: #E5D9B9;
 	padding:0.5em;
+	top: 0; /* hug the top of the window instead of having a buffer */
 }
 
 .contentContainer{
@@ -72,12 +77,14 @@ td{
 .sidebar{
 	
 }
+
 .main{
-	flex-shrink: 1
+	flex-shrink: 1;
+	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
 }
 
 .progress{
-	font-size: 3em;
+	font-size: min(3em,12vw); /* on mobile, 3em is obnoxious so we decrease it */
 	font-weight: bold;
 }
 
@@ -88,6 +95,8 @@ td{
 
 .section{
 	margin: 1em;
+	margin-left: 1vw;
+	margin-right: 1vw;
 	background-color: #FBEFD5;
 	column-width: 18em;
 	padding: 0.5em;
