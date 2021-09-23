@@ -47,6 +47,10 @@ function play(){
 function initSpeak(){
 	speech = new SpeechSynthesisUtterance();
 	addSpeakBox();
+
+	// Disable the "Enable Speech" button
+	let enableSpeechBtn = document.getElementById("enable_speech_btn");
+	enableSpeechBtn.disabled = true;
 }
 
 function addSpeakBox(){
