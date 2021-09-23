@@ -31,6 +31,8 @@ function goToNext(){
 		sectionLines[currentLineIndex].style.backgroundColor="lightyellow";
 		currentLineText = sectionLines[currentLineIndex].innerText;
 	}
+
+	sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 }
 
 
@@ -41,8 +43,6 @@ function play(){
 }
 
 function playHotKey(event){
-	console.log(event.type)
-	//change hotkey here if needed.
 	if (event.key == " " || event.type == "touchstart") {
 		goToNext();
 		play();
@@ -92,4 +92,5 @@ function addSpeakBox(){
 	
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
+	sbPlay.focus();
 }
