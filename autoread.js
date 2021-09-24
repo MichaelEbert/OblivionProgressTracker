@@ -44,6 +44,7 @@ function play(){
 
 function playHotKey(event){
 	if (event.key == " " || event.type == "touchstart") {
+		event.preventDefault();
 		goToNext();
 		play();
 	}
@@ -92,5 +93,6 @@ function addSpeakBox(){
 	
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
+
 	sbPlay.focus();
 }
