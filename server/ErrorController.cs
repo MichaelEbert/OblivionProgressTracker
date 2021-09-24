@@ -22,6 +22,13 @@ namespace ShareApi
             {
                 return StatusCode(503);
             }
+            if(context.Error?.InnerException is SqlException sqlex)
+            {
+                if(sqlex.Number != 0)
+                {
+                    return StatusCode(503);
+                }
+            }
             return StatusCode(500);
         }
     }

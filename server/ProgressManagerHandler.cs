@@ -9,7 +9,7 @@ namespace ShareApi
         [HttpPost]
         public ActionResult<ProgressUpdate> HandleProgressUpdate(ProgressUpdate update){
             var good = ProgressUpdateValidator.Validate(update);
-            if (good)
+            if (good == ValidationFailedReason.NONE)
             {
                 ProgressManager mgr = new ProgressManager();
                 string newurl = mgr.HandleUpdate(update);
@@ -24,7 +24,7 @@ namespace ShareApi
             }
             else
             {
-                return BadRequest();
+                return BadRequest(good.ToString());
             }
         }
     }

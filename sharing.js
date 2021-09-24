@@ -17,6 +17,7 @@ function uploadSave(compressedSaveData){
 	
 	let payload = {
 		saveData: JSON.stringify(compressedSaveData),
+		url: null,
 		key: settings.shareKey
 	};
 	
@@ -29,5 +30,12 @@ function uploadSave(compressedSaveData){
     req.open("POST", url, false);
     req.setRequestHeader("Accept","application/json;odata=nometadata");
     req.setRequestHeader("Content-Type","application/json");
-    req.send(payload);
+    req.send(JSON.stringify(payload));
+	
+	if(req.status == 200){
+		//yay.
+		settings.myShareUrl = req.response;
+		saveCookie("settings",settings);
+	}
+	//TODO: if 500 error, try agin later.
 }

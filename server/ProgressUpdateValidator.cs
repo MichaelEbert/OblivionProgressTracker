@@ -5,18 +5,27 @@ using System.Threading.Tasks;
 
 namespace ShareApi
 {
+    public enum ValidationFailedReason
+    {
+        NONE,
+        UPDATE_IS_NULL,
+        DATA_TOO_LONG,
+        URL_BAD_LENGTH,
+        BAD_KEY_LENGTH
+    }
+
     public class ProgressUpdateValidator
     {
-        public static bool Validate(ProgressUpdate update)
+        public static ValidationFailedReason Validate(ProgressUpdate update)
         {
             if (update == null)
             {
-                return false;
+                return ValidationFailedReason.UPDATE_IS_NULL;
             }
             //check progress.savedata
             if(update.SaveData.Length > 4096)
             {
-                return false; //not a valid cookie
+                return ValidationFailedReason.DATA_TOO_LONG; //not a valid cookie
             }
 
             //check progress.url
@@ -24,12 +33,16 @@ namespace ShareApi
             {
                 if(update.Url.Length != 6)
                 {
-                    return false;
+                    return ValidationFailedReason.URL_BAD_LENGTH;
                 }
             }
 
             //check apikey
-            return update.Key.Length == 64;
+            if(update.Key.Length != 64)
+            {
+                return ValidationFailedReason.BAD_KEY_LENGTH;
+            }
+            return ValidationFailedReason.NONE;
         }
     }
 }
