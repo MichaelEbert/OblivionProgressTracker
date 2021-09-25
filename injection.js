@@ -237,7 +237,7 @@ function checkboxClicked2(event){
 
 	//extract what it is from the parent id so we can update progress
 	var found = false;
-	for (const classname of classes.filter(x=>x.standard)){
+	for (const classname of standardClasses()){
 		if(parentid.startsWith(classname)){
 			var rowid = parseInt(parentid.substring(classname.length));
 			savedata[classname][rowid] = event.target.checked;

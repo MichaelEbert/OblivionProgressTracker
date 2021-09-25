@@ -300,11 +300,11 @@ function userInputData(htmlRowId, checkboxElement){
 			}
 		
 			if(checkboxElement.type == "checkbox"){
-				savedata[classname][rowid] = checkboxElement.checked;
+				savedata[klass.name][rowid] = checkboxElement.checked;
 				setParentChecked(checkboxElement);
 			}
 			else{
-				savedata[classname][rowid] = checkboxElement.valueAsNumber;
+				savedata[klass.name][rowid] = checkboxElement.valueAsNumber;
 			}
 			found=true;
 			break;
