@@ -119,8 +119,8 @@ function resetProgress(shouldConfirm=false){
 		
 		for(const klass of classes){
 			if(klass.shouldSave){
-				savedata[classname] = {};
-				resetProgressForTree(classname, jsondata[classname]);
+				savedata[klass.name] = {};
+				resetProgressForTree(klass.name, jsondata[klass.name]);
 			}
 		}
 	}

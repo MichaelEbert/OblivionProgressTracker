@@ -206,7 +206,8 @@ function getSubtotalCompletion(subtotalJsonNode,classname){
 	const [items,total] = sumCompletionItems(subtotalJsonNode,classname);
 	
 	//try to find subtotals
-	const overviewId = "overview"+classname+"_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
+	//this may fail if we have multiple score nodes from different hives wiht the same name.
+	const overviewId = "overview_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
 	const maybeItem = document.getElementById(overviewId);
 	if(maybeItem){
 		//add this to correct subtotal slot
@@ -236,7 +237,7 @@ function recalculateProgressAndSave(){
 			}
 			
 			//update overview and totals
-			document.getElementById("overview"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
+			document.getElementById("overview_"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
 			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
 		}
 	}
