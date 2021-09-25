@@ -4,7 +4,6 @@
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bree%20Serif"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
-	<script src="obliviondata.js"></script>
 	<script src="progress.js"></script>
 	<script src="injection.js"></script>
 	<script src="autoread.js"></script>
@@ -2294,7 +2293,8 @@ The Imperial Dragon Armor quest is used as the official end of the run, so it wi
 
 </div>
 <script>
-init();
+loadProgressFromCookie();
+loadJsonData().then(()=>initInjection());
 makeCollapsible();
 </script>
 </body>

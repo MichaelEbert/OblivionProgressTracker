@@ -2,44 +2,42 @@
 var linkedElements = [];
 
 function LinkedElement(element, classname, id){
-	this.htmlElement = element;
+	this.element = element;
 	this.classname = classname;
 	this.id = id;
 }
 
-function init(){
-	loadJsonData().then(()=>{
-		loadProgressFromCookie();
-		replaceElements();
-		linkNPCs();
-		initIframe();
-	});
+
+function initInjection(){
+	replaceElements();
+	linkNPCs();
+	initIframe();
 }
 
 //initial function to replace element with checkbox n stuff.
-function replaceElements(){
+function  replaceElements(){
 	var replaceableParts = document.getElementsByClassName("replaceable");
 	while(replaceableParts.length > 0){
 		const element = replaceableParts[0];
 		const checklistid = element.getAttribute("clid");
 		//step 1: get the target element data.
 		var found = false;
-		var cell = null;
+		var elementjson = null;
 		var elementclass = null;
 		var elementid = null;
 		for (const klass of classes){
 			if(checklistid?.startsWith(klass.name)){
 				elementid = parseInt(checklistid.substring(klass.name.length));
-				cell = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
+				elementjson = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
 				elementclass = klass.name;
-				if(cell){found=true;}
+				if(elementjson){found=true;}
 				break;
 			}
 		}
 		if(!found){
 			if(checklistid?.startsWith("save")){
 				elementid = checklistid.substring("save".length);
-				cell = findOnTree(jsondata["save"], x=>x.id == elementid);
+				elementjson = findOnTree(jsondata["save"], x=>x.id == elementid);
 				elementclass = "save";
 				found=true;
 			}
@@ -52,7 +50,7 @@ function replaceElements(){
 						var maybeJson = findOnTree(jsondata[propname], (x=>x.formId == checklistid));
 						if(maybeJson != null){
 							elementid = maybeJson.id;
-							cell = maybeJson;
+							elementjson = maybeJson;
 							elementclass = propname;
 							found=true;
 							break;
@@ -67,20 +65,17 @@ function replaceElements(){
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
-			console.warn("replaceable element "+checklistid+" not found in reference");
+			console.log("replaceable element "+checklistid+" not found in reference");
 			continue;
 		}
 		//step 2: create the internal stuff.
 		element.innerText = "";
-		var newElement = initInjectedElement(cell, elementclass)
+		var newElement = initInjectedElement(elementjson, elementclass)
 		if(element.getAttribute("disabled") == "true"){
 			newElement.children[1].disabled = true;
 		}
 		element.replaceWith(newElement);
 		//step 3: load current data from cookies
-		if(newElement == null || elementclass == null || elementid == null){
-			debugger;
-		}
 		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
 	}
 	updateUIFromSaveData2();
@@ -207,14 +202,14 @@ function updateUIFromSaveData2(){
 	//since these pages may contain multiple references to teh same object, we need to
 	//do this from the element side, not from the data side.
 	for(const linkedElement of linkedElements){
-		var checkbox = Array.from(linkedElement.htmlElement.children).find(x=>x.tagName=="INPUT");
+		var checkbox = Array.from(linkedElement.element.children).find(x=>x.tagName=="INPUT");
 		if(checkbox.type=="checkbox"){
 			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
 			if(checkbox.checked){
-				linkedElement.htmlElement.classList.add("checked");
+				linkedElement.element.classList.add("checked");
 			}
 			else{
-				linkedElement.htmlElement.classList.remove("checked");
+				linkedElement.element.classList.remove("checked");
 			}
 		}
 		else{
