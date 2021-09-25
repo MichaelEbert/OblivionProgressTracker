@@ -4,11 +4,13 @@
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bree%20Serif"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
+	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="progress.js"></script>
 	<script src="sharing.js"></script>
 	<script src="injection.js"></script>
 	<script src="autoread.js"></script>
+	<script src="collapsible.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
 </head>
@@ -30,7 +32,7 @@
 <article id="guide" class="main">
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
-<button onclick="initSpeak()">Enable speech</button>
+<button onclick="initSpeak()" id="enable_speech_btn">Enable speech</button>
 <!--<div id="toc">
 Table of Contents
 <ol>
@@ -42,6 +44,7 @@ Table of Contents
 -->
 <div id="guide_pregame" class="section" id="guide_Pregame">
 <div class="sectionTitle">Pregame</div>
+<div class="collapsibleContent">
 <ol>
 <li>Enter the console commands “sdt 12” and “tdt” before the run starts, and make sure your wait timer is
 set to 1 hour. <b>If the game crashes at any point, enter the “sdt 12” and “tdt” console commands again.</b></li>
@@ -50,8 +53,12 @@ set to 1 hour. <b>If the game crashes at any point, enter the “sdt 12” and �
 <li>Time starts as soon as you click "Continue" on the first tutorial box that appears. You are not allowed to move before that happens.</li>
 </ol>
 </div>
+</div>
+
+
 <div id="guide_tutorial" class="section" id="guide_Tutorial">
 <div class="sectionTitle">Tutorial</div>
+<div class="collapsibleContent">
 <ol>
 <li>Click continue on the quest pop-up to start the run. Press caps lock to always be sprinting, and press F3 to bring up the spell menu.</li>
 <li>Hotkey <span class="spellname">Flare</span> and equip <span class="spellname">Adrenaline Rush</span>.</li>
@@ -91,10 +98,12 @@ Restoration</li>
 <li><span class="replaceable" clid="quest0">tutorial</span> is now complete.</li>
 </ol>
 </div>
+</div>
 
 
 <div id="guide_ICMarketDistrict" class="section" id="guide_ImperialCityMarketDistrict">
 <div class="sectionTitle">Imperial City Market District</div>
+<div class="collapsibleContent">
 <ol>
 <li>Fast travel to the Imperial City Market District and head WSW into the first archway, then hug the right wall until you find the Mystic Emporium. </li>
 <li>Wait until 8am, then talk to <span class="npc">Calindil</span>. </li>
@@ -102,13 +111,15 @@ Restoration</li>
 <li><a href="glitches.html#duping">Dupe</a> the 1 stack using the 2 stack, pick one up, then repeat and pick up all scrolls so that you have 3 of one scroll and 2 of another. Now, dupe the stacks back and forth until you have 512 of one and 768 of another.</li>
 <li>From the 768 stack, sell 200, 200, then 68 scrolls back to Calindil. From the 512 stack, sell 200, 200, then 62 scrolls. You should have 300 of one type, and 50 of another, as well as over 4,300 gold at the end. </li>
 <li>Read <span class="replaceable" clid="book87">The Black Arts on Trial [Mysticism]</span> skill book on the counter.</li>
-<li>Head SE to Red Diamond Jewelry. Talk to <span class="npc">Hamlof</span> and buy the Brass Ring. Dupe about 300 lockpicks.</li>
+<li>Head SE to Red Diamond Jewelry. Talk to <span class="npc">Hamlof Red-Tooth</span> and buy the Brass Ring. Dupe about 300 lockpicks.</li>
 </ol>
+</div>
 </div>
 
 
 <div id="guide_MagesGuildPt1" class="section" id="guide_MagesGuildPt1">
 <div class="sectionTitle">Mages Guild Pt. 1</div>
+<div class="collapsibleContent">
 <div class="category" id="guide_MagesGuildPt1_Bravil">
 <div class="categoryTitle">Bravil Recommendation</div>
 <ol>
@@ -192,7 +203,7 @@ Use the following method to increase your movement speed everywhere you go:<br/>
 <li>Exit the well and go around to the front of the south building to enter the Mages Guild.</li>
 <li>Head east down into the basement.</li>
 <li>Read <span class="replaceable" clid="book88">The Firsthold Revolt [Mysticism]</span> on the bookshelf next to the crystal ball at the bottom of the stairs.</li>
-<li>Head west and open the locked door, then open the locked drawers and take the Black Soul Gems.</li>
+<li>Head west and open the locked door, then open the locked drawers and take the Black Soul Gems.
 <ol><li>If this door does not open, load <span class="replaceable" clid="savepermakey" disabled="true">the PermaKey_Save</span> and do the Perma Key glitch.</li></ol></li>
 <li>Talk to <span class="npc">Falcar</span>. He may be anywhere in the building and is wearing black.
 <ol><li>Dialogue: Recommendation.
@@ -227,7 +238,7 @@ under the first building.</li>
 <li>Fast travel to the Mages Guild Quest Marker to talk to Teekeeus.
 <ol><li>Dialogue: Fingers of the Mountain.</li>
 <li>Dialogue: Here’s the book. (this completes <span class="replaceable" clid="quest91">the quest</span>)</li></ol></li>
-<li>Go outside and find <span class="npc">Earana</span> again. She may be at the Grey Mare near the south end of town.</li>
+<li>Go outside and find <span class="npc">Earana</span> again. She may be at the Grey Mare near the south end of town.
 <ol><li>Advance predetermined dialogue.
 <li>Dialogue: No, I won’t do that. (This completes <span class="replaceable" clid="quest92">Fingers of the Mountain, Part II</span>.)</li></ol></li>
 </div>
@@ -364,10 +375,17 @@ under the first building.</li>
 </ol>
 After completing all of the Mages Guild Recommendations, you should now have all the spell effects you will need for making the farming spells for the rest of the game.
 </div>
+</div>
+
+
 
 </div>
+
+
 <div class="section" id="guide_GoldFarming">
 <div class="sectionTitle">Gold Farming/Arcane University</div>
+<div class="collapsibleContent">
+
 <ol>
 <li>Read <span class="replaceable" clid="book86">Before the Ages of Man [Mysticism]</span> on the altar to your immediate right. </li>
 <li>Go outside and head left into the Lustratorium and read <span class="replaceable" clid="book10">Song of the Alchemists [Alchemy]</span> on the bookshelf on the back wall. </li>
@@ -456,9 +474,12 @@ Exit the spellmaking altar. Cast <span class="spellname">B_Destruction</span> an
 </table>
 At this point, hotkey all of your <span class="spellname">A_[Skill]</span> spells and <span class="spellname">B_Mercantile</span>.
 </div>
+</div>
+
 
 <div class="section" id="guide_InvestingCircuit">
 <div class="sectionTitle">Investing Circuit</div>
+<div class="collapsibleContent">
 Now that you can get your Mercantile to 75+ with a spell, you can go around investing in every shop owner in the game. It is best to do this early since some quests interfere with your ability to invest and merchants can randomly die and ruin the run.
 <br/>
 <p>
@@ -497,7 +518,6 @@ Do the following additional tasks at various peoples’ stores/homes:
 	</ul></li>
 </ol>
 </div>
-
 
 <div class="category" id="guide_InvestingCircuit_ChorrolSouthGate">
 <div class="categoryTitle">Chorrol - South Gate:</div>
@@ -545,7 +565,6 @@ Do the following additional tasks at various peoples’ stores/homes:
 	</ul></li>
 </ol>
 </div>
-
 
 <div class="category" id="guide_InvestingCircuit_AnvilCastleGate">
 <div class="categoryTitle">Anvil Castle Gate:</div>
@@ -712,7 +731,6 @@ Do the following additional tasks at various peoples’ stores/homes:
 </ol>
 </div>
 
-
 <div class="category" id="guide_InvestingCircuit_TempleDistrict">
 <div class="categoryTitle">Temple District:</div>
 <img src="images/InvestingCircuit_ICTempleDistrict.png" name="Investing Circuit Temple District" width="371" height="325" border="0" align="bottom"/>
@@ -746,13 +764,11 @@ Do the following additional tasks at various peoples’ stores/homes:
 </ol>
 </div>
 
-
 <div class="category" id="guide_InvestingCircuit_ImperialCityMisc">
 <div class="categoryTitle">Imperial City Misc:</div>
 <ol><li><b>Invest</b> in <span class="replaceable" clid="0x000C45B8">Shady Sam</span> by fast traveling to Chestnut Handy Stables outside the city and heading north to find him along the city wall.</li>
 </ol>
 </div>
-
 
 <div class="category" id="guide_InvestingCircuit_Bravil">
 <div class="categoryTitle">Bravil:</div>
@@ -807,13 +823,11 @@ Do the following additional tasks at various peoples’ stores/homes:
 </ol>
 </div>
 
-
 <div class="category" id="guide_InvestingCircuit_BravilMisc">
 <div class="categoryTitle">Bravil Misc:</div>
 <ul><li>Fast travel to Castle Bravil, and head SW along the wall to find another <span class="nirnroot">Nirnroot</span>.</li>
 </ul>
 </div>
-
 
 <div class="category" id="guide_InvestingCircuit_CastleBruma">
 <div class="categoryTitle">Castle Bruma:</div>
@@ -877,7 +891,6 @@ Do the following additional tasks at various peoples’ stores/homes:
 </ol>
 </div>
 
-
 <div class="category" id="guide_InvestingCircuit_SkingradEastGate">
 <div class="categoryTitle">Skingrad - East Gate:</div>
 <img src="images/InvestingCircuit_Skingrad.png" name="Image10" width="415" height="399" border="0" align="bottom">
@@ -904,7 +917,6 @@ Do the following additional tasks at various peoples’ stores/homes:
 	</ul></li>
 </ol>
 </div>
-
 
 <div class="category" id="guide_InvestingCircuit_LeyawiinWestGate">
 <div class="categoryTitle">Leyawiin - West Gate:</div>
@@ -933,10 +945,13 @@ Do the following additional tasks at various peoples’ stores/homes:
 </ol>
 </div>
 <p><b>You should now have 56 Stores Invested In.</b></p>
+</div>
 </div><!-- investment end-->
+
 
 <div class="section" id="guide_MagesGuildPt2">
 <div class="sectionTitle">Mages Guild Pt. 2</div>
+<div class="collapsibleContent">
 
 <p>Farm Acrobatics and your hotkeyed A_[Skill] spells everywhere you go while blocking with your weapon to speed up the casting animation, but make sure not to level up skills too far. Reading skill books for a maxed out skill will not count, and ruin the run. 
 <b>Stop at level 75 for each magic skill for now.</b></p>
@@ -1254,10 +1269,14 @@ Do the following additional tasks at various peoples’ stores/homes:
 	<li>Go into the Arch-Mage’s Quarters and get the Imp Gall that is under the baskets by the bed, as well as the <span class="nirnroot">Nirnroot</span>.</li>
 </ol>
 </div>
+
 </div>
+</div>
+
 
 <div class="section" id="guide_MainQuestPt1">
 <div class="sectionTitle">Main Quest Pt. 1</div>
+<div class="collapsibleContent">
 
 <p style="margin-left: 0.5in; margin-right: 0.5in; margin-bottom: 0.14in; line-height: 138%">
 The main quest must be partially completed in order to fully encounter all the random Oblivion gates on the map, so do the main quest up through <span class="replaceable" clid="quest">Dagon Shrine</span>. After completing this quest, all random Oblivion gates will be able to spawn while exploring the map,and the chance of encountering one doubles, making it optimal to do this quest before starting to explore the map.</p>
@@ -1447,18 +1466,25 @@ The main quest must be partially completed in order to fully encounter all the r
 	<li>Enter the West Wing and head upstairs. Take the Cyrodilic Brandy on the shelf in the side room, and the Tamika Vintage 399 and Surilie Brothers Vintage 399 from next to the bed in the main bedroom.</li>
 </ol>
 </div>
+
+</div>
 </div><!-- MQ1 end-->
+
 
 <div class="section" id="guide_MapExploration">
 <div class="sectionTitle">Map Exploration</div>
+<div class="collapsibleContent">
 
 Don’t go into any major cities for extended periods of time at this point, since Mythic Dawn Agents will attack you, potentially resulting in the death of an NPC who is needed for a later objective. 
 When your Acrobatics reaches 50, you can no longer hold block while casting since you will dodge roll. Put away your staff at this point for a movement speed bonus. You will receive a bonus +2 Acrobatics later in the run so make sure to account for this when farming Acrobatics as you get closer to 90. The value to stop at will be 100 minus unread skill books minus 2.
 Farm all magic skills to 75 first, then prioritize Destruction and Conjuration. The highest any magic skill should be farmed is 100 minus the total skill books left to read for that skill.
 </div>
+</div>
+
 
 <div class="section" id="guide_TheNirnroute">
 <div class="sectionTitle">The Nirnroute</div>
+<div class="collapsibleContent">
 <p>Next you will need to find all of the Nirnroot on the overworld. Use the <a href="https://drive.google.com/file/d/1HXEmXo1Z0bLBeV4v8JqqLKjEvAFyXKbH/view?usp=sharing" target="_blank">Nirnroute Map</a> to see which direction to go from each Nirnroot to the next,
  and use the <a href="https://drive.google.com/file/d/1vS49gi29oS5Xb36o5U1Nd7Ex-XzsTGI7/view?usp=sharing" target="_blank">Nirnroute Pocket Handbook</a> for exact pictures of locations for each one. 
 </p><p><b>
@@ -1471,12 +1497,14 @@ and check the Swamp Start/End Checkpoints when they are mentioned in the handboo
 <li>Nirnroute End Checkpoint: 288 Nirnroot at the end of the route.</li>
 </ul>
 You should have 34 before starting this section. There are 254 outdoor Nirnroot, meaning you should have a total of 288 Nirnroot at the end of this part.
+</div>
 </div><!-- nirnroot end-->
 
 
 
 <div class="section" id="guide_MainQuestPt2">
 <div class="sectionTitle">Main Quest Pt. 2</div>
+<div class="collapsibleContent">
 
 It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Dawn agents killing NPCs.;
 <div class="category" id="guide_MainQuestPt2_Spies">
@@ -1689,8 +1717,12 @@ It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Daw
 The Imperial Dragon Armor quest is used as the official end of the run, so it will be done last. Also, 2 weeks must pass, so you might as well do other quests and come back when it is convenient rather than waiting 24 hours 14 total times.
 </div>
 
+</div>
+</div>
+
 <div class="section" id="guide_FightersGuild">
 <div class="sectionTitle">Fighters Guild</div>
+<div class="collapsibleContent">
 <div class="category" id="guide_FightersGuild_ARatProblem">
 <div class="categoryTitle">A Rat Problem</div>
 <ol>
@@ -2255,13 +2287,16 @@ The Imperial Dragon Armor quest is used as the official end of the run, so it wi
 	</ol></li>
 </ol>
 </div>
+</div>
+
+</div>
 </div><!-- FG end-->
 
 </article><!-- main end-->
 
 </div>
 <script>
-loadProgressFromCookie();
-loadJsonData().then(()=>initInjection());
+init();
+makeCollapsible();
 </script>
 </body>
