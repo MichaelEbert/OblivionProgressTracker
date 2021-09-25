@@ -5,8 +5,10 @@ function commonInit(jsonObject){
 		link = jsonObject.link;
 	}
 	else{
-		link = "https://en.uesp.net/wiki/Oblivion:"+jsonObject.name.replaceAll(" ","_");
+		link = "https://en.uesp.net/wiki/Oblivion:"+jsonObject.name?.replaceAll(" ","_");
 	}
+	
+	
 	document.getElementById("uespLink").href=link;
 	
 	if(jsonObject.notes != null){
