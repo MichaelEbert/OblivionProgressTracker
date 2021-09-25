@@ -237,7 +237,7 @@ function checkboxClicked2(event){
 
 	//extract what it is from the parent id so we can update progress
 	var found = false;
-	for (const classname of standardclasses()){
+	for (const classname of classes.filter(x=>x.standard)){
 		if(parentid.startsWith(classname)){
 			var rowid = parseInt(parentid.substring(classname.length));
 			savedata[classname][rowid] = event.target.checked;
@@ -271,7 +271,7 @@ function checkboxClicked2(event){
 	}
 	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
 	updateUIFromSaveData2();
-	saveProgress();
+	saveProgressToCookie();
 }
 
 function initIframe(){
