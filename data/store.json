@@ -1,4 +1,4 @@
-{"version": 3,"name": "store","elements": [
+{"version": 3,"name": "store","weight":5, "elements": [
     {"name": "Anvil","elements": [
         {"name": "Enilroth","formId": "0x0003630B"},
         {"name": "Felen Relas","formId": "0x0002D06C"},
