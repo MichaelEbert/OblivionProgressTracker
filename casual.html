@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="progress.js"></script>
 	<script src="injection.js"></script>
+	<script src="collapsible.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Casual — Interactive Oblivion Checklist</title>
 </head>
@@ -39,6 +40,7 @@ Table of Contents
 
 <div class="section" id="questscompleted">
 <div class="sectionTitle">208 Quests Completed</div>
+<div class="collapsibleContent">
 Quests Completed requires you to finish each quest in a way that will move it to the completed section of your quest journal.
 Tips:
 <ul>
@@ -70,8 +72,11 @@ Failing a quest will still count it as complete in most cases. For example, for 
 </li></ul></li>
 </ul>
 </div>
+</div>
+
 <div class="section" id="mainquest">
 <div class="sectionTitle">Quests — Main Quest</div>
+<div class="collapsibleContent">
 <div class="categoryTitle"><span class="replaceable" clid="quest0">Tutorial</span></div>
 Taking the Iron Key off the Goblin in the first rat area and making a save will give you an easy way to reactivate the <a href="./glitches.html#permakey">Perma Key Glitch</a> if you want to be able to use it.
 <br/>
@@ -88,12 +93,14 @@ Taking the Iron Key off the Goblin in the first rat area and making a save will 
 <li>Make sure you discover Cloud Ruler Temple before starting this quest, or else you will never be able to max out the Places Found accomplishment.</li>
 <li>Now that you can enter Cloud Ruler Temple, <span class="replaceable">Legend of Krately House [Sneak]</span> and <span class="replaceable" clid="book43">Beggar [Athletics]</span> can be read in the East Wing and Great Hall.</li>
 </ul>
-
 </div>
+</div>
+
 </article>
 </div>
 <script>
 loadProgressFromCookie();
 loadJsonData().then(()=>initInjection());
+makeCollapsible();
 </script>
 </body>
