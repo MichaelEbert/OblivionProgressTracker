@@ -1,10 +1,8 @@
-"use strict"
-//functions that save and load user progess.
 
+//progress functions
 var savedata;
 var settings;
-const version = 6;
-
+var version = 6;
 function saveCookie(name,value){
 	//save for 10 years
 	var expiry = new Date()
@@ -26,55 +24,6 @@ function loadCookie(name){
 	}
 }
 
-//compress save data object for more efficient stringification
-//savedata is in the format where IDs are an associative array of boolean values. 
-//change this to linear array of int values so its smaller.
-function compressSaveData(saveDataObject){
-	var compressed = {};
-	compressed.version = saveDataObject.version;
-	for(const propname in saveDataObject){
-		const matchingClass = classes.find(x=>x.name == propname);
-		if(matchingClass != null && matchingClass.standard) {
-			//for "standard" classes, we do a more efficient compression
-			compressed[propname] = [];
-			const elements = saveDataObject[propname];
-			for(const elementPropName in elements){
-				compressed[propname][parseInt(elementPropName)] = elements[elementPropName] == 1 ?1:0;
-			}
-		}
-		else{
-			//otherwise, we just leave it be.
-			compressed[propname] = savedata[propname];
-		}
-	}
-	return compressed;
-}
-
-function decompressSaveData(compressedSaveData){
-	//expand cookie data back to nice, usable form.
-	var decompressedSaveData = {};
-	for(const propname in compressedSaveData){
-		const matchingClass = classes.find(x=>x.name == propname);
-		if(matchingClass != null && matchingClass.standard) {
-			decompressedSaveData[propname] = {};
-			let elements = compressedSaveData[propname];
-			for(let i = 0; i < elements.length; i++){
-				if(elements[i] != null){
-					decompressedSaveData[propname][i] = (elements[i] == 1);
-				}
-			}
-		}
-		else{
-			decompressedSaveData[propname] = compressedSaveData[propname];
-		}
-	}
-	return decompressedSaveData;
-}
-
-function saveProgressToCookie(){
-	saveCookie("progress",compressSaveData(savedata));
-}
-
 function loadProgressFromCookie(){
 	settings = loadCookie("settings");
 	if(settings == null){
@@ -84,7 +33,25 @@ function loadProgressFromCookie(){
 	var compressed = loadCookie("progress");
 	
 	if(compressed){
-		savedata = decompressSaveData(compressed);
+		//expand cookie data back to nice, usable form.
+		savedata = {};
+		for(propname in compressed){
+			if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
+				savedata[propname] = {};
+				var elements = compressed[propname];
+				var i = 0;
+				while(i < elements.length){
+					if(elements[i] != null){
+						savedata[propname][i] = (elements[i] == 1);
+					}
+					i+=1;
+				}
+			}
+			else{
+				savedata[propname] = compressed[propname];
+			}
+		}
+		
 		if(savedata.version != version){
 			alert("Save data is out of date. Percentages may be wrong.")
 		}
@@ -96,7 +63,150 @@ function loadProgressFromCookie(){
 	}
 }
 
-//helper function for resetProgress
+function saveProgress(){
+	//savedata is in the format where IDs are an associative array of boolean values. 
+	//change this to linear array of int values so its smaller.
+	compressed = {};
+	compressed.version = savedata.version;
+	for(propname in savedata){
+		if(propname == "quest" || propname == "book" || propname == "store" || propname == "skill"){
+			compressed[propname] = [];
+			var elements = savedata[propname];
+			for(elementPropName in elements){
+				compressed[propname][parseInt(elementPropName)] = elements[elementPropName] == 1 ?1:0;
+			}
+		}
+		else{
+			compressed[propname] = savedata[propname];
+		}
+	}	
+	saveCookie("progress",compressed);
+}
+
+
+
+var jsondata = {quest:null,book:null,skill:null,store:null}
+
+//this needs to be a separate func because byref closure shenanigans
+function generatePromiseFunc(basedir, klass){
+	return fetch(basedir+"/data/"+klass.name+".json")
+			.then(resp=>resp.json())
+			.then(json=>mergeData(json,basedir))
+			.then(json=>{
+				jsondata[klass.name] = json;
+				console.log(klass.name+" loaded");
+			})
+			.catch(err =>console.log(err));
+}
+
+function loadJsonData(basedir=".",classFilter=(x=>true)){
+	var promises = [];
+	for(var klass of classes){
+		if(classFilter(klass)){
+			promises.push(generatePromiseFunc(basedir,klass));
+		}
+	}
+	if(classFilter({name:"npc"})){
+		promises.push(fetch(basedir+"/data/npc.json").then(response=>response.json()).then(d => jsondata.npc = d));
+	}
+	return Promise.allSettled(promises).then(()=>computeTotalWeight());
+}
+
+function mergeSingleNode(node,mapping){
+	node.id = mapping.find(x=>x.formId == node.formId).id;
+}
+
+//turn a bunch of json data from different files into a single js object.
+async function mergeData(jsonTree, basedir="."){
+	if(jsonTree.version >= 3){
+		//jsonTree is by formId. load IDs.
+		const mapFilename = "mapping_"+jsonTree.name.toLowerCase()+"_v"+jsonTree.version+".json";
+		const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
+		runOnTree(jsonTree, (y=>mergeSingleNode(y,mapJson)));
+		console.log("merged "+jsonTree.name);
+	}
+	return jsonTree;
+}
+
+var totalweight;
+
+//class names and static weights
+var classes = [
+	{name:"quest",standard:true,weight:50}
+	,{name:"book",standard:true,weight:8}
+	,{name:"skill",standard:true,weight:15}
+	,{name:"store",standard:true,weight:5}	
+	,{name:"misc",standard:false,weight:0}
+	,{name:"save",standard:false,weight:0}
+]
+
+// classes that have a standard layout and can use most of the generic functions.
+function standardclasses(){
+	return classes.filter(x=>x.standard).map(x=>x.name);
+}
+
+//is node.elements undefined or null?
+function elementsUndefinedOrNull(node){
+	// in JS, undefined == null (but not undefined === null)
+	return (node.elements == null);
+}
+
+function idNotNull(e){
+	return e != null && (e.id != null || e.formId != null);
+}
+
+//find an element of the tree.
+//root: root node to run on
+//findfunc: function that returns 'true' if element matches.
+function findOnTree(root,findfunc,isLeafFunc=idNotNull){
+	if(isLeafFunc(root)){
+		if(findfunc(root)){
+			return root;
+		}
+		else{
+			return null;
+		}
+	}
+	else{
+		if(root?.elements == null){
+			debugger;
+		}
+		for(e of root.elements){
+			const mayberesult = findOnTree(e, findfunc, isLeafFunc);
+			if(!(mayberesult == null)){
+				return mayberesult;
+			}
+		}
+	}
+}
+
+//run a function on leaves in a tree and sum the results.
+//rootNode: root node to run on
+//runFunc: function to run on leaves
+//startVal: starting value of result
+//isLeafFunc: function to determine if leaf. default is elements prop null or undefined.
+function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull){
+	var newval = startVal;
+	if(isLeafFunc(rootNode)){
+		newval += runFunc(rootNode);
+	}
+	else{
+		for(node of rootNode.elements){
+			newval = runOnTree(node,runFunc,newval,isLeafFunc);
+		}
+	}
+	return newval;
+}
+
+//compute total weight. Needed so we can get a percentage.
+function computeTotalWeight(){
+	totalweight = classes.reduce((tot,c)=>tot+c.weight,0);
+	try{
+		totalweight = runOnTree(jsondata.misc,(e=>parseInt(e.weight)),totalweight,(e=>e.weight != null));
+	}
+	catch{}
+}
+
 function resetProgressForTree(classname, jsonNode){
 	runOnTree(jsonNode,(e=>{
 		if(e.type == "number"){
@@ -107,23 +217,25 @@ function resetProgressForTree(classname, jsonNode){
 		}}),0,(e=>e.id != null));
 }
 
-//generate a new, clean savedata object, and saves it to cookie.
 function resetProgress(shouldConfirm=false){
-	var execute = true;
+	var doit = true;
 	if(shouldConfirm){
-		execute = confirm("press OK to reset data");
+		doit = confirm("press OK to reset data");
 	}
-	if(execute){
+	if(doit){
 		savedata = new Object();
 		savedata.version = version;
 		
-		for(const klass of classes){
-			if(klass.shouldSave){
-				savedata[classname] = {};
-				resetProgressForTree(classname, jsondata[classname]);
-			}
+		for(classname of standardclasses()){
+			savedata[classname] = {};
+			resetProgressForTree(classname, jsondata[classname]);
 		}
+		
+		savedata.save = {};
+		savedata.misc = {};
+		resetProgressForTree("misc",jsondata.misc);
+		
+		updateUIFromSaveData();
+		recalculateProgressAndSave();
 	}
-	saveProgressToCookie();
-	document.dispatchEvent(new Event("progressLoad"));
 }

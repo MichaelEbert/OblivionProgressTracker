@@ -1,66 +1,56 @@
-"use strict"
 //==========================
 // Functions that generate the page
 //===========================
 function init(){
 	document.addEventListener("progressLoad",updateUIFromSaveData);
 	loadJsonData().then(()=>{
-		//populate sections with json data.
-		//only display stuff that user can change.
-		for(const klass of progressClasses){
-			const hive = jsondata[klass.name];
-			
-			if(hive.version >= 2){
-				const section = document.getElementById(klass.name+"section");
-				if(section == null){
-					console.warn("could not find section for class "+klass.name);
-					continue;
-				}
-				//we start at depth 1 because the page itself already has the depth 0 titles.
-				initMultiV2(hive.elements, klass.name, section,1);
-			}
-			else{
-				if(klass.name == "skill"){
-					initMulti(hive.elements,klass.name, "specialization");
-				}
-				else{
-					console.error("Init failed for "+klass.name+": version is "+hive.version);
-				}
-			}
-		}
-	}).then(()=>{
+		initMultiV2(jsondata.quest,"quest","questline");
+		initMultiV2(jsondata.book,"book","skill");
+		initMultiV2(jsondata.skill,"skill","specialization");
+		initMultiV2(jsondata.store,"store","city");
+		initMultiV2(jsondata.misc,"misc","");
 		if(loadProgressFromCookie() == false){
 			resetProgress();
-		}
-	});
+	}});
 }
 
 const classNamesForLevels = ["section","category","subcategory"]
 
+function initMultiV2(multidata, classname, categoryName){
+	console.log(jsondata.quest.elements[0].elements[0].id);
+	if(multidata.version == 1){
+		initMulti(multidata.elements,classname, categoryName);
+	}
+	else {
+		var section = document.getElementById(classname+"section");
+		initMultiV2internal(multidata.elements, classname, section,1);
+	}
+}
+
 //can't use runOnTree because we need to do additional stuff per-list, like subtree name.
-function initMultiV2(multidata, classname, parentNode, depth){
+function initMultiV2internal(multidata, classname, parentNode, depth){
 	if(multidata == null){
 		console.log(parentNode);
 		debugger;
 	}
-	for(const datum of multidata) {
+	for(datum of multidata) {
 		//only leaf nodes have IDs
 		if(datum.id != null || datum.formId != null){
 			parentNode.appendChild(initSingle(datum, classname));
 		}
 		else{
 			// not a leaf node, so create a subtree, with a title n stuff.
-			const subtreeName = datum.name.replaceAll(" ","_");
-			const subtreeRoot = document.createElement("div");
+			var subtreeName = datum.name.replaceAll(" ","_");
+			var subtreeRoot = document.createElement("div");
 			subtreeRoot.classList.add(classNamesForLevels[depth]);
 			subtreeRoot.id = parentNode.id + "_" + subtreeName;
 			
-			const subtreeTitle = document.createElement("div");
+			var subtreeTitle = document.createElement("div");
 			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
 			subtreeTitle.innerText = datum.name;
 			subtreeRoot.appendChild(subtreeTitle);
 			
-			initMultiV2(datum.elements, classname, subtreeRoot, depth+1);
+			initMultiV2internal(datum.elements, classname, subtreeRoot, depth+1);
 			parentNode.appendChild(subtreeRoot);
 		}
 	}
@@ -69,11 +59,16 @@ function initMultiV2(multidata, classname, parentNode, depth){
 //init a non-leaf element
 function initMulti(multidata, classname, categoryName){
 	var section = document.getElementById(classname+"section");
+	multidata.sort((a,b)=>{
+		if(a[categoryName] < b[categoryName]){ return -1;}
+		if(a[categoryName] > b[categoryName]){ return 1; }
+		return 0;
+	});
 	// it MIGHT be better to just stick all the books in a sortable table.
 	var currentCategory = "";
 	//categoryHtml is a container so we can minimize 1 category at a time
 	var categoryHtml;
-	for (const datum of multidata){
+	for (datum of multidata){
 		var bhtml = initSingle(datum,classname);
 		if(datum[categoryName] != currentCategory){
 			currentCategory = datum[categoryName];
@@ -92,11 +87,10 @@ function initMulti(multidata, classname, categoryName){
 	}
 }
 
-//init a single leaf node
-//imma call single leaf nodes "cells" because its memorable
-function initSingle(cell, classname){
+//init a single leaf element
+function initSingle(rowdata, classname){
 	//this is here because we may want to switch over to formID.
-	var usableId = cell.id;
+	var usableId = rowdata.id;
 	
 	var rowhtml = document.createElement("div");
 	rowhtml.classList.add(classname);
@@ -108,25 +102,25 @@ function initSingle(cell, classname){
 	var rName = document.createElement("span");
 	rName.classList.add(classname+"Name");
 	var linky = document.createElement("a");
-	if(cell.link){
-		linky.href = cell.link;
+	if(rowdata.link){
+		linky.href = rowdata.link;
 	}
 	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+cell.name.replaceAll(" ","_");
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+rowdata.name.replaceAll(" ","_");
 	}
-	linky.innerText = cell.name;
+	linky.innerText = rowdata.name;
 	linky.target = "_blank";
 	rName.appendChild(linky);
 	rowhtml.appendChild(rName);
 	
 	//checkbox
 	var rcheck = document.createElement("input")
-	if(cell.type){
-		rcheck.type= cell.type;
+	if(rowdata.type){
+		rcheck.type= rowdata.type;
 		rcheck.addEventListener('change',checkboxClicked);
 		rcheck.size=4;
-		if(cell.max){
-			rcheck.max = cell.max;
+		if(rowdata.max){
+			rcheck.max = rowdata.max;
 		}
 	}
 	else{
@@ -139,9 +133,9 @@ function initSingle(cell, classname){
 	rowhtml.appendChild(rcheck)
 	
 	//notes
-	if(cell.notes){
+	if(rowdata.notes){
 		var notesIcon = document.createElement("span");
-		notesIcon.title = cell.notes;
+		notesIcon.title = rowdata.notes;
 		notesIcon.innerText = "⚠"
 		rowhtml.appendChild(notesIcon);
 	}
@@ -154,14 +148,14 @@ function initSingle(cell, classname){
 // Functions that deal with progress
 //===========================
 
-//returns [completed items,total items] for a single cell in the json.
-function sumCompletionSingleCell(cell,classname){
+//get the completed items and total items for a single ID'd element in the json.
+function sumCompletionSingleElement(element,classname){
 	var totalElements;
 	var completedElements;
-	if(cell.type == "number"){
-		completedElements = savedata[classname][cell.id];
-		if(cell.max){
-			totalElements = cell.max;
+	if(element.type == "number"){
+		completedElements = savedata[classname][element.id];
+		if(element.max){
+			totalElements = element.max;
 		}
 		else{
 			totalElements = Math.max(1,completedElements);
@@ -170,7 +164,8 @@ function sumCompletionSingleCell(cell,classname){
 	else{
 		//we're a checkbox
 		totalElements = 1;
-		if(savedata[classname][cell.id]){
+		const completed = savedata[classname][element.id];
+		if(completed){
 			completedElements = 1;
 		}
 		else{
@@ -184,13 +179,13 @@ function sumCompletionSingleCell(cell,classname){
 //can't use runOnTree because we get 2 inner results and we cant add taht in 1 step
 function sumCompletionItems(jsonNode,classname){
 	if(jsonNode.id != null){
-		return sumCompletionSingleCell(jsonNode,classname);
+		return sumCompletionSingleElement(jsonNode,classname);
 	}
 	else{
 		var completed = 0;
 		var total = 0;
-		for(const element of jsonNode.elements){
-			let innerResult = sumCompletionItems(element,classname);
+		for( element of jsonNode.elements){
+			const innerResult = sumCompletionItems(element,classname);
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
@@ -218,17 +213,13 @@ function getSubtotalCompletion(subtotalJsonNode,classname){
 }
 
 function recalculateProgressAndSave(){
-	//we could probably cache the hives that aren't modified
+	//bleh theres a better way to do this
 	var percentCompleteSoFar = 0.0;
-	for(const klass of progressClasses) {
-		const hive = jsondata[klass.name];
-		if(hive?.version >= 2){
-			percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
-		}
-		else{
-			let classtotal = 0;
-			let classchecked = 0;
-			for (const id in savedata[klass.name]){
+	for (klass of classes) {
+		if(klass.standard){
+			var classtotal = 0;
+			var classchecked = 0;
+			for (id in savedata[klass.name]){
 				if(savedata[klass.name][id] == true){
 					classchecked += 1;
 				}
@@ -239,6 +230,13 @@ function recalculateProgressAndSave(){
 			document.getElementById("overview"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
 			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
 		}
+		else if (klass.name == "misc") {
+			// we need to start from the json because of nested weights
+			var classtotal;
+			var classchecked;
+			var classweight;
+			percentCompleteSoFar += runOnTree(jsondata.misc, e=>getSubtotalCompletion(e,"misc"), 0, e=>e.weight != null);
+		}
 	}
 	
 	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
@@ -248,30 +246,33 @@ function recalculateProgressAndSave(){
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	document.getElementById("totalProgressPercent").innerHTML = progress.toString();
-	saveProgressToCookie();
-}
-
-function updateCellFromSaveData(cell, classname){
-	const checkbox = document.getElementById(classname+cell.id+"check");
-	if(checkbox == null){
-		console.warn("unable to find input for modifiable cell '"+classname+cell.id+"'");
-		return;
-	}
-	var savedValue = savedata[classname][cell.id];
-	if(cell.type == "number"){
-		checkbox.value = savedValue;
-	}
-	else{
-		checkbox.checked = savedValue;
-		setParentChecked(checkbox);
-	}
+	saveProgress();
 }
 
 function updateUIFromSaveData(){
-	for(const klass of progressClasses){
-		const hive = jsondata[klass.name];
-		runOnTree(hive, (x=>updateCellFromSaveData(x,klass.name)));
+	for(classname of standardclasses()){
+		for(id in savedata[classname]){
+			var checkbox = document.getElementById(classname+id+"check");
+			if(checkbox == null){
+				console.error("checkbox for element '"+classname+id+"' is null");
+				continue;
+			}
+			checkbox.checked = savedata[classname][id];
+			setParentChecked(checkbox);
+		}
 	}
+	var classname = "misc";
+	runOnTree(jsondata[classname], (element=>{
+		const checkbox = document.getElementById(classname+element.id+"check");
+		var x = savedata[classname][element.id]
+		if(element.type == "number"){
+			checkbox.value = x;
+		}
+		else{
+			checkbox.checked = x;
+			setParentChecked(checkbox);
+		}
+	}),0,(e=>e.id != null));
 	
 	recalculateProgressAndSave();
 }
@@ -285,44 +286,53 @@ function setParentChecked(checkbox){
 	}
 }
 
-function userInputData(htmlRowId, checkboxElement){
+
+function userInputData(htmlRowId, checkbox){
 	var found=false;
 	//extract what it is from the parent id so we can update progress
-	for(const klass of progressClasses) {
-		if(htmlRowId.startsWith(klass.name)){
-			let rowid = null;
-			if(klass.standard){
-				//guaranteed to be an int so we parse
-				rowid = parseInt(htmlRowId.substring(klass.name.length));
-			}
-			else{
-				rowid = htmlRowId.substring(klass.name.length);
-			}
-		
-			if(checkboxElement.type == "checkbox"){
-				savedata[classname][rowid] = checkboxElement.checked;
-				setParentChecked(checkboxElement);
-			}
-			else{
-				savedata[classname][rowid] = checkboxElement.valueAsNumber;
-			}
+	for (const classname of standardclasses()){
+		if(htmlRowId.startsWith(classname)){
+			var rowid = parseInt(htmlRowId.substring(classname.length));
+			savedata[classname][rowid] = checkbox.checked;
+			setParentChecked(checkbox);
 			found=true;
 			break;
 		}
 	}
-	
+	if(!found){
+		for(const classname of ["save","misc"]){
+			if(htmlRowId.startsWith(classname)){
+				var rowid = htmlRowId.substring(classname.length);
+				if(checkbox.type == "checkbox"){
+					savedata[classname][rowid] = checkbox.checked;
+					setParentChecked(checkbox);
+				}
+				else{
+					savedata[classname][rowid] = checkbox.valueAsNumber;
+				}
+				found=true;
+				break;
+			}
+		}
+	}
 	recalculateProgressAndSave();
 }
 
+
 function checkboxClicked(event){
-	const parentid = event.target.parentElement.id;
+	var parentid = event.target.parentElement.id;
 	userInputData(parentid, event.target);
-	event.stopPropagation();
 }
 
 // when user clicks on the row, not the checkbox
 function rowClicked(event){
-	const checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	var checkbox;
+	if(event.target.tagName=="INPUT"){
+		return;
+	}
+	else{
+	 checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	}
 	if(checkbox.type == "number"){
 		checkbox.focus();
 		checkbox.select();

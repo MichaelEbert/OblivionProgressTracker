@@ -33,6 +33,8 @@ function goToNext(){
 		currentLine.style.backgroundColor="lightyellow";
 		currentLineText = currentLine.innerText;
 	}
+
+	sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 }
 
 
@@ -40,9 +42,15 @@ function play(){
 	window.speechSynthesis.cancel();
 	speech.text = currentLineText;
 	window.speechSynthesis.speak(speech);
-	
 }
 
+function playHotKey(event){
+	if (event.key == " " || event.type == "touchstart") {
+		event.preventDefault();
+		goToNext();
+		play();
+	}
+}
 
 function initSpeak(){
 	speech = new SpeechSynthesisUtterance();
@@ -60,8 +68,7 @@ function addSpeakBox(){
 	speechBox.style.backgroundColor="#FBEFD5";
 	speechBox.style.border="1px solid black";
 	speechBox.style.marginRight="2em";
-	
-	
+		
 	var sbTitle = document.createElement("div");
 	sbTitle.innerText = "Speech settings";
 	speechBox.appendChild(sbTitle);
@@ -90,5 +97,8 @@ function addSpeakBox(){
 	}
 	outerSpeechBox.appendChild(speechBox);
 	
+	window.addEventListener('keydown', playHotKey, true);
+	window.addEventListener('touchstart', playHotKey, true);
 
+	sbPlay.focus();
 }
