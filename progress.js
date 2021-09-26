@@ -7,6 +7,9 @@ const version = 6;
 
 function saveCookie(name,value){
 	//save for 10 years
+	if(value == null || Object.keys(value) == null){
+		debugger;
+	}
 	var expiry = new Date()
 	expiry.setDate(expiry.getDate()+365*10);
 	document.cookie = name+"="+JSON.stringify(value)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
@@ -15,10 +18,11 @@ function saveCookie(name,value){
 
 function loadCookie(name){
 	try{
-		let cookieValue = document.cookie
+		let thisCookie = document.cookie
 		.split('; ')
-		.find(row => row.startsWith(name+"="))
-		.split('=')[1];
+		.find(row => row.startsWith(name+"="));
+		let splitIndex = thisCookie.indexOf("=");
+		let cookieValue = thisCookie.substring(splitIndex+1);
 		return JSON.parse(cookieValue);
 	}
 	catch{
