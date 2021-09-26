@@ -40,7 +40,7 @@ function downloadSave(remoteUrl){
 	
 	if(req.status == 200){
 		//yay
-		return JOSN.parse(req.response);
+		return JSON.parse(req.response);
 	}
 	return null;	
 }
@@ -71,6 +71,7 @@ function uploadCurrentSave(){
 }
 
 function clearRemoteUrl(){
+	console.log("clearing remote data");
 	settings.remoteShareUrl = null;
 	saveCookie("settings",settings);
 	
@@ -88,18 +89,21 @@ function setRemoteUrl(event){
 		clearRemoteUrl();
 		return;
 	}
-	if(!loadCookie("progress_local")){
+	if(Object.keys(loadCookie("progress_local")).length == 0){
 		//we don't have local progress, so we can assume that current progress is local.
 		saveCookie("progress_local",compressSaveData(savedata));
 	}
 	
 	settings.remoteShareUrl = event.target.value;
 	saveCookie("settings",settings);
-	var dl = downloadSave(settings.remoteShareUrl);
+	
+	let downloadUrl = settings.serverUrl + "/" + settings.remoteShareUrl; 
+	let dl = downloadSave(downloadUrl);
 	
 	if(dl){
 		savedata = decompressSaveData(dl);
 		saveCookie("progress",dl);
+		alert("Downloaded");
 	}
 }
 

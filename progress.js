@@ -7,9 +7,6 @@ const version = 6;
 
 function saveCookie(name,value){
 	//save for 10 years
-	if(value == null || Object.keys(value) == null){
-		debugger;
-	}
 	var expiry = new Date()
 	expiry.setDate(expiry.getDate()+365*10);
 	document.cookie = name+"="+JSON.stringify(value)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
