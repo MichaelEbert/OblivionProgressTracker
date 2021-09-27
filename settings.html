@@ -5,6 +5,8 @@
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="obliviondata.js"></script>
 	<script src="progress.js"></script>
+	<script src="base64ArrayBuffer.js"></script>
+	<script src="sharing.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -21,6 +23,9 @@
 <div class="h2">Settings</div>
 <input type="checkbox" id="minipageCheck"/> Link books to local page (instead of direct to UESP)<br/>
 <input type="checkbox" id="iframeCheck"/> enable opening in iframe<br/>
+<input type="text" id="serverUrl" size="80"/>Share server path <br/>
+<input type="text" id="myShareUrl" readonly="true"/>my share path <button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress</button><br/>
+<input type="text" id="remoteShareUrl"/>remote share path<br/>
 <button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 <button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 
@@ -29,6 +34,9 @@ loadProgressFromCookie();
 document.getElementById("fileinput").addEventListener('change',importProgress);
 document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
 document.getElementById("iframeCheck").addEventListener('change',onSettingChange);
+document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
+document.getElementById("myShareUrl").addEventListener('change',onSettingChangeText);
+document.getElementById("remoteShareUrl").addEventListener('change',setRemoteUrl);
 
 if(settings.minipageCheck){
 	document.getElementById("minipageCheck").checked = true;
@@ -44,10 +52,29 @@ else{
 	document.getElementById("iframeCheck").checked = false;
 }
 
+
+if(settings.serverUrl){
+	document.getElementById("serverUrl").value = settings.serverUrl;
+}
+
+if(settings.myShareUrl){
+	document.getElementById("myShareUrl").value = settings.myShareUrl;
+}
+
+if(settings.remoteShareUrl){
+	document.getElementById("remoteShareUrl").value = settings.remoteShareUrl;
+}
+
 function onSettingChange(event){
 	var settingsVal = event.target.id;
 	settings[settingsVal] = event.target.checked;
 	saveCookie("settings",settings);	
+}
+
+function onSettingChangeText(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.value;
+	saveCookie("settings",settings);
 }
 
 function exportProgress(){
