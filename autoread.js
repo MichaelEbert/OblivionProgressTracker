@@ -42,7 +42,6 @@ function goToNext(){
 		else if (currentLine.getElementsByTagName("ul").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
 		else currentLineText = currentLine.innerText;
 	}
-
 	
 }
 
