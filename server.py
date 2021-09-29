@@ -20,6 +20,7 @@ Handler.extensions_map={
 	'.svg':	'image/svg+xml',
 	'.css':	'text/css',
 	'.js':	'application/javascript',
+	'.json':	'application/json',
 	'': 'application/octet-stream', # Default
     }
 
