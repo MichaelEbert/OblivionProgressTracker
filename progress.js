@@ -15,10 +15,11 @@ function saveCookie(name,value){
 
 function loadCookie(name){
 	try{
-		let cookieValue = document.cookie
+		let thisCookie = document.cookie
 		.split('; ')
-		.find(row => row.startsWith(name+"="))
-		.split('=')[1];
+		.find(row => row.startsWith(name+"="));
+		let splitIndex = thisCookie.indexOf("=");
+		let cookieValue = thisCookie.substring(splitIndex+1);
 		return JSON.parse(cookieValue);
 	}
 	catch{
@@ -119,8 +120,8 @@ function resetProgress(shouldConfirm=false){
 		
 		for(const klass of classes){
 			if(klass.shouldSave){
-				savedata[classname] = {};
-				resetProgressForTree(classname, jsondata[classname]);
+				savedata[klass.name] = {};
+				resetProgressForTree(klass.name, jsondata[klass.name]);
 			}
 		}
 	}
