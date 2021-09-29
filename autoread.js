@@ -12,6 +12,8 @@ var currentLineText = "";
 function goToNext(){
 	if(sectionLines && sectionLines[currentLineIndex]){
 		sectionLines[currentLineIndex].style.backgroundColor="";
+		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+		
 	}
 	
 	currentLineIndex +=1;
@@ -34,13 +36,19 @@ function goToNext(){
 		currentLineText = currentLine.innerText;
 	}
 
-	sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+	
 }
 
 
 function play(){
 	window.speechSynthesis.cancel();
-	speech.text = currentLineText;
+	if(currentLineText.split('\n').length > 1){
+		speech.text = currentLineText.split('\n')[0];
+	}
+	else{
+		speech.text = currentLineText;
+	}
+	
 	window.speechSynthesis.speak(speech);
 }
 
