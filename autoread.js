@@ -20,7 +20,11 @@ function goToNext(){
 	if(currentLineIndex < sectionLines?.length){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
-		currentLineText = currentLine.innerText;
+
+		//if we run into a sublist, only read the first line of the sublist.
+		if(currentLine.getElementsByTagName("ol").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
+		else if (currentLine.getElementsByTagName("ul").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
+		else currentLineText = currentLine.innerText;
 	}
 	else
 	{
@@ -30,10 +34,13 @@ function goToNext(){
 		var sections = document.getElementsByClassName("section");
 		var thisSection = sections[currentSection];
 		sectionLines = thisSection.querySelectorAll("li")
-
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
-		currentLineText = currentLine.innerText;
+
+		//if we run into a sublist, only read the first line of the sublist.
+		if(currentLine.getElementsByTagName("ol").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
+		else if (currentLine.getElementsByTagName("ul").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
+		else currentLineText = currentLine.innerText;
 	}
 
 	
@@ -42,13 +49,7 @@ function goToNext(){
 
 function play(){
 	window.speechSynthesis.cancel();
-	if(currentLineText.split('\n').length > 1){
-		speech.text = currentLineText.split('\n')[0];
-	}
-	else{
-		speech.text = currentLineText;
-	}
-	
+	speech.text = currentLineText;
 	window.speechSynthesis.speak(speech);
 }
 
