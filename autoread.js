@@ -21,16 +21,8 @@ function goToNext(){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
 
-		//checkbox handling.
-		let inputElems = currentLine.getElementsByTagName("input")
-		if(inputElems.length > 0 && inputElems[0].type == "checkbox"){
-			inputElems[0].click();
-		}
-
-		//if we run into a sublist, only read the first line of the sublist.
-		if(currentLine.getElementsByTagName("ol").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
-		else if (currentLine.getElementsByTagName("ul").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
-		else currentLineText = currentLine.innerText;
+		handleCheckbox();
+		currentLineText = handleSublist();
 	}
 	else
 	{
@@ -43,20 +35,11 @@ function goToNext(){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
 
-		//checkbox handling.
-		let inputElems = currentLine.getElementsByTagName("input")
-		if(inputElems.length > 0 && inputElems[0].type == "checkbox"){
-			inputElems[0].click();
-		}
-
-		//if we run into a sublist, only read the first line of the sublist.
-		if(currentLine.getElementsByTagName("ol").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
-		else if (currentLine.getElementsByTagName("ul").length > 0) currentLineText = currentLine.innerText.split('\n')[0];
-		else currentLineText = currentLine.innerText;
+		handleCheckbox();
+		currentLineText = handleSublist();
 	}
 	
 }
-
 
 function play(){
 	window.speechSynthesis.cancel();
@@ -121,4 +104,26 @@ function addSpeakBox(){
 	window.addEventListener('touchstart', playHotKey, true);
 
 	sbPlay.focus();
+}
+
+function handleCheckbox(){
+	let inputElems = currentLine.getElementsByTagName("input")
+	if(inputElems.length > 0 && inputElems[0].type == "checkbox"){
+		inputElems[0].click();
+	}
+}
+
+function handleSublist(){
+	let lineToRead;
+	//if we run into a sublist, only read the first line of the sublist.
+	if(currentLine.getElementsByTagName("ol").length > 0){
+		lineToRead = currentLine.innerText.split('\n')[0];
+	}
+	else if (currentLine.getElementsByTagName("ul").length > 0){
+		lineToRead = currentLine.innerText.split('\n')[0];
+	}
+	else {
+		lineToRead = currentLine.innerText;
+	}
+	return lineToRead;
 }
