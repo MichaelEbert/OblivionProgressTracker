@@ -116,10 +116,7 @@ function handleCheckbox(){
 function handleSublist(){
 	let lineToRead;
 	//if we run into a sublist, only read the first line of the sublist.
-	if(currentLine.getElementsByTagName("ol").length > 0){
-		lineToRead = currentLine.innerText.split('\n')[0];
-	}
-	else if (currentLine.getElementsByTagName("ul").length > 0){
+	if(currentLine.getElementsByTagName("ol").length > 0 || currentLine.getElementsByTagName("ul").length > 0){
 		lineToRead = currentLine.innerText.split('\n')[0];
 	}
 	else {
