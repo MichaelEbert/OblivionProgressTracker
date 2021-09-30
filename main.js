@@ -28,6 +28,18 @@ function init(){
 				}
 			}
 		}
+		{
+			//fame is tracked indirectly.
+			let klass = classes.find(x=>x.name == "fame");
+			const hive = jsondata[klass.name];
+			const section = document.getElementById(klass.name+"section");
+			if(section == null){
+				console.warn("could not find section for class "+klass.name);
+			}
+			else{//we start at depth 1 because the page itself already has the depth 0 titles.
+				initMultiV2(hive.elements, klass.name, section,1);
+			}
+		}
 	}).then(()=>{
 		if(loadProgressFromCookie() == false){
 			resetProgress();
@@ -44,9 +56,11 @@ function initMultiV2(multidata, classname, parentNode, depth){
 		debugger;
 	}
 	for(const datum of multidata) {
-		//only leaf nodes have IDs
-		if(datum.id != null || datum.formId != null){
-			parentNode.appendChild(initSingle(datum, classname));
+		if(datum.elements == null){
+			let maybeElement = initSingle(datum, classname);
+			if(maybeElement != null){
+				parentNode.appendChild(maybeElement);
+			}
 		}
 		else{
 			// not a leaf node, so create a subtree, with a title n stuff.
@@ -92,9 +106,60 @@ function initMulti(multidata, classname, categoryName){
 	}
 }
 
+//ugggg
+function initSingleIndirect(cell, classname){
+	let refCell;
+	refCell = findOnTree(jsondata["quest"], (x=>x.formId == cell.ref));
+	if(refCell == null){
+		console.error("Object not found with form id "+cell.ref);
+		return null;
+	}
+	var usableId = refCell.formId;
+	
+	var rowhtml = document.createElement("div");
+	rowhtml.classList.add(classname);
+	rowhtml.classList.add("item");
+	rowhtml.id = classname+usableId.toString();
+	rowhtml.addEventListener('click',rowClicked);
+	
+	//name
+	var rName = document.createElement("span");
+	rName.classList.add(classname+"Name");
+	rName.innerText = refCell.name;
+	rowhtml.appendChild(rName);
+	
+	//checkbox
+	var rcheck = document.createElement("input")
+	if(refCell.type){
+		rcheck.type= refCell.type;
+		rcheck.addEventListener('change',checkboxClicked);
+		rcheck.size=4;
+		if(refCell.max){
+			rcheck.max = refCell.max;
+		}
+	}
+	else{
+		rcheck.type="checkbox";
+		rcheck.addEventListener('click',checkboxClicked);
+	}
+	rcheck.classList.add(classname+"Check")
+	rcheck.classList.add("check")
+	rcheck.id = rowhtml.id+"check"
+	rcheck.disabled = true;
+	rowhtml.appendChild(rcheck)
+	return rowhtml;
+}
+
 //init a single leaf node
 //imma call single leaf nodes "cells" because its memorable
 function initSingle(cell, classname){
+	//hack for fame
+	if(cell.ref != null){
+		//this is an indirect class.
+		return initSingleIndirect(cell, classname);
+	}
+	
+	
 	//this is here because we may want to switch over to formID.
 	var usableId = cell.id;
 	

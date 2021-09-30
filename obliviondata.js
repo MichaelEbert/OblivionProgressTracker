@@ -28,13 +28,15 @@ function JsonClass(name,shouldSave = false, isStandard = false, completionWeight
 }
 
 const classes = [
+	// name, shouldSave, isStandard, completionWeight
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true,15),//v1 so we have to include weight
 	new JsonClass("store",true,true),
 	new JsonClass("misc",true),
 	new JsonClass("save",true),
-	new JsonClass("npc",false)
+	new JsonClass("npc",false),
+	new JsonClass("fame",false)
 ];
 
 // classes that have a standard layout and can use most of the generic functions.
