@@ -124,7 +124,15 @@ function handleSublist(currentLine){
 	let lineToRead;
 	//if we run into a sublist, only read the first line of the sublist.
 	if(currentLine.getElementsByTagName("ol").length > 0 || currentLine.getElementsByTagName("ul").length > 0){
-		lineToRead = currentLine.innerText.split('\n')[0];
+		//lineToRead = currentLine.innerText.split('\n')[0];
+		let str = "";
+		for (let i = 0; i < currentLine.childNodes.length; i++) {
+			let elem = currentLine.childNodes[i];
+			if(!(elem.nodeName == "OL" || elem.nodeName == "UL")){
+				str += elem.textContent;
+			}
+		}
+		lineToRead = str;
 	}
 	else {
 		lineToRead = currentLine.innerText;
