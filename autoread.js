@@ -21,8 +21,8 @@ function goToNext(){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
 
-		handleCheckbox();
-		currentLineText = handleSublist();
+		handleCheckbox(currentLine);
+		currentLineText = handleSublist(currentLine);
 	}
 	else
 	{
@@ -35,8 +35,8 @@ function goToNext(){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
 
-		handleCheckbox();
-		currentLineText = handleSublist();
+		handleCheckbox(currentLine);
+		currentLineText = handleSublist(currentLine);
 	}
 	
 }
@@ -106,14 +106,21 @@ function addSpeakBox(){
 	sbPlay.focus();
 }
 
-function handleCheckbox(){
-	let inputElems = currentLine.getElementsByTagName("input")
-	if(inputElems.length > 0 && inputElems[0].type == "checkbox"){
-		inputElems[0].click();
+function handleCheckbox(currentLine){
+	let inputElems = currentLine.getElementsByTagName("input");
+	if(inputElems.length > 0) {
+		for(let i = 0; i < inputElems.length; i++){
+			if(inputElems[i].type == "checkbox" &&
+				inputElems[i].checked == false){
+				inputElems[i].click();
+			}
+		}
 	}
+	
+	
 }
 
-function handleSublist(){
+function handleSublist(currentLine){
 	let lineToRead;
 	//if we run into a sublist, only read the first line of the sublist.
 	if(currentLine.getElementsByTagName("ol").length > 0 || currentLine.getElementsByTagName("ul").length > 0){
