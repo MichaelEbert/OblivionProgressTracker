@@ -121,7 +121,7 @@ function orientationCheck(){
 		let sBar = document.getElementById("sidebar");
 		let sBox = document.getElementById("speechbox");
 		
-		if(window.innerHeight > window.innerWidth){
+		if(window.innerHeight + 100 > window.innerWidth){
 			//portrait mode
 			sBar.style.position="fixed";
 			sBar.style.bottom="1em";
