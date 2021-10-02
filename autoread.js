@@ -62,6 +62,7 @@ function initSpeak(){
 function addSpeakBox(){
 	
 	var speechBox = document.createElement("div");
+	speechBox.id = "speechbox"
 	speechBox.style.float="right";
 	speechBox.style.backgroundColor="#FBEFD5";
 	speechBox.style.border="1px solid black";
@@ -94,7 +95,8 @@ function addSpeakBox(){
 		document.body.prepend(outerSpeechBox);
 	}
 	outerSpeechBox.appendChild(speechBox);
-	
+
+	window.addEventListener('resize', orientationCheck, true);
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
 
@@ -113,4 +115,21 @@ function handleCheckbox(currentLine){
 
 function handleSublist(currentLine){
 	return Array.of(...currentLine.childNodes).filter(x=>x.nodeName != "OL" && x.nodeName != "UL").map(x=>x.textContent).join('');
+}
+
+function orientationCheck(){
+		let sBar = document.getElementById("sidebar");
+		let sBox = document.getElementById("speechbox");
+		
+		if(window.innerHeight > window.innerWidth){
+			//portrait mode
+			sBar.style.position="fixed";
+			sBar.style.bottom="1em";
+			sBox.style.border="2px solid black";
+		}
+		else{
+			//landscape mode
+			sBar.style.position="static";
+			sBox.style.border="1px solid black";
+		}
 }
