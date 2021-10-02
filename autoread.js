@@ -1,19 +1,15 @@
 // functions to read alound the speedrun.
 
-
-
 var currentSection = -1;
 // current line from this section
 var sectionLines;
 var currentLineIndex = 0;
 var currentLineText = "";
 
-
 function goToNext(){
 	if(sectionLines && sectionLines[currentLineIndex]){
 		sectionLines[currentLineIndex].style.backgroundColor="";
 		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
-		
 	}
 	
 	currentLineIndex +=1;
@@ -38,7 +34,6 @@ function goToNext(){
 		handleCheckbox(currentLine);
 		currentLineText = handleSublist(currentLine);
 	}
-	
 }
 
 function play(){
@@ -108,34 +103,14 @@ function addSpeakBox(){
 
 function handleCheckbox(currentLine){
 	let inputElems = currentLine.getElementsByTagName("input");
-	if(inputElems.length > 0) {
-		for(let i = 0; i < inputElems.length; i++){
-			if(inputElems[i].type == "checkbox" &&
-				inputElems[i].checked == false){
-				inputElems[i].click();
-			}
+	for(let i = 0; i < inputElems.length; i++){
+		if(inputElems[i].type == "checkbox" &&
+			inputElems[i].checked == false){
+			inputElems[i].click();
 		}
-	}
-	
-	
+	}	
 }
 
 function handleSublist(currentLine){
-	let lineToRead;
-	//if we run into a sublist, only read the first line of the sublist.
-	if(currentLine.getElementsByTagName("ol").length > 0 || currentLine.getElementsByTagName("ul").length > 0){
-		//lineToRead = currentLine.innerText.split('\n')[0];
-		let str = "";
-		for (let i = 0; i < currentLine.childNodes.length; i++) {
-			let elem = currentLine.childNodes[i];
-			if(!(elem.nodeName == "OL" || elem.nodeName == "UL")){
-				str += elem.textContent;
-			}
-		}
-		lineToRead = str;
-	}
-	else {
-		lineToRead = currentLine.innerText;
-	}
-	return lineToRead;
+	Array.of(...currentLine.childNodes).filter(x=>x.nodeName != "OL" && x.nodeName != "UL").map(x=>x.textContent).join('');
 }
