@@ -112,5 +112,5 @@ function handleCheckbox(currentLine){
 }
 
 function handleSublist(currentLine){
-	Array.of(...currentLine.childNodes).filter(x=>x.nodeName != "OL" && x.nodeName != "UL").map(x=>x.textContent).join('');
+	return Array.of(...currentLine.childNodes).filter(x=>x.nodeName != "OL" && x.nodeName != "UL").map(x=>x.textContent).join('');
 }
