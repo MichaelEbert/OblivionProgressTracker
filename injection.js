@@ -16,7 +16,9 @@ function init(){
 	});
 }
 
-//initial function to replace element with checkbox n stuff.
+/**
+ * Initial function to replace checkboxes n stuff.
+ */
 function replaceElements(){
 	var replaceableParts = document.getElementsByClassName("replaceable");
 	while(replaceableParts.length > 0){
@@ -72,7 +74,7 @@ function replaceElements(){
 		}
 		//step 2: create the internal stuff.
 		element.innerText = "";
-		var newElement = initInjectedElement(cell, elementclass)
+		var newElement = initSingleCell(cell, elementclass)
 		if(element.getAttribute("disabled") == "true"){
 			newElement.children[1].disabled = true;
 		}
@@ -87,7 +89,10 @@ function replaceElements(){
 }
 
 
-// given a <span class="npc">, attempt to get NPC data.
+/**
+ * given a \<span class="npc"\>, attempt to get NPC data.
+ * @param {HTMLElement} npcElement 
+ */
 function getNpcData(npcElement){
 	var maybeFormId = npcElement.getAttribute("clid");
 	if(maybeFormId != null){
@@ -114,6 +119,9 @@ function getNpcData(npcElement){
 	return {name:npcName};
 }
 
+/**
+ * Create links for npc elements on page.
+ */
 function linkNPCs(){
 	var npcs = document.getElementsByClassName("npc");
 	for(var element of npcs){
@@ -128,32 +136,37 @@ function linkNPCs(){
 	}
 }
 
-function initInjectedElement(rowdata, classname){
-	if(rowdata == null){
-		console.error("null rowdata for class"+classname);
+/**
+ * Initialize the html for a single data cell.
+ * @param {object} cell 
+ * @param {string} classname 
+ */
+function initSingleCell(cell, classname){
+	if(cell == null){
+		console.error("null cell data for class"+classname);
 		return;
 	}
 	var rowhtml = document.createElement("span");
 	rowhtml.classList.add(classname);
 	rowhtml.classList.add("item");
 	
-	rowhtml.setAttribute("clid",classname+rowdata.id);
+	rowhtml.setAttribute("clid",classname+cell.id);
 	
 	//name
 	var rName = document.createElement("span");
 	rName.classList.add(classname+"Name");
 	
-	rName.appendChild(createLinkElement(rowdata, classname));
+	rName.appendChild(createLinkElement(cell, classname));
 	rowhtml.appendChild(rName);
 	
 	//checkbox
 	var rcheck = document.createElement("input")
-	if(rowdata.type){
-		rcheck.type= rowdata.type;
+	if(cell.type){
+		rcheck.type= cell.type;
 		rcheck.addEventListener('change',checkboxClicked2);
 		rcheck.size=4;
-		if(rowdata.max){
-			rcheck.max = rowdata.max;
+		if(cell.max){
+			rcheck.max = cell.max;
 		}
 	}
 	else{
@@ -167,32 +180,38 @@ function initInjectedElement(rowdata, classname){
 	return rowhtml;
 }
 
-//create link for a json object. 
-//classname is for minipages. ex: book, npc, etc.
-function createLinkElement(jsonobject, classname, forceMinipage=false){
+
+/**
+ * create link element for a data cell. 
+ * classname is for minipages. ex: book, npc, etc.
+ * @param {object} cell 
+ * @param {string} classname class name
+ * @param {boolean} forceMinipage force minipage link, even if we don't have a usable id.
+ */
+function createLinkElement(cell, classname, forceMinipage=false){
 	const linky = document.createElement("a");
 	
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
 	var usableId;
-	if(jsonobject.formId != null){
-		usableId = jsonobject.formId;
+	if(cell.formId != null){
+		usableId = cell.formId;
 	}
 	else{
-		usableId = jsonobject.id;
+		usableId = cell.id;
 	}
 	
 	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
 	if(useMinipage){
 		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
 		if(usableId == null){
-			linky.href +="&name="+jsonobject.name.replace(" ","_");
+			linky.href +="&name="+cell.name.replace(" ","_");
 		}
 	}
-	else if(jsonobject.link){
-		linky.href = jsonobject.link;
+	else if(cell.link){
+		linky.href = cell.link;
 	}
 	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+jsonobject.name.replaceAll(" ","_");
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+cell.name.replaceAll(" ","_");
 	}
 	
 	if(settings.iframeCheck){
@@ -202,7 +221,7 @@ function createLinkElement(jsonobject, classname, forceMinipage=false){
 		linky.target="_blank";
 	}
 	
-	linky.innerText = jsonobject.name;
+	linky.innerText = cell.name;
 	return linky;
 }
 
@@ -319,11 +338,11 @@ function pushNpcReferencesToMinipage(event){
 	},{once:true});
 }
 
-function getAllReferencesOnPage(jsonObject){
+function getAllReferencesOnPage(cell){
 	var npcLinks = document.getElementsByClassName("npc");
 	var refs = [];
 	for(var link of npcLinks){
-		if(link.innerText == jsonObject.name){
+		if(link.innerText == cell.name){
 			//TODO: or formId
 			refs.push(getElementReferenceLocation(link));
 		}

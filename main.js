@@ -37,15 +37,21 @@ function init(){
 
 const classNamesForLevels = ["section","category","subcategory"]
 
-//can't use runOnTree because we need to do additional stuff per-list, like subtree name.
-//NOTE: unlike runOnTree, this takes a list of data nodes instead of a single node.
+/**
+ * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
+ * NOTE: unlike runOnTree, this takes a list of data nodes instead of a single node.
+ * @param {object[]} multidata list of data nodes
+ * @param {string} classname name of this class/hive
+ * @param {Element} parentNode parent html element
+ * @param {int} depth depth of this node in the tree.
+ * @param {string} extraColumnName name of extra column. undefined if no extra column name.
+ */
 function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
 	if(multidata == null){
 		console.log(parentNode);
 		debugger;
 	}
 	for(const datum of multidata) {
-		//only leaf nodes have IDs
 		if(datum.elements == null){
 			parentNode.appendChild(initSingle(datum, classname, extraColumnName));
 		}
