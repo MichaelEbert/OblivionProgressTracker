@@ -38,15 +38,16 @@ function init(){
 const classNamesForLevels = ["section","category","subcategory"]
 
 //can't use runOnTree because we need to do additional stuff per-list, like subtree name.
-function initMultiV2(multidata, classname, parentNode, depth){
+//NOTE: unlike runOnTree, this takes a list of data nodes instead of a single node.
+function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
 	if(multidata == null){
 		console.log(parentNode);
 		debugger;
 	}
 	for(const datum of multidata) {
 		//only leaf nodes have IDs
-		if(datum.id != null || datum.formId != null){
-			parentNode.appendChild(initSingle(datum, classname));
+		if(datum.elements == null){
+			parentNode.appendChild(initSingle(datum, classname, extraColumnName));
 		}
 		else{
 			// not a leaf node, so create a subtree, with a title n stuff.
@@ -60,7 +61,11 @@ function initMultiV2(multidata, classname, parentNode, depth){
 			subtreeTitle.innerText = datum.name;
 			subtreeRoot.appendChild(subtreeTitle);
 			
-			initMultiV2(datum.elements, classname, subtreeRoot, depth+1);
+			if(datum.extraColumn != null){
+				extraColumnName = datum.extraColumn;
+			}
+			
+			initMultiV2(datum.elements, classname, subtreeRoot, depth+1, extraColumnName);
 			parentNode.appendChild(subtreeRoot);
 		}
 	}
@@ -94,7 +99,7 @@ function initMulti(multidata, classname, categoryName){
 
 //init a single leaf node
 //imma call single leaf nodes "cells" because its memorable
-function initSingle(cell, classname){
+function initSingle(cell, classname, extraColumnName){
 	//this is here because we may want to switch over to formID.
 	var usableId = cell.id;
 	
@@ -144,6 +149,13 @@ function initSingle(cell, classname){
 		notesIcon.title = cell.notes;
 		notesIcon.innerText = "⚠"
 		rowhtml.appendChild(notesIcon);
+	}
+	
+	if(extraColumnName && cell[extraColumnName] != null){
+		let extraCol = document.createElement("span");
+		extraCol.classList.add("detailColumn");
+		extraCol.innerText = cell[extraColumnName];
+		rowhtml.appendChild(extraCol);
 	}
 	
 	return rowhtml;

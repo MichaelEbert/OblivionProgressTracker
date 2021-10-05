@@ -37,7 +37,7 @@
 		,{"id":23,"name":"Leyawiin House for Sale"}
 		,{"id":24,"name":"Rosethorn Hall"}
 	]}
-	,{"name":"Horses","weight":1,"elements":[
+	,{"name":"Horses","weight":1,"extraColumn":"city","elements":[
 		 {"id":26,"name":"White Horse","city":"Anvil"}
 		,{"id":27,"name":"Bay Horse","city":"Bravil"}
 		,{"id":28,"name":"Paint Horse","city":"Bruma"}
