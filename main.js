@@ -29,15 +29,17 @@ function init(){
 			}
 		}
 		{
-			//fame is tracked indirectly.
-			let klass = classes.find(x=>x.name == "fame");
-			const hive = jsondata[klass.name];
-			const section = document.getElementById(klass.name+"section");
-			if(section == null){
-				console.warn("could not find section for class "+klass.name);
-			}
-			else{//we start at depth 1 because the page itself already has the depth 0 titles.
-				initMultiV2(hive.elements, klass.name, section,1,"amount");
+			if(false){
+				//fame is tracked indirectly.
+				let klass = classes.find(x=>x.name == "fame");
+				const hive = jsondata[klass.name];
+				const section = document.getElementById(klass.name+"section");
+				if(section == null){
+					console.warn("could not find section for class "+klass.name);
+				}
+				else{//we start at depth 1 because the page itself already has the depth 0 titles.
+					initMultiV2(hive.elements, klass.name, section,1,"amount");
+				}
 			}
 		}
 	}).then(()=>{
