@@ -41,10 +41,36 @@ td{
 }
 
 .topbar{
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items:stretch;
+	width: 99%;
 	position: fixed;
-	background-color: #E5D9B9;
+	background-color: #FBEFD5;
 	padding:0.5em;
 	top: 0; /* hug the top of the window instead of having a buffer */
+	left: 0;
+}
+
+.topbarSection{
+	text-decoration: none;
+	flex-grow:5;
+	text-align: center;
+	background: #EBDFC5;
+	border: 1px solid black;
+}
+
+.topbarSection:hover{
+	background-color: #cccccc;
+}
+
+#topbarSublist{
+	display: none;
+}
+
+.topbarSection:hover #topbarSublist{
+	display: inline;
 }
 
 .contentContainer{
