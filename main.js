@@ -37,7 +37,7 @@ function init(){
 				console.warn("could not find section for class "+klass.name);
 			}
 			else{//we start at depth 1 because the page itself already has the depth 0 titles.
-				initMultiV2(hive.elements, klass.name, section,1);
+				initMultiV2(hive.elements, klass.name, section,1,"amount");
 			}
 		}
 	}).then(()=>{
@@ -118,8 +118,21 @@ function initMulti(multidata, classname, categoryName){
 	}
 }
 
+/**
+ * Creates a function that will be added to the other cell's html that updates this cell's html.
+ * @param {*} indirectCell 
+ */
+function CreateIndirectUpdater(indirectHtml){
+	return function(event){
+		console.log("indirect update!");
+		const checkbox = Array.from(indirectHtml.children).find(x=>x.tagName=="INPUT");
+		checkbox.checked = event.target.checked;
+		userInputData(indirectHtml.id, checkbox);
+	}
+}
+
 //ugggg
-function initSingleIndirect(cell, classname){
+function initSingleIndirect(cell, classname, extraColumnName){
 	let refCell;
 	refCell = findOnTree(jsondata["quest"], (x=>x.formId == cell.ref));
 	if(refCell == null){
@@ -132,7 +145,7 @@ function initSingleIndirect(cell, classname){
 	rowhtml.classList.add(classname);
 	rowhtml.classList.add("item");
 	rowhtml.id = classname+usableId.toString();
-	rowhtml.addEventListener('click',rowClicked);
+	//rowhtml.addEventListener('click',rowClicked);
 	
 	//name
 	var rName = document.createElement("span");
@@ -144,7 +157,7 @@ function initSingleIndirect(cell, classname){
 	var rcheck = document.createElement("input")
 	if(refCell.type){
 		rcheck.type= refCell.type;
-		rcheck.addEventListener('change',checkboxClicked);
+		//rcheck.addEventListener('change',checkboxClicked);
 		rcheck.size=4;
 		if(refCell.max){
 			rcheck.max = refCell.max;
@@ -152,13 +165,29 @@ function initSingleIndirect(cell, classname){
 	}
 	else{
 		rcheck.type="checkbox";
-		rcheck.addEventListener('click',checkboxClicked);
+		//rcheck.addEventListener('click',checkboxClicked);
 	}
+	//we need to add an event listener for the other cell.
+	let otherCellCheck = document.getElementById("quest"+refCell.id+"check");
+	if(otherCellCheck == null){
+		console.warn("Could not find checkbox for element "+"quest"+refCell.id+"check");
+	}
+	else{
+		otherCellCheck.addEventListener("change",CreateIndirectUpdater(rowhtml));
+	}
+
 	rcheck.classList.add(classname+"Check")
 	rcheck.classList.add("check")
 	rcheck.id = rowhtml.id+"check"
 	rcheck.disabled = true;
 	rowhtml.appendChild(rcheck)
+
+	if(extraColumnName && cell[extraColumnName] != null){
+		let extraCol = document.createElement("span");
+		extraCol.classList.add("detailColumn");
+		extraCol.innerText = cell[extraColumnName];
+		rowhtml.appendChild(extraCol);
+	}
 	return rowhtml;
 }
 
@@ -416,4 +445,6 @@ function rowClicked(event){
 		checkbox.checked = !checkbox.checked;
 		userInputData(event.target.id, checkbox);
 	}
+	//for change listeners
+	checkbox.dispatchEvent(new Event('change'));
 }
