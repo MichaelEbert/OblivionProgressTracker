@@ -10,10 +10,11 @@ namespace ShareApi
         private const string saveUpdateString = "UPDATE saves SET saveData = @col2 WHERE url = @col1";
         private const string saveSelectString = "SELECT saveData FROM saves WHERE url = @col1";
 
-        SqlConnection conn;
+        private SqlConnection conn;
 
         public ProgressManagerSql(){
-            conn = new SqlConnection(Secrets.ConnectionString);
+            string dbString = System.Environment.GetEnvironmentVariable("SQLCONNSTR_horsevectors");
+            conn = new SqlConnection(dbString);
             conn.Open();
         }
 
