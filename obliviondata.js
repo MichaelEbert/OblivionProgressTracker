@@ -108,6 +108,19 @@ function mergeCell(mapping){
 }
 
 /**
+ * Add parent links to a node tree.
+ * @param {*} node 
+ * @param {*} parent 
+ */
+function addParentLinks(node, parent){
+	//go through hive, adding parent links.
+	node.parent = parent;
+	for(const child of node.elements){
+		addParentLinks(child, node);
+	}
+}
+
+/**
  * turn a bunch of json data from different files into a single js object.
  * @param {Object} hive base hive data
  * @param {string} basedir base dir to get files from
@@ -119,6 +132,7 @@ async function mergeData(hive, basedir="."){
 			const mapFilename = "mapping_"+hive.name.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
 			runOnTree(hive, mergeCell(mapJson));
+			addParentLinks(hive, null);
 			console.log("merged "+hive.name);
 		}
 		catch{}//there may not be any other data, so just continue in that case.
