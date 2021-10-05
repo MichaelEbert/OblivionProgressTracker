@@ -1,24 +1,24 @@
 // functions to read alound the speedrun.
 
-
-
 var currentSection = -1;
 // current line from this section
 var sectionLines;
 var currentLineIndex = 0;
 var currentLineText = "";
 
-
 function goToNext(){
 	if(sectionLines && sectionLines[currentLineIndex]){
 		sectionLines[currentLineIndex].style.backgroundColor="";
+		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 	}
 	
 	currentLineIndex +=1;
 	if(currentLineIndex < sectionLines?.length){
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
-		currentLineText = currentLine.innerText;
+
+		handleCheckbox(currentLine);
+		currentLineText = handleSublist(currentLine);
 	}
 	else
 	{
@@ -28,15 +28,13 @@ function goToNext(){
 		var sections = document.getElementsByClassName("section");
 		var thisSection = sections[currentSection];
 		sectionLines = thisSection.querySelectorAll("li")
-
 		let currentLine = sectionLines[currentLineIndex];
 		currentLine.style.backgroundColor="lightyellow";
-		currentLineText = currentLine.innerText;
+
+		handleCheckbox(currentLine);
+		currentLineText = handleSublist(currentLine);
 	}
-
-	sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 }
-
 
 function play(){
 	window.speechSynthesis.cancel();
@@ -101,4 +99,18 @@ function addSpeakBox(){
 	window.addEventListener('touchstart', playHotKey, true);
 
 	sbPlay.focus();
+}
+
+function handleCheckbox(currentLine){
+	let inputElems = currentLine.getElementsByTagName("input");
+	for(let i = 0; i < inputElems.length; i++){
+		if(inputElems[i].type == "checkbox" &&
+			inputElems[i].checked == false){
+			inputElems[i].click();
+		}
+	}	
+}
+
+function handleSublist(currentLine){
+	return Array.of(...currentLine.childNodes).filter(x=>x.nodeName != "OL" && x.nodeName != "UL").map(x=>x.textContent).join('');
 }
