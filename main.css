@@ -56,14 +56,10 @@ td{
 
 .topbarSection{
 	text-decoration: none;
-	flex-grow:5;
+	flex:1 0 auto;
 	text-align: center;
 	background-color: #EBDFC5;
 	border-right: 1px solid black;
-}
-
-.topbarSection:hover{
-	background-color: #cccccc;
 }
 
 .topbarSublist{
@@ -71,6 +67,19 @@ td{
 	display: none;
 }
 
+.topbarSublist a{
+	display:block;
+}
+
+.topbarSection:hover{
+	background-color: #cccccc;
+}
+
+.topbarSublist a:hover{
+	background-color: #cccccc;
+}
+
+.topbarSection a,
 .topbarSection:hover .topbarSublist{
 	display: block;
 }
