@@ -49,16 +49,24 @@ function init(){
 
 const classNamesForLevels = ["section","category","subcategory"]
 
-//can't use runOnTree because we need to do additional stuff per-list, like subtree name.
-function initMultiV2(multidata, classname, parentNode, depth){
+/**
+ * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
+ * NOTE: unlike runOnTree, this takes a list of data nodes instead of a single node.
+ * @param {object[]} multidata list of data nodes
+ * @param {string} classname name of this class/hive
+ * @param {Element} parentNode parent html element
+ * @param {int} depth depth of this node in the tree.
+ * @param {string} extraColumnName name of extra column. undefined if no extra column name.
+ */
+function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
 	if(multidata == null){
 		console.log(parentNode);
 		debugger;
 	}
 	for(const datum of multidata) {
 		if(datum.elements == null){
-			let maybeElement = initSingle(datum, classname);
-			if(maybeElement != null){
+			let maybeElement = parentNode.appendChild(initSingle(datum, classname, extraColumnName));
+            if(maybeElement != null){
 				parentNode.appendChild(maybeElement);
 			}
 		}
@@ -74,7 +82,11 @@ function initMultiV2(multidata, classname, parentNode, depth){
 			subtreeTitle.innerText = datum.name;
 			subtreeRoot.appendChild(subtreeTitle);
 			
-			initMultiV2(datum.elements, classname, subtreeRoot, depth+1);
+			if(datum.extraColumn != null){
+				extraColumnName = datum.extraColumn;
+			}
+			
+			initMultiV2(datum.elements, classname, subtreeRoot, depth+1, extraColumnName);
 			parentNode.appendChild(subtreeRoot);
 		}
 	}
@@ -152,11 +164,11 @@ function initSingleIndirect(cell, classname){
 
 //init a single leaf node
 //imma call single leaf nodes "cells" because its memorable
-function initSingle(cell, classname){
+function initSingle(cell, classname, extraColumnName){
 	//hack for fame
 	if(cell.ref != null){
 		//this is an indirect class.
-		return initSingleIndirect(cell, classname);
+		return initSingleIndirect(cell, classname, extraColumnName);
 	}
 	
 	
@@ -209,6 +221,13 @@ function initSingle(cell, classname){
 		notesIcon.title = cell.notes;
 		notesIcon.innerText = "⚠"
 		rowhtml.appendChild(notesIcon);
+	}
+	
+	if(extraColumnName && cell[extraColumnName] != null){
+		let extraCol = document.createElement("span");
+		extraCol.classList.add("detailColumn");
+		extraCol.innerText = cell[extraColumnName];
+		rowhtml.appendChild(extraCol);
 	}
 	
 	return rowhtml;
