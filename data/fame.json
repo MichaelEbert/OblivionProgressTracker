@@ -1,0 +1,78 @@
+{"version":2,"name":"fame","weight":0,"elements":[
+	{"name":"Quests","elements":[
+		{"name":"Main Quest","elements":[
+			{"ref":"0x0001E724","amount":1}
+			,{"ref":"0x000224D8","amount":1}
+			,{"ref":"0x00028C72","amount":1}
+			,{"ref":"0x0001E726","amount":1}
+			,{"ref":"0x0001E727","amount":1}
+			,{"ref":"0x0001E728","amount":1}
+			,{"ref":"0x0001E729","amount":1}
+			,{"ref":"0x0001E72C","amount":1}
+			,{"ref":"0x0001E72D","amount":7}
+			,{"ref":"0x0001E72E","amount":2}
+			,{"ref":"0x0001E72F","amount":1}
+			,{"ref":"0x0001E730","amount":2}
+			,{"ref":"0x0002A38F","amount":3}
+		]},
+		{"name":"Fighters Guild","elements":[
+			{"ref":"0x00035713","amount":1}
+			,{"ref":"0x00035714","amount":1}
+			,{"ref":"0x00027F8E","amount":1}
+			,{"ref":"0x00024297","amount":1}
+			,{"ref":"0x0002429C","amount":1}
+			,{"ref":"0x00035715","amount":1}
+			,{"ref":"0x00035718","amount":1}
+			,{"ref":"0x0002D154","amount":1}
+			,{"ref":"0x0002D71A","amount":1}
+			,{"ref":"0x0002D71B","amount":1}
+			,{"ref":"0x00035716","amount":1}
+			,{"ref":"0x00035719","amount":1}
+			,{"ref":"0x0002D71C","amount":1}
+			,{"ref":"0x00035717","amount":1}
+			,{"ref":"0x0003571A","amount":1}
+			,{"ref":"0x0003571B","amount":1}
+		]},
+		{"name":"Mages Guild","elements":[
+			{"ref":"0x0002CD10","amount":1}
+			,{"ref":"0x0002D936","amount":1}
+			,{"ref":"0x0002D93C","amount":1}
+			,{"ref":"0x0002D410","amount":1}
+			,{"ref":"0x000224E1","amount":2}
+			,{"ref":"0x0002CBC8","amount":1}
+			,{"ref":"0x0002D28B","amount":1}
+			,{"ref":"0x0002D32B","amount":1}
+			,{"ref":"0x00034E14","amount":2}
+			,{"ref":"0x0003564F","amount":1}
+			,{"ref":"0x00035F28","amount":1}
+			,{"ref":"0x00036300","amount":1}
+			,{"ref":"0x0000395F","amount":1}
+			,{"ref":"0x00003960","amount":1}
+			,{"ref":"0x00003961","amount":1}
+			,{"ref":"0x0000C039","amount":1}
+			,{"ref":"0x0000C03A","amount":1}
+			,{"ref":"0x0000C03B","amount":1}
+			,{"ref":"0x0000C03C","amount":3}
+		]},
+		{"name":"Daedric Quests","elements":[
+			{"ref":"0x000146A2","amount":1}
+			{"ref":"0x000146A3","amount":1}
+			{"ref":"0x000146A4","amount":1}
+			{"ref":"0x000146A5","amount":1}
+			{"ref":"0x000146A6","amount":1}
+			{"ref":"0x000146A7","amount":1}
+			{"ref":"0x000146A8","amount":1}
+			{"ref":"0x000146A9","amount":0}
+			{"ref":"0x000146AA","amount":1}
+			{"ref":"0x000146AB","amount":1}
+			{"ref":"0x000146AC","amount":1}
+			{"ref":"0x000146AD","amount":1}
+			{"ref":"0x000146AE","amount":1}
+			{"ref":"0x000146AF","amount":1}
+			{"ref":"0x000146B0","amount":1}
+		]},
+		{"name":"Arena Fights","elements":[
+		]}
+	]}
+
+]}

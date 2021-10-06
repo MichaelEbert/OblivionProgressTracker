@@ -86,8 +86,10 @@
        ,{"name":"Mystery at Harlun's Watch","formId":"0x0003571B"}
        ,{"name":"Information Gathering","formId":"0x000356C8"}
        ,{"name":"Infiltration","formId":"0x000356C9"}
-       ,{"name":"The Hist","formId":"0x000356CA"}]}
-       ,{"name":"Villages and Inns","elements":[{"name":"A Venerable Vintage","formId":"0x00185FED"}
+       ,{"name":"The Hist","formId":"0x000356CA"}
+   ]}
+   ,{"name":"Villages and Inns","elements":[
+		{"name":"A Venerable Vintage","formId":"0x00185FED"}
        ,{"name":"Bear Season","formId":"0x00185FEB"}
        ,{"name":"Go Fish","formId":"0x00185FEE"}
        ,{"name":"Goblin Trouble","formId":"0x00007B2E"}
@@ -102,31 +104,36 @@
     ,{"name":"Mages Guild","elements":[
         {"name":"Initiation Quests","elements":[
             {"name":"Join the Mages Guild","formId":"0x0002CD10"}
-       ,{"name":"Bravil Recommendation","formId":"0x0002D936"}
-       ,{"name":"Leyawiin Recommendation","formId":"0x0002D93C"}
-       ,{"name":"Cheydinhal Recommendation","formId":"0x0002D410"}
-       ,{"name":"Fingers of the Mountain","formId":"0x000224E1","notes":"Give the book to Teekeeus during the first quest to get 2 fame instead of 1."}
-       ,{"name":"Fingers of the Mountain, Part II","formId":"0x00028C05"}
-       ,{"name":"Bruma Recommendation","formId":"0x0002CBC8"}
-       ,{"name":"Skingrad Recommendation","formId":"0x0002D28B"}
-       ,{"name":"Anvil Recommendation","formId":"0x0002D32B"}]}
-       ,{"name":"Suspension Quests","elements":[{"name":"Mages Guild Suspension","formId":"0x00022E92"}
-       ,{"name":"Mages Guild Second Suspension","formId":"0x00025032"}]}
-       ,{"name":"Misc. Quests","elements":[{"name":"Alchemy Acquisitions","formId":"0x000A78CE"}]}
-       ,{"name":"Post-Initiation Quests","elements":[{"name":"A Mage's Staff","formId":"0x00034E14"}
-       ,{"name":"Ulterior Motives","formId":"0x0003564F"}
-       ,{"name":"Vahtacen's Secret","formId":"0x00035F28"}
-       ,{"name":"Necromancer's Moon","formId":"0x00036300"}
-       ,{"name":"Liberation or Apprehension?","formId":"0x0000395F"}
-       ,{"name":"Information at a Price","formId":"0x00003960"}
-       ,{"name":"A Plot Revealed","formId":"0x00003961","notes":"Invest in Selena Orania before doing this quest."}
-       ,{"name":"The Bloodworm Helm","formId":"0x0000C039"}
-       ,{"name":"The Necromancer's Amulet","formId":"0x0000C03A"}
-       ,{"name":"Ambush","formId":"0x0000C03B"}
-       ,{"name":"Confront the King","formId":"0x0000C03C"}]}
+		   ,{"name":"Bravil Recommendation","formId":"0x0002D936"}
+		   ,{"name":"Leyawiin Recommendation","formId":"0x0002D93C"}
+		   ,{"name":"Cheydinhal Recommendation","formId":"0x0002D410"}
+		   ,{"name":"Fingers of the Mountain","formId":"0x000224E1","notes":"Give the book to Teekeeus during the first quest to get 2 fame instead of 1."}
+		   ,{"name":"Fingers of the Mountain, Part II","formId":"0x00028C05"}
+		   ,{"name":"Bruma Recommendation","formId":"0x0002CBC8"}
+		   ,{"name":"Skingrad Recommendation","formId":"0x0002D28B"}
+		   ,{"name":"Anvil Recommendation","formId":"0x0002D32B"}]}
+       ,{"name":"Suspension Quests","elements":[
+			{"name":"Mages Guild Suspension","formId":"0x00022E92"}
+		   ,{"name":"Mages Guild Second Suspension","formId":"0x00025032"}
+		]}
+       ,{"name":"Misc. Quests","elements":[
+			{"name":"Alchemy Acquisitions","formId":"0x000A78CE"}]}
+       ,{"name":"Post-Initiation Quests","elements":[
+			{"name":"A Mage's Staff","formId":"0x00034E14"}
+		   ,{"name":"Ulterior Motives","formId":"0x0003564F"}
+		   ,{"name":"Vahtacen's Secret","formId":"0x00035F28"}
+		   ,{"name":"Necromancer's Moon","formId":"0x00036300"}
+		   ,{"name":"Liberation or Apprehension?","formId":"0x0000395F"}
+		   ,{"name":"Information at a Price","formId":"0x00003960"}
+		   ,{"name":"A Plot Revealed","formId":"0x00003961","notes":"Invest in Selena Orania before doing this quest."}
+		   ,{"name":"The Bloodworm Helm","formId":"0x0000C039"}
+		   ,{"name":"The Necromancer's Amulet","formId":"0x0000C03A"}
+		   ,{"name":"Ambush","formId":"0x0000C03B"}
+		   ,{"name":"Confront the King","formId":"0x0000C03C"}
+		]}
     ]}
-    ,{"name":"Daedric Shrines","elements":[{
-        "name":"Azura","formId":"0x000146A2"}
+    ,{"name":"Daedric Shrines","elements":[
+		{"name":"Azura","formId":"0x000146A2"}
        ,{"name":"Boethia","formId":"0x000146A3"}
        ,{"name":"Clavicus Vile","formId":"0x000146A4"}
        ,{"name":"Hermaeus Mora","formId":"0x000146AF"}

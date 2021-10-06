@@ -248,7 +248,7 @@ function recalculateProgressAndSave(){
 	
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	document.getElementById("totalProgressPercent").innerHTML = progress.toString();
+	document.querySelectorAll('[id=totalProgressPercent]').forEach(element => {element.innerHTML = progress.toString();});
 	saveProgressToCookie();
 }
 
