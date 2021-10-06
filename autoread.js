@@ -9,7 +9,6 @@ var currentLineText = "";
 function goToNext(){
 	if(sectionLines && sectionLines[currentLineIndex]){
 		sectionLines[currentLineIndex].style.backgroundColor="";
-		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 	}
 	
 	currentLineIndex +=1;
@@ -47,6 +46,9 @@ function playHotKey(event){
 		event.preventDefault();
 		goToNext();
 		play();
+	}
+	if(event.key == " " && sectionLines && sectionLines[currentLineIndex]){
+		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 	}
 }
 
