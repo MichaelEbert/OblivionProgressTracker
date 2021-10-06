@@ -179,3 +179,19 @@ input[type="number"]{
 	width: 4em;
 }
 
+/*mobile/thin window CSS*/
+@media only screen and (orientation: portrait){
+	.topbar{
+		flex-wrap: wrap;
+		max-height: 2em;
+	}
+	.topbarSection{
+		width:25vw;
+	}
+	.topbarSection:hover .topbarSublist{
+		display: none;/*no more crazy links for mobile*/
+	}
+	.sidebar{
+		display:none;/*no sidebar*/
+	}
+}
