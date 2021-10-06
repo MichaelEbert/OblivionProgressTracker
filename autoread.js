@@ -59,10 +59,11 @@ function initSpeak(){
 	// Disable the "Enable Speech" button
 	let enableSpeechBtn = document.getElementById("enable_speech_btn");
 	enableSpeechBtn.disabled = true;
+	enableSpeechBtn.blur(); //take focus off of button, so we can press space right away
 }
 
 function addSpeakBox(){
-	
+	/*
 	var speechBox = document.createElement("div");
 	speechBox.id = "speechbox"
 	speechBox.style.float="right";
@@ -97,12 +98,19 @@ function addSpeakBox(){
 		document.body.prepend(outerSpeechBox);
 	}
 	outerSpeechBox.appendChild(speechBox);
+	*/
+
+	var TBar = document.getElementById("topbar");
+	var speechBox = document.createElement("div");
+
+	speechBox.className = "topbarSection";
+	speechBox.style.backgroundColor = "lightgreen";
+	speechBox.innerText = "Speech Enabled.";
+	TBar.append(speechBox);
 
 	window.addEventListener('resize', orientationCheck, true);
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
-
-	sbPlay.focus();
 }
 
 function handleCheckbox(currentLine){

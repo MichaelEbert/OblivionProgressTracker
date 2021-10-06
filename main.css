@@ -46,7 +46,7 @@ td{
 	justify-content: space-evenly;
 	align-items:stretch;
 	width: 99%; /*99% prevents the rightside of the topbar from hiding behind the scrollbar*/
-	max-height: 1em;
+	max-height: 2em;
 	position: fixed;
 	background-color: #FBEFD5;
 	padding:0.5em;
@@ -55,7 +55,7 @@ td{
 }
 
 .topbarSection{
-	flex:1 0 20%;
+	flex:1 0 16%;
 	text-align: center;
 	background-color: #EBDFC5;
 	border-right: 1px solid black;
