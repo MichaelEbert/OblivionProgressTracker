@@ -55,7 +55,7 @@ td{
 }
 
 .topbarSection{
-	flex:1 0 auto;
+	flex:1 0 20%;
 	text-align: center;
 	background-color: #EBDFC5;
 	border-right: 1px solid black;
@@ -183,9 +183,10 @@ input[type="number"]{
 @media only screen and (orientation: portrait){
 	.topbar{
 		flex-wrap: wrap;
-		max-height: 2em;
+		max-height: 4em;
 	}
 	.topbarSection{
+		flex:1 0 auto;
 		width:25vw;
 	}
 	.topbarSection:hover .topbarSublist{
