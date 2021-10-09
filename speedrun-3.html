@@ -16,14 +16,51 @@
 </head>
 <body>
 <div id="topbar" class="topbar">
-	<div id="links">
-		<a href="./index.html">Checklist</a> | 
-		<a href="./glitches.html">Glitches</a> | 
-		<a href="./casual.html">Casual Guide</a> | 
-		<a href="./speedrun-3.html">Speedrun Guide (v3)</a> | 
-		<a href="./settings.html">Settings</a>
+	<a href="./index.html" class="topbarSection"> Checklist</a>
+	
+	<div class="topbarSection">
+		<a href="./glitches.html">Glitches</a>
+		<div class="topbarSublist">
+			<a href="./glitches.html#permakey">Perma Key</a>
+			<a href="./glitches.html#boostjump">Boost Jump</a>
+			<a href="./glitches.html#duping">Dupe/Duping</a>
+			<a href="./glitches.html#qsqldeaggro">QSQL De-Aggro</a>
+			<a href="./glitches.html#saveclip">Save Clip</a>
+			<a href="./glitches.html#voidwarp">Void Warp</a>
+			<a href="./glitches.html#yieldglitch">Yield Glitch</a>
+			<a href="./glitches.html#eightpotionglitch">8 Potion Glitch</a>
+		</div>
 	</div>
+
+	<div class="topbarSection">
+		<a href="./casual.html">Casual Guide</a>
+		<div class="topbarSublist">
+			<a href="./casual.html#top">item1</a>
+		</div>
+	</div>
+	
+	<div class="topbarSection">
+		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
+		<div class="topbarSublist">
+			<a href="./speedrun-3.html#guide_pregame">Pregame</a>
+			<a href="./speedrun-3.html#guide_tutorial">Tutorial</a>
+			<a href="./speedrun-3.html#guide_ICMarketDistrict">Imperial City Market District</a>
+			<a href="./speedrun-3.html#guide_MagesGuildPt1">Mages Guild Pt1</a>
+			<a href="./speedrun-3.html#guide_GoldFarming">Gold Farming</a>
+			<a href="./speedrun-3.html#guide_InvestingCircuit">Investing Circuit</a>
+			<a href="./speedrun-3.html#guide_MagesGuildPt2">Mages Guild Pt2</a>
+			<a href="./speedrun-3.html#guide_MainQuestPt1">Main Quest Pt1</a>
+			<a href="./speedrun-3.html#guide_MapExploration">Map Exploration</a>
+			<a href="./speedrun-3.html#guide_TheNirnroute">The Nirn-Route</a>
+			<a href="./speedrun-3.html#guide_MainQuestPt2">Main Quest Pt2</a>
+			<a href="./speedrun-3.html#guide_FightersGuild">Fighters Guild</a>
+		</div>
+	</div>
+	
+	<a href="./settings.html" class="topbarSection"> Settings</a>
+	
 </div>
+
 <br/>
 <div class="contentContainer">
 <div class="sidebar" id="sidebar">
@@ -33,15 +70,7 @@
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
 <button onclick="initSpeak()" id="enable_speech_btn">Enable speech</button>
-<!--<div id="toc">
-Table of Contents
-<ol>
-<li><a href="#permakey">Perma Key</a></li>
-<li><a href="#boostjump">Boost Jump</a></li>
-<li><a href="#duping">Dupe/Duping</a></li>
-</ol>
-</div>
--->
+
 <div id="guide_pregame" class="section" id="guide_Pregame">
 <div class="sectionTitle">Pregame</div>
 <div class="collapsibleContent">
@@ -1501,7 +1530,6 @@ You should have 34 before starting this section. There are 254 outdoor Nirnroot,
 </div><!-- nirnroot end-->
 
 
-
 <div class="section" id="guide_MainQuestPt2">
 <div class="sectionTitle">Main Quest Pt. 2</div>
 <div class="collapsibleContent">
@@ -1719,6 +1747,7 @@ The Imperial Dragon Armor quest is used as the official end of the run, so it wi
 
 </div>
 </div>
+
 
 <div class="section" id="guide_FightersGuild">
 <div class="sectionTitle">Fighters Guild</div>
@@ -2290,11 +2319,10 @@ The Imperial Dragon Armor quest is used as the official end of the run, so it wi
 </div>
 
 </div>
-</div><!-- FG end-->
 
 </article><!-- main end-->
+</div><!-- FG end-->
 
-</div>
 <script>
 init();
 makeCollapsible();
