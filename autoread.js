@@ -100,13 +100,13 @@ function addSpeakBox(){
 	outerSpeechBox.appendChild(speechBox);
 	*/
 
-	var TBar = document.getElementById("topbar");
+	var tBar = document.getElementById("topbar");
 	var speechBox = document.createElement("div");
 
 	speechBox.className = "topbarSection";
 	speechBox.style.backgroundColor = "lightgreen";
 	speechBox.innerText = "Speech Enabled.";
-	TBar.append(speechBox);
+	tBar.append(speechBox);
 
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
