@@ -9,7 +9,6 @@ var currentLineText = "";
 function goToNext(){
 	if(sectionLines && sectionLines[currentLineIndex]){
 		sectionLines[currentLineIndex].style.backgroundColor="";
-		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 	}
 	
 	currentLineIndex +=1;
@@ -48,6 +47,9 @@ function playHotKey(event){
 		goToNext();
 		play();
 	}
+	if(event.key == " " && sectionLines && sectionLines[currentLineIndex]){
+		sectionLines[currentLineIndex].scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+	}
 }
 
 function initSpeak(){
@@ -57,11 +59,13 @@ function initSpeak(){
 	// Disable the "Enable Speech" button
 	let enableSpeechBtn = document.getElementById("enable_speech_btn");
 	enableSpeechBtn.disabled = true;
+	enableSpeechBtn.blur(); //take focus off of button, so we can press space right away
 }
 
 function addSpeakBox(){
-	
+	/*
 	var speechBox = document.createElement("div");
+	speechBox.id = "speechbox"
 	speechBox.style.float="right";
 	speechBox.style.backgroundColor="#FBEFD5";
 	speechBox.style.border="1px solid black";
@@ -94,11 +98,18 @@ function addSpeakBox(){
 		document.body.prepend(outerSpeechBox);
 	}
 	outerSpeechBox.appendChild(speechBox);
-	
+	*/
+
+	var tBar = document.getElementById("topbar");
+	var speechBox = document.createElement("div");
+
+	speechBox.className = "topbarSection";
+	speechBox.style.backgroundColor = "lightgreen";
+	speechBox.innerText = "Speech Enabled.";
+	tBar.append(speechBox);
+
 	window.addEventListener('keydown', playHotKey, true);
 	window.addEventListener('touchstart', playHotKey, true);
-
-	sbPlay.focus();
 }
 
 function handleCheckbox(currentLine){
