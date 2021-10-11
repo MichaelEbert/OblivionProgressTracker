@@ -1,4 +1,4 @@
-{"version":2,"name":"fame","weight":0,"elements":[
+{"version":2,"name":"fame","extraColumn":"amount","weight":0,"elements":[
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
 			{"ref":"0x0001E724","amount":1}
@@ -56,23 +56,23 @@
 		]},
 		{"name":"Daedric Quests","elements":[
 			{"ref":"0x000146A2","amount":1}
-			{"ref":"0x000146A3","amount":1}
-			{"ref":"0x000146A4","amount":1}
-			{"ref":"0x000146A5","amount":1}
-			{"ref":"0x000146A6","amount":1}
-			{"ref":"0x000146A7","amount":1}
-			{"ref":"0x000146A8","amount":1}
-			{"ref":"0x000146A9","amount":0}
-			{"ref":"0x000146AA","amount":1}
-			{"ref":"0x000146AB","amount":1}
-			{"ref":"0x000146AC","amount":1}
-			{"ref":"0x000146AD","amount":1}
-			{"ref":"0x000146AE","amount":1}
-			{"ref":"0x000146AF","amount":1}
-			{"ref":"0x000146B0","amount":1}
-		]},
-		{"name":"Arena Fights","elements":[
+			,{"ref":"0x000146A3","amount":1}
+			,{"ref":"0x000146A4","amount":1}
+			,{"ref":"0x000146A5","amount":1}
+			,{"ref":"0x000146A6","amount":1}
+			,{"ref":"0x000146A7","amount":1}
+			,{"ref":"0x000146A8","amount":1}
+			,{"ref":"0x000146A9","amount":0}
+			,{"ref":"0x000146AA","amount":1}
+			,{"ref":"0x000146AB","amount":1}
+			,{"ref":"0x000146AC","amount":1}
+			,{"ref":"0x000146AD","amount":1}
+			,{"ref":"0x000146AE","amount":1}
+			,{"ref":"0x000146AF","amount":1}
+			,{"ref":"0x000146B0","amount":1}
 		]}
+	]}
+	,{"name":"Arena Fights","elements":[
 	]}
 
 ]}

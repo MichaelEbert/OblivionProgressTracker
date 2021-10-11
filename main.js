@@ -28,6 +28,20 @@ function init(){
 				}
 			}
 		}
+		{
+			if(false){
+				//fame is tracked indirectly.
+				let klass = classes.find(x=>x.name == "fame");
+				const hive = jsondata[klass.name];
+				const section = document.getElementById(klass.name+"section");
+				if(section == null){
+					console.warn("could not find section for class "+klass.name);
+				}
+				else{//we start at depth 1 because the page itself already has the depth 0 titles.
+					initMultiV2(hive.elements, klass.name, section,1,"amount");
+				}
+			}
+		}
 	}).then(()=>{
 		if(loadProgressFromCookie() == false){
 			resetProgress();
@@ -53,7 +67,10 @@ function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
 	}
 	for(const datum of multidata) {
 		if(datum.elements == null){
-			parentNode.appendChild(initSingle(datum, classname, extraColumnName));
+			let maybeElement = parentNode.appendChild(initSingle(datum, classname, extraColumnName));
+            if(maybeElement != null){
+				parentNode.appendChild(maybeElement);
+			}
 		}
 		else{
 			// not a leaf node, so create a subtree, with a title n stuff.
@@ -103,9 +120,89 @@ function initMulti(multidata, classname, categoryName){
 	}
 }
 
+/**
+ * Creates a function that will be added to the other cell's html that updates this cell's html.
+ * @param {*} indirectCell 
+ */
+function CreateIndirectUpdater(indirectHtml){
+	return function(event){
+		console.log("indirect update!");
+		const checkbox = Array.from(indirectHtml.children).find(x=>x.tagName=="INPUT");
+		checkbox.checked = event.target.checked;
+		userInputData(indirectHtml.id, checkbox);
+	}
+}
+
+//ugggg
+function initSingleIndirect(cell, classname, extraColumnName){
+	let refCell;
+	refCell = findOnTree(jsondata["quest"], (x=>x.formId == cell.ref));
+	if(refCell == null){
+		console.error("Object not found with form id "+cell.ref);
+		return null;
+	}
+	var usableId = refCell.formId;
+	
+	var rowhtml = document.createElement("div");
+	rowhtml.classList.add(classname);
+	rowhtml.classList.add("item");
+	rowhtml.id = classname+usableId.toString();
+	//rowhtml.addEventListener('click',rowClicked);
+	
+	//name
+	var rName = document.createElement("span");
+	rName.classList.add(classname+"Name");
+	rName.innerText = refCell.name;
+	rowhtml.appendChild(rName);
+	
+	//checkbox
+	var rcheck = document.createElement("input")
+	if(refCell.type){
+		rcheck.type= refCell.type;
+		//rcheck.addEventListener('change',checkboxClicked);
+		rcheck.size=4;
+		if(refCell.max){
+			rcheck.max = refCell.max;
+		}
+	}
+	else{
+		rcheck.type="checkbox";
+		//rcheck.addEventListener('click',checkboxClicked);
+	}
+	//we need to add an event listener for the other cell.
+	let otherCellCheck = document.getElementById("quest"+refCell.id+"check");
+	if(otherCellCheck == null){
+		console.warn("Could not find checkbox for element "+"quest"+refCell.id+"check");
+	}
+	else{
+		otherCellCheck.addEventListener("change",CreateIndirectUpdater(rowhtml));
+	}
+
+	rcheck.classList.add(classname+"Check")
+	rcheck.classList.add("check")
+	rcheck.id = rowhtml.id+"check"
+	rcheck.disabled = true;
+	rowhtml.appendChild(rcheck)
+
+	if(extraColumnName && cell[extraColumnName] != null){
+		let extraCol = document.createElement("span");
+		extraCol.classList.add("detailColumn");
+		extraCol.innerText = cell[extraColumnName];
+		rowhtml.appendChild(extraCol);
+	}
+	return rowhtml;
+}
+
 //init a single leaf node
 //imma call single leaf nodes "cells" because its memorable
 function initSingle(cell, classname, extraColumnName){
+	//hack for fame
+	if(cell.ref != null){
+		//this is an indirect class.
+		return initSingleIndirect(cell, classname, extraColumnName);
+	}
+	
+	
 	//this is here because we may want to switch over to formID.
 	var usableId = cell.id;
 	
@@ -350,4 +447,6 @@ function rowClicked(event){
 		checkbox.checked = !checkbox.checked;
 		userInputData(event.target.id, checkbox);
 	}
+	//for change listeners
+	checkbox.dispatchEvent(new Event('change'));
 }
