@@ -67,7 +67,7 @@
 <button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 
 <script>
-updateUIFromSaveData(); //this updates the %complete in topbar
+//updateUIFromSaveData(); //this updates the %complete in topbar
 loadProgressFromCookie();
 document.getElementById("fileinput").addEventListener('change',importProgress);
 document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
