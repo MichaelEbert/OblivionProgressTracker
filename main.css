@@ -60,7 +60,6 @@ td{
 	text-align: center;
 	background-color: #EBDFC5;
 	border-right: 1px solid black;
-	z-index: 10;/*Lets topbar render over Iframe*/	
 }
 
 .topbarSublist{
