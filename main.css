@@ -52,6 +52,7 @@ td{
 	padding:0.5em;
 	top: 0; /* hug the top of the window instead of having a buffer */
 	left: 0;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
 }
 
 .topbarSection{
@@ -99,7 +100,7 @@ td{
 	height: 500px;
 	width: 500px;
 	position: sticky;
-	top: 1em;
+	top: 3em;
 }
 
 .iframe{
