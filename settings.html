@@ -58,23 +58,26 @@
 </div>
 <br/><br/>
 <div class="h2">Settings</div>
-<input type="checkbox" id="minipageCheck"/> Link books to local page (instead of direct to UESP)<br/>
-<input type="checkbox" id="iframeCheck"/> enable opening in iframe<br/>
+<input type="checkbox" id="minipageCheck"/> Link books to local page (uncheck for direct UESP links)<br/>
+<input type="checkbox" id="iframeCheck"/> enable opening links in-page on iframe<br/>
 <input type="text" id="serverUrl" size="80"/>Share server path <br/>
-<input type="text" id="myShareUrl" readonly="true"/>my share path <button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress</button><br/>
-<input type="text" id="remoteShareUrl"/>remote share path<br/>
+<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
+Spectate other:<input type="text" id="remoteShareCode"/><br/>
 <button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 <button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
-
+<p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 <script>
 //updateUIFromSaveData(); //this updates the %complete in topbar
+function updateShareUrl(){
+	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
+}
 loadProgressFromCookie();
 document.getElementById("fileinput").addEventListener('change',importProgress);
 document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
 document.getElementById("iframeCheck").addEventListener('change',onSettingChange);
 document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
-document.getElementById("myShareUrl").addEventListener('change',onSettingChangeText);
-document.getElementById("remoteShareUrl").addEventListener('change',setRemoteUrl);
+document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
+document.addEventListener("progressUpload",updateShareUrl);
 
 if(settings.minipageCheck){
 	document.getElementById("minipageCheck").checked = true;
@@ -95,14 +98,17 @@ if(settings.serverUrl){
 	document.getElementById("serverUrl").value = settings.serverUrl;
 }
 
-if(settings.myShareUrl){
-	document.getElementById("myShareUrl").value = settings.myShareUrl;
+if(settings.myShareCode){
+	updateShareUrl();
 }
 
-if(settings.remoteShareUrl){
-	document.getElementById("remoteShareUrl").value = settings.remoteShareUrl;
+if(settings.remoteShareCode){
+	document.getElementById("remoteShareCode").value = settings.remoteShareCode;
 }
 
+/**
+ * on boolean settings change 
+ */
 function onSettingChange(event){
 	var settingsVal = event.target.id;
 	settings[settingsVal] = event.target.checked;
