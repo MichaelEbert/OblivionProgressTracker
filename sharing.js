@@ -69,6 +69,9 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 				//yay.
 				resolve(this.response);
 			}
+			else{
+				reject(this);
+			}
 		}
 
 		req.onerror = function (){
@@ -93,9 +96,12 @@ async function downloadSave(remoteUrl){
 		req.setRequestHeader("Content-Type","application/json");
 		
 		req.onload = function(){
-			if(req.status == 200){
+			if(this.status == 200){
 				//yay
-				resolve(JSON.parse(req.response));
+				resolve(JSON.parse(this.response));
+			}
+			else{
+				reject(this);
 			}
 		}
 		req.onerror = function(){
@@ -199,7 +205,8 @@ function setRemoteUrl(event){
 		initShareSettings();
 		settings.remoteShareCode = event.target.value;
 		saveCookie("settings",settings);
-		startSpectating();
+		startSpectating()
+			.catch(()=>alert("invalid url"));
 	}
 }
 
