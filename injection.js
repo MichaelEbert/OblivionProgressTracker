@@ -69,7 +69,7 @@ function replaceElements(){
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
-			console.warn("replaceable element "+checklistid+" not found in reference");
+			console.warn("replaceable element '"+checklistid+"' with contents '"+element.innerText+"' not found in reference");
 			continue;
 		}
 		//step 2: create the internal stuff.
