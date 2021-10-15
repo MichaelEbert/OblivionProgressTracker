@@ -76,6 +76,9 @@ function saveProgressToCookie(){
 	saveCookie("progress",compressSaveData(savedata));
 }
 
+/**
+ * Load progress and settings.
+ */
 function loadProgressFromCookie(){
 	settings = loadCookie("settings");
 	if(settings == null){
