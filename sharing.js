@@ -174,7 +174,8 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 	}
 	else{
 		//TODO: move this if block. i dont think it belongs here.
-		if(Object.keys(loadCookie("progress_local")).length == 0){
+		let progressLocal = loadCookie("progress_local");
+		if(progressLocal == null || Object.keys(progressLocal).length == 0){
 			//we don't have progress_local, so we can assume that the current value of 'progress' is local progress,
 			//so save it before we overwrite it with the remote data.
 			saveCookie("progress_local",loadCookie("progress"));
