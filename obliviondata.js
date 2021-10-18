@@ -94,7 +94,6 @@ function generatePromiseFunc(basedir, klass){
 			.then(hive=>mergeData(hive,basedir))
 			.then(hive=>{
 				jsondata[klass.name] = hive;
-				console.log(klass.name+" loaded");
 			})
 			.catch(err =>console.log(err));
 }
@@ -117,8 +116,10 @@ function mergeCell(mapping){
 function addParentLinks(node, parent){
 	//go through hive, adding parent links.
 	node.parent = parent;
-	for(const child of node.elements){
-		addParentLinks(child, node);
+	if(node.elements != null){
+		for(const child of node.elements){
+			addParentLinks(child, node);
+		}
 	}
 }
 

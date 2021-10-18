@@ -1,3 +1,4 @@
 {"version":2,"weight":0,"name":"save","elements":[
-{"id":"permakey","name":"","type":"number"}
+{"id":"permakey","name":"","type":"number"},
+{"id":"safetysave","name":"","type":"number"}
 ]}

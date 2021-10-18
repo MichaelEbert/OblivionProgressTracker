@@ -20,9 +20,10 @@ function init(){
  * Initial function to replace checkboxes n stuff.
  */
 function replaceElements(){
-	var replaceableParts = document.getElementsByClassName("replaceable");
-	while(replaceableParts.length > 0){
-		const element = replaceableParts[0];
+	//TODO: incorporate NPC elements in to this general method.
+	var replaceableParts = classes.filter(x=>x.name != "npc").flatMap(x=>Array.of(...document.getElementsByClassName(x.name)));
+
+	for(let element of replaceableParts){
 		const checklistid = element.getAttribute("clid");
 		//step 1: get the target element data.
 		var found = false;
@@ -63,13 +64,41 @@ function replaceElements(){
 				}
 			}
 		}
+		if(!found){
+			//element didn't have a formid. search by name.
+			//maybe we can look up by name
+			let elementType = element?.classList[0];
+			if(elementType != null){
+				let elementName = element.innerText;
+				let firstBracketPos = elementName.indexOf("[");
+				if(firstBracketPos != -1){
+					elementName = elementName.substring(0,firstBracketPos);
+				}
+				elementName = elementName.trim();
+				var maybeCell = findOnTree(jsondata[elementType], x=>x.name.toLowerCase() == elementName.toLowerCase());
+				if(maybeCell != null){
+					elementid = maybeCell.id;
+					cell = maybeCell;
+					elementclass = elementType;
+					found = true;
+				}
+			}
+		}
 
 		if(!found){
 			//skip this iteration and move to the next one.
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
-			console.warn("replaceable element '"+checklistid+"' with contents '"+element.innerText+"' not found in reference");
+			let identifiedClass = element?.classList[0];
+			let classStuff = {
+				clid: checklistid,
+				identifiedClass: element?.classList[0],
+				contents: element?.innerText
+			}
+			console.warn("replaceable element not found in reference: ");
+			console.warn(classStuff);
+			
 			continue;
 		}
 		//step 2: create the internal stuff.
