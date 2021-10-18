@@ -20,9 +20,8 @@ function init(){
  * Initial function to replace checkboxes n stuff.
  */
 function replaceElements(){
-	var replaceableParts = document.getElementsByClassName("replaceable");
-	while(replaceableParts.length > 0){
-		const element = replaceableParts[0];
+	var replaceableParts = Array.of(...document.getElementsByClassName("replaceable"));
+	for(let element of replaceableParts){
 		const checklistid = element.getAttribute("clid");
 		//step 1: get the target element data.
 		var found = false;
@@ -63,13 +62,40 @@ function replaceElements(){
 				}
 			}
 		}
+		if(!found){
+			//element didn't have a formid. search by name.
+			//maybe we can look up by name
+			let elementType = element?.classList[0];
+			if(elementType != null){
+				let elementName = element.innerText;
+				let firstBracketPos = elementName.indexOf("[");
+				if(firstBracketPos != -1){
+					elementName = elementName.substring(0,firstBracketPos);
+				}
+				elementName = elementName.trim();
+				console.log("attempting to get data for "+elementName+" of type "+elementType);
+				var maybeCell = jsondata[elementType]?.elements.find(x=>x.name.toLowerCase() == elementName.toLowerCase());
+				if(maybeCell != null){
+					elementid = maybeCell.id;
+					cell = maybeCell;
+					elementclass = elementType;
+					found = true;
+				}
+			}
+		}
 
 		if(!found){
 			//skip this iteration and move to the next one.
 			element.classList.remove("replaceable");
 			element.classList.add("replaceableError");
 			replaceableParts = document.getElementsByClassName("replaceable");
-			console.warn("replaceable element '"+checklistid+"' with contents '"+element.innerText+"' not found in reference");
+			if(elementid){
+				console.warn("replaceable element '"+checklistid+"' with potential id '"+elementid+"' not found in reference");
+			}
+			else{
+				console.warn("replaceable element '"+checklistid+"' with contents '"+element.innerText+"' not found in reference");
+			}
+			
 			continue;
 		}
 		//step 2: create the internal stuff.
