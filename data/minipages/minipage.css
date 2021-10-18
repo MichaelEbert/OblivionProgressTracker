@@ -15,3 +15,7 @@
 p{
 	margin: 0.2em;	
 }
+
+img{
+	max-width:100%;
+}
