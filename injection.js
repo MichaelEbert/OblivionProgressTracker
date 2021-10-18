@@ -13,6 +13,8 @@ function init(){
 		replaceElements();
 		linkNPCs();
 		initIframe();
+		updateTopbarPercent();
+		window.addEventListener("input" ,updateTopbarPercent);
 	});
 }
 
