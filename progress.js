@@ -164,8 +164,8 @@ function updateTopbarPercent(){
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	document.querySelectorAll('[id=totalProgressPercent]').forEach(element => {
 		element.innerHTML = progress.toString();
-		
-
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});
 	saveProgressToCookie();
