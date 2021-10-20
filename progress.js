@@ -131,3 +131,101 @@ function resetProgress(shouldConfirm=false){
 	saveProgressToCookie();
 	document.dispatchEvent(new Event("progressLoad"));
 }
+
+//Topbar percentage update and helper functions
+function updateTopbarPercent(){
+	//we could probably cache the hives that aren't modified
+	var percentCompleteSoFar = 0.0;
+	for(const klass of progressClasses) {
+		const hive = jsondata[klass.name];
+		if(hive?.version >= 2){
+			percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
+		}
+		else{
+			let classtotal = 0;
+			let classchecked = 0;
+			for (const id in savedata[klass.name]){
+				if(savedata[klass.name][id] == true){
+					classchecked += 1;
+				}
+				classtotal +=1;
+			}
+			
+			//update overview and totals
+			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
+		}
+	}
+	
+	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
+	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
+	percentCompleteSoFar = percentCompleteSoFar / totalweight;
+	
+	//round progress to 2 decimal places
+	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	document.querySelectorAll('[id=totalProgressPercent]').forEach(element => {
+		element.innerHTML = progress.toString();
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
+		}
+	});
+	saveProgressToCookie();
+}
+
+function getSubtotalCompletion(subtotalJsonNode,classname){
+	const weight = subtotalJsonNode.weight;
+	const [items,total] = sumCompletionItems(subtotalJsonNode,classname);
+	
+	//try to find subtotals
+	//this may fail if we have multiple score nodes from different hives wiht the same name.
+	const overviewId = "overview_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
+	const maybeItem = document.getElementById(overviewId);
+	if(maybeItem){
+		//add this to correct subtotal slot
+		maybeItem.innerText = items.toString() + "/" + total.toString();
+	}
+	
+	// and finally, return weighted progress for total progress.
+	return (items/total)*weight;
+}
+
+function sumCompletionItems(jsonNode,classname){
+	if(jsonNode.id != null){
+		return sumCompletionSingleCell(jsonNode,classname);
+	}
+	else{
+		var completed = 0;
+		var total = 0;
+		for(const element of jsonNode.elements){
+			let innerResult = sumCompletionItems(element,classname);
+			completed += innerResult[0];
+			total += innerResult[1];
+		}
+		return [completed,total];
+	}
+}
+
+function sumCompletionSingleCell(cell,classname){
+	var totalElements;
+	var completedElements;
+	if(cell.type == "number"){
+		completedElements = savedata[classname][cell.id];
+		if(cell.max){
+			totalElements = cell.max;
+		}
+		else{
+			totalElements = Math.max(1,completedElements);
+		}
+	}
+	else{
+		//we're a checkbox
+		totalElements = 1;
+		if(savedata[classname][cell.id]){
+			completedElements = 1;
+		}
+		else{
+			completedElements = 0;
+		}
+	}
+	return [completedElements,totalElements];	
+}
+//Topbar percentage update and helper functions END
