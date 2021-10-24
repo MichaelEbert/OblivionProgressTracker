@@ -63,9 +63,28 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 
 [System.IO.File]::WriteAllLines("C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\speedrun-3b.html",$speedrun,[System.Text.Encoding]::UTF8)
 
+##
+##
+## ID GENERATION STUFF
+##
+## run everything from here on to generate ids
+## you are not expected to understand this (it is terrible code)
+## 
+
 $speedrun = get-content "C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\speedrun-3.html" -Encoding 'utf8'
 #ID generator
 $currentPath = new-object -type system.collections.generic.list[string];
+$sectionNames = new-object -type system.collections.generic.list[string];
+
+# set IDs that the tool doesn't generate properly here.
+# format is {generated name}={corrected name}
+$customIDs = @{
+	"guide_RandomSkillBooks_CombatBooksFortDirichbetweenSkingradandChorrol"="guide_RandomSkillBooks_Combat";
+	"guide_RandomSkillBooks_MagicBooksMossRockCavernnorthofImperialCity"="guide_RandomSkillBooks_Magic";
+	"guide_RandomSkillBooks_StealthBooksImperialCitySewersNorthExitnorthofImperialCity"="guide_RandomSkillBooks_Stealth";
+	"guide_TheGreatSkillGrind_Heavy"="guide_TheGreatSkillGrind_Armor";
+}
+
 
 for($i = 0; $i -lt $speedrun.count;$i+=1){
 	$line = $speedrun[$i];
@@ -80,13 +99,24 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 			continue;
 		}
 		$lineTitle -match 'sectionTitle">([^<]*)</div>'
+		$formattedTitle = $matches[1] -replace '/.*','';
 		#remove everything that's not letter or number
-		$formattedTitle = $matches[1] -replace '[^\w]',''
+		$formattedTitle = $formattedTitle -replace '[^\w]',''
+		
+
 		$currentPath.add($formattedTitle);
 		
 		$newId = [String]::join("_",$currentPath);
+		if($newId -in $customIDs.keys){
+			$newId = $customIDs[$newId];
+		}
+		$sectionNames.add($newId);
+		#remove id from line if it currently exists
+		$line = $line -replace ' id="[^"]*"','';
+
 		$speedrun[$i] = $line -replace 'class="section"\s*>',('class="section" id="'+$newId+'">');
 	}
+
 	if($line -match 'class="category"'){
 		while($currentPath.count -gt 2){
 			$currentPath.removeAt($currentPath.count - 1);
@@ -97,16 +127,40 @@ for($i = 0; $i -lt $speedrun.count;$i+=1){
 			write-error "category title not after section, can't ID line $i"
 			continue;
 		}
-		$lineTitle -match 'categoryTitle">([^<]*)</div>'
-		
+
+		if($lineTitle -match 'categoryTitle">([^<]*)</div>')
+		{
+			$formattedTitle = $matches[1] -replace '/.*','';
+		}
+		else{
+			#try embedded in another tag
+			$lineTitle -match 'categoryTitle">([^<]*)<[^>]*>([^<]*)<[^>]*>([^<]*)</div>'
+			$formattedTitle = ($matches[1]+$matches[2]+$matches[3]) -replace '/.*','';
+		}
 		#truncate everything after first slash
-		$formattedTitle = $matches[1] -replace '/.*','';
+		
 		#remove everything that's not letter or number
 		$formattedTitle = $formattedTitle -replace '[^\w]','';
 		
 		$currentPath.add($formattedTitle);
-		
 		$newId = [String]::join("_",$currentPath);
+		if($newId -in $customIDs.keys){
+			$newId = $customIDs[$newId];
+		}
+		#remove id from line if it currently exists
+		$line = $line -replace ' id="[^"]*"','';
+
 		$speedrun[$i] = $line -replace 'class="category"\s*>',('class="category" id="'+$newId+'">');
 	}
 }
+
+#print a formatted list of stuff
+write-host "TOPBAR SUBLIST FOR SPEEDRUN:"
+write-output '		<div class="topbarSublist">'
+foreach($sectionName in $sectionNames){
+	$sectionNamePrettified = ($sectionName.split('_')[-1] -creplace '([A-Z])',' $1').trim()
+	write-output ('			<a href="./speedrun-3.html#'+$sectionName+'">'+$sectionNamePrettified+'</a>')
+}
+write-output '		</div>'
+
+[System.IO.File]::WriteAllLines("C:\Users\Michael\OneDrive\Documents\misc coding projects\oblivion_progress_tracker\speedrun-3b.html",$speedrun,[System.Text.Encoding]::UTF8)
