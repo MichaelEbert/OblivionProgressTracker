@@ -132,48 +132,40 @@ function resetProgress(shouldConfirm=false){
 	document.dispatchEvent(new Event("progressLoad"));
 }
 
-//Topbar percentage update and helper functions
-function updateTopbarPercent(){
+//=========================
+//Progress percentage updates and helper functions
+//=========================
+
+/**
+ * Recalculate progress
+ * @returns {Number} progress
+ */
+function recalculateProgress(){
 	//we could probably cache the hives that aren't modified
 	var percentCompleteSoFar = 0.0;
 	for(const klass of progressClasses) {
 		const hive = jsondata[klass.name];
-		if(hive?.version >= 2){
-			percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
-		}
-		else{
-			let classtotal = 0;
-			let classchecked = 0;
-			for (const id in savedata[klass.name]){
-				if(savedata[klass.name][id] == true){
-					classchecked += 1;
-				}
-				classtotal +=1;
-			}
-			
-			//update overview and totals
-			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
-		}
+		percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
 	}
 	
 	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
 	percentCompleteSoFar = percentCompleteSoFar / totalweight;
-	
-	//round progress to 2 decimal places
-	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerHTML = progress.toString();
-		if(element.parentElement.className == "topbarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
-		}
-	});
-	saveProgressToCookie();
+	return percentCompleteSoFar;
 }
 
-function getSubtotalCompletion(subtotalJsonNode,classname){
+/**
+ * Get completion for a subtotal, multiplied by the subtree weight. additionally, updates subtotal HTML elements if it can find them.
+ * @param {Object} subtotalJsonNode node with a subtotal
+ * @returns {Number} weighted completion percentage
+ */
+function getSubtotalCompletion(subtotalJsonNode){
 	const weight = subtotalJsonNode.weight;
-	const [items,total] = sumCompletionItems(subtotalJsonNode,classname);
+	//optimization so we're not looking for progress in nodes that don't have it (eg saves)
+	if(weight == 0){
+		return 0;
+	}
+	const [items,total] = sumCompletionItems(subtotalJsonNode);
 	
 	//try to find subtotals
 	//this may fail if we have multiple score nodes from different hives wiht the same name.
@@ -188,15 +180,21 @@ function getSubtotalCompletion(subtotalJsonNode,classname){
 	return (items/total)*weight;
 }
 
-function sumCompletionItems(jsonNode,classname){
-	if(jsonNode.id != null){
-		return sumCompletionSingleCell(jsonNode,classname);
+/**
+ * Recursively sum completion items for all cells in this tree.
+ * @param {object} jsonNode tree root
+ * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
+ */
+function sumCompletionItems(jsonNode){
+	//can't use runOnTree because we get 2 inner results and we cant add that in 1 step
+	if(jsonNode.elements == null){
+		return sumCompletionSingleCell(jsonNode);
 	}
 	else{
 		var completed = 0;
 		var total = 0;
 		for(const element of jsonNode.elements){
-			let innerResult = sumCompletionItems(element,classname);
+			let innerResult = sumCompletionItems(element);
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
@@ -204,11 +202,22 @@ function sumCompletionItems(jsonNode,classname){
 	}
 }
 
-function sumCompletionSingleCell(cell,classname){
+/**
+ * Extract the user's completion of a single cell.
+ * @param {Object} cell cell to check completion on
+ * @returns {[Number,Number]} an array of [completed items, total items] for this cell.
+ */
+function sumCompletionSingleCell(cell){
 	var totalElements;
 	var completedElements;
+	if(cell?.hive?.name == null){
+		console.error("Error summing completion for cell: hive name is null.");
+		console.error(cell);
+		return [0,0];
+	}
+
 	if(cell.type == "number"){
-		completedElements = savedata[classname][cell.id];
+		completedElements = savedata[cell.hive.name][cell.id];
 		if(cell.max){
 			totalElements = cell.max;
 		}
@@ -219,13 +228,20 @@ function sumCompletionSingleCell(cell,classname){
 	else{
 		//we're a checkbox
 		totalElements = 1;
-		if(savedata[classname][cell.id]){
+		if(savedata[cell.hive.name][cell.id]){
 			completedElements = 1;
 		}
 		else{
 			completedElements = 0;
 		}
 	}
+	if(completedElements == undefined || totalElements == undefined){
+		console.error("element completion is undefined. Skipping.");
+		console.error(cell);
+		return [0,0];
+	}
 	return [completedElements,totalElements];	
 }
+
+
 //Topbar percentage update and helper functions END

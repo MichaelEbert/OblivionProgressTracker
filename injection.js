@@ -13,8 +13,6 @@ function init(){
 		replaceElements();
 		linkNPCs();
 		initIframe();
-		updateTopbarPercent();
-		window.addEventListener("input" ,updateTopbarPercent);
 	});
 }
 
@@ -256,9 +254,12 @@ function createLinkElement(cell, classname, forceMinipage=false){
 	return linky;
 }
 
+/**
+ * Updates UI elements from save data.
+ * Call this when save data changes.
+ * since these pages may contain multiple references to teh same object, we need to do this from the element side, not from the data side.
+ */
 function updateUIFromSaveData2(){
-	//since these pages may contain multiple references to teh same object, we need to
-	//do this from the element side, not from the data side.
 	for(const linkedElement of linkedElements){
 		var checkbox = Array.from(linkedElement.htmlElement.children).find(x=>x.tagName=="INPUT");
 		if(checkbox.type=="checkbox"){
@@ -274,6 +275,15 @@ function updateUIFromSaveData2(){
 			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
 		}
 	}
+	let percentCompleteSoFar = recalculateProgress();
+	//round progress to 2 decimal places
+	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+		element.innerHTML = progress.toString();
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
+		}
+	});
 }
 
 function setParentChecked(item){
