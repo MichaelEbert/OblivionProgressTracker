@@ -1,25 +1,29 @@
-{"version":1,"elements":[
-{"id":0,"name":"Armorer","specialization":"Combat"}
-,{"id":1,"name":"Athletics","specialization":"Combat"}
-,{"id":2,"name":"Blade","specialization":"Combat"}
-,{"id":3,"name":"Block","specialization":"Combat"}
-,{"id":4,"name":"Blunt","specialization":"Combat"}
-,{"id":5,"name":"Hand to Hand","specialization":"Combat"}
-,{"id":6,"name":"Heavy Armor","specialization":"Combat"}
-
-,{"id":7,"name":"Alchemy","specialization":"Magic"}
-,{"id":8,"name":"Alteration","specialization":"Magic"}
-,{"id":9,"name":"Conjuration","specialization":"Magic"}
-,{"id":10,"name":"Destruction","specialization":"Magic"}
-,{"id":11,"name":"Illusion","specialization":"Magic"}
-,{"id":12,"name":"Mysticism","specialization":"Magic"}
-,{"id":13,"name":"Restoration","specialization":"Magic"}
-
-,{"id":14,"name":"Acrobatics","specialization":"Stealth"}
-,{"id":15,"name":"Light Armor","specialization":"Stealth"}
-,{"id":16,"name":"Marksman","specialization":"Stealth"}
-,{"id":17,"name":"Mercantile","specialization":"Stealth"}
-,{"id":18,"name":"Security","specialization":"Stealth"}
-,{"id":19,"name":"Sneak","specialization":"Stealth"}
-,{"id":20,"name":"Speechcraft","specialization":"Stealth"}
+{"version":2,"name":"skill","weight":15,"elements":[
+    {"name":"Combat","elements":[
+		{"id":0,"name":"Armorer"}
+		,{"id":1,"name":"Athletics"}
+		,{"id":2,"name":"Blade"}
+		,{"id":3,"name":"Block"}
+		,{"id":4,"name":"Blunt"}
+		,{"id":5,"name":"Hand to Hand"}
+		,{"id":6,"name":"Heavy Armor"}
+	]}
+	,{"name":"Magic","elements":[
+		{"id":7,"name":"Alchemy"}
+		,{"id":8,"name":"Alteration"}
+		,{"id":9,"name":"Conjuration"}
+		,{"id":10,"name":"Destruction"}
+		,{"id":11,"name":"Illusion"}
+		,{"id":12,"name":"Mysticism"}
+		,{"id":13,"name":"Restoration"}
+	]}
+	,{"name":"Stealth","elements":[
+		{"id":14,"name":"Acrobatics"}
+		,{"id":15,"name":"Light Armor"}
+		,{"id":16,"name":"Marksman"}
+		,{"id":17,"name":"Mercantile"}
+		,{"id":18,"name":"Security"}
+		,{"id":19,"name":"Sneak"}
+		,{"id":20,"name":"Speechcraft"}
+	]}
 ]}
