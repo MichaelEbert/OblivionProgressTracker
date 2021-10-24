@@ -114,13 +114,26 @@ function mergeCell(mapping){
  * @param {*} parent 
  */
 function addParentLinks(node, parent){
-	//go through hive, adding parent links.
+	//recursively go through hive, adding parent links.
 	node.parent = parent;
+
+	//add a "hive" property that goes straight to the hive
+	Object.defineProperty(node,"hive",{
+		get: function(){
+			let root = this;
+			while(root.parent != null){
+				root = root.parent;
+			}
+			return root;
+		}
+	});
+
 	if(node.elements != null){
 		for(const child of node.elements){
 			addParentLinks(child, node);
 		}
 	}
+	
 }
 
 /**
