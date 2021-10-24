@@ -27,6 +27,10 @@ To link NPCs specifically, surround with \<span class="npc">\</span>
 "notes": will show a warning symbol next to the item with mouseover text.
 "type": change the HTML input type from checkbox to something else. E.g. "type":"number" for save numbers or number of places discovered.
 
+
+# Adding Screenshots
+Screenshots should be taken from the maximum distance at which you can interact with the object. They must be saved as webp and be <= 200 KiB. (a quality setting of 80-90 is about 200 mb if you don't want to fiddle with each image)
+
 # License
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
