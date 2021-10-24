@@ -5,7 +5,7 @@ function generateBookPage(booknumber){
 	
 	document.getElementById("title").innerText = book.name;
 	document.getElementById("skillp").innerText = bookCategory.name;
-	document.getElementById("gameImage").src="book"+booknumber+"_ingame.jpg";
+	document.getElementById("gameImage").src="book"+booknumber+"_ingame.webp";
 
 	commonInit(book);
 }
