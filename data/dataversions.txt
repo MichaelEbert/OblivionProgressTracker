@@ -1,0 +1,3 @@
+1: flat map. use sequential IDs as primary keys.
+2: tree. use sequential IDs as primary keys. has weight. has hive name in root node.
+3: tree. Use formID as primary keys.

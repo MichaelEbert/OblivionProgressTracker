@@ -9,24 +9,13 @@ function init(){
 		//only display stuff that user can change.
 		for(const klass of progressClasses){
 			const hive = jsondata[klass.name];
-			
-			if(hive.version >= 2){
-				const section = document.getElementById(klass.name+"section");
-				if(section == null){
-					console.warn("could not find section for class "+klass.name);
-					continue;
-				}
-				//we start at depth 1 because the page itself already has the depth 0 titles.
-				initMultiV2(hive.elements, klass.name, section,1);
+			const section = document.getElementById(klass.name+"section");
+			if(section == null){
+				console.warn("could not find section for class "+klass.name);
+				continue;
 			}
-			else{
-				if(klass.name == "skill"){
-					initMulti(hive.elements,klass.name, "specialization");
-				}
-				else{
-					console.error("Init failed for "+klass.name+": version is "+hive.version);
-				}
-			}
+			//we start at depth 1 because the page itself already has the depth 0 titles.
+			initMultiV2(hive.elements, klass.name, section,1);
 		}
 		{
 			if(false){
@@ -91,32 +80,6 @@ function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
 			initMultiV2(datum.elements, classname, subtreeRoot, depth+1, extraColumnName);
 			parentNode.appendChild(subtreeRoot);
 		}
-	}
-}
-
-//init a non-leaf element
-function initMulti(multidata, classname, categoryName){
-	var section = document.getElementById(classname+"section");
-	// it MIGHT be better to just stick all the books in a sortable table.
-	var currentCategory = "";
-	//categoryHtml is a container so we can minimize 1 category at a time
-	var categoryHtml;
-	for (const datum of multidata){
-		var bhtml = initSingle(datum,classname);
-		if(datum[categoryName] != currentCategory){
-			currentCategory = datum[categoryName];
-			
-			categoryHtml = document.createElement("div");
-			categoryHtml.classList.add("category");
-			categoryHtml.id = classname+currentCategory.replaceAll(" ","_");
-			section.appendChild(categoryHtml);
-			
-			var categoryTitle = document.createElement("div");
-			categoryTitle.classList.add("categoryTitle");
-			categoryTitle.innerText = currentCategory;
-			categoryHtml.appendChild(categoryTitle);
-		}
-		categoryHtml.appendChild(bhtml);
 	}
 }
 
@@ -269,101 +232,11 @@ function initSingle(cell, classname, extraColumnName){
 // Functions that deal with progress
 //===========================
 
-//returns [completed items,total items] for a single cell in the json.
-function sumCompletionSingleCell(cell,classname){
-	var totalElements;
-	var completedElements;
-	if(cell.type == "number"){
-		completedElements = savedata[classname][cell.id];
-		if(cell.max){
-			totalElements = cell.max;
-		}
-		else{
-			totalElements = Math.max(1,completedElements);
-		}
-	}
-	else{
-		//we're a checkbox
-		totalElements = 1;
-		if(savedata[classname][cell.id]){
-			completedElements = 1;
-		}
-		else{
-			completedElements = 0;
-		}
-	}
-	return [completedElements,totalElements];	
-}
-
-//get the sum of completed items and total items under this element in the json.
-//can't use runOnTree because we get 2 inner results and we cant add taht in 1 step
-function sumCompletionItems(jsonNode,classname){
-	if(jsonNode.id != null){
-		return sumCompletionSingleCell(jsonNode,classname);
-	}
-	else{
-		var completed = 0;
-		var total = 0;
-		for(const element of jsonNode.elements){
-			let innerResult = sumCompletionItems(element,classname);
-			completed += innerResult[0];
-			total += innerResult[1];
-		}
-		return [completed,total];
-	}
-}
-
-// given a json node with a weight, sums the completion of all items
-// under that node.
-// additionally, updates subtotal HTML elements if it can find them.
-function getSubtotalCompletion(subtotalJsonNode,classname){
-	const weight = subtotalJsonNode.weight;
-	const [items,total] = sumCompletionItems(subtotalJsonNode,classname);
-	
-	//try to find subtotals
-	//this may fail if we have multiple score nodes from different hives wiht the same name.
-	const overviewId = "overview_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
-	const maybeItem = document.getElementById(overviewId);
-	if(maybeItem){
-		//add this to correct subtotal slot
-		maybeItem.innerText = items.toString() + "/" + total.toString();
-	}
-	
-	// and finally, return weighted progress for total progress.
-	return (items/total)*weight;
-}
-
 function recalculateProgressAndSave(){
-	//we could probably cache the hives that aren't modified
-	var percentCompleteSoFar = 0.0;
-	for(const klass of progressClasses) {
-		const hive = jsondata[klass.name];
-		if(hive?.version >= 2){
-			percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
-		}
-		else{
-			let classtotal = 0;
-			let classchecked = 0;
-			for (const id in savedata[klass.name]){
-				if(savedata[klass.name][id] == true){
-					classchecked += 1;
-				}
-				classtotal +=1;
-			}
-			
-			//update overview and totals
-			document.getElementById("overview_"+klass.name).innerText = classchecked.toString() + "/" + classtotal.toString();
-			percentCompleteSoFar += (classchecked/classtotal) * (klass.weight);
-		}
-	}
-	
-	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
-	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
-	percentCompleteSoFar = percentCompleteSoFar / totalweight;
-	
+	let percentCompleteSoFar = recalculateProgress();
 	//round progress to 2 decimal places
-	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	document.querySelectorAll('[id=totalProgressPercent]').forEach(element => {
+	progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerHTML = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;

@@ -17,6 +17,7 @@ Handler.extensions_map={
 	'.html': 'text/html',
         '.png': 'image/png',
 	'.jpg': 'image/jpg',
+	'.webp': 'image/webp',
 	'.svg':	'image/svg+xml',
 	'.css':	'text/css',
 	'.js':	'application/javascript',

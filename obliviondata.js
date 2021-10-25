@@ -5,6 +5,9 @@
 
 var jsondata = {quest:null,book:null,skill:null,store:null}
 
+/**
+ * Total weight of all scored elements.
+ */
 var totalweight;
 
 /**
@@ -45,7 +48,7 @@ const classes = [
 	// name, shouldSave, isStandard, completionWeight
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
-	new JsonClass("skill",true,true,15),//v1 so we have to include weight
+	new JsonClass("skill",true,true),
 	new JsonClass("store",true,true),
 	new JsonClass("misc",true),
 	new JsonClass("save",true),
@@ -114,13 +117,26 @@ function mergeCell(mapping){
  * @param {*} parent 
  */
 function addParentLinks(node, parent){
-	//go through hive, adding parent links.
+	//recursively go through hive, adding parent links.
 	node.parent = parent;
+
+	//add a "hive" property that goes straight to the hive
+	Object.defineProperty(node,"hive",{
+		get: function(){
+			let root = this;
+			while(root.parent != null){
+				root = root.parent;
+			}
+			return root;
+		}
+	});
+
 	if(node.elements != null){
 		for(const child of node.elements){
 			addParentLinks(child, node);
 		}
 	}
+	
 }
 
 /**
@@ -135,11 +151,12 @@ async function mergeData(hive, basedir="."){
 			const mapFilename = "mapping_"+hive.name.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
 			runOnTree(hive, mergeCell(mapJson));
-			addParentLinks(hive, null);
+			
 			console.log("merged "+hive.name);
 		}
 		catch{}//there may not be any other data, so just continue in that case.
 	}
+	addParentLinks(hive, null);
 	return hive;
 }
 
