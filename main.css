@@ -111,7 +111,7 @@ td{
 }
 
 .sidebar{
-	
+
 }
 
 .main{
@@ -186,6 +186,13 @@ input[type="number"]{
 	color:grey;
 	font-style:italic;
 	margin-right:0.5em;
+}
+
+#canvas_Map{
+	border: 1px solid black;
+	background-color: #FBEFD5;
+	position: sticky;
+	top: 3em;
 }
 
 /*mobile/thin window CSS*/
