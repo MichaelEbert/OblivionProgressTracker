@@ -77,14 +77,25 @@ function saveProgressToCookie(){
 }
 
 /**
- * Load progress and settings.
+ * Load settings from cookie, initializes if nonexistent.
+ * separate function because in some cases (share.html) we want to load settings but not progress.
  */
-function loadProgressFromCookie(){
+function loadSettingsFromCookie(){
 	settings = loadCookie("settings");
 	if(settings == null){
 		settings = {};
 	}
-	
+	//TODO: fix my shit encapsulation. until then...
+	if(initShareSettings != null){
+		initShareSettings();
+	}
+}
+
+/**
+ * Load progress and settings.
+ */
+function loadProgressFromCookie(){
+	loadSettingsFromCookie();	
 	var compressed = loadCookie("progress");
 	
 	if(compressed){
