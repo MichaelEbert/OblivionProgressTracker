@@ -188,6 +188,10 @@ input[type="number"]{
 	margin-right:0.5em;
 }
 
+.place{
+	text-decoration:underline;
+}
+
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait){
 	.topbar{
