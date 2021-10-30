@@ -188,11 +188,17 @@ input[type="number"]{
 	margin-right:0.5em;
 }
 
-#canvas_Map{
+#wrapper_Map{
 	border: 1px solid black;
 	background-color: #FBEFD5;
 	position: sticky;
+	resize: vertical;
+	overflow: hidden;
 	top: 3em;
+}
+
+#canvas_Map{
+	image-rendering: optimizeQuality;
 }
 
 /*mobile/thin window CSS*/

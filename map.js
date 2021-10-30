@@ -1,38 +1,54 @@
 let mapCanvasContext;
+let img;
+let canvas;
+
+let zoomLevel = 1;
 
 function initMap(){
-    mapCanvasContext = document.getElementById("canvas_Map").getContext("2d");
-    var img = document.createElement("img");
+    canvas = document.getElementById("canvas_Map");
+    mapCanvasContext = canvas.getContext("2d");
+    
+    img = document.createElement("img");
+    img.width = 3544;
+    img.height = 2895;
     img.src = "images/Cyrodil_Upscaled.png";
-    img.onload = function(){
-        mapCanvasContext.drawImage(img, 0, 0, 548, 500);
-    }
-    
-    
 
-    //lets us keep on listening until the iframe container loads, 
-    //  since we copy our size from that for this.
-    window.addEventListener("mousemove", positionMap); 
+    //intializing wrpr values.
+    img.onload = function(){
+        var wrpr = document.getElementById("wrapper_Map")
+        wrpr.style.top = "548px"; //3em + 500px
+        wrpr.style.width = "500px";
+        wrpr.style.height = "125px";
+        drawMap();
+    }
+
+    window.addEventListener("mousemove", resizeMap)
 }
 
 // Positions and sizes map correctly under the Iframe
-// Also adds event listener for when Iframe is resized via onclick.
-function positionMap(){
+function resizeMap(){
+    var wrpr = document.getElementById("wrapper_Map");
+
     if(document.getElementById("iframeContainer")){
         var ifc = document.getElementById("iframeContainer");
-        ifc.onclick = positionMap;
-        window.removeEventListener("mousemove", positionMap); //trim listener, it's served it's purpose.
+        var w = ifc.clientWidth + "px";
 
-        var c = document.getElementById("canvas_Map");
-        c.style.top = (ifc.clientHeight + 48).toString() + "px";
-        c.style.width = ifc.clientWidth + "px";
+        ifc.onclick = resizeMap;
+        wrpr.onclick = resizeMap;
+        window.removeEventListener("mousemove", resizeMap); //trim listener, it's served it's purpose.
 
-        mapCanvasContext.drawImage(img, 0, 0, ifc.clientHeight + 48, ifc.clientWidth);
+        wrpr.style.width = w
+        wrpr.style.top = (ifc.clientHeight + 48).toString() + "px";
+        canvas.style.width = w
+        canvas.style.height = wrpr.style.height;
     }
-    else{
-        var c = document.getElementById("canvas_Map")
-        c.style.top = "548px"; //3em + 500px
-        c.style.width = "500px";
-        mapCanvasContext.drawImage(img, 0, 0, 548, 500);
-    }
+    drawMap();    
+
+}
+
+function drawMap(){
+    var aspectw = 443;
+    var aspecth = 362;
+    mapCanvasContext.drawImage(img, 0, 0, (img.width * zoomLevel), (img.height * zoomLevel), 
+                                    0, 0, canvas.width, canvas.height);
 }
