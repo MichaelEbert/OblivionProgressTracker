@@ -194,7 +194,9 @@ input[type="number"]{
 	position: sticky;
 	resize: vertical;
 	overflow: hidden;
-	top: 3em;
+	top:548px; /*3em  + 500px, prevents map loading over iframe on init.*/
+	height:125px; 
+	width:500px;
 }
 
 #canvas_Map{
