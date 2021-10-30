@@ -3,6 +3,8 @@ let img;
 let canvas;
 
 let zoomLevel = 1;
+let minZoom = 0.1;
+let maxZoom = 2;
 let mapX = 0;
 let mapY = 0;
 
@@ -18,39 +20,37 @@ function initMap(){
     img.width = 3544;
     img.height = 2895;
     img.src = "images/Cyrodil_Upscaled.png";
-
-    //default wrapper values.
-    var wrpr = document.getElementById("wrapper_Map");
-
-    wrpr.onmousedown = function(){
-        mousedown = true;
-        console.log(mousedown);
-    };
-
-    wrpr.onmouseup = function(){
-        mousedown = false;
-        console.log(mousedown);
-    };
-
-    wrpr.onmousemove = function(){
-        if(mousedown){
-            moveMap();
-        }
-    }
-
-    //Init wrapper values.
     img.onload = drawMap();
 
-    //keeping checking until iframe is loaded. //is there a better way for this?
-    window.onmousemove = function(){
-        if(document.getElementById("iframeContainer")){
-            document.getElementById("iframeContainer").onclick = resizeMap();
-            window.removeEventListener("mousemove", resizeMap); //trim listener, it's served it's purpose.
+    //center map on imp city
+    mapX = img.width/2.1;
+    mapY = img.height/3.2;
+
+    var wrpr = document.getElementById("wrapper_Map");
+    wrpr.onmousedown = function(){mousedown = true;};
+    wrpr.onmouseup = function(){mousedown = false;};
+    wrpr.onmouseout = function(){mousedown = false;};
+    wrpr.onmousemove = function(e){
+        if(mousedown){
+            moveMap(e);
         }
     };
+    wrpr.onwheel = function(e){zoomMap(e)};
+
+    //attaches width to width of iframe
+    window.addEventListener("mousemove", iFrameCheck);
+}
+ 
+//attaches width to width of iframe
+function iFrameCheck(){
+    if(document.getElementById("iframeContainer")){
+        document.getElementById("iframeContainer").onclick = resizeMap;
+        window.removeEventListener("mousemove", iFrameCheck); //trim listener, it's served it's purpose.
+        resizeMap();
+    }
 }
 
-// Positions and sizes map correctly under the Iframe
+//matches width of map to Iframe width
 function resizeMap(){
     if(document.getElementById("iframeContainer")){
         var wrpr = document.getElementById("wrapper_Map");    
@@ -62,8 +62,6 @@ function resizeMap(){
             wrpr.style.height = "580px";
         }
 
-        
-
         wrpr.style.width = ifc.clientWidth + "px";
         wrpr.style.top = (ifc.clientHeight + 48).toString() + "px";
     }
@@ -71,13 +69,39 @@ function resizeMap(){
 }
 
 function drawMap(){
+    //maybe useful for placing icons.
     var aspectw = 443;
     var aspecth = 362;
+
     mapCanvasContext.drawImage(img, mapX, mapY, (img.width * zoomLevel), (img.height * zoomLevel), 
                                     0, 0, img.width, img.height);
 }
 
-function moveMap(){
-    mapX++;
+function moveMap(event){
+    //increment based on mouse movement
+    if(event){
+        mapX -= event.movementX * zoomLevel;
+        mapY -= event.movementY * zoomLevel;
+    }
+    
+    //clamp values to prevent moving map off screen.
+    if(mapX < 0) mapX = 0;
+    if(mapY < 0) mapY = 0;
+    var wStyle = document.getElementById("wrapper_Map").style;
+    var wX = wStyle.width.slice(0,wStyle.width.length-2);
+    var wY = wStyle.height.slice(0,wStyle.height.length-2);
+    if(mapX >= img.width - (wX * zoomLevel)) mapX = img.width - (wX * zoomLevel);
+    if(mapY >= img.height - (wY * zoomLevel)) mapY = img.height - (wY * zoomLevel);
+
     drawMap();
+}
+
+function zoomMap(event){
+    if(event.deltaY > 0) zoomLevel += 0.2;
+    else zoomLevel -= 0.2;
+
+    //clamp zoom
+    if(zoomLevel > maxZoom) zoomLevel = maxZoom;
+    if(zoomLevel < minZoom) zoomLevel = minZoom;
+    moveMap();
 }
