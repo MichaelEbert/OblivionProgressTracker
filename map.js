@@ -1,10 +1,11 @@
 let mapCanvasContext;
 let img;
 let canvas;
+let wrapper;
 
 let zoomLevel = 1;
-let minZoom = 0.1;
-let maxZoom = 2;
+let minZoom = 0.2;
+let maxZoom = 3.5;
 let mapX = 0;
 let mapY = 0;
 
@@ -26,16 +27,16 @@ function initMap(){
     mapX = img.width/2.1;
     mapY = img.height/3.2;
 
-    var wrpr = document.getElementById("wrapper_Map");
-    wrpr.onmousedown = function(){mousedown = true;};
-    wrpr.onmouseup = function(){mousedown = false;};
-    wrpr.onmouseout = function(){mousedown = false;};
-    wrpr.onmousemove = function(e){
+    wrapper = document.getElementById("wrapper_Map");
+    wrapper.onmousedown = function(){mousedown = true;};
+    wrapper.onmouseup = function(){mousedown = false;};
+    wrapper.onmouseout = function(){mousedown = false;};
+    wrapper.onmousemove = function(e){
         if(mousedown){
             moveMap(e);
         }
     };
-    wrpr.onwheel = function(e){zoomMap(e)};
+    wrapper.onwheel = function(e){zoomMap(e)};
 
     //attaches width to width of iframe
     window.addEventListener("mousemove", iFrameCheck);
@@ -53,17 +54,16 @@ function iFrameCheck(){
 //matches width of map to Iframe width
 function resizeMap(){
     if(document.getElementById("iframeContainer")){
-        var wrpr = document.getElementById("wrapper_Map");    
         var ifc = document.getElementById("iframeContainer");
 
         if(debug){
             ifc.style.width = "1000px";
             ifc.style.height = "25px";
-            wrpr.style.height = "580px";
+            wrapper.style.height = "580px";
         }
 
-        wrpr.style.width = ifc.clientWidth + "px";
-        wrpr.style.top = (ifc.clientHeight + 48).toString() + "px";
+        wrapper.style.width = ifc.clientWidth + "px";
+        wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
     }
     drawMap();    
 }
@@ -97,11 +97,13 @@ function moveMap(event){
 }
 
 function zoomMap(event){
+    event.preventDefault();
     if(event.deltaY > 0) zoomLevel += 0.2;
-    else zoomLevel -= 0.2;
-
+    else zoomLevel += -0.2;
+    
     //clamp zoom
     if(zoomLevel > maxZoom) zoomLevel = maxZoom;
     if(zoomLevel < minZoom) zoomLevel = minZoom;
+    console.log(zoomLevel);
     moveMap();
 }
