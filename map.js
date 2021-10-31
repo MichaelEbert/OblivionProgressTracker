@@ -1,5 +1,4 @@
 let mapCanvasContext;
-let img;
 let canvas;
 let wrapper;
 
@@ -11,21 +10,29 @@ let mapY = 0;
 
 let mousedown = false;
 
+let imgElem_Map;
+let testIcon;
+
 let debug = true; //makes iframe and guide small by default for map function testing.
 
 function initMap(){
     canvas = document.getElementById("canvas_Map");
     mapCanvasContext = canvas.getContext("2d");
     
-    img = document.createElement("img");
-    img.width = 3544;
-    img.height = 2895;
-    img.src = "images/Cyrodil_Upscaled.png";
-    img.onload = drawMap();
+    imgElem_Map = document.createElement("img");
+    imgElem_Map.width = 3544;
+    imgElem_Map.height = 2895;
+    imgElem_Map.src = "images/Cyrodil_Upscaled.png";
+
+    testIcon = document.createElement("IMG");
+    testIcon.width = 48;
+    testIcon.height = 48;
+    testIcon.src = "leyawiin_html_391c730c90a3a992.png";
+    testIcon.onload = drawMap();
 
     //center map on imp city
-    mapX = img.width/2.1;
-    mapY = img.height/3.2;
+    mapX = imgElem_Map.width/2.1;
+    mapY = imgElem_Map.height/3.2;
 
     wrapper = document.getElementById("wrapper_Map");
     wrapper.onmousedown = function(){mousedown = true;};
@@ -73,8 +80,10 @@ function drawMap(){
     var aspectw = 443;
     var aspecth = 362;
 
-    mapCanvasContext.drawImage(img, mapX, mapY, (img.width * zoomLevel), (img.height * zoomLevel), 
-                                    0, 0, img.width, img.height);
+    mapCanvasContext.drawImage(imgElem_Map, mapX, mapY, (imgElem_Map.width * zoomLevel), (imgElem_Map.height * zoomLevel), 
+                                    0, 0, imgElem_Map.width, imgElem_Map.height);
+    //draw icons
+    drawIcon(0.5, 0.5);
 }
 
 function moveMap(event){
@@ -90,8 +99,8 @@ function moveMap(event){
     var wStyle = document.getElementById("wrapper_Map").style;
     var wX = wStyle.width.slice(0,wStyle.width.length-2);
     var wY = wStyle.height.slice(0,wStyle.height.length-2);
-    if(mapX >= img.width - (wX * zoomLevel)) mapX = img.width - (wX * zoomLevel);
-    if(mapY >= img.height - (wY * zoomLevel)) mapY = img.height - (wY * zoomLevel);
+    if(mapX >= imgElem_Map.width - (wX * zoomLevel)) mapX = imgElem_Map.width - (wX * zoomLevel);
+    if(mapY >= imgElem_Map.height - (wY * zoomLevel)) mapY = imgElem_Map.height - (wY * zoomLevel);
 
     drawMap();
 }
@@ -101,9 +110,19 @@ function zoomMap(event){
     if(event.deltaY > 0) zoomLevel += 0.2;
     else zoomLevel += -0.2;
     
+    //TODO: make it so that it zooms into middle of screen rather than top left corner
+
     //clamp zoom
     if(zoomLevel > maxZoom) zoomLevel = maxZoom;
     if(zoomLevel < minZoom) zoomLevel = minZoom;
     console.log(zoomLevel);
     moveMap();
+}
+
+function drawIcon(iconX = 0, iconY = 0){
+
+    var MapW = imgElem_Map.width;
+    var MapH = imgElem_Map.height;
+
+    mapCanvasContext.drawImage(testIcon, ((MapW * iconX) - mapX) / zoomLevel, ((MapH * iconY) - mapY) / zoomLevel, 24 / zoomLevel, 24 / zoomLevel);
 }

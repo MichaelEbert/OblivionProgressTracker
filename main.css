@@ -203,10 +203,6 @@ input[type="number"]{
 	width:500px;
 }
 
-#canvas_Map{
-	image-rendering: optimizeQuality;
-}
-
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait){
 	.topbar{
