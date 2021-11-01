@@ -1,4 +1,4 @@
-{"name":"nirnroots", "elements":[
+{"version":4, "name":"nirnroots", "weight":0, "elements":[
     {"formid":"0x0006deba","x":-223623.9531,"y":-12376.31445,"z":73.03217316,"cell":"Outdoors"},
     {"formid":"0x0006f136","x":-219316.9531,"y":-16615.5957,"z":87.9577713,"cell":"Outdoors"},
     {"formid":"0x0006f131","x":-218724.7188,"y":-2261.121826,"z":184.8167267,"cell":"Outdoors"},
