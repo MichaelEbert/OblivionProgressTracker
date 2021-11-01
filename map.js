@@ -1,5 +1,10 @@
-//TODO: add in different overlay options/buttons
+//TODO: add in different overlay options/buttons.
+//      Locations overlay
+//      Nirnroots
+//      Overlay for traveling salesmen result
+
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
+//TODO: initImgs() can probably be refactored better.
 let mapCanvasContext;
 let canvas;
 let wrapper;
@@ -153,6 +158,8 @@ function resizeMap(){
 }
 
 function initImgs(){
+    
+    //TODO: initImgs can probably be refactored better
     img_Map = document.createElement("img");
     img_Map.width = 3544;
     img_Map.height = 2895;
