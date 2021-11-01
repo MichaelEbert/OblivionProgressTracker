@@ -13,9 +13,14 @@ let mousedown = false;
 let imgElem_Map;
 let testIcon;
 
+let locArr;
+
 let debug = true; //makes iframe and guide small by default for map function testing.
 
 function initMap(){
+    //load map cord data
+    fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
+
     canvas = document.getElementById("canvas_Map");
     mapCanvasContext = canvas.getContext("2d");
     
@@ -28,8 +33,7 @@ function initMap(){
     testIcon.width = 48;
     testIcon.height = 48;
     testIcon.src = "leyawiin_html_391c730c90a3a992.png";
-    testIcon.onload = drawMap();
-
+    
     //center map on imp city
     mapX = imgElem_Map.width/2.1;
     mapY = imgElem_Map.height/3.2;
@@ -57,22 +61,24 @@ function drawMap(){
     mapCanvasContext.drawImage(imgElem_Map, mapX, mapY, (imgElem_Map.width * zoomLevel), (imgElem_Map.height * zoomLevel), 
                                     0, 0, imgElem_Map.width, imgElem_Map.height);
     //draw all icons
-    for(let i = 0; i < locs.length;i++){
-        drawIcons(locs[i].approxX, locs[i].approxY);
+    for(let i = 0; i < locArr.length;i++){
+        drawIcon(locArr[i].approxX, locArr[i].approxY);
     }
 }
 
-function drawIcons(iconX = 0.5, iconY = 0.5){
-
+//give x/y as reg in game cords.
+function drawIcon(iconX = 0.5, iconY = 0.5){
     var MapW = imgElem_Map.width;
     var MapH = imgElem_Map.height;
     var iconWH = 36 / zoomLevel;
     var worldW = 480000;
     var worldH = 400000;
 
+    //convert worldspace loc to % loc
     iconX = (iconX + worldW / 2) / worldW;
     iconY = (-iconY + worldH / 2) / worldH;
 
+    //apply % loc to map x/y
     mapCanvasContext.drawImage(testIcon, ((MapW * iconX) - mapX) / zoomLevel - iconWH, 
                                          ((MapH * iconY) - mapY) / zoomLevel - iconWH, iconWH, iconWH);
 }
@@ -106,7 +112,6 @@ function zoomMap(event){
     //clamp zoom
     if(zoomLevel > maxZoom) zoomLevel = maxZoom;
     if(zoomLevel < minZoom) zoomLevel = minZoom;
-    console.log(zoomLevel);
     moveMap();
 }
 
