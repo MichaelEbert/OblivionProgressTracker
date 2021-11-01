@@ -32,7 +32,7 @@ let icon_Shrine; //still needs image
 
 let locArr;
 
-let debug = true; //makes iframe and guide small by default for map function testing.
+let debug = false; //makes iframe and guide small by default for map function testing.
 
 function initMap(){
     //load map cord data
