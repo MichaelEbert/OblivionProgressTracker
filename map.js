@@ -1,3 +1,5 @@
+//TODO: add in different overlay options/buttons
+//TODO: make it so that it zooms into middle of screen rather than top left corner?
 let mapCanvasContext;
 let canvas;
 let wrapper;
@@ -10,12 +12,22 @@ let mapY = 0;
 
 let mousedown = false;
 
-let imgElem_Map;
-let testIcon;
+let img_Map;
+
+let icon_Ayleid;
+let icon_Camp;
+let icon_Cave;
+let icon_Fort;
+let icon_Gate;
+let icon_Inn;
+let icon_Settlement;
+let icon_Mine; //still needs image
+let icon_Landmark; //still needs image
+let icon_Shrine; //still needs image
 
 let locArr;
 
-let debug = false; //makes iframe and guide small by default for map function testing.
+let debug = true; //makes iframe and guide small by default for map function testing.
 
 function initMap(){
     //load map cord data
@@ -24,29 +36,18 @@ function initMap(){
     canvas = document.getElementById("canvas_Map");
     mapCanvasContext = canvas.getContext("2d");
     
-    imgElem_Map = document.createElement("img");
-    imgElem_Map.width = 3544;
-    imgElem_Map.height = 2895;
-    imgElem_Map.src = "images/Cyrodil_Upscaled.png";
-
-    testIcon = document.createElement("IMG");
-    testIcon.width = 48;
-    testIcon.height = 48;
-    testIcon.src = "leyawiin_html_391c730c90a3a992.png";
-    
+    initImgs();
+        
     //center map on imp city
-    mapX = imgElem_Map.width/2.1;
-    mapY = imgElem_Map.height/3.2;
+    mapX = img_Map.width/2.1;
+    mapY = img_Map.height/3.2;
 
+    //Input listeners
     wrapper = document.getElementById("wrapper_Map");
     wrapper.onmousedown = function(){mousedown = true;};
     wrapper.onmouseup = function(){mousedown = false;};
     wrapper.onmouseout = function(){mousedown = false;};
-    wrapper.onmousemove = function(e){
-        if(mousedown){
-            moveMap(e);
-        }
-    };
+    wrapper.onmousemove = function(e){if(mousedown){moveMap(e);}};
     wrapper.onwheel = function(e){zoomMap(e)};
 
     //attaches width to width of iframe
@@ -58,18 +59,28 @@ function drawMap(){
     var aspectw = 443;
     var aspecth = 362;
 
-    mapCanvasContext.drawImage(imgElem_Map, mapX, mapY, (imgElem_Map.width * zoomLevel), (imgElem_Map.height * zoomLevel), 
-                                    0, 0, imgElem_Map.width, imgElem_Map.height);
-    //draw all icons
+    mapCanvasContext.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
+                                    0, 0, img_Map.width, img_Map.height);
+    //draw all map icons //TODO: add in overlay options
     for(let i = 0; i < locArr.length;i++){
-        drawIcon(locArr[i].approxX, locArr[i].approxY);
+        if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY);
+        else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY);
+        else console.warn("Element at " + i +" has no icon.");
     }
 }
 
 //give x/y as reg in game cords.
-function drawIcon(iconX = 0.5, iconY = 0.5){
-    var MapW = imgElem_Map.width;
-    var MapH = imgElem_Map.height;
+function drawIcon(icon, iconX = 0.5, iconY = 0.5){
+    var MapW = img_Map.width;
+    var MapH = img_Map.height;
     var iconWH = 36 / zoomLevel;
     var worldW = 480000;
     var worldH = 400000;
@@ -79,8 +90,8 @@ function drawIcon(iconX = 0.5, iconY = 0.5){
     iconY = (-iconY + worldH / 2) / worldH;
 
     //apply % loc to map x/y
-    mapCanvasContext.drawImage(testIcon, ((MapW * iconX) - mapX) / zoomLevel - iconWH, 
-                                         ((MapH * iconY) - mapY) / zoomLevel - iconWH, iconWH, iconWH);
+    mapCanvasContext.drawImage(icon, ((MapW * iconX) - mapX) / zoomLevel - iconWH, 
+                                     ((MapH * iconY) - mapY) / zoomLevel - iconWH, iconWH, iconWH);
 }
 
 function moveMap(event){
@@ -96,8 +107,8 @@ function moveMap(event){
     var wStyle = document.getElementById("wrapper_Map").style;
     var wX = wStyle.width.slice(0,wStyle.width.length-2);
     var wY = wStyle.height.slice(0,wStyle.height.length-2);
-    if(mapX >= imgElem_Map.width - (wX * zoomLevel)) mapX = imgElem_Map.width - (wX * zoomLevel);
-    if(mapY >= imgElem_Map.height - (wY * zoomLevel)) mapY = imgElem_Map.height - (wY * zoomLevel);
+    if(mapX >= img_Map.width - (wX * zoomLevel)) mapX = img_Map.width - (wX * zoomLevel);
+    if(mapY >= img_Map.height - (wY * zoomLevel)) mapY = img_Map.height - (wY * zoomLevel);
 
     drawMap();
 }
@@ -139,4 +150,61 @@ function resizeMap(){
         wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
     }
     drawMap();    
+}
+
+function initImgs(){
+    img_Map = document.createElement("img");
+    img_Map.width = 3544;
+    img_Map.height = 2895;
+    img_Map.src = "images/Cyrodil_Upscaled.png";
+
+    icon_Ayleid = document.createElement("IMG");
+    icon_Ayleid.width = 48;
+    icon_Ayleid.height = 48;
+    icon_Ayleid.src = "images/Icon_Ayleid.png";
+
+    icon_Camp = document.createElement("IMG");
+    icon_Camp.width = 48;
+    icon_Camp.height = 48;
+    icon_Camp.src = "images/Icon_Camp.png";
+
+    icon_Fort = document.createElement("IMG");
+    icon_Fort.width = 48;
+    icon_Fort.height = 48;
+    icon_Fort.src = "images/Icon_Fort.png";
+
+    icon_Gate = document.createElement("IMG");
+    icon_Gate.width = 48;
+    icon_Gate.height = 48;
+    icon_Gate.src = "images/Icon_Gate.png";
+    
+    icon_Cave = document.createElement("IMG");
+    icon_Cave.width = 48;
+    icon_Cave.height = 48;
+    icon_Cave.src = "images/Icon_Cave.png";
+
+    icon_Inn = document.createElement("IMG");
+    icon_Inn.width = 48;
+    icon_Inn.height = 48;
+    icon_Inn.src = "images/Icon_Inn.png";
+
+    icon_Settlement = document.createElement("IMG");
+    icon_Settlement.width = 48;
+    icon_Settlement.height = 48;
+    icon_Settlement.src = "images/Icon_Settlement.png";
+
+    icon_Mine = document.createElement("IMG");
+    icon_Mine.width = 48;
+    icon_Mine.height = 48;
+    icon_Mine.src = "images/Icon_Mine.png";
+
+    icon_Landmark = document.createElement("IMG");
+    icon_Landmark.width = 48;
+    icon_Landmark.height = 48;
+    icon_Landmark.src = "images/Icon_Landmark.png";
+
+    icon_Shrine = document.createElement("IMG");
+    icon_Shrine.width = 48;
+    icon_Shrine.height = 48;
+    icon_Shrine.src = "images/Icon_Shrine.png";
 }
