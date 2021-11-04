@@ -1,7 +1,5 @@
 //TODO: add in different overlay options/buttons.
-//      Locations overlay
-//      Nirnroots
-//      Overlay for traveling salesmen result
+//      Random Gates overlay?
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 //TODO: initImgs() can probably be refactored better.
@@ -14,6 +12,8 @@ let minZoom = 0.2;
 let maxZoom = 3.5;
 let mapX = 0;
 let mapY = 0;
+let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
+let hoverOverlayButton = 0;
 
 let mousedown = false;
 
@@ -26,17 +26,19 @@ let icon_Fort;
 let icon_Gate;
 let icon_Inn;
 let icon_Settlement;
-let icon_Mine; //still needs image
-let icon_Landmark; //still needs image
-let icon_Shrine; //still needs image
+let icon_Mine;
+let icon_Landmark;
+let icon_Shrine;
 
 let locArr;
+let nirnArr;
 
-let debug = false; //makes iframe and guide small by default for map function testing.
+let debug = true; //makes iframe and guide small by default for map function testing.
 
 function initMap(){
     //load map cord data
     fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
+    fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
 
     canvas = document.getElementById("canvas_Map");
     mapCanvasContext = canvas.getContext("2d");
@@ -49,10 +51,46 @@ function initMap(){
 
     //Input listeners
     wrapper = document.getElementById("wrapper_Map");
-    wrapper.onmousedown = function(){mousedown = true;};
+    wrapper.onmousedown = function(e){
+        if(hoverOverlayButton != 0){
+            if(hoverOverlayButton == 1) currentOverlay = "Locations";
+            if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
+            if(hoverOverlayButton == 3) currentOverlay = "Exploration";
+            drawMap();
+        }
+        else mousedown = true;
+    };
     wrapper.onmouseup = function(){mousedown = false;};
     wrapper.onmouseout = function(){mousedown = false;};
-    wrapper.onmousemove = function(e){if(mousedown){moveMap(e);}};
+    wrapper.onmousemove = function(e){
+        if(mousedown){moveMap(e);}
+        if(e.offsetY >= 10  && e.offsetY <= 20){
+            var x = document.getElementById("wrapper_Map").style.width.slice(0,document.getElementById("wrapper_Map").style.width.length-2);
+            if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
+                hoverOverlayButton = 1;
+                drawOverlay();
+            }
+            if(e.offsetX >= x/3 && e.offsetX <= x/3*2 - 1){
+                hoverOverlayButton = 2;
+                drawOverlay();
+            }
+            if(e.offsetX >= x/3*2 && e.offsetX <= x - 8){
+                hoverOverlayButton = 3;
+                drawOverlay();
+            }
+        } else{
+            var redraw = false;//should prevent useless redraws of the overlay when just scrolling.
+            if(hoverOverlayButton != 0){
+                redraw = true;
+            }
+
+            hoverOverlayButton = 0;
+
+            if(redraw){
+                drawOverlay();
+            }
+        }
+    };
     wrapper.onwheel = function(e){zoomMap(e)};
 
     //attaches width to width of iframe
@@ -60,33 +98,62 @@ function initMap(){
 }
 
 function drawMap(){
-    //maybe useful for placing icons.
-    var aspectw = 443;
-    var aspecth = 362;
-
     mapCanvasContext.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
                                     0, 0, img_Map.width, img_Map.height);
+
     //draw all map icons //TODO: add in overlay options
-    for(let i = 0; i < locArr.length;i++){
-        if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY);
-        else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY);
-        else console.warn("Element at " + i +" has no icon.");
+    if(currentOverlay == "Locations"){
+        for(let i = 0; i < locArr.length;i++){
+            if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY);
+            else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY);
+            else console.warn("Element at " + i +" has no icon."); //catch all incase something changes.
+
+            //check if visited and add a check/feedback thing for each place visited.
+        }
     }
+    if(currentOverlay == "NirnRoute"){
+        
+        for(let i = 0; i < nirnArr.length;i++){
+            if(nirnArr[i].cell == "Outdoors"){
+                drawIcon(icon_Camp, Math.round(nirnArr[i].x), Math.round(nirnArr[i].y));
+            }
+            
+
+            //check if visited and add a check/feedback thing for each place visited.
+        }
+    }
+    if(currentOverlay == "Exploration"){
+
+    }
+    
+    drawOverlay();
 }
 
 //give x/y as reg in game cords.
 function drawIcon(icon, iconX = 0.5, iconY = 0.5){
     var MapW = img_Map.width;
     var MapH = img_Map.height;
-    var iconWH = 36 / zoomLevel;
+
+    //scale icons by zoom
+    var iconWH = 20 / zoomLevel;
+    if(zoomLevel > 1.25){
+        iconWH = 20 / zoomLevel * 1.25;
+    }
+    if(zoomLevel > 1.5){
+        iconWH = 20 / zoomLevel * 1.5;
+    }
+    if(zoomLevel > 1.75){
+        iconWH = 20 / zoomLevel * 2;
+    }
+
     var worldW = 480000;
     var worldH = 400000;
 
@@ -97,6 +164,58 @@ function drawIcon(icon, iconX = 0.5, iconY = 0.5){
     //apply % loc to map x/y
     mapCanvasContext.drawImage(icon, ((MapW * iconX) - mapX) / zoomLevel - iconWH, 
                                      ((MapH * iconY) - mapY) / zoomLevel - iconWH, iconWH, iconWH);
+
+    //add explored checkmark thing
+}
+
+function drawOverlay(){
+    var wStyle = document.getElementById("wrapper_Map").style;
+    var wX = wStyle.width.slice(0,wStyle.width.length-2);
+    var wY = wStyle.height.slice(0,wStyle.height.length-2);
+
+    //overlay background
+    mapCanvasContext.beginPath();
+    mapCanvasContext.fillStyle = "#FBEFD5";
+    mapCanvasContext.rect(0,0, wX,32);
+    mapCanvasContext.fill();
+
+    //drawing buttons could definatly be refactored better if we need more overlays.
+
+    //overlay buttons
+    mapCanvasContext.beginPath();
+    if(hoverOverlayButton == 1) mapCanvasContext.fillStyle = "#ccc";
+    else mapCanvasContext.fillStyle = "#E5D9B9";
+    mapCanvasContext.rect(8, 6, wX/3, 20);
+    mapCanvasContext.fill();
+
+    mapCanvasContext.beginPath();
+    if(hoverOverlayButton == 2) mapCanvasContext.fillStyle = "#ccc";
+    else mapCanvasContext.fillStyle = "#E5D9B9";
+    mapCanvasContext.rect(wX/3, 6, wX/3, 20);
+    mapCanvasContext.fill();
+
+    mapCanvasContext.beginPath();
+    if(hoverOverlayButton == 3) mapCanvasContext.fillStyle = "#ccc";
+    else mapCanvasContext.fillStyle = "#E5D9B9";
+    mapCanvasContext.rect(wX/3*2, 6, wX/3 - 8, 20);
+    mapCanvasContext.fill();
+
+    //overlay button dividers.
+    mapCanvasContext.beginPath();
+    mapCanvasContext.fillStyle = "black";
+    mapCanvasContext.rect(wX/3, 6, 1, 20);
+    mapCanvasContext.rect(wX/3*2, 6, 1, 20);
+    mapCanvasContext.fill();
+
+    //overlay button text
+    mapCanvasContext.beginPath();
+    mapCanvasContext.textAlign = "center";
+    mapCanvasContext.font = "16px Arial"
+    mapCanvasContext.fillText("Locations", wX/6 + 8, 22);
+    mapCanvasContext.fillText("NirnRoute", wX/2, 22);
+    mapCanvasContext.fillText("Exploration", wX/6*5 - 8, 22);
+
+    
 }
 
 function moveMap(event){
