@@ -82,12 +82,58 @@ function saveProgressToCookie(){
  */
 function loadSettingsFromCookie(){
 	settings = loadCookie("settings");
-	if(settings == null){
-		settings = {};
+	initSettings();
+
+	
+	
+}
+
+/**
+ * Initialize object property.
+ * @param {} object 
+ * @param {*} propname 
+ * @param {*} defaultValue 
+ */
+function initProperty(object, propname, defaultValue){
+	if(object[propname] == null){
+		object[propname] = defaultValue;
+		return true;
 	}
+	return false;
+}
+
+/**
+ * Set default values for settings, if they haven't already been set.
+ */
+function initSettings(){
+	let changed = false;
+
+	changed |= initProperty(window, "settings", {});
+
+	//UPGRADES:
+	switch(settings.version){
+		case null:
+		case undefined:
+			settings.version = 1;
+			if(settings.iframeCheck != null){
+				settings.iframeCheck = "auto";
+			}
+			changed = true;
+		default:
+			//uhh
+			break;
+	}
+
+	changed |= initProperty(settings, "minipageCheck",true);
+	changed |= initProperty(settings, "iframeCheck", "auto");
+	
 	//TODO: fix my shit encapsulation. until then...
 	if(initShareSettings != null){
 		initShareSettings();
+	}
+
+	if(changed){
+		saveCookie("settings",settings);
 	}
 }
 
