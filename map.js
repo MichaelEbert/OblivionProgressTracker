@@ -3,6 +3,13 @@
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 //TODO: initImgs() can probably be refactored better.
+//TODO: add icon_check
+//TODO: figure out how locations are tracked
+//TODO: 
+
+//CTODO: Add location name line 214
+
+
 let mapCanvasContext;
 let canvas;
 let wrapper;
@@ -16,6 +23,8 @@ let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverOverlayButton = 0;
 
 let mousedown = false;
+let mouseX;
+let mouseY;
 
 let img_Map;
 
@@ -29,6 +38,7 @@ let icon_Settlement;
 let icon_Mine;
 let icon_Landmark;
 let icon_Shrine;
+let icon_Check; //still needs added
 
 let locArr;
 let nirnArr;
@@ -90,6 +100,8 @@ function initMap(){
                 drawOverlay();
             }
         }
+        mouseX = e.offsetX;
+        mouseY = e.offsetY;
     };
     wrapper.onwheel = function(e){zoomMap(e)};
 
@@ -104,19 +116,31 @@ function drawMap(){
     //draw all map icons //TODO: add in overlay options
     if(currentOverlay == "Locations"){
         for(let i = 0; i < locArr.length;i++){
-            if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY);
-            else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY);
+            if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
             else console.warn("Element at " + i +" has no icon."); //catch all incase something changes.
 
             //check if visited and add a check/feedback thing for each place visited.
+            // if(visited){
+            //     drawIcon(icon_Check, locArr[i].approxX, locArr[i].approxY);
+            // }
+
+            //figure out where to draw names or check for mouse over icon and draw it's name.
+            //
+            mapCanvasContext.beginPath();
+            mapCanvasContext.fillStyle = "black";
+            mapCanvasContext.textAlign = "center";
+            mapCanvasContext.font = "16px Arial";
+            mapCanvasContext.fillText(locArr[i].name, locArr[i].approxX, locArr[i].approxY);
+            mapCanvasContext.fill();
         }
     }
     if(currentOverlay == "NirnRoute"){
@@ -126,19 +150,39 @@ function drawMap(){
                 drawIcon(icon_Camp, Math.round(nirnArr[i].x), Math.round(nirnArr[i].y));
             }
             
-
             //check if visited and add a check/feedback thing for each place visited.
+            // if(visited){
+            //     drawIcon(icon_Check, locArr[i].approxX, locArr[i].approxY);
+            // }
         }
     }
     if(currentOverlay == "Exploration"){
+        var x = document.getElementById("wrapper_Map").style.width.slice(0,document.getElementById("wrapper_Map").style.width.length-2);
+        var y = document.getElementById("wrapper_Map").style.height.slice(0,document.getElementById("wrapper_Map").style.height.length-2);
 
+        mapCanvasContext.beginPath();
+        mapCanvasContext.fillStyle = "#FBEFD5";
+        mapCanvasContext.rect(x/2 - 125, y/2 - 75, 250, 150);
+        mapCanvasContext.fill();
+
+        mapCanvasContext.beginPath();
+        mapCanvasContext.fillStyle = "#E5D9B9";
+        mapCanvasContext.rect(x/2 - 100, y/2 - 50, 200, 100);
+        mapCanvasContext.fill();
+
+        mapCanvasContext.beginPath();
+        mapCanvasContext.fillStyle = "black";
+        mapCanvasContext.textAlign = "center";
+        mapCanvasContext.font = "16px Arial";
+        mapCanvasContext.fillText("Not yet implemented. :(", x/2 , y/2);
+        mapCanvasContext.fill();
     }
     
     drawOverlay();
 }
 
 //give x/y as reg in game cords.
-function drawIcon(icon, iconX = 0.5, iconY = 0.5){
+function drawIcon(icon, iconX = 0.5, iconY = 0.5, name = "Default"){
     var MapW = img_Map.width;
     var MapH = img_Map.height;
 
@@ -161,11 +205,21 @@ function drawIcon(icon, iconX = 0.5, iconY = 0.5){
     iconX = (iconX + worldW / 2) / worldW;
     iconY = (-iconY + worldH / 2) / worldH;
 
-    //apply % loc to map x/y
-    mapCanvasContext.drawImage(icon, ((MapW * iconX) - mapX) / zoomLevel - iconWH, 
-                                     ((MapH * iconY) - mapY) / zoomLevel - iconWH, iconWH, iconWH);
+    //adjust % loc to account for "camera" position
+    var x = ((MapW * iconX) - mapX) / zoomLevel - iconWH;
+    var y = ((MapH * iconY) - mapY) / zoomLevel - iconWH;
+    mapCanvasContext.drawImage(icon, x, y, iconWH, iconWH);
+    
+    if(mouseX >= x && mouseX <= x - iconWH){
 
-    //add explored checkmark thing
+    }
+    //TODO: Add location name
+    mapCanvasContext.beginPath();
+    mapCanvasContext.fillStyle = "black";
+    mapCanvasContext.textAlign = "center";
+    mapCanvasContext.font = "16px Arial";
+    mapCanvasContext.fillText(name, x, y);
+    mapCanvasContext.fill();
 }
 
 function drawOverlay(){
@@ -214,8 +268,6 @@ function drawOverlay(){
     mapCanvasContext.fillText("Locations", wX/6 + 8, 22);
     mapCanvasContext.fillText("NirnRoute", wX/2, 22);
     mapCanvasContext.fillText("Exploration", wX/6*5 - 8, 22);
-
-    
 }
 
 function moveMap(event){
