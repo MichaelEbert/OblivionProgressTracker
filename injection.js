@@ -12,7 +12,8 @@ function init(){
 		loadProgressFromCookie();
 		replaceElements();
 		linkNPCs();
-		initIframe();
+		window.addEventListener("resize",onWindowResize);
+		actuallyResizeWindow();
 	});
 }
 
@@ -337,25 +338,39 @@ function checkboxClicked2(event){
 	saveProgressToCookie();
 }
 
-function initIframe(){
-	if(settings.iframeCheck){
-		var resizableContainer = document.createElement("div");
-		resizableContainer.classList.add("resizableContainer");
-		resizableContainer.id = "iframeContainer";
-		
-
-		var myframe = document.createElement("iframe");
-		myframe.name="myframe";
-		myframe.id="myframe";
-		myframe.classList.add("iframe");
-		
-		resizableContainer.appendChild(myframe);
-		var sidebar = document.getElementById("sidebar");
-		if(sidebar != null){
-			sidebar.prepend(resizableContainer);
+var displayIframe = false;
+/**
+ * Update iframe visibility
+ * @param {boolean} visible 
+ */
+function updateIframe(visible){
+	//if we're not changing the visibility of the iframe, do nothing.
+	if(visible == displayIframe){
+		return;
+	}
+	if(visible){
+		//iframe going from off to on
+		if(document.getElementById("iframeContainer") != null){
+			document.getElementById("iframeContainer").style.display = ""
 		}
 		else{
-			document.body.prepend(resizableContainer);
+			var resizableContainer = document.createElement("div");
+			resizableContainer.classList.add("resizableContainer");
+			resizableContainer.id = "iframeContainer";
+
+			var myframe = document.createElement("iframe");
+			myframe.name="myframe";
+			myframe.id="myframe";
+			myframe.classList.add("iframe");
+			
+			resizableContainer.appendChild(myframe);
+			var sidebar = document.getElementById("sidebar");
+			if(sidebar != null){
+				sidebar.prepend(resizableContainer);
+			}
+			else{
+				document.body.prepend(resizableContainer);
+			}
 		}
 		
 		//update all _blank links to open in iframe
@@ -366,6 +381,41 @@ function initIframe(){
 			}
 		}
 	}
+	else{
+		//iframe going from on to off
+		//just hide it because if we go back to large, we don't want to have to reload the iframe.
+		document.getElementById("iframeContainer").style.display="none";
+
+		//reset links to open in new tab, otherwise it looks like they're doing nothing.
+		var links = document.getElementsByTagName("A");
+		for(var lnk of links){
+			if(lnk.target == "myframe"){
+				lnk.target = "_blank";
+			}
+		}
+	}
+}
+
+var windowResizeId = null;
+function onWindowResize(event){
+	//on window resize, we may want to hide sidebar.
+	//only resize after being still for 50ms
+	if(windowResizeId != null){
+		clearTimeout(windowResizeId);
+	}
+	windowResizeId = setTimeout(actuallyResizeWindow,100,event);
+}
+
+function actuallyResizeWindow(event){
+	windowResizeId = null;
+	if(settings.iframeCheck == "on" || (settings.iframeCheck == "auto" && window.innerWidth > 500)){
+		updateIframe(true);
+	}
+	else{
+		updateIframe(false);
+	}
+	console.log("update window size");
+
 }
 
 function pushNpcReferencesToMinipage(event){
