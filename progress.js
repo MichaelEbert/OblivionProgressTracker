@@ -228,7 +228,7 @@ function sumCompletionSingleCell(cell){
 	}
 
 	if(cell.type == "number"){
-		completedElements = savedata[cell.hive.name][cell.id];
+		completedElements = savedata[cell.hive.classname][cell.id];
 		if(cell.max){
 			totalElements = cell.max;
 		}
@@ -239,7 +239,7 @@ function sumCompletionSingleCell(cell){
 	else{
 		//we're a checkbox
 		totalElements = 1;
-		if(savedata[cell.hive.name][cell.id]){
+		if(savedata[cell.hive.classname][cell.id]){
 			completedElements = 1;
 		}
 		else{

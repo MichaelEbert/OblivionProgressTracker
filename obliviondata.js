@@ -145,17 +145,21 @@ function addParentLinks(node, parent){
  * @param {string} basedir base dir to get files from
  */
 async function mergeData(hive, basedir="."){
+	if(hive.version <= 3){
+		hive.classname = hive.name;
+	}
 	if(hive.version >= 3){
 		//jsonTree is by formId. load IDs.
 		try{
-			const mapFilename = "mapping_"+hive.name.toLowerCase()+"_v"+hive.version+".json";
+			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
 			runOnTree(hive, mergeCell(mapJson));
 			
-			console.log("merged "+hive.name);
+			console.log("merged "+hive.classname);
 		}
 		catch{}//there may not be any other data, so just continue in that case.
 	}
+	
 	addParentLinks(hive, null);
 	return hive;
 }

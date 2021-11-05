@@ -7,29 +7,16 @@ function init(){
 	loadJsonData().then(()=>{
 		//populate sections with json data.
 		//only display stuff that user can change.
+		const base = document.getElementById("main");
 		for(const klass of progressClasses){
 			const hive = jsondata[klass.name];
-			const section = document.getElementById(klass.name+"section");
-			if(section == null){
-				console.warn("could not find section for class "+klass.name);
-				continue;
-			}
-			//we start at depth 1 because the page itself already has the depth 0 titles.
-			initMultiV2(hive.elements, klass.name, section,1);
+			initMultiV2(hive, base,0);
 		}
 		{
-			if(false){
-				//fame is tracked indirectly.
-				let klass = classes.find(x=>x.name == "fame");
-				const hive = jsondata[klass.name];
-				const section = document.getElementById(klass.name+"section");
-				if(section == null){
-					console.warn("could not find section for class "+klass.name);
-				}
-				else{//we start at depth 1 because the page itself already has the depth 0 titles.
-					initMultiV2(hive.elements, klass.name, section,1,"amount");
-				}
-			}
+			//fame is tracked indirectly.
+			let klass = classes.find(x=>x.name == "fame");
+			const hive = jsondata[klass.name];
+			initMultiV2(hive, base, 0);
 		}
 	}).then(()=>{
 		if(loadProgressFromCookie() == false){
@@ -42,44 +29,55 @@ const classNamesForLevels = ["section","category","subcategory"]
 
 /**
  * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
- * NOTE: unlike runOnTree, this takes a list of data nodes instead of a single node.
- * @param {object[]} multidata list of data nodes
- * @param {string} classname name of this class/hive
- * @param {Element} parentNode parent html element
+ * @param {object} root root node
+ * @param {Element} parentElement parent html element
  * @param {int} depth depth of this node in the tree.
  * @param {string} extraColumnName name of extra column. undefined if no extra column name.
  */
-function initMultiV2(multidata, classname, parentNode, depth, extraColumnName){
-	if(multidata == null){
-		console.log(parentNode);
+function initMultiV2(root, parentElement, depth, extraColumnName){
+	if(root == null){
+		console.log(parentElement);
 		debugger;
 	}
-	for(const datum of multidata) {
-		if(datum.elements == null){
-			let maybeElement = parentNode.appendChild(initSingle(datum, classname, extraColumnName));
-            if(maybeElement != null){
-				parentNode.appendChild(maybeElement);
-			}
+
+	if(root.elements == null){
+		//this is a leaf node. so we just have to init this single thing.
+		let maybeElement = initSingle(root, root.hive.classname, extraColumnName);
+		if(maybeElement != null){
+			parentElement.appendChild(maybeElement);
+		}
+	}
+	else{
+		// not a leaf node, so create a subtree, with a title n stuff.
+		let subtreeName;
+		//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+		if(root.classname != null){
+			subtreeName = root.classname.replaceAll(" ","_");
 		}
 		else{
-			// not a leaf node, so create a subtree, with a title n stuff.
-			const subtreeName = datum.name.replaceAll(" ","_");
-			const subtreeRoot = document.createElement("div");
-			subtreeRoot.classList.add(classNamesForLevels[depth]);
-			subtreeRoot.id = parentNode.id + "_" + subtreeName;
-			
-			const subtreeTitle = document.createElement("div");
-			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
-			subtreeTitle.innerText = datum.name;
-			subtreeRoot.appendChild(subtreeTitle);
-			
-			if(datum.extraColumn != null){
-				extraColumnName = datum.extraColumn;
-			}
-			
-			initMultiV2(datum.elements, classname, subtreeRoot, depth+1, extraColumnName);
-			parentNode.appendChild(subtreeRoot);
+			subtreeName = root.name.replaceAll(" ", "_");
 		}
+		const subtreeRoot = document.createElement("div");
+		subtreeRoot.classList.add(classNamesForLevels[depth]);
+		subtreeRoot.id = parentElement.id + "_" + subtreeName;
+		
+		const subtreeTitle = document.createElement("div");
+		subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
+		subtreeTitle.innerText = root.name;
+		subtreeRoot.appendChild(subtreeTitle);
+		
+		//if we need to change the extra column name, do that before initializing child elements.
+		if(root.extraColumn != null){
+			extraColumnName = root.extraColumn;
+		}
+		
+		//fill out this element with the child elements
+		for(const datum of root.elements) {
+			initMultiV2(datum, subtreeRoot, depth+1, extraColumnName);
+		}
+
+		//finally, append the fully created element to parent.
+		parentElement.appendChild(subtreeRoot);
 	}
 }
 
