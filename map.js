@@ -7,7 +7,6 @@
 // canvas
 
 //TODO: figure out how locations are tracked and implement it.
-//  see line ~209 for where to hook this in.
 
 //CTODO: Add location name line 214
 
@@ -33,6 +32,7 @@ let locArr;
 let nirnArr;
 
 let debug = true; //makes iframe and guide small by default for map function testing.
+var discovered = false;//to see how it looks when a place is discovered, change this to true.
 
 function initMap(){
     //load map cord data
@@ -88,6 +88,12 @@ function initMap(){
             if(redraw){
                 drawOverlay();
             }
+
+            if(locArr){
+                locArr.forEach(element => {
+                    
+                });
+            }
         }
     };
     wrapper.onwheel = function(e){    
@@ -114,21 +120,21 @@ function drawMap(){
     //draw all map icons //TODO: add in overlay options
     if(currentOverlay == "Locations"){
         for(let i = 0; i < locArr.length;i++){
-            if(locArr[i].icon == "Ayleid") drawIcon(icons.Ayleid, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Camp") drawIcon(icons.Camp, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Cave") drawIcon(icons.Cave, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Fort") drawIcon(icons.Fort, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Gate") drawIcon(icons.Gate, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Inn") drawIcon(icons.Inn, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Landmark") drawIcon(icons.Landmark, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Mine") drawIcon(icons.Mine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Settlement") drawIcon(icons.Settlement, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Shrine") drawIcon(icons.Shrine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            if(locArr[i].icon == "Ayleid") drawIcon(icons.Ayleid, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Camp") drawIcon(icons.Camp, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Cave") drawIcon(icons.Cave, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Fort") drawIcon(icons.Fort, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Gate") drawIcon(icons.Gate, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Inn") drawIcon(icons.Inn, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Landmark") drawIcon(icons.Landmark, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Mine") drawIcon(icons.Mine, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Settlement") drawIcon(icons.Settlement, locArr[i].X, locArr[i].Y, locArr[i].name);
+            else if(locArr[i].icon == "Shrine") drawIcon(icons.Shrine, locArr[i].X, locArr[i].Y, locArr[i].name);
             else console.warn("Element at " + i +" has no icon."); //catch all incase something changes.
 
             //check if visited and add a check/feedback thing for each place visited.
             // if(visited){
-            //     drawIcon(icons.Check, locArr[i].approxX, locArr[i].approxY);
+            //     drawIcon(icons.Check, locArr[i].X, locArr[i].Y);
             // }
 
             //figure out where to draw names or check for mouse over icon and draw it's name.
@@ -137,7 +143,7 @@ function drawMap(){
             mapCanvasContext.fillStyle = "black";
             mapCanvasContext.textAlign = "center";
             mapCanvasContext.font = "16px Arial";
-            mapCanvasContext.fillText(locArr[i].name, locArr[i].approxX, locArr[i].approxY);
+            mapCanvasContext.fillText(locArr[i].name, locArr[i].X, locArr[i].Y);
             mapCanvasContext.fill();
         }
     }
@@ -150,7 +156,7 @@ function drawMap(){
             
             //check if visited and add a check/feedback thing for each place visited.
             // if(visited){
-            //     drawIcon(icons.Check, locArr[i].approxX, locArr[i].approxY);
+            //     drawIcon(icons.Check, locArr[i].X, locArr[i].Y);
             // }
         }
     }
@@ -208,7 +214,6 @@ function drawIcon(icon, iconX = 0.5, iconY = 0.5){
     var y = ((MapH * iconY) - mapY) / zoomLevel - iconWH;
     mapCanvasContext.drawImage(icon, x, y, iconWH, iconWH);
     
-    var discovered = false; //needs to hook into progression somehow.
     if(discovered){
         mapCanvasContext.drawImage(icons.Check, x, y, iconWH, iconWH);
     }
