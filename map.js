@@ -1,5 +1,7 @@
 //      Random Gates overlay?
 
+//TODO: Get a nirnroot icon
+
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 
 //TODO: refactor some intialization.
@@ -7,9 +9,6 @@
 // canvas
 
 //TODO: figure out how locations are tracked and implement it.
-
-//CTODO: Add location name line 214
-
 
 let ctx;
 let canvas;
@@ -44,91 +43,11 @@ function initMap(){
     ctx = canvas.getContext("2d");
     
     initImgs();
-        
+    initListeners();
+
     //center map on imp city
     mapX = 1700;
     mapY = 885;
-
-    //Input listeners
-    wrapper = document.getElementById("wrapper_Map");
-    wrapper.onmousedown = function(){
-        if(hoverOverlayButton != 0){
-            if(hoverOverlayButton == 1) currentOverlay = "Locations";
-            if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
-            if(hoverOverlayButton == 3) currentOverlay = "Exploration";
-            drawMap();
-        }
-        else mousedown = true;
-    };
-    wrapper.onmouseup = function(){mousedown = false;};
-    wrapper.onmouseout = function(){mousedown = false;};
-    wrapper.onmousemove = function(e){
-        if(mousedown){moveMap(e);}
-        
-        //Overlay mouseover
-        if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = wrapper.width;
-            if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
-                hoverOverlayButton = 1;
-                drawOverlay();
-            }
-            if(e.offsetX >= x/3 && e.offsetX <= x/3*2 - 1){
-                hoverOverlayButton = 2;
-                drawOverlay();
-            }
-            if(e.offsetX >= x/3*2 && e.offsetX <= x - 8){
-                hoverOverlayButton = 3;
-                drawOverlay();
-            }
-        } else{
-            var redraw = false;//should prevent useless redraws of the overlay when just scrolling.
-            if(hoverOverlayButton != 0){
-                redraw = true;
-            }
-
-            hoverOverlayButton = 0;
-
-            if(redraw){
-                drawOverlay();
-            }
-            //End Overlay mouseover
-
-            //mouseover icon
-            if(locArr && !mousedown && currentOverlay == "Locations"){
-                for(let i = 0; i < locArr.length;i++){
-                    
-                    let cCords = worldSpaceToCanvasSpace(locArr[i].x, locArr[i].y);
-
-                    if(cCords.x < e.offsetX &&
-                        cCords.x + cCords.wh > e.offsetX &&
-                        cCords.y < e.offsetY &&
-                        cCords.y + cCords.wh > e.offsetY){
-                            hoverLocation = locArr[i].formid;
-                            drawMap();
-                            break;
-                    }
-                    if(i == locArr.length - 1){
-                        hoverLocation= "";
-                        drawMap();
-                    }
-                }
-            }
-            //End mouseover icon
-        }
-    };
-    wrapper.onwheel = function(e){    
-        e.preventDefault();
-        if(e.deltaY > 0) zoomLevel += 0.2;
-        else zoomLevel += -0.2;
-        
-        //TODO: make it so that it zooms into middle of screen rather than top left corner?
-    
-        //clamp zoom
-        if(zoomLevel > maxZoom) zoomLevel = maxZoom;
-        if(zoomLevel < minZoom) zoomLevel = minZoom;
-        moveMap();
-    };
-
 
     //attaches width to width of iframe
     window.addEventListener("mousemove", iFrameCheck);
@@ -155,7 +74,8 @@ function drawMap(){
     if(currentOverlay == "NirnRoute"){
         for(let i = 0; i < nirnArr.length;i++){
             if(nirnArr[i].cell == "Outdoors"){
-                drawIcon(iconSwitch("Camp"),(nirnArr[i]));
+                //TODO: Get a nirnroot icon
+                drawIcon(iconSwitch("Camp"),(nirnArr[i])); 
             }
         }
     }
@@ -337,6 +257,91 @@ function initImgs(){
         icons[i].src = "images/Icon_" + i + ".png";
         }
     )
+}
+
+function initListeners(){
+    //Input listeners
+    wrapper = document.getElementById("wrapper_Map");
+    wrapper.onmousedown = function(){
+        if(hoverOverlayButton != 0){
+            if(hoverOverlayButton == 1) currentOverlay = "Locations";
+            if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
+            if(hoverOverlayButton == 3) currentOverlay = "Exploration";
+            drawMap();
+        }
+        else mousedown = true;
+    };
+    wrapper.onmouseup = function(){
+        mousedown = false;
+        resizeMap()
+    };
+    wrapper.onmouseout = function(){mousedown = false;};
+    wrapper.onmousemove = function(e){
+        if(mousedown){moveMap(e);}
+        
+        //Overlay mouseover
+        if(e.offsetY >= 10  && e.offsetY <= 20){
+            var x = wrapper.width;
+            if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
+                hoverOverlayButton = 1;
+                drawOverlay();
+            }
+            if(e.offsetX >= x/3 && e.offsetX <= x/3*2 - 1){
+                hoverOverlayButton = 2;
+                drawOverlay();
+            }
+            if(e.offsetX >= x/3*2 && e.offsetX <= x - 8){
+                hoverOverlayButton = 3;
+                drawOverlay();
+            }
+        } else{
+            var redraw = false;//should prevent useless redraws of the overlay when just scrolling.
+            if(hoverOverlayButton != 0){
+                redraw = true;
+            }
+
+            hoverOverlayButton = 0;
+
+            if(redraw){
+                drawOverlay();
+            }
+            //End Overlay mouseover
+
+            //mouseover icon
+            if(locArr && !mousedown && currentOverlay == "Locations"){
+                for(let i = 0; i < locArr.length;i++){
+                    
+                    let cCords = worldSpaceToCanvasSpace(locArr[i].x, locArr[i].y);
+
+                    if(cCords.x < e.offsetX &&
+                        cCords.x + cCords.wh > e.offsetX &&
+                        cCords.y < e.offsetY &&
+                        cCords.y + cCords.wh > e.offsetY){
+                            hoverLocation = locArr[i].formid;
+                            drawMap();
+                            break;
+                    }
+                    if(i == locArr.length - 1){
+                        hoverLocation= "";
+                        drawMap();
+                    }
+                }
+            }
+            //End mouseover icon
+        }
+    };
+    wrapper.onwheel = function(e){    
+        e.preventDefault();
+        if(e.deltaY > 0) zoomLevel += 0.2;
+        else zoomLevel += -0.2;
+        
+        //TODO: make it so that it zooms into middle of screen rather than top left corner?
+
+        //clamp zoom
+        if(zoomLevel > maxZoom) zoomLevel = maxZoom;
+        if(zoomLevel < minZoom) zoomLevel = minZoom;
+        moveMap();
+    };
 }
 
 //converts worldspace cords into relative canvas cords.

@@ -13,6 +13,7 @@ function init(){
 		replaceElements();
 		linkNPCs();
 		initIframe();
+		initMap();
 	});
 }
 
