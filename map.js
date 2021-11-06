@@ -11,7 +11,7 @@
 //CTODO: Add location name line 214
 
 
-let mapCanvasContext;
+let ctx;
 let canvas;
 let wrapper;
 
@@ -29,6 +29,7 @@ let img_Map;
 let icons = {};
 
 let locArr;
+let hoverLocation = "";
 let nirnArr;
 
 let debug = true; //makes iframe and guide small by default for map function testing.
@@ -40,7 +41,7 @@ function initMap(){
     fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
 
     canvas = document.getElementById("canvas_Map");
-    mapCanvasContext = canvas.getContext("2d");
+    ctx = canvas.getContext("2d");
     
     initImgs();
         
@@ -50,7 +51,7 @@ function initMap(){
 
     //Input listeners
     wrapper = document.getElementById("wrapper_Map");
-    wrapper.onmousedown = function(e){
+    wrapper.onmousedown = function(){
         if(hoverOverlayButton != 0){
             if(hoverOverlayButton == 1) currentOverlay = "Locations";
             if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
@@ -93,21 +94,24 @@ function initMap(){
             //End Overlay mouseover
 
             //mouseover icon
-            
-
             if(locArr && !mousedown && currentOverlay == "Locations"){
-                locArr.forEach(element => {
-                    let cCords = worldSpaceToCanvasSpace(element.x, element.y);
+                for(let i = 0; i < locArr.length;i++){
+                    
+                    let cCords = worldSpaceToCanvasSpace(locArr[i].x, locArr[i].y);
 
                     if(cCords.x < e.offsetX &&
                         cCords.x + cCords.wh > e.offsetX &&
                         cCords.y < e.offsetY &&
                         cCords.y + cCords.wh > e.offsetY){
-                        console.log("yes, " + element.name);
-                        console.log(cCords.x + '' + cCords.y)
+                            hoverLocation = locArr[i].formid;
+                            drawMap();
+                            break;
                     }
-
-                });
+                    if(i == locArr.length - 1){
+                        hoverLocation= "";
+                        drawMap();
+                    }
+                }
             }
             //End mouseover icon
         }
@@ -130,30 +134,21 @@ function initMap(){
 }
 
 function drawMap(){
-    mapCanvasContext.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
+    ctx.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
                                     0, 0, img_Map.width, img_Map.height);
 
     if(currentOverlay == "Locations"){
+        let hloc = -1;
         for(let i = 0; i < locArr.length;i++){
-            if(locArr[i].icon == "Ayleid") drawIcon(icons.Ayleid, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Camp") drawIcon(icons.Camp, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Cave") drawIcon(icons.Cave, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Fort") drawIcon(icons.Fort, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Gate") drawIcon(icons.Gate, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Inn") drawIcon(icons.Inn, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Landmark") drawIcon(icons.Landmark, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Mine") drawIcon(icons.Mine, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Settlement") drawIcon(icons.Settlement, locArr[i].x, locArr[i].y, locArr[i].name);
-            else if(locArr[i].icon == "Shrine") drawIcon(icons.Shrine, locArr[i].x, locArr[i].y, locArr[i].name);
-            else console.warn("Element at " + i +" has no icon."); //catch all in case something changes.
+            drawIcon(iconSwitch(locArr[i].icon), locArr[i]);
 
-            //figure out where to draw names or check for mouse over icon and draw it's name.
-            mapCanvasContext.beginPath();
-            mapCanvasContext.fillStyle = "black";
-            mapCanvasContext.textAlign = "center";
-            mapCanvasContext.font = "16px Arial";
-            mapCanvasContext.fillText(locArr[i].name, locArr[i].x, locArr[i].y);
-            mapCanvasContext.fill();
+            if(hoverLocation && locArr[i].formid == hoverLocation){
+                hloc = i;
+            }
+            
+            if(i == locArr.length - 1 && hloc > 0){
+                drawIcon(iconSwitch(locArr[hloc].icon), locArr[hloc]);
+            }
         }
     }
     if(currentOverlay == "NirnRoute"){
@@ -167,36 +162,53 @@ function drawMap(){
         var x = document.getElementById("wrapper_Map").style.width.slice(0,document.getElementById("wrapper_Map").style.width.length-2);
         var y = document.getElementById("wrapper_Map").style.height.slice(0,document.getElementById("wrapper_Map").style.height.length-2);
 
-        mapCanvasContext.beginPath();
-        mapCanvasContext.fillStyle = "#FBEFD5";
-        mapCanvasContext.rect(x/2 - 125, y/2 - 75, 250, 150);
-        mapCanvasContext.fill();
+        ctx.beginPath();
+        ctx.fillStyle = "#FBEFD5";
+        ctx.rect(x/2 - 125, y/2 - 75, 250, 150);
+        ctx.fill();
 
-        mapCanvasContext.beginPath();
-        mapCanvasContext.fillStyle = "#E5D9B9";
-        mapCanvasContext.rect(x/2 - 100, y/2 - 50, 200, 100);
-        mapCanvasContext.fill();
+        ctx.beginPath();
+        ctx.fillStyle = "#E5D9B9";
+        ctx.rect(x/2 - 100, y/2 - 50, 200, 100);
+        ctx.fill();
 
-        mapCanvasContext.beginPath();
-        mapCanvasContext.fillStyle = "black";
-        mapCanvasContext.textAlign = "center";
-        mapCanvasContext.font = "16px Arial";
-        mapCanvasContext.fillText("Not yet implemented. :(", x/2 , y/2);
-        mapCanvasContext.fill();
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.font = "16px Arial";
+        ctx.fillText("Not yet implemented. :(", x/2 , y/2);
+        ctx.fill();
     }
     
     drawOverlay();
 }
 
 //give x/y as reg in game cords.
-function drawIcon(icon, iconX = 0.5, iconY = 0.5){
+function drawIcon(icon, locObj){
     
-    var canvasCords = worldSpaceToCanvasSpace(iconX, iconY);
+    var canvasCords = worldSpaceToCanvasSpace(locObj.x, locObj.y);
 
-    mapCanvasContext.drawImage(icon, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
+    //figure out where to draw names or check for mouse over icon and draw it's name.
+    if(hoverLocation == locObj.formid){
+        ctx.beginPath();
+        ctx.fillStyle = "#E5D9B9";
+        ctx.rect(canvasCords.x, canvasCords.y, (locObj.name.length * 10) + canvasCords.wh, canvasCords.wh);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "left";
+        ctx.font = "16px Monospace";
+        ctx.fillText(locObj.name, canvasCords.x + canvasCords.wh, canvasCords.y + canvasCords.wh/2);
+        ctx.fill();
+    }
+
+    
+    ctx.drawImage(icon, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
     
     if(discovered){
-        mapCanvasContext.drawImage(icons.Check, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
+        ctx.drawImage(icons.Check, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
     }
 }
 
@@ -206,46 +218,47 @@ function drawOverlay(){
     var wY = wStyle.height.slice(0,wStyle.height.length-2);
 
     //overlay background
-    mapCanvasContext.beginPath();
-    mapCanvasContext.fillStyle = "#FBEFD5";
-    mapCanvasContext.rect(0,0, wX,32);
-    mapCanvasContext.fill();
+    ctx.beginPath();
+    ctx.fillStyle = "#FBEFD5";
+    ctx.rect(0,0, wX,32);
+    ctx.fill();
 
     //drawing buttons could definatly be refactored better if we need more overlays.
 
     //overlay buttons
-    mapCanvasContext.beginPath();
-    if(hoverOverlayButton == 1) mapCanvasContext.fillStyle = "#ccc";
-    else mapCanvasContext.fillStyle = "#E5D9B9";
-    mapCanvasContext.rect(8, 6, wX/3, 20);
-    mapCanvasContext.fill();
+    ctx.beginPath();
+    if(hoverOverlayButton == 1) ctx.fillStyle = "#ccc";
+    else ctx.fillStyle = "#E5D9B9";
+    ctx.rect(8, 6, wX/3, 20);
+    ctx.fill();
 
-    mapCanvasContext.beginPath();
-    if(hoverOverlayButton == 2) mapCanvasContext.fillStyle = "#ccc";
-    else mapCanvasContext.fillStyle = "#E5D9B9";
-    mapCanvasContext.rect(wX/3, 6, wX/3, 20);
-    mapCanvasContext.fill();
+    ctx.beginPath();
+    if(hoverOverlayButton == 2) ctx.fillStyle = "#ccc";
+    else ctx.fillStyle = "#E5D9B9";
+    ctx.rect(wX/3, 6, wX/3, 20);
+    ctx.fill();
 
-    mapCanvasContext.beginPath();
-    if(hoverOverlayButton == 3) mapCanvasContext.fillStyle = "#ccc";
-    else mapCanvasContext.fillStyle = "#E5D9B9";
-    mapCanvasContext.rect(wX/3*2, 6, wX/3 - 8, 20);
-    mapCanvasContext.fill();
+    ctx.beginPath();
+    if(hoverOverlayButton == 3) ctx.fillStyle = "#ccc";
+    else ctx.fillStyle = "#E5D9B9";
+    ctx.rect(wX/3*2, 6, wX/3 - 8, 20);
+    ctx.fill();
 
     //overlay button dividers.
-    mapCanvasContext.beginPath();
-    mapCanvasContext.fillStyle = "black";
-    mapCanvasContext.rect(wX/3, 6, 1, 20);
-    mapCanvasContext.rect(wX/3*2, 6, 1, 20);
-    mapCanvasContext.fill();
+    ctx.beginPath();
+    ctx.fillStyle = "black";
+    ctx.rect(wX/3, 6, 1, 20);
+    ctx.rect(wX/3*2, 6, 1, 20);
+    ctx.fill();
 
     //overlay button text
-    mapCanvasContext.beginPath();
-    mapCanvasContext.textAlign = "center";
-    mapCanvasContext.font = "16px Arial"
-    mapCanvasContext.fillText("Locations", wX/6 + 8, 22);
-    mapCanvasContext.fillText("NirnRoute", wX/2, 22);
-    mapCanvasContext.fillText("Exploration", wX/6*5 - 8, 22);
+    ctx.beginPath();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    ctx.font = "16px Arial"
+    ctx.fillText("Locations", wX/6 + 8, 22);
+    ctx.fillText("NirnRoute", wX/2, 22);
+    ctx.fillText("Exploration", wX/6*5 - 8, 22);
 }
 
 function moveMap(event){
@@ -350,4 +363,23 @@ function worldSpaceToCanvasSpace(x = 0, y = 0){
     var x = ((MapW * x) - mapX) / zoomLevel - wh;
     var y = ((MapH * y) - mapY) / zoomLevel - wh;
     return {x:x, y:y, wh:wh}
+}
+
+function iconSwitch(Input = ""){
+    switch (Input) {
+        case "Ayleid":return icons.Ayleid;
+        case "Camp": return icons.Camp;
+        case "Cave": return icons.Cave;
+        case "Fort": return icons.Fort;
+        case "Gate": return icons.Gate;
+        case "Inn": return icons.Inn;
+        case "Landmark": return icons.Landmark;
+        case "Mine": return icons.Mine;
+        case "Settlement": return icons.Settlement;
+        case "Shrine": return icons.Shrine;
+            
+        default: 
+            console.warn("Element has invalid iconname: " + Input + ".");
+            return icons.Check;
+    }
 }
