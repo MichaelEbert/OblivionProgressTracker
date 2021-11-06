@@ -67,7 +67,7 @@ function initMap(){
         
         //Overlay mouseover
         if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = document.getElementById("wrapper_Map").style.width.slice(0,document.getElementById("wrapper_Map").style.width.length-2);
+            var x = wrapper.width;
             if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
                 hoverOverlayButton = 1;
                 drawOverlay();
@@ -159,8 +159,8 @@ function drawMap(){
         }
     }
     if(currentOverlay == "Exploration"){
-        var x = document.getElementById("wrapper_Map").style.width.slice(0,document.getElementById("wrapper_Map").style.width.length-2);
-        var y = document.getElementById("wrapper_Map").style.height.slice(0,document.getElementById("wrapper_Map").style.height.length-2);
+        var x = wrapper.width;
+        var y = wrapper.height;
 
         ctx.beginPath();
         ctx.fillStyle = "#FBEFD5";
@@ -213,9 +213,8 @@ function drawIcon(icon, locObj){
 }
 
 function drawOverlay(){
-    var wStyle = document.getElementById("wrapper_Map").style;
-    var wX = wStyle.width.slice(0,wStyle.width.length-2);
-    var wY = wStyle.height.slice(0,wStyle.height.length-2);
+    let wX = wrapper.width;
+    let wY = wrapper.height
 
     //overlay background
     ctx.beginPath();
@@ -271,11 +270,8 @@ function moveMap(event){
     //clamp values to prevent moving map off screen.
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
-    var wStyle = document.getElementById("wrapper_Map").style;
-    var wX = wStyle.width.slice(0,wStyle.width.length-2);
-    var wY = wStyle.height.slice(0,wStyle.height.length-2);
-    if(mapX >= img_Map.width - (wX * zoomLevel)) mapX = img_Map.width - (wX * zoomLevel);
-    if(mapY >= img_Map.height - (wY * zoomLevel)) mapY = img_Map.height - (wY * zoomLevel);
+    if(mapX >= img_Map.width - (wrapper.width * zoomLevel)) mapX = img_Map.width - (wrapper.width * zoomLevel);
+    if(mapY >= img_Map.height - (width.height * zoomLevel)) mapY = img_Map.height - (width.height * zoomLevel);
 
     drawMap();
 }
@@ -289,7 +285,7 @@ function iFrameCheck(){
     }
 }
 
-//matches width of map to Iframe width
+//makes the map width equal to the iframes width.
 function resizeMap(){
     if(document.getElementById("iframeContainer")){
         var ifc = document.getElementById("iframeContainer");
@@ -298,10 +294,13 @@ function resizeMap(){
             ifc.style.width = "1000px";
             ifc.style.height = "25px";
             wrapper.style.height = "580px";
+            wrapper.height = 580;
         }
 
         wrapper.style.width = ifc.clientWidth + "px";
+        wrapper.width = ifc.clientWidth;
         wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
+        wrapper.height = ifc.clientHeight + 48;
     }
     drawMap();    
 }
@@ -325,7 +324,8 @@ function initImgs(){
         "Mine",
         "Landmark",
         "Shrine",
-        "Check"
+        "Check",
+        "X"
     ];
 
     iconsToInit.forEach(function(i){
@@ -380,6 +380,6 @@ function iconSwitch(Input = ""){
             
         default: 
             console.warn("Element has invalid iconname: " + Input + ".");
-            return icons.Check;
+            return icons.X;
     }
 }
