@@ -32,8 +32,8 @@ let locArr;
 let hoverLocation = "";
 let nirnArr;
 
-let debug = true; //makes iframe and guide small by default for map function testing.
-var discovered = false;//to see how it looks when a place is discovered, change this to true.
+let debug = false; //makes iframe and guide small by default for map function testing.
+let discovered = false;//to see how it looks when a place is discovered, change this to true.
 
 function initMap(){
     //load map cord data
@@ -46,8 +46,8 @@ function initMap(){
     initImgs();
         
     //center map on imp city
-    mapX = img_Map.width/2.1;
-    mapY = img_Map.height/3.2;
+    mapX = 1700;
+    mapY = 885;
 
     //Input listeners
     wrapper = document.getElementById("wrapper_Map");
@@ -129,6 +129,7 @@ function initMap(){
         moveMap();
     };
 
+
     //attaches width to width of iframe
     window.addEventListener("mousemove", iFrameCheck);
 }
@@ -154,7 +155,7 @@ function drawMap(){
     if(currentOverlay == "NirnRoute"){
         for(let i = 0; i < nirnArr.length;i++){
             if(nirnArr[i].cell == "Outdoors"){
-                drawIcon(icons.Camp, Math.round(nirnArr[i].x), Math.round(nirnArr[i].y));
+                drawIcon(iconSwitch("Camp"),(nirnArr[i]));
             }
         }
     }
@@ -271,7 +272,7 @@ function moveMap(event){
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
     if(mapX >= img_Map.width - (wrapper.width * zoomLevel)) mapX = img_Map.width - (wrapper.width * zoomLevel);
-    if(mapY >= img_Map.height - (width.height * zoomLevel)) mapY = img_Map.height - (width.height * zoomLevel);
+    if(mapY >= img_Map.height - (wrapper.height * zoomLevel)) mapY = img_Map.height - (wrapper.height * zoomLevel);
 
     drawMap();
 }
@@ -300,7 +301,8 @@ function resizeMap(){
         wrapper.style.width = ifc.clientWidth + "px";
         wrapper.width = ifc.clientWidth;
         wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
-        wrapper.height = ifc.clientHeight + 48;
+        var wsh = wrapper.style.height;
+        wrapper.height = wsh.slice(0, wsh.length - 2);
     }
     drawMap();    
 }
@@ -342,12 +344,11 @@ function initImgs(){
 function worldSpaceToCanvasSpace(x = 0, y = 0){
     var MapW = img_Map.width;
     var MapH = img_Map.height;
-
     var worldW = 480000;
     var worldH = 400000;
 
-    x = (x + worldW / 2) / worldW;
-    y = (-y + worldH / 2) / worldH;
+    x = (Math.round(x) + worldW / 2) / worldW;
+    y = (-Math.round(y) + worldH / 2) / worldH;
 
     var wh = 20 / zoomLevel;
     if(zoomLevel > 1.25){
