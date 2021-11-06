@@ -1,11 +1,13 @@
-//TODO: add in different overlay options/buttons.
 //      Random Gates overlay?
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
-//TODO: initImgs() can probably be refactored better.
-//TODO: add icon_check
-//TODO: figure out how locations are tracked
-//TODO: 
+
+//TODO: refactor some intialization.
+// iframe
+// canvas
+
+//TODO: figure out how locations are tracked and implement it.
+//  see line ~209 for where to hook this in.
 
 //CTODO: Add location name line 214
 
@@ -23,22 +25,9 @@ let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverOverlayButton = 0;
 
 let mousedown = false;
-let mouseX;
-let mouseY;
 
 let img_Map;
-
-let icon_Ayleid;
-let icon_Camp;
-let icon_Cave;
-let icon_Fort;
-let icon_Gate;
-let icon_Inn;
-let icon_Settlement;
-let icon_Mine;
-let icon_Landmark;
-let icon_Shrine;
-let icon_Check; //still needs added
+let icons = {};
 
 let locArr;
 let nirnArr;
@@ -100,10 +89,19 @@ function initMap(){
                 drawOverlay();
             }
         }
-        mouseX = e.offsetX;
-        mouseY = e.offsetY;
     };
-    wrapper.onwheel = function(e){zoomMap(e)};
+    wrapper.onwheel = function(e){    
+        e.preventDefault();
+        if(e.deltaY > 0) zoomLevel += 0.2;
+        else zoomLevel += -0.2;
+        
+        //TODO: make it so that it zooms into middle of screen rather than top left corner?
+    
+        //clamp zoom
+        if(zoomLevel > maxZoom) zoomLevel = maxZoom;
+        if(zoomLevel < minZoom) zoomLevel = minZoom;
+        moveMap();
+    };
 
     //attaches width to width of iframe
     window.addEventListener("mousemove", iFrameCheck);
@@ -116,21 +114,21 @@ function drawMap(){
     //draw all map icons //TODO: add in overlay options
     if(currentOverlay == "Locations"){
         for(let i = 0; i < locArr.length;i++){
-            if(locArr[i].icon == "Ayleid") drawIcon(icon_Ayleid, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Camp") drawIcon(icon_Camp, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Cave") drawIcon(icon_Cave, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Fort") drawIcon(icon_Fort, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Gate") drawIcon(icon_Gate, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Inn") drawIcon(icon_Inn, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Landmark") drawIcon(icon_Landmark, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Mine") drawIcon(icon_Mine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Settlement") drawIcon(icon_Settlement, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
-            else if(locArr[i].icon == "Shrine") drawIcon(icon_Shrine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            if(locArr[i].icon == "Ayleid") drawIcon(icons.Ayleid, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Camp") drawIcon(icons.Camp, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Cave") drawIcon(icons.Cave, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Fort") drawIcon(icons.Fort, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Gate") drawIcon(icons.Gate, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Inn") drawIcon(icons.Inn, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Landmark") drawIcon(icons.Landmark, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Mine") drawIcon(icons.Mine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Settlement") drawIcon(icons.Settlement, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
+            else if(locArr[i].icon == "Shrine") drawIcon(icons.Shrine, locArr[i].approxX, locArr[i].approxY, locArr[i].name);
             else console.warn("Element at " + i +" has no icon."); //catch all incase something changes.
 
             //check if visited and add a check/feedback thing for each place visited.
             // if(visited){
-            //     drawIcon(icon_Check, locArr[i].approxX, locArr[i].approxY);
+            //     drawIcon(icons.Check, locArr[i].approxX, locArr[i].approxY);
             // }
 
             //figure out where to draw names or check for mouse over icon and draw it's name.
@@ -147,12 +145,12 @@ function drawMap(){
         
         for(let i = 0; i < nirnArr.length;i++){
             if(nirnArr[i].cell == "Outdoors"){
-                drawIcon(icon_Camp, Math.round(nirnArr[i].x), Math.round(nirnArr[i].y));
+                drawIcon(icons.Camp, Math.round(nirnArr[i].x), Math.round(nirnArr[i].y));
             }
             
             //check if visited and add a check/feedback thing for each place visited.
             // if(visited){
-            //     drawIcon(icon_Check, locArr[i].approxX, locArr[i].approxY);
+            //     drawIcon(icons.Check, locArr[i].approxX, locArr[i].approxY);
             // }
         }
     }
@@ -182,7 +180,7 @@ function drawMap(){
 }
 
 //give x/y as reg in game cords.
-function drawIcon(icon, iconX = 0.5, iconY = 0.5, name = "Default"){
+function drawIcon(icon, iconX = 0.5, iconY = 0.5){
     var MapW = img_Map.width;
     var MapH = img_Map.height;
 
@@ -210,16 +208,10 @@ function drawIcon(icon, iconX = 0.5, iconY = 0.5, name = "Default"){
     var y = ((MapH * iconY) - mapY) / zoomLevel - iconWH;
     mapCanvasContext.drawImage(icon, x, y, iconWH, iconWH);
     
-    if(mouseX >= x && mouseX <= x - iconWH){
-
+    var discovered = false; //needs to hook into progression somehow.
+    if(discovered){
+        mapCanvasContext.drawImage(icons.Check, x, y, iconWH, iconWH);
     }
-    //TODO: Add location name
-    mapCanvasContext.beginPath();
-    mapCanvasContext.fillStyle = "black";
-    mapCanvasContext.textAlign = "center";
-    mapCanvasContext.font = "16px Arial";
-    mapCanvasContext.fillText(name, x, y);
-    mapCanvasContext.fill();
 }
 
 function drawOverlay(){
@@ -289,19 +281,6 @@ function moveMap(event){
     drawMap();
 }
 
-function zoomMap(event){
-    event.preventDefault();
-    if(event.deltaY > 0) zoomLevel += 0.2;
-    else zoomLevel += -0.2;
-    
-    //TODO: make it so that it zooms into middle of screen rather than top left corner?
-
-    //clamp zoom
-    if(zoomLevel > maxZoom) zoomLevel = maxZoom;
-    if(zoomLevel < minZoom) zoomLevel = minZoom;
-    moveMap();
-}
-
 //attaches width to width of iframe
 function iFrameCheck(){
     if(document.getElementById("iframeContainer")){
@@ -330,59 +309,31 @@ function resizeMap(){
 
 function initImgs(){
     
-    //TODO: initImgs can probably be refactored better
     img_Map = document.createElement("img");
     img_Map.width = 3544;
     img_Map.height = 2895;
     img_Map.src = "images/Cyrodil_Upscaled.png";
 
-    icon_Ayleid = document.createElement("IMG");
-    icon_Ayleid.width = 48;
-    icon_Ayleid.height = 48;
-    icon_Ayleid.src = "images/Icon_Ayleid.png";
-
-    icon_Camp = document.createElement("IMG");
-    icon_Camp.width = 48;
-    icon_Camp.height = 48;
-    icon_Camp.src = "images/Icon_Camp.png";
-
-    icon_Fort = document.createElement("IMG");
-    icon_Fort.width = 48;
-    icon_Fort.height = 48;
-    icon_Fort.src = "images/Icon_Fort.png";
-
-    icon_Gate = document.createElement("IMG");
-    icon_Gate.width = 48;
-    icon_Gate.height = 48;
-    icon_Gate.src = "images/Icon_Gate.png";
     
-    icon_Cave = document.createElement("IMG");
-    icon_Cave.width = 48;
-    icon_Cave.height = 48;
-    icon_Cave.src = "images/Icon_Cave.png";
+    var iconsToInit = [
+        "Ayleid",
+        "Camp",
+        "Fort",
+        "Gate",
+        "Cave",
+        "Inn",
+        "Settlement",
+        "Mine",
+        "Landmark",
+        "Shrine",
+        "Check"
+    ];
 
-    icon_Inn = document.createElement("IMG");
-    icon_Inn.width = 48;
-    icon_Inn.height = 48;
-    icon_Inn.src = "images/Icon_Inn.png";
-
-    icon_Settlement = document.createElement("IMG");
-    icon_Settlement.width = 48;
-    icon_Settlement.height = 48;
-    icon_Settlement.src = "images/Icon_Settlement.png";
-
-    icon_Mine = document.createElement("IMG");
-    icon_Mine.width = 48;
-    icon_Mine.height = 48;
-    icon_Mine.src = "images/Icon_Mine.png";
-
-    icon_Landmark = document.createElement("IMG");
-    icon_Landmark.width = 48;
-    icon_Landmark.height = 48;
-    icon_Landmark.src = "images/Icon_Landmark.png";
-
-    icon_Shrine = document.createElement("IMG");
-    icon_Shrine.width = 48;
-    icon_Shrine.height = 48;
-    icon_Shrine.src = "images/Icon_Shrine.png";
+    iconsToInit.forEach(function(i){
+        icons[i] = document.createElement("IMG");
+        icons[i].width = 48;
+        icons[i].height = 48;
+        icons[i].src = "images/Icon_" + i + ".png";
+        }
+    )
 }
