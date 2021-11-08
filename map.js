@@ -1,10 +1,12 @@
-//      Random Gates overlay?
+//TODO: Random Gates overlay?
 
 //TODO: Get a nirnroot icon
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 
 //TODO: refactor some intialization.
+// make intialization start from sidebar rather than a wrapper/canvas (like Iframe)?
+// make intialization async
 // iframe
 // canvas
 
@@ -34,11 +36,11 @@ let nirnArr;
 let debug = false; //makes iframe and guide small by default for map function testing.
 let discovered = false;//to see how it looks when a place is discovered, change this to true.
 
-function initMap(){
+async function initMap(){
     //load map cord data
-    fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
-    fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
-
+    await fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
+    await fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
+    
     canvas = document.getElementById("canvas_Map");
     ctx = canvas.getContext("2d");
     
@@ -49,16 +51,19 @@ function initMap(){
     mapX = 1700;
     mapY = 885;
 
-    //attaches width to width of iframe
-    window.addEventListener("mousemove", iFrameCheck);
+    //attaches width to width of iframe //if we can refactor the whole init process to be async, this can probably be dropped.
+    document.getElementById("iframeContainer").onclick = resizeMap;
+    resizeMap();
 }
 
 function drawMap(){
+    //main map image.
     ctx.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
                                     0, 0, img_Map.width, img_Map.height);
 
+    //Overlay Else if chain
     if(currentOverlay == "Locations"){
-        let hloc = -1;
+        let hloc = -1; //tracks hovered location index to redraw it last.
         for(let i = 0; i < locArr.length;i++){
             drawIcon(iconSwitch(locArr[i].icon), locArr[i]);
 
@@ -66,20 +71,22 @@ function drawMap(){
                 hloc = i;
             }
             
+            //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
             if(i == locArr.length - 1 && hloc > 0){
                 drawIcon(iconSwitch(locArr[hloc].icon), locArr[hloc]);
             }
         }
     }
-    if(currentOverlay == "NirnRoute"){
+    else if(currentOverlay == "NirnRoute"){
         for(let i = 0; i < nirnArr.length;i++){
-            if(nirnArr[i].cell == "Outdoors"){
+            if(nirnArr[i].cell == "Outdoors"){ //some nirnroots are indoors, therefore we only draw outdoor nirnroots.
                 //TODO: Get a nirnroot icon
                 drawIcon(iconSwitch("Camp"),(nirnArr[i])); 
             }
         }
     }
-    if(currentOverlay == "Exploration"){
+    else if(currentOverlay == "Exploration"){
+        //traveling salesmen overlay.
         var x = wrapper.width;
         var y = wrapper.height;
 
@@ -104,16 +111,16 @@ function drawMap(){
     drawOverlay();
 }
 
-//give x/y as reg in game cords.
+//give x/y as regular in game cords.
 function drawIcon(icon, locObj){
     
     var canvasCords = worldSpaceToCanvasSpace(locObj.x, locObj.y);
 
-    //figure out where to draw names or check for mouse over icon and draw it's name.
+    //draws the label for the map icon if hovered.
     if(hoverLocation == locObj.formid){
         ctx.beginPath();
         ctx.fillStyle = "#E5D9B9";
-        ctx.rect(canvasCords.x, canvasCords.y, (locObj.name.length * 10) + canvasCords.wh, canvasCords.wh);
+        ctx.rect(canvasCords.x, canvasCords.y, (locObj.name.length * 10) + canvasCords.iconH, canvasCords.iconH);
         ctx.fill();
 
         ctx.beginPath();
@@ -121,21 +128,21 @@ function drawIcon(icon, locObj){
         ctx.textBaseline = "middle";
         ctx.textAlign = "left";
         ctx.font = "16px Monospace";
-        ctx.fillText(locObj.name, canvasCords.x + canvasCords.wh, canvasCords.y + canvasCords.wh/2);
+        ctx.fillText(locObj.name, canvasCords.x + canvasCords.iconH, canvasCords.y + canvasCords.iconH/2);
         ctx.fill();
     }
 
-    
-    ctx.drawImage(icon, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
+    ctx.drawImage(icon, canvasCords.x, canvasCords.y, canvasCords.iconH, canvasCords.iconH);
     
     if(discovered){
-        ctx.drawImage(icons.Check, canvasCords.x, canvasCords.y, canvasCords.wh, canvasCords.wh);
+        ctx.drawImage(icons.Check, canvasCords.x, canvasCords.y, canvasCords.iconH, canvasCords.iconH);
     }
 }
 
+//this is the "topbar" on the map canvas.
 function drawOverlay(){
     let wX = wrapper.width;
-    let wY = wrapper.height
+    let wY = wrapper.height;
 
     //overlay background
     ctx.beginPath();
@@ -143,21 +150,24 @@ function drawOverlay(){
     ctx.rect(0,0, wX,32);
     ctx.fill();
 
-    //drawing buttons could definatly be refactored better if we need more overlays.
+    //drawing buttons should be refactored better if we need more overlay buttons.
 
     //overlay buttons
+        //locations
     ctx.beginPath();
     if(hoverOverlayButton == 1) ctx.fillStyle = "#ccc";
     else ctx.fillStyle = "#E5D9B9";
     ctx.rect(8, 6, wX/3, 20);
     ctx.fill();
 
+        //nirnroute
     ctx.beginPath();
     if(hoverOverlayButton == 2) ctx.fillStyle = "#ccc";
     else ctx.fillStyle = "#E5D9B9";
     ctx.rect(wX/3, 6, wX/3, 20);
     ctx.fill();
 
+        //exploration
     ctx.beginPath();
     if(hoverOverlayButton == 3) ctx.fillStyle = "#ccc";
     else ctx.fillStyle = "#E5D9B9";
@@ -188,7 +198,7 @@ function moveMap(event){
         mapY -= event.movementY * zoomLevel;
     }
     
-    //clamp values to prevent moving map off screen.
+    //clamp values to prevent moving map off screen. //bottom clamp isn't perfect :\
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
     if(mapX >= img_Map.width - (wrapper.width * zoomLevel)) mapX = img_Map.width - (wrapper.width * zoomLevel);
@@ -197,16 +207,7 @@ function moveMap(event){
     drawMap();
 }
 
-//attaches width to width of iframe
-function iFrameCheck(){
-    if(document.getElementById("iframeContainer")){
-        document.getElementById("iframeContainer").onclick = resizeMap;
-        window.removeEventListener("mousemove", iFrameCheck); //trim listener, it's served it's purpose.
-        resizeMap();
-    }
-}
-
-//makes the map width equal to the iframes width.
+//makes the map wrapper width equal to the iframes width on mouseclick/windowsize change.
 function resizeMap(){
     if(document.getElementById("iframeContainer")){
         var ifc = document.getElementById("iframeContainer");
@@ -314,9 +315,9 @@ function initListeners(){
                     let cCords = worldSpaceToCanvasSpace(locArr[i].x, locArr[i].y);
 
                     if(cCords.x < e.offsetX &&
-                        cCords.x + cCords.wh > e.offsetX &&
+                        cCords.x + cCords.iconH > e.offsetX &&
                         cCords.y < e.offsetY &&
-                        cCords.y + cCords.wh > e.offsetY){
+                        cCords.y + cCords.iconH > e.offsetY){
                             hoverLocation = locArr[i].formid;
                             drawMap();
                             break;
@@ -355,23 +356,17 @@ function worldSpaceToCanvasSpace(x = 0, y = 0){
     x = (Math.round(x) + worldW / 2) / worldW;
     y = (-Math.round(y) + worldH / 2) / worldH;
 
-    var wh = 20 / zoomLevel;
-    if(zoomLevel > 1.25){
-        wh = 20 / zoomLevel * 1.25;
-    }
-    if(zoomLevel > 1.5){
-        wh = 20 / zoomLevel * 1.5;
-    }
-    if(zoomLevel > 1.75){
-        wh = 20 / zoomLevel * 2;
-    }
+    var iconH = 20 / zoomLevel;
+    if(zoomLevel > 1.75)iconH = 20 / zoomLevel * 2;
+    else if(zoomLevel > 1.5)iconH = 20 / zoomLevel * 1.5;
+    else if(zoomLevel > 1.25)iconH = 20 / zoomLevel * 1.25;
 
-    var x = ((MapW * x) - mapX) / zoomLevel - wh;
-    var y = ((MapH * y) - mapY) / zoomLevel - wh;
-    return {x:x, y:y, wh:wh}
+    var x = ((MapW * x) - mapX) / zoomLevel - iconH;
+    var y = ((MapH * y) - mapY) / zoomLevel - iconH;
+    return {x:x, y:y, iconH:iconH}
 }
 
-function iconSwitch(Input = ""){
+function iconSwitch(Input){
     switch (Input) {
         case "Ayleid":return icons.Ayleid;
         case "Camp": return icons.Camp;
