@@ -4,13 +4,7 @@
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 
-//TODO: refactor some intialization.
-// make intialization start from sidebar rather than a wrapper/canvas (like Iframe)?
-// make intialization async
-// iframe
-// canvas
-
-//TODO: figure out how locations are tracked and implement it.
+//TODO: figure out how discovered locations are tracked and implement it.
 
 let ctx;
 let canvas;
