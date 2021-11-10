@@ -110,10 +110,6 @@ td{
 	height: 100%
 }
 
-.sidebar{
-
-}
-
 .main{
 	flex-shrink: 1;
 	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
