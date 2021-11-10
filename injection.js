@@ -365,7 +365,7 @@ function updateIframe(visible){
 			myframe.classList.add("iframe");
 			
 			resizableContainer.appendChild(myframe);
-			var sidebar = document.getElementById("sidebar");
+			var sidebar = document.getElementById("sidebarContainer");
 			if(sidebar != null){
 				sidebar.prepend(resizableContainer);
 			}

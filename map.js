@@ -8,7 +8,11 @@
 
 let ctx;
 let canvas;
-let wrapper;
+
+/**
+ * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
+ */
+let viewport;
 
 let zoomLevel = 1;
 let minZoom = 0.2;
@@ -35,7 +39,13 @@ async function initMap(){
     await fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
     await fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
     
+    
+
+    //TODO: create window here
+    //TODO: do hide n seek stuff
+
     canvas = document.getElementById("canvas_Map");
+    viewport = document.getElementById("wrapper_Map");
     ctx = canvas.getContext("2d");
     
     initImgs();
@@ -46,8 +56,8 @@ async function initMap(){
     mapY = 885;
 
     //attaches width to width of iframe //if we can refactor the whole init process to be async, this can probably be dropped.
-    document.getElementById("iframeContainer").onclick = resizeMap;
-    resizeMap();
+    //document.getElementById("iframeContainer").onclick = resizeMap;
+    drawMap();
 }
 
 function drawMap(){
@@ -81,8 +91,8 @@ function drawMap(){
     }
     else if(currentOverlay == "Exploration"){
         //traveling salesmen overlay.
-        var x = wrapper.width;
-        var y = wrapper.height;
+        var x = viewport.width;
+        var y = viewport.height;
 
         ctx.beginPath();
         ctx.fillStyle = "#FBEFD5";
@@ -135,8 +145,8 @@ function drawIcon(icon, locObj){
 
 //this is the "topbar" on the map canvas.
 function drawOverlay(){
-    let wX = wrapper.width;
-    let wY = wrapper.height;
+    let wX = viewport.width;
+    let wY = viewport.height;
 
     //overlay background
     ctx.beginPath();
@@ -195,31 +205,10 @@ function moveMap(event){
     //clamp values to prevent moving map off screen. //bottom clamp isn't perfect :\
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
-    if(mapX >= img_Map.width - (wrapper.width * zoomLevel)) mapX = img_Map.width - (wrapper.width * zoomLevel);
-    if(mapY >= img_Map.height - (wrapper.height * zoomLevel)) mapY = img_Map.height - (wrapper.height * zoomLevel);
+    if(mapX >= img_Map.width - (viewport.width * zoomLevel)) mapX = img_Map.width - (viewport.width * zoomLevel);
+    if(mapY >= img_Map.height - (viewport.height * zoomLevel)) mapY = img_Map.height - (viewport.height * zoomLevel);
 
     drawMap();
-}
-
-//makes the map wrapper width equal to the iframes width on mouseclick/windowsize change.
-function resizeMap(){
-    if(document.getElementById("iframeContainer")){
-        var ifc = document.getElementById("iframeContainer");
-
-        if(debug){
-            ifc.style.width = "1000px";
-            ifc.style.height = "25px";
-            wrapper.style.height = "580px";
-            wrapper.height = 580;
-        }
-
-        wrapper.style.width = ifc.clientWidth + "px";
-        wrapper.width = ifc.clientWidth;
-        wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
-        var wsh = wrapper.style.height;
-        wrapper.height = wsh.slice(0, wsh.length - 2);
-    }
-    drawMap();    
 }
 
 function initImgs(){
@@ -256,8 +245,7 @@ function initImgs(){
 
 function initListeners(){
     //Input listeners
-    wrapper = document.getElementById("wrapper_Map");
-    wrapper.onmousedown = function(){
+    viewport.onmousedown = function(){
         if(hoverOverlayButton != 0){
             if(hoverOverlayButton == 1) currentOverlay = "Locations";
             if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
@@ -266,17 +254,17 @@ function initListeners(){
         }
         else mousedown = true;
     };
-    wrapper.onmouseup = function(){
+    viewport.onmouseup = function(){
         mousedown = false;
         resizeMap()
     };
-    wrapper.onmouseout = function(){mousedown = false;};
-    wrapper.onmousemove = function(e){
+    viewport.onmouseout = function(){mousedown = false;};
+    viewport.onmousemove = function(e){
         if(mousedown){moveMap(e);}
         
         //Overlay mouseover
         if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = wrapper.width;
+            var x = viewport.width;
             if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
                 hoverOverlayButton = 1;
                 drawOverlay();
@@ -325,7 +313,7 @@ function initListeners(){
             //End mouseover icon
         }
     };
-    wrapper.onwheel = function(e){    
+    viewport.onwheel = function(e){    
         e.preventDefault();
         if(e.deltaY > 0) zoomLevel += 0.2;
         else zoomLevel += -0.2;
