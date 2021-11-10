@@ -119,7 +119,7 @@ function resetProgressForTree(classname, jsonNode){
 		}
 		else{
 			savedata[classname][e.id] = false;
-		}}),0,(e=>e.id != null));
+		}}),0);
 }
 
 //generate a new, clean savedata object, and saves it to cookie.
@@ -146,6 +146,110 @@ function resetProgress(shouldConfirm=false){
 //=========================
 //Progress percentage updates and helper functions
 //=========================
+
+/**
+ * Update save progress for the specified element.
+ * @param {*} formId 
+ * @param {Element} inputElement HTML input element with the new value 
+ * @param {*} classHint 
+ * @param {*} cellHint 
+ */
+function updateChecklistProgressFromInputElement(formId, inputElement, classHint = null, cellHint = null){
+	//lets extract the value from the input elemeent.
+	if(inputElement.tagName != "INPUT"){
+		debugger;
+		console.error("input elmeent does not have type INPUT");
+		return;
+	}
+
+	let newValue = null;
+	if(inputElement.type == "checkbox"){
+		newValue = inputElement.checked;
+	}
+	else{
+		newValue = inputElement.valueAsNumber;
+	}
+
+	return updateChecklistProgress(formId, newValue, classHint, cellHint);
+}
+
+function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null){
+	let cell = null;
+	if(cellHint != null)
+	{
+		cell = cellHint;
+	}
+	else{
+		cell = findCell(formId, classHint);
+		if(cell == null){
+			throw "Element not found to save progress on."
+		}
+	}
+
+	let valueAsCorrectType;
+	if(cell.type == "number"){
+		switch(typeof(newValue)){
+			case "boolean":
+				valueAsCorrectType = newValue? 1 : 0;
+				break;
+			case "number":
+				valueAsCorrectType = newValue;
+				break;
+			default:
+				throw "unexpected input type";
+		}
+	}
+	else{
+		//cell is bool
+		switch(typeof(newValue)){
+			case "boolean":
+				valueAsCorrectType = newValue;
+				break;
+			case "number":
+				if(newValue == 0){
+					valueAsCorrectType = false;
+				}
+				else{
+					valueAsCorrectType = true;
+				}
+				break;
+			default:
+				throw "unexpected input type";
+		}
+	}
+
+	if(cell.id == null){
+		//we don't need to save this
+		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+			for(const fn of cell.onUpdate){
+				fn(cell, valueAsCorrectType);
+			}
+		}
+		return true;
+	}
+	else{
+		//now we get the save data for this.
+		let oldval = savedata[cell.hive.classname][cell.id];
+		if(valueAsCorrectType == oldval){
+			//do nothing.
+			return false;
+		}
+		else{
+			savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
+			//do post-update stuff here.
+			if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+				for(const fn of cell.onUpdate){
+					fn(cell, valueAsCorrectType);
+				}
+			}
+			return true;
+		}
+	}
+}
+
+function updateInputElementFromProgress(newValue, inputElement){
+	//... TODO
+}
 
 /**
  * Recalculate progress
@@ -179,8 +283,16 @@ function getSubtotalCompletion(subtotalJsonNode){
 	const [items,total] = sumCompletionItems(subtotalJsonNode);
 	
 	//try to find subtotals
-	//this may fail if we have multiple score nodes from different hives wiht the same name.
-	const overviewId = "overview_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
+	//this may fail if we have multiple score nodes from different hives with the same name.
+	let nodeInternalName = subtotalJsonNode.classname;
+	if(!nodeInternalName){
+		nodeInternalName = subtotalJsonNode.name;
+	}
+	if(nodeInternalName == null){
+		console.warn("score node has no name");
+		debugger;
+	}
+	const overviewId = "overview_"+nodeInternalName.replaceAll(" ","_").toLowerCase();
 	const maybeItem = document.getElementById(overviewId);
 	if(maybeItem){
 		//add this to correct subtotal slot
@@ -239,6 +351,9 @@ function sumCompletionSingleCell(cell){
 	else{
 		//we're a checkbox
 		totalElements = 1;
+		if(cell.hive.classname == null){
+			debugger;
+		}
 		if(savedata[cell.hive.classname][cell.id]){
 			completedElements = 1;
 		}

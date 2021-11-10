@@ -159,7 +159,7 @@ async function mergeData(hive, basedir="."){
 		}
 		catch{}//there may not be any other data, so just continue in that case.
 	}
-	
+	runOnTree(hive, (cell)=>cell.onUpdate = []);
 	addParentLinks(hive, null);
 	return hive;
 }
@@ -230,11 +230,6 @@ function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
 	}
 }
 
-//
-//rootNode: 
-//runFunc: 
-//startVal: 
-//isLeafFunc: 
 /**
  * run a function on leaves in a tree and sum the results.
  * @param {*} rootNode root node to run on
@@ -248,9 +243,36 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 		newval += runFunc(rootNode);
 	}
 	else{
+		if(rootNode.elements == null){
+			debugger;
+		}
 		for(const node of rootNode.elements){
 			newval = runOnTree(node,runFunc,newval,isLeafFunc);
 		}
 	}
 	return newval;
+}
+
+/**
+ * Find the cell with the given formID.
+ * @param {} formId 
+ * @param {*} classHint optional class hint.
+ */
+function findCell(formId, classHint = null){
+	let classesToSearch;
+	if(classHint != null){
+		classesToSearch = classes.filter(x=>x.name == classHint);
+	}
+	else{
+		classesToSearch = classes;
+	}
+
+	let cell = null;
+	for(const klass of classesToSearch){
+		cell = findOnTree(jsondata[klass.name], x=>x.formId == formId);
+		if(cell != null){
+			break;
+		}
+	}
+	return cell;
 }

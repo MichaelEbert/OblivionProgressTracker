@@ -1,29 +1,29 @@
-{"version":2,"name":"skill","weight":15,"elements":[
+{"version":4,"name":"Skills","classname":"skill","weight":15,"elements":[
     {"name":"Combat","elements":[
-		{"id":0,"name":"Armorer"}
-		,{"id":1,"name":"Athletics"}
-		,{"id":2,"name":"Blade"}
-		,{"id":3,"name":"Block"}
-		,{"id":4,"name":"Blunt"}
-		,{"id":5,"name":"Hand to Hand"}
-		,{"id":6,"name":"Heavy Armor"}
+		{"formId":"0xFFFFFFE0","name":"Armorer"}
+		,{"formId":"0xFFFFFFE1","name":"Athletics"}
+		,{"formId":"0xFFFFFFE2","name":"Blade"}
+		,{"formId":"0xFFFFFFE3","name":"Block"}
+		,{"formId":"0xFFFFFFE4","name":"Blunt"}
+		,{"formId":"0xFFFFFFE5","name":"Hand to Hand"}
+		,{"formId":"0xFFFFFFE6","name":"Heavy Armor"}
 	]}
 	,{"name":"Magic","elements":[
-		{"id":7,"name":"Alchemy"}
-		,{"id":8,"name":"Alteration"}
-		,{"id":9,"name":"Conjuration"}
-		,{"id":10,"name":"Destruction"}
-		,{"id":11,"name":"Illusion"}
-		,{"id":12,"name":"Mysticism"}
-		,{"id":13,"name":"Restoration"}
+		{"formId":"0xFFFFFFE7","name":"Alchemy"}
+		,{"formId":"0xFFFFFFE8","name":"Alteration"}
+		,{"formId":"0xFFFFFFE9","name":"Conjuration"}
+		,{"formId":"0xFFFFFFEA","name":"Destruction"}
+		,{"formId":"0xFFFFFFEB","name":"Illusion"}
+		,{"formId":"0xFFFFFFEC","name":"Mysticism"}
+		,{"formId":"0xFFFFFFED","name":"Restoration"}
 	]}
 	,{"name":"Stealth","elements":[
-		{"id":14,"name":"Acrobatics"}
-		,{"id":15,"name":"Light Armor"}
-		,{"id":16,"name":"Marksman"}
-		,{"id":17,"name":"Mercantile"}
-		,{"id":18,"name":"Security"}
-		,{"id":19,"name":"Sneak"}
-		,{"id":20,"name":"Speechcraft"}
+		{"formId":"0xFFFFFFEE","name":"Acrobatics"}
+		,{"formId":"0xFFFFFFEF","name":"Light Armor"}
+		,{"formId":"0xFFFFFFF0","name":"Marksman"}
+		,{"formId":"0xFFFFFFF1","name":"Mercantile"}
+		,{"formId":"0xFFFFFFF2","name":"Security"}
+		,{"formId":"0xFFFFFFF3","name":"Sneak"}
+		,{"formId":"0xFFFFFFF4","name":"Speechcraft"}
 	]}
 ]}
