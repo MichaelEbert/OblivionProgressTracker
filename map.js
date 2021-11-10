@@ -48,15 +48,13 @@ async function initMap(){
     viewport = document.getElementById("wrapper_Map");
     ctx = canvas.getContext("2d");
     
-    initImgs();
+    await initImgs();
     initListeners();
 
     //center map on imp city
     mapX = 1700;
     mapY = 885;
 
-    //attaches width to width of iframe //if we can refactor the whole init process to be async, this can probably be dropped.
-    //document.getElementById("iframeContainer").onclick = resizeMap;
     drawMap();
 }
 
@@ -211,36 +209,42 @@ function moveMap(event){
     drawMap();
 }
 
-function initImgs(){
-    
-    img_Map = document.createElement("img");
-    img_Map.width = 3544;
-    img_Map.height = 2895;
-    img_Map.src = "images/Cyrodil_Upscaled.png";
+async function initImgs(){
+    return new Promise((resolve, reject) =>{
+        img_Map = document.createElement("img");
+        img_Map.width = 3544;
+        img_Map.height = 2895;
+        img_Map.src = "images/Cyrodil_Upscaled.png";
+        img_Map.onload = function(){
+            var iconsToInit = [
+                "Ayleid",
+                "Camp",
+                "Fort",
+                "Gate",
+                "Cave",
+                "Inn",
+                "Settlement",
+                "Mine",
+                "Landmark",
+                "Shrine",
+                "Check",
+                "X"
+            ];
+        
+            iconsToInit.forEach(function(i){
+                icons[i] = document.createElement("IMG");
+                icons[i].width = 48;
+                icons[i].height = 48;
+                icons[i].src = "images/Icon_" + i + ".png";
+                }
+            )
+            resolve();
+        };
 
-    
-    var iconsToInit = [
-        "Ayleid",
-        "Camp",
-        "Fort",
-        "Gate",
-        "Cave",
-        "Inn",
-        "Settlement",
-        "Mine",
-        "Landmark",
-        "Shrine",
-        "Check",
-        "X"
-    ];
-
-    iconsToInit.forEach(function(i){
-        icons[i] = document.createElement("IMG");
-        icons[i].width = 48;
-        icons[i].height = 48;
-        icons[i].src = "images/Icon_" + i + ".png";
-        }
-    )
+        img_Map.onerror = function(){
+            reject(this);
+        };  
+    });
 }
 
 function initListeners(){
