@@ -6,9 +6,12 @@
 
 //TODO: figure out how discovered locations are tracked and implement it.
 
-let ctx;
+/**
+ * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
+ */
+let viewport;
 let canvas;
-let wrapper;
+let ctx;
 
 let zoomLevel = 1;
 let minZoom = 0.2;
@@ -17,14 +20,13 @@ let mapX = 0;
 let mapY = 0;
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverOverlayButton = 0;
-
+let hoverLocation = "";
 let mousedown = false;
 
 let img_Map;
 let icons = {};
 
 let locArr;
-let hoverLocation = "";
 let nirnArr;
 
 let debug = false; //makes iframe and guide small by default for map function testing.
@@ -35,19 +37,21 @@ async function initMap(){
     await fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
     await fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
     
+    //TODO: create window here
+    //TODO: do hide n seek stuff
+
+    viewport = document.getElementById("wrapper_Map");
     canvas = document.getElementById("canvas_Map");
     ctx = canvas.getContext("2d");
     
-    initImgs();
+    await initImgs();
     initListeners();
 
     //center map on imp city
     mapX = 1700;
     mapY = 885;
 
-    //attaches width to width of iframe //if we can refactor the whole init process to be async, this can probably be dropped.
-    document.getElementById("iframeContainer").onclick = resizeMap;
-    resizeMap();
+    drawMap();
 }
 
 function drawMap(){
@@ -81,8 +85,8 @@ function drawMap(){
     }
     else if(currentOverlay == "Exploration"){
         //traveling salesmen overlay.
-        var x = wrapper.width;
-        var y = wrapper.height;
+        var x = viewport.clientWidth;
+        var y = viewport.clientHeight;
 
         ctx.beginPath();
         ctx.fillStyle = "#FBEFD5";
@@ -135,8 +139,8 @@ function drawIcon(icon, locObj){
 
 //this is the "topbar" on the map canvas.
 function drawOverlay(){
-    let wX = wrapper.width;
-    let wY = wrapper.height;
+    let wX = viewport.clientWidth;
+    let wY = viewport.clientHeight;
 
     //overlay background
     ctx.beginPath();
@@ -195,69 +199,53 @@ function moveMap(event){
     //clamp values to prevent moving map off screen. //bottom clamp isn't perfect :\
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
-    if(mapX >= img_Map.width - (wrapper.width * zoomLevel)) mapX = img_Map.width - (wrapper.width * zoomLevel);
-    if(mapY >= img_Map.height - (wrapper.height * zoomLevel)) mapY = img_Map.height - (wrapper.height * zoomLevel);
+    if(mapX >= img_Map.width - (viewport.clientWidth * zoomLevel)) mapX = img_Map.width - (viewport.clientWidth * zoomLevel);
+    if(mapY >= img_Map.height - (viewport.clientHeight * zoomLevel)) mapY = img_Map.height - (viewport.clientHeight * zoomLevel);
 
     drawMap();
 }
 
-//makes the map wrapper width equal to the iframes width on mouseclick/windowsize change.
-function resizeMap(){
-    if(document.getElementById("iframeContainer")){
-        var ifc = document.getElementById("iframeContainer");
+async function initImgs(){
+    return new Promise((resolve, reject) =>{
+        img_Map = document.createElement("img");
+        img_Map.width = 3544;
+        img_Map.height = 2895;
+        img_Map.src = "images/Cyrodil_Upscaled.png";
+        img_Map.onload = function(){
+            var iconsToInit = [
+                "Ayleid",
+                "Camp",
+                "Fort",
+                "Gate",
+                "Cave",
+                "Inn",
+                "Settlement",
+                "Mine",
+                "Landmark",
+                "Shrine",
+                "Check",
+                "X"
+            ];
+        
+            iconsToInit.forEach(function(i){
+                icons[i] = document.createElement("IMG");
+                icons[i].width = 48;
+                icons[i].height = 48;
+                icons[i].src = "images/Icon_" + i + ".png";
+                }
+            )
+            resolve();
+        };
 
-        if(debug){
-            ifc.style.width = "1000px";
-            ifc.style.height = "25px";
-            wrapper.style.height = "580px";
-            wrapper.height = 580;
-        }
-
-        wrapper.style.width = ifc.clientWidth + "px";
-        wrapper.width = ifc.clientWidth;
-        wrapper.style.top = (ifc.clientHeight + 48).toString() + "px";
-        var wsh = wrapper.style.height;
-        wrapper.height = wsh.slice(0, wsh.length - 2);
-    }
-    drawMap();    
-}
-
-function initImgs(){
-    
-    img_Map = document.createElement("img");
-    img_Map.width = 3544;
-    img_Map.height = 2895;
-    img_Map.src = "images/Cyrodil_Upscaled.png";
-
-    
-    var iconsToInit = [
-        "Ayleid",
-        "Camp",
-        "Fort",
-        "Gate",
-        "Cave",
-        "Inn",
-        "Settlement",
-        "Mine",
-        "Landmark",
-        "Shrine",
-        "Check",
-        "X"
-    ];
-
-    iconsToInit.forEach(function(i){
-        icons[i] = document.createElement("IMG");
-        icons[i].width = 48;
-        icons[i].height = 48;
-        icons[i].src = "images/Icon_" + i + ".png";
-        }
-    )
+        img_Map.onerror = function(){
+            reject(this);
+        };  
+    });
 }
 
 function initListeners(){
     //Input listeners
-    wrapper = document.getElementById("wrapper_Map");
-    wrapper.onmousedown = function(){
+    viewport.onmousedown = function(){
         if(hoverOverlayButton != 0){
             if(hoverOverlayButton == 1) currentOverlay = "Locations";
             if(hoverOverlayButton == 2) currentOverlay = "NirnRoute";
@@ -266,17 +254,16 @@ function initListeners(){
         }
         else mousedown = true;
     };
-    wrapper.onmouseup = function(){
+    viewport.onmouseup = function(){
         mousedown = false;
-        resizeMap()
     };
-    wrapper.onmouseout = function(){mousedown = false;};
-    wrapper.onmousemove = function(e){
+    viewport.onmouseout = function(){mousedown = false;};
+    viewport.onmousemove = function(e){
         if(mousedown){moveMap(e);}
         
         //Overlay mouseover
         if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = wrapper.width;
+            var x = viewport.clientWidth;
             if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
                 hoverOverlayButton = 1;
                 drawOverlay();
@@ -325,7 +312,7 @@ function initListeners(){
             //End mouseover icon
         }
     };
-    wrapper.onwheel = function(e){    
+    viewport.onwheel = function(e){    
         e.preventDefault();
         if(e.deltaY > 0) zoomLevel += 0.2;
         else zoomLevel += -0.2;
