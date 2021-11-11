@@ -53,7 +53,9 @@ const classes = [
 	new JsonClass("misc",true),
 	new JsonClass("save",true),
 	new JsonClass("npc",false),
-	new JsonClass("fame",false)
+	new JsonClass("fame",false),
+	new JsonClass("nirnroot",false),//TODO: add nirnroot mapping and set this to "true".
+	new JsonClass("location",false)
 ];
 
 /**

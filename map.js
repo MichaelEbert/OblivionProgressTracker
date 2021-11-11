@@ -34,8 +34,10 @@ let discovered = false;//to see how it looks when a place is discovered, change 
 
 async function initMap(){
     //load map cord data
-    await fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
-    await fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
+    
+    //TODO: remove locArr and nirnArr and just use the jsondata trees
+    runOnTree(jsondata.nirnroot, x=>nirnArr.push(x));
+    runOnTree(jsondata.location, x=>locArr.push(x));
     
     //TODO: create window here
     //TODO: do hide n seek stuff
