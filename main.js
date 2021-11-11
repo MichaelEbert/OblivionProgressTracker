@@ -288,7 +288,9 @@ function setParentChecked(checkbox){
  */
 function userInputData(htmlRowId, checkboxElement){
 	//extract what it is from the parent id so we can update progress
-
+	if(debug){
+		console.log("user input data called");
+	}
 	for(const klass of progressClasses) {
 		if(htmlRowId.startsWith(klass.name)){
 			let rowid = htmlRowId.substring(klass.name.length);

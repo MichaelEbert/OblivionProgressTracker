@@ -156,10 +156,10 @@ function resetProgress(shouldConfirm=false){
 
 /**
  * Update save progress for the specified element.
- * @param {*} formId 
+ * @param {*} formId formid of the cell to update save data for.
  * @param {Element} inputElement HTML input element with the new value 
- * @param {*} classHint 
- * @param {*} cellHint 
+ * @param {*} classHint optional. classname of hive to search for this cell in.
+ * @param {*} cellHint optional. the cell to update save data for.
  */
 function updateChecklistProgressFromInputElement(formId, inputElement, classHint = null, cellHint = null){
 	//lets extract the value from the input elemeent.
@@ -181,11 +181,11 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
 }
 
 /**
- * Update save progress for the specified element.
- * @param {*} formId 
+ * Update save progress for the specified cell.
+ * @param {*} formId formid of the cell to update save data for.
  * @param {*} value new value
- * @param {*} classHint 
- * @param {*} cellHint 
+ * @param {*} classHint optional. classname of hive to search for this cell in.
+ * @param {*} cellHint optional. the cell to update save data for.
  */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null){
 	let cell = null;
@@ -277,7 +277,7 @@ function recalculateProgress(){
 		percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
 	}
 	
-	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
+	//we can turn percentCompleteSoFar into an act11l percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
 	percentCompleteSoFar = percentCompleteSoFar / totalweight;
 	return percentCompleteSoFar;
