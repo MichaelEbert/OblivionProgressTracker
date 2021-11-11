@@ -102,12 +102,19 @@ function generatePromiseFunc(basedir, klass){
 }
 
 /**
- * imma call single leaf nodes "cells" because its memorable
+ * Returns a function that gives the cell its sequential ID from its formID and the map of formID to sequentialID.
  * @param {*} mapping ID to formID json map
  */
 function mergeCell(mapping){
 	return (cell =>{
-		cell.id = mapping.find(x=>x.formId == cell.formId).id;
+		let maybeMapping = mapping.find(x=>x.formId == cell.formId);
+		if(maybeMapping != null){
+			if(window.debug && cell.id != null){
+				console.warn("cell has 2 IDs!");
+				console.warn(cell);
+			}
+			cell.id = maybeMapping.id;
+		}
 	});
 }
 
@@ -145,6 +152,10 @@ function addParentLinks(node, parent){
  * @param {string} basedir base dir to get files from
  */
 async function mergeData(hive, basedir="."){
+	if(window.debug){
+		console.log("merging "+hive.name+" with version "+hive.version);
+	}
+
 	if(hive.version <= 3){
 		hive.classname = hive.name;
 	}
@@ -153,11 +164,19 @@ async function mergeData(hive, basedir="."){
 		try{
 			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
+			if(hive.classname == "misc" && window.debug){
+				//debugger;
+			}
 			runOnTree(hive, mergeCell(mapJson));
 			
 			console.log("merged "+hive.classname);
 		}
-		catch{}//there may not be any other data, so just continue in that case.
+		catch(ex){
+			if(window.debug){
+				console.error("error for "+hive.classname);
+				console.error(ex);
+			}
+		}//there may not be any other data, so just continue in that case.
 	}
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
 	addParentLinks(hive, null);

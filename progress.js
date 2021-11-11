@@ -112,17 +112,24 @@ function loadProgressFromCookie(){
 }
 
 //helper function for resetProgress
-function resetProgressForTree(classname, jsonNode){
-	runOnTree(jsonNode,(e=>{
-		if(e.type == "number"){
-			savedata[classname][e.id] = 0;
+function resetProgressForTree(classname, rootNode){
+	runOnTree(rootNode,(cell=>{
+		if(cell.id == null){
+			//this cell doesn't have a sequential ID, so we can't save it.
+			return;
+		}
+		if(cell.type == "number"){
+			savedata[classname][cell.id] = 0;
 		}
 		else{
-			savedata[classname][e.id] = false;
+			savedata[classname][cell.id] = false;
 		}}),0);
 }
 
-//generate a new, clean savedata object, and saves it to cookie.
+/**
+ * Generate a new, clean savedata object, and saves it to cookie.
+ * @param {boolean} shouldConfirm Should we confirm with the user or not
+ */
 function resetProgress(shouldConfirm=false){
 	var execute = true;
 	if(shouldConfirm){
@@ -173,6 +180,13 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
 	return updateChecklistProgress(formId, newValue, classHint, cellHint);
 }
 
+/**
+ * Update save progress for the specified element.
+ * @param {*} formId 
+ * @param {*} value new value
+ * @param {*} classHint 
+ * @param {*} cellHint 
+ */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null){
 	let cell = null;
 	if(cellHint != null)

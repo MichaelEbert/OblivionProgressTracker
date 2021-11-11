@@ -24,7 +24,7 @@ function init(){
 		}
 	});
 }
-
+var debug=true;
 const classNamesForLevels = ["section","category","subcategory"]
 
 /**
@@ -91,36 +91,6 @@ function CreateIndirectUpdater(indirectHtml, indirectCell){
 		const myInputHtml = Array.from(indirectHtml.children).find(x=>x.tagName=="INPUT");
 		updateChecklistProgress(null, newValue, null, indirectCell);
 	}
-}
-
-//ugggg
-function initSingleIndirect(cell, classname, extraColumnName){
-
-
-	//COMMON
-	if(extraColumnName && cell[extraColumnName] != null){
-		let extraCol = document.createElement("span");
-		extraCol.classList.add("detailColumn");
-		extraCol.innerText = cell[extraColumnName];
-		rowhtml.appendChild(extraCol);
-	}
-
-	//COMMON
-	cell.onUpdate.push(function(newValue, cell){
-		if(cell.type == "number"){
-			rcheck.value = newValue;
-		}
-		else{
-			rcheck.checked = newValue;
-		}
-	});
-
-	refCell.onUpdate.push(CreateIndirectUpdater(rowhtml, cell))
-	document.addEventListener('onProgressLoad',function(){
-		updateChecklistProgress(null, savedata[refCell.hive.classname][refCell.id], null, cell);
-	})
-
-	return rowhtml;
 }
 
 //init a single leaf node
@@ -273,24 +243,30 @@ function recalculateProgressAndSave(){
 	saveProgressToCookie();
 }
 
-function updateHtmlElementFromSaveData(cell, classname){
+function updateHtmlElementFromSaveData(cell){
+	const classname = cell.hive.classname
 	const checkbox = document.getElementById(classname+cell.formId+"check");
 	if(checkbox == null){
-		console.warn("unable to find input for modifiable cell '"+classname+cell.formId+"' (id "+cell.id+")");
+		if(window.debug){
+			//user doesn't really need to know this. This is kinda expected.
+			console.warn("unable to find checkbox element for modifiable cell '"+classname+cell.formId+"' (id "+cell.id+")");
+		}
 		return;
 	}
 	let newval = null;
 	if(cell.ref == null){
-		//indirect elements will update automatically from this
-		newval = savedata[classname][cell.id];
-		updateChecklistProgress(null, newval, null, cell);
+		//we call updateChecklistProgress so indirect elements will update from this
+		if(cell.id != null){
+			newval = savedata[classname][cell.id];
+			updateChecklistProgress(null, newval, null, cell);
+		}
 	}
 }
 
 function updateUIFromSaveData(){
 	for(const klass of progressClasses){
 		const hive = jsondata[klass.name];
-		runOnTree(hive, (x=>updateHtmlElementFromSaveData(x,klass.name)));
+		runOnTree(hive, updateHtmlElementFromSaveData);
 	}
 	
 	recalculateProgressAndSave();
