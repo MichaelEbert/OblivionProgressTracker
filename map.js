@@ -6,13 +6,12 @@
 
 //TODO: figure out how discovered locations are tracked and implement it.
 
-let ctx;
-let canvas;
-
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
  */
 let viewport;
+let canvas;
+let ctx;
 
 let zoomLevel = 1;
 let minZoom = 0.2;
@@ -21,14 +20,13 @@ let mapX = 0;
 let mapY = 0;
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverOverlayButton = 0;
-
+let hoverLocation = "";
 let mousedown = false;
 
 let img_Map;
 let icons = {};
 
 let locArr;
-let hoverLocation = "";
 let nirnArr;
 
 let debug = false; //makes iframe and guide small by default for map function testing.
@@ -39,13 +37,11 @@ async function initMap(){
     await fetch("data/locations.json").then(response => response.json()).then(response => locArr = response.elements);
     await fetch("data/nirnroots.json").then(response => response.json()).then(response => nirnArr = response.elements);
     
-    
-
     //TODO: create window here
     //TODO: do hide n seek stuff
 
-    canvas = document.getElementById("canvas_Map");
     viewport = document.getElementById("wrapper_Map");
+    canvas = document.getElementById("canvas_Map");
     ctx = canvas.getContext("2d");
     
     await initImgs();
@@ -89,8 +85,8 @@ function drawMap(){
     }
     else if(currentOverlay == "Exploration"){
         //traveling salesmen overlay.
-        var x = viewport.width;
-        var y = viewport.height;
+        var x = viewport.clientWidth;
+        var y = viewport.clientHeight;
 
         ctx.beginPath();
         ctx.fillStyle = "#FBEFD5";
@@ -143,8 +139,8 @@ function drawIcon(icon, locObj){
 
 //this is the "topbar" on the map canvas.
 function drawOverlay(){
-    let wX = viewport.width;
-    let wY = viewport.height;
+    let wX = viewport.clientWidth;
+    let wY = viewport.clientHeight;
 
     //overlay background
     ctx.beginPath();
@@ -203,8 +199,8 @@ function moveMap(event){
     //clamp values to prevent moving map off screen. //bottom clamp isn't perfect :\
     if(mapX < 0) mapX = 0;
     if(mapY < 0) mapY = 0;
-    if(mapX >= img_Map.width - (viewport.width * zoomLevel)) mapX = img_Map.width - (viewport.width * zoomLevel);
-    if(mapY >= img_Map.height - (viewport.height * zoomLevel)) mapY = img_Map.height - (viewport.height * zoomLevel);
+    if(mapX >= img_Map.width - (viewport.clientWidth * zoomLevel)) mapX = img_Map.width - (viewport.clientWidth * zoomLevel);
+    if(mapY >= img_Map.height - (viewport.clientHeight * zoomLevel)) mapY = img_Map.height - (viewport.clientHeight * zoomLevel);
 
     drawMap();
 }
@@ -260,7 +256,6 @@ function initListeners(){
     };
     viewport.onmouseup = function(){
         mousedown = false;
-        resizeMap()
     };
     viewport.onmouseout = function(){mousedown = false;};
     viewport.onmousemove = function(e){
@@ -268,7 +263,7 @@ function initListeners(){
         
         //Overlay mouseover
         if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = viewport.width;
+            var x = viewport.clientWidth;
             if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
                 hoverOverlayButton = 1;
                 drawOverlay();
