@@ -14,21 +14,20 @@ var totalweight;
  * Object that represents a type of json data.
  * eg., "quest","book", etc.
  * @param {string} name name of the class. Will be used to retrive json data.
- * @param {boolean} shouldSave should this class be included in save data?
+ * @param {boolean} containsUserProgress Does this class contain elements that will be tracked as part of 100% progress?
  * @param {boolean} isStandard is boolean and sequential? (see prop for details)
  * @param {number} completionWeight default weight for this class in completion.
  */
-function JsonClass(name,shouldSave = false, isStandard = false, completionWeight = 0){
+function JsonClass(name,containsUserProgress = false, isStandard = false, completionWeight = 0){
 	/**
 	 * name of this class (used for property access n stuff)
 	 */
 	this.name = name;
 	
 	/**
-	 * should this class be included in save data?
-	 * false for classes with no user input (eg., npcs)
+	 * Does this class contain elements that will be tracked as part of 100% progress?
 	 */
-	this.shouldSave = shouldSave;
+	this.containsUserProgress = containsUserProgress;
 	
 	/**
 	 * in order to be "standard", all elements of this class must
@@ -45,7 +44,7 @@ function JsonClass(name,shouldSave = false, isStandard = false, completionWeight
 }
 
 const classes = [
-	// name, shouldSave, isStandard, completionWeight
+	// name, containsUserProgress, isStandard, completionWeight
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
@@ -53,20 +52,13 @@ const classes = [
 	new JsonClass("misc",true),
 	new JsonClass("save",true),
 	new JsonClass("npc",false),
-	new JsonClass("fame",false)
+	new JsonClass("fame",true)
 ];
 
 /**
- * @returns {JsonClass[]} classes that have a standard layout and can use most of the generic functions.
+ * only classes that contribute to progress
  */
-function standardClasses(){
-	return classes.filter(x=>x.standard).map(x=>x.name);
-}
-
-/**
- * only classes that can be changed (and thus should be saved) contribute to progress
- */
-const progressClasses = classes.filter(c=>c.shouldSave);
+const progressClasses = classes.filter(c=>c.containsUserProgress);
 
 /**
  * loads the "hives" (called that because they resemble windows registry hives)

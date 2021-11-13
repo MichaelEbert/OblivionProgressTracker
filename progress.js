@@ -3,7 +3,7 @@
 
 var savedata;
 var settings;
-const version = 6;
+const version = 7;
 
 function saveCookie(name,value){
 	//save for 10 years
@@ -24,6 +24,40 @@ function loadCookie(name){
 	}
 	catch{
 		return null;
+	}
+}
+
+function upgradeSaveData(){
+	//we use not >= so it'll handle stuff like undefined, nan, or strings.
+	if(!(savedata.version >= 5)){
+		//tell user we can't upgrade.
+		let reset = confirm("Save data is out of date. Percentages may be wrong. Would you like to reset progress?");
+		if(reset){
+			resetProgress();
+		}
+	}
+	else{
+		var shouldAttemptUpgrade;
+		if(savedata.version < version){
+			//ask if user wants to attempt upgrade
+			shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
+		}
+		if(shouldAttemptUpgrade){
+			switch(savedata.version){
+				case 5:
+				case 6:
+					//from 6 to 7: 
+					//add fame class
+					savedata.fame = {};
+				case 7:
+					//current version, we're done.
+					break;
+				default:
+					alert("error while upgrading");
+					break;
+			}
+		}
+		saveProgressToCookie();
 	}
 }
 
@@ -104,7 +138,7 @@ function loadProgressFromCookie(){
 	if(compressed){
 		savedata = decompressSaveData(compressed);
 		if(savedata.version != version){
-			alert("Save data is out of date. Percentages may be wrong.")
+			upgradeSaveData();
 		}
 		document.dispatchEvent(new Event("progressLoad"));
 		return true;
@@ -142,11 +176,9 @@ function resetProgress(shouldConfirm=false){
 		savedata = new Object();
 		savedata.version = version;
 		
-		for(const klass of classes){
-			if(klass.shouldSave){
-				savedata[klass.name] = {};
-				resetProgressForTree(klass.name, jsondata[klass.name]);
-			}
+		for(const klass of progressClasses){
+			savedata[klass.name] = {};
+			resetProgressForTree(klass.name, jsondata[klass.name]);
 		}
 	}
 	saveProgressToCookie();
@@ -262,10 +294,6 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			return true;
 		}
 	}
-}
-
-function updateInputElementFromProgress(newValue, inputElement){
-	//... TODO
 }
 
 /**

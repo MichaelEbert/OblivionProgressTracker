@@ -12,12 +12,6 @@ function init(){
 			const hive = jsondata[klass.name];
 			initMultiV2(hive, base,0);
 		}
-		{
-			//fame is tracked indirectly.
-			let klass = classes.find(x=>x.name == "fame");
-			const hive = jsondata[klass.name];
-			initMultiV2(hive, base, 0);
-		}
 	}).then(()=>{
 		if(loadProgressFromCookie() == false){
 			resetProgress();
@@ -85,7 +79,7 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
  * Creates a function that will be added to the other cell's html that updates this cell's html.
  * @param {*} indirectCell 
  */
-function CreateIndirectUpdater(indirectHtml, indirectCell){
+function createIndirectUpdater(indirectHtml, indirectCell){
 	return function(refCell, newValue){
 		console.log("indirect update!");
 		const myInputHtml = Array.from(indirectHtml.children).find(x=>x.tagName=="INPUT");
@@ -113,6 +107,7 @@ function initSingle(cell, classname, extraColumnName){
 		rowhtml.classList.add(classname);
 		rowhtml.classList.add("item");
 		rowhtml.id = classname+usableId.toString();
+		//indirect elements are disabled and you can't click them.
 		//rowhtml.addEventListener('click',rowClicked);
 		
 		//name
@@ -140,7 +135,10 @@ function initSingle(cell, classname, extraColumnName){
 		rcheck.classList.add("check")
 		rcheck.id = rowhtml.id+"check"
 		rcheck.disabled = true;
-		rowhtml.appendChild(rcheck)
+		rowhtml.appendChild(rcheck);
+
+		//add indirect updater to referenced cell
+		refCell.onUpdate.push(createIndirectUpdater(rowhtml, cell));
 
 	}
 	else{
@@ -278,7 +276,7 @@ function updateUIFromSaveData(){
 		const hive = jsondata[klass.name];
 		runOnTree(hive, updateHtmlElementFromSaveData);
 	}
-	//we don't *need* to save, but we do need to recalculate progress and display it, which is what the function does.
+
 	recalculateProgressAndUpdateProgressUI();
 }
 
@@ -298,9 +296,6 @@ function setParentChecked(checkbox){
  */
 function userInputData(htmlRowId, checkboxElement){
 	//extract what it is from the parent id so we can update progress
-	if(debug){
-		console.log("user input data called");
-	}
 	for(const klass of progressClasses) {
 		if(htmlRowId.startsWith(klass.name)){
 			let rowid = htmlRowId.substring(klass.name.length);
@@ -331,6 +326,4 @@ function rowClicked(event){
 		checkbox.checked = !checkbox.checked;
 		userInputData(event.target.id, checkbox);
 	}
-	//for change listeners
-	checkbox.dispatchEvent(new Event('change'));
 }
