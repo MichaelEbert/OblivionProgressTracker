@@ -145,7 +145,6 @@ function initSingle(cell, classname, extraColumnName){
 	}
 	else{
 		
-		//this is here because we may want to switch over to formID.
 		var usableId = cell.formId;
 		if(usableId == null){
 			console.log("no formid for "+cell.name);
@@ -212,7 +211,8 @@ function initSingle(cell, classname, extraColumnName){
 	}
 	
 	//COMMON
-	cell.onUpdate.push(function(newValue, cell){
+	//update the UI on progress update
+	cell.onUpdate.push(function(cell, newValue){
 		if(cell.type == "number"){
 			rcheck.value = newValue;
 		}
@@ -230,7 +230,10 @@ function initSingle(cell, classname, extraColumnName){
 // Functions that deal with progress
 //===========================
 
-function recalculateProgressAndSave(){
+/**
+ * Recalculate the total progress, and update UI elements.
+ */
+function recalculateProgressAndUpdateProgressUI(){
 	let percentCompleteSoFar = recalculateProgress();
 	//round progress to 2 decimal places
 	progress = Math.round((percentCompleteSoFar * 100)*100)/100;
@@ -240,15 +243,18 @@ function recalculateProgressAndSave(){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});
-	saveProgressToCookie();
 }
 
+/**
+ * helper function for updateUIFromSaveData
+ * @param {} cell 
+ */
 function updateHtmlElementFromSaveData(cell){
 	const classname = cell.hive.classname
 	const checkbox = document.getElementById(classname+cell.formId+"check");
 	if(checkbox == null){
 		if(window.debug){
-			//user doesn't really need to know this. This is kinda expected.
+			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
 			console.warn("unable to find checkbox element for modifiable cell '"+classname+cell.formId+"' (id "+cell.id+")");
 		}
 		return;
@@ -263,13 +269,17 @@ function updateHtmlElementFromSaveData(cell){
 	}
 }
 
+/**
+ * When savedata is loaded, we need to bulk change all of the HTML to match the savedata state.
+ * This function does that.
+ */
 function updateUIFromSaveData(){
 	for(const klass of progressClasses){
 		const hive = jsondata[klass.name];
 		runOnTree(hive, updateHtmlElementFromSaveData);
 	}
-	
-	recalculateProgressAndSave();
+	//we don't *need* to save, but we do need to recalculate progress and display it, which is what the function does.
+	recalculateProgressAndUpdateProgressUI();
 }
 
 function setParentChecked(checkbox){
@@ -295,20 +305,18 @@ function userInputData(htmlRowId, checkboxElement){
 		if(htmlRowId.startsWith(klass.name)){
 			let rowid = htmlRowId.substring(klass.name.length);
 			updateChecklistProgressFromInputElement(rowid, checkboxElement, klass.name);
-			if(checkboxElement.type == "checkbox")
-			{
-				setParentChecked(checkboxElement);
-			}
 			break;
 		}
 	}
 	
-	recalculateProgressAndSave();
+	recalculateProgressAndUpdateProgressUI();
+	saveProgressToCookie();
 }
 
 function checkboxClicked(event){
 	const parentid = event.target.parentElement.id;
 	userInputData(parentid, event.target);
+	//so that it doesn't trigger rowClicked()
 	event.stopPropagation();
 }
 

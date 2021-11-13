@@ -72,6 +72,9 @@ function decompressSaveData(compressedSaveData){
 	return decompressedSaveData;
 }
 
+/**
+ * Save the user's progress.
+ */
 function saveProgressToCookie(){
 	saveCookie("progress",compressSaveData(savedata));
 }
