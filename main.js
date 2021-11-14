@@ -18,7 +18,6 @@ function init(){
 		}
 	});
 }
-var debug=true;
 const classNamesForLevels = ["section","category","subcategory"]
 
 /**
