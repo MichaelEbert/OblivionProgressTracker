@@ -26,8 +26,8 @@ let mousedown = false;
 let img_Map;
 let icons = {};
 
-let locArr;
-let nirnArr;
+let locArr = [];
+let nirnArr = [];
 
 let debug = false; //makes iframe and guide small by default for map function testing.
 let discovered = false;//to see how it looks when a place is discovered, change this to true.
