@@ -188,10 +188,12 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				saveCookie("progress",dl);
 				if(updateGlobalSaveData){
 					savedata = decompressSaveData(dl);
+
 				}
 				if(notifyOnUpdate){
 					alert("Downloaded");
 				}
+				document.dispatchEvent(new Event("progressLoad"));
 			}
 		});
 	}

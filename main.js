@@ -35,6 +35,21 @@ function init(){
 		if(loadProgressFromCookie() == false){
 			resetProgress();
 		}
+		if(settings.remoteShareCode){
+			if(!document.getElementById("spectateBanner")){
+				let spectateBanner = document.createElement("SPAN");
+				spectateBanner.innerText = "Spectating ⟳";
+				spectateBanner.id = "spectateBanner";
+				spectateBanner.style.backgroundColor = "#90FF90";
+				spectateBanner.title = "last updated xxxx. Click to refresh."
+				spectateBanner.addEventListener("click", function(){
+					spectateBanner.innerText = "Reloading...";
+					startSpectating(false, true).then(()=>{spectateBanner.innerText = "Spectating ⟳";});
+				})
+				document.getElementById("topbar").appendChild(spectateBanner);
+	
+			}
+		}
 	});
 }
 
@@ -306,6 +321,9 @@ function userInputData(htmlRowId, checkboxElement){
 	}
 	
 	recalculateProgressAndSave();
+	if(settings.autoUploadCheck){
+		uploadCurrentSave();
+	}
 }
 
 function checkboxClicked(event){
