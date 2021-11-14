@@ -7,6 +7,7 @@
 	<script src="progress.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="sharing.js"></script>
+	<script src="settings.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -68,92 +69,29 @@
 </div>
 <br/><br/>
 <div class="h2">Settings</div>
-<input type="checkbox" id="minipageCheck"/> Link books to local page (uncheck for direct UESP links)<br/>
-<input type="checkbox" id="iframeCheck"/> enable opening links in-page on iframe<br/>
-<input type="text" id="serverUrl" size="80"/>Share server path <br/>
-<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
-Spectate other:<input type="text" id="remoteShareCode"/><br/>
-<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
-<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
+<div class="section">
+<div class="sectionTitle">Preferences</div>
+	<input type="checkbox" id="minipageCheck"/> Link books to local page (uncheck for direct UESP links)<br/>
+	<select name="iframeCheck" id="iframeCheck">
+		<option value="auto">Auto</option>
+		<option value="on">Always on</option>
+		<option value="off">Always off</option>
+	</select> enable opening links in-page on iframe<br/>
+</div>
+<div class="section">
+<div class="sectionTitle">Sharing</div>
+	<input type="text" id="serverUrl" size="60"/>Share server path <br/>
+	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
+	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
+</div>
+<div class="section">
+<div class="sectionTitle">Import/Export</div>
+	<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
+	<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
+</div>
 <p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 <script>
-//updateUIFromSaveData(); //this updates the %complete in topbar
-function updateShareUrl(){
-	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
-}
-loadProgressFromCookie();
-document.getElementById("fileinput").addEventListener('change',importProgress);
-document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
-document.getElementById("iframeCheck").addEventListener('change',onSettingChange);
-document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
-document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
-document.addEventListener("progressUpload",updateShareUrl);
-
-if(settings.minipageCheck){
-	document.getElementById("minipageCheck").checked = true;
-}
-else{
-	document.getElementById("minipageCheck").checked = false;
-}
-
-if(settings.iframeCheck){
-	document.getElementById("iframeCheck").checked = true;
-}
-else{
-	document.getElementById("iframeCheck").checked = false;
-}
-
-
-if(settings.serverUrl){
-	document.getElementById("serverUrl").value = settings.serverUrl;
-}
-
-if(settings.myShareCode){
-	updateShareUrl();
-}
-
-if(settings.remoteShareCode){
-	document.getElementById("remoteShareCode").value = settings.remoteShareCode;
-}
-
-/**
- * on boolean settings change 
- */
-function onSettingChange(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.checked;
-	saveCookie("settings",settings);	
-}
-
-function onSettingChangeText(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.value;
-	saveCookie("settings",settings);
-}
-
-function exportProgress(){
-	//from stackoverflow
-	const progressString = new Blob([JSON.stringify(savedata)], {type:"text/plain"});
-	const element = document.createElement('a');
-	element.href = window.URL.createObjectURL(progressString);
-	element.download = "oblivionProgressTracker.save"
-	document.body.appendChild(element);
-	element.click();
-	document.body.removeChild(element);
-	window.URL.revokeObjectURL(progressString);
-}
-
-function importProgress(eventargs){
-	var filedata = document.getElementById("fileinput").files[0].text();
-	filedata.then(x => {
-		savedata = JSON.parse(x);
-		saveProgress();
-		alert("progress imported");
-	});
-}
-
-
-
+	init();
 </script>
 </body>
 </html>
