@@ -113,7 +113,12 @@ function initSingle(cell, classname, extraColumnName){
 		//name
 		var rName = document.createElement("span");
 		rName.classList.add(classname+"Name");
-		rName.innerText = refCell.name;
+		if(cell.name != null){
+			rName.innerText = cell.name;
+		}
+		else{
+			rName.innerText = refCell.name;
+		}
 		rowhtml.appendChild(rName);
 		
 		//checkbox

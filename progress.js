@@ -50,6 +50,7 @@ function upgradeSaveData(){
 					//add fame class
 					savedata.fame = {};
 				case 7:
+					savedata.version = 7;
 					//current version, we're done.
 					break;
 				default:
