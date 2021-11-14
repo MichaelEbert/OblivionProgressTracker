@@ -267,7 +267,7 @@ function updateHtmlElementFromSaveData(cell){
 		//we call updateChecklistProgress so indirect elements will update from this
 		if(cell.id != null){
 			newval = savedata[classname][cell.id];
-			updateChecklistProgress(null, newval, null, cell);
+			updateChecklistProgress(null, newval, null, cell, true);
 		}
 	}
 }

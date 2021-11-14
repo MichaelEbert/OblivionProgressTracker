@@ -269,7 +269,7 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
  */
-function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null){
+function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, force = false){
 	let cell = null;
 	if(cellHint != null)
 	{
@@ -326,7 +326,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 	else{
 		//now we get the save data for this.
 		let oldval = savedata[cell.hive.classname][cell.id];
-		if(valueAsCorrectType == oldval){
+		if(!force && valueAsCorrectType == oldval){
 			//do nothing.
 			return false;
 		}
