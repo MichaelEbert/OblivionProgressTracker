@@ -14,21 +14,20 @@ var totalweight;
  * Object that represents a type of json data.
  * eg., "quest","book", etc.
  * @param {string} name name of the class. Will be used to retrive json data.
- * @param {boolean} shouldSave should this class be included in save data?
+ * @param {boolean} containsUserProgress Does this class contain elements that will be tracked as part of 100% progress?
  * @param {boolean} isStandard is boolean and sequential? (see prop for details)
  * @param {number} completionWeight default weight for this class in completion.
  */
-function JsonClass(name,shouldSave = false, isStandard = false, completionWeight = 0){
+function JsonClass(name,containsUserProgress = false, isStandard = false, completionWeight = 0){
 	/**
 	 * name of this class (used for property access n stuff)
 	 */
 	this.name = name;
 	
 	/**
-	 * should this class be included in save data?
-	 * false for classes with no user input (eg., npcs)
+	 * Does this class contain elements that will be tracked as part of 100% progress?
 	 */
-	this.shouldSave = shouldSave;
+	this.containsUserProgress = containsUserProgress;
 	
 	/**
 	 * in order to be "standard", all elements of this class must
@@ -45,7 +44,7 @@ function JsonClass(name,shouldSave = false, isStandard = false, completionWeight
 }
 
 const classes = [
-	// name, shouldSave, isStandard, completionWeight
+	// name, containsUserProgress, isStandard, completionWeight
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
@@ -53,22 +52,15 @@ const classes = [
 	new JsonClass("misc",true),
 	new JsonClass("save",true),
 	new JsonClass("npc",false),
-	new JsonClass("fame",false),
+	new JsonClass("fame",true),
 	new JsonClass("nirnroot",false),//TODO: add nirnroot mapping and set this to "true".
 	new JsonClass("location",false)
 ];
 
 /**
- * @returns {JsonClass[]} classes that have a standard layout and can use most of the generic functions.
+ * only classes that contribute to progress
  */
-function standardClasses(){
-	return classes.filter(x=>x.standard).map(x=>x.name);
-}
-
-/**
- * only classes that can be changed (and thus should be saved) contribute to progress
- */
-const progressClasses = classes.filter(c=>c.shouldSave);
+const progressClasses = classes.filter(c=>c.containsUserProgress);
 
 /**
  * loads the "hives" (called that because they resemble windows registry hives)
@@ -104,12 +96,19 @@ function generatePromiseFunc(basedir, klass){
 }
 
 /**
- * imma call single leaf nodes "cells" because its memorable
+ * Returns a function that gives the cell its sequential ID from its formID and the map of formID to sequentialID.
  * @param {*} mapping ID to formID json map
  */
 function mergeCell(mapping){
 	return (cell =>{
-		cell.id = mapping.find(x=>x.formId == cell.formId).id;
+		let maybeMapping = mapping.find(x=>x.formId == cell.formId);
+		if(maybeMapping != null){
+			if(window.debug && cell.id != null){
+				console.warn("cell has 2 IDs!");
+				console.warn(cell);
+			}
+			cell.id = maybeMapping.id;
+		}
 	});
 }
 
@@ -147,17 +146,33 @@ function addParentLinks(node, parent){
  * @param {string} basedir base dir to get files from
  */
 async function mergeData(hive, basedir="."){
+	if(window.debug){
+		console.log("merging "+hive.name+" with version "+hive.version);
+	}
+
+	if(hive.version <= 3){
+		hive.classname = hive.name;
+	}
 	if(hive.version >= 3){
 		//jsonTree is by formId. load IDs.
 		try{
-			const mapFilename = "mapping_"+hive.name.toLowerCase()+"_v"+hive.version+".json";
+			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
+			if(hive.classname == "misc" && window.debug){
+				//debugger;
+			}
 			runOnTree(hive, mergeCell(mapJson));
 			
-			console.log("merged "+hive.name);
+			console.log("merged "+hive.classname);
 		}
-		catch{}//there may not be any other data, so just continue in that case.
+		catch(ex){
+			if(window.debug){
+				console.error("error for "+hive.classname);
+				console.error(ex);
+			}
+		}//there may not be any other data, so just continue in that case.
 	}
+	runOnTree(hive, (cell)=>cell.onUpdate = []);
 	addParentLinks(hive, null);
 	return hive;
 }
@@ -228,11 +243,6 @@ function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
 	}
 }
 
-//
-//rootNode: 
-//runFunc: 
-//startVal: 
-//isLeafFunc: 
 /**
  * run a function on leaves in a tree and sum the results.
  * @param {*} rootNode root node to run on
@@ -246,9 +256,36 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 		newval += runFunc(rootNode);
 	}
 	else{
+		if(rootNode.elements == null){
+			debugger;
+		}
 		for(const node of rootNode.elements){
 			newval = runOnTree(node,runFunc,newval,isLeafFunc);
 		}
 	}
 	return newval;
+}
+
+/**
+ * Find the cell with the given formID.
+ * @param {} formId 
+ * @param {*} classHint optional class hint.
+ */
+function findCell(formId, classHint = null){
+	let classesToSearch;
+	if(classHint != null){
+		classesToSearch = classes.filter(x=>x.name == classHint);
+	}
+	else{
+		classesToSearch = classes;
+	}
+
+	let cell = null;
+	for(const klass of classesToSearch){
+		cell = findOnTree(jsondata[klass.name], x=>x.formId == formId);
+		if(cell != null){
+			break;
+		}
+	}
+	return cell;
 }

@@ -77,7 +77,7 @@ function replaceElements(){
 					elementName = elementName.substring(0,firstBracketPos);
 				}
 				elementName = elementName.trim();
-				var maybeCell = findOnTree(jsondata[elementType], x=>x.name.toLowerCase() == elementName.toLowerCase());
+				var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
 				if(maybeCell != null){
 					elementid = maybeCell.id;
 					cell = maybeCell;
@@ -302,10 +302,10 @@ function checkboxClicked2(event){
 
 	//extract what it is from the parent id so we can update progress
 	var found = false;
-	for (const classname of standardClasses()){
-		if(parentid.startsWith(classname)){
-			var rowid = parseInt(parentid.substring(classname.length));
-			savedata[classname][rowid] = event.target.checked;
+	for (const klass of progressClasses){
+		if(parentid.startsWith(klass.name)){
+			var rowid = parseInt(parentid.substring(klass.name.length));
+			savedata[klass.name][rowid] = event.target.checked;
 			setParentChecked(event.target);
 			found=true;
 			break;

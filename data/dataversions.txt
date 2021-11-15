@@ -1,3 +1,5 @@
+JSON data file versions. Each one is described as a delta from the previous version.
 1: flat map. use sequential IDs as primary keys.
 2: tree. use sequential IDs as primary keys. has weight. has hive name in root node.
 3: tree. Use formID as primary keys.
+4: tree. has classname for internal use, and name for display purposes.

@@ -1,4 +1,4 @@
-{"version":2,"name":"fame","extraColumn":"amount","weight":0,"elements":[
+{"version":4,"name":"fame","classname":"Fame","extraColumn":"amount","weight":0,"elements":[
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
 			{"ref":"0x0001E724","amount":1}

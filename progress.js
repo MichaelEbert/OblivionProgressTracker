@@ -3,7 +3,7 @@
 
 var savedata;
 var settings;
-const version = 6;
+const version = 7;
 
 function saveCookie(name,value){
 	//save for 10 years
@@ -24,6 +24,41 @@ function loadCookie(name){
 	}
 	catch{
 		return null;
+	}
+}
+
+function upgradeSaveData(){
+	//we use not >= so it'll handle stuff like undefined, nan, or strings.
+	if(!(savedata.version >= 5)){
+		//tell user we can't upgrade.
+		let reset = confirm("Save data is out of date. Percentages may be wrong. Would you like to reset progress?");
+		if(reset){
+			resetProgress();
+		}
+	}
+	else{
+		var shouldAttemptUpgrade;
+		if(savedata.version < version){
+			//ask if user wants to attempt upgrade
+			shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
+		}
+		if(shouldAttemptUpgrade){
+			switch(savedata.version){
+				case 5:
+				case 6:
+					//from 6 to 7: 
+					//add fame class
+					savedata.fame = {};
+				case 7:
+					savedata.version = 7;
+					//current version, we're done.
+					break;
+				default:
+					alert("error while upgrading");
+					break;
+			}
+		}
+		saveProgressToCookie();
 	}
 }
 
@@ -72,6 +107,9 @@ function decompressSaveData(compressedSaveData){
 	return decompressedSaveData;
 }
 
+/**
+ * Save the user's progress.
+ */
 function saveProgressToCookie(){
 	saveCookie("progress",compressSaveData(savedata));
 }
@@ -147,7 +185,7 @@ function loadProgressFromCookie(){
 	if(compressed){
 		savedata = decompressSaveData(compressed);
 		if(savedata.version != version){
-			alert("Save data is out of date. Percentages may be wrong.")
+			upgradeSaveData();
 		}
 		document.dispatchEvent(new Event("progressLoad"));
 		return true;
@@ -158,17 +196,24 @@ function loadProgressFromCookie(){
 }
 
 //helper function for resetProgress
-function resetProgressForTree(classname, jsonNode){
-	runOnTree(jsonNode,(e=>{
-		if(e.type == "number"){
-			savedata[classname][e.id] = 0;
+function resetProgressForTree(classname, rootNode){
+	runOnTree(rootNode,(cell=>{
+		if(cell.id == null){
+			//this cell doesn't have a sequential ID, so we can't save it.
+			return;
+		}
+		if(cell.type == "number"){
+			savedata[classname][cell.id] = 0;
 		}
 		else{
-			savedata[classname][e.id] = false;
-		}}),0,(e=>e.id != null));
+			savedata[classname][cell.id] = false;
+		}}),0);
 }
 
-//generate a new, clean savedata object, and saves it to cookie.
+/**
+ * Generate a new, clean savedata object, and saves it to cookie.
+ * @param {boolean} shouldConfirm Should we confirm with the user or not
+ */
 function resetProgress(shouldConfirm=false){
 	var execute = true;
 	if(shouldConfirm){
@@ -178,11 +223,9 @@ function resetProgress(shouldConfirm=false){
 		savedata = new Object();
 		savedata.version = version;
 		
-		for(const klass of classes){
-			if(klass.shouldSave){
-				savedata[klass.name] = {};
-				resetProgressForTree(klass.name, jsondata[klass.name]);
-			}
+		for(const klass of progressClasses){
+			savedata[klass.name] = {};
+			resetProgressForTree(klass.name, jsondata[klass.name]);
 		}
 	}
 	saveProgressToCookie();
@@ -192,6 +235,113 @@ function resetProgress(shouldConfirm=false){
 //=========================
 //Progress percentage updates and helper functions
 //=========================
+
+/**
+ * Update save progress for the specified element.
+ * @param {*} formId formid of the cell to update save data for.
+ * @param {Element} inputElement HTML input element with the new value 
+ * @param {*} classHint optional. classname of hive to search for this cell in.
+ * @param {*} cellHint optional. the cell to update save data for.
+ */
+function updateChecklistProgressFromInputElement(formId, inputElement, classHint = null, cellHint = null){
+	//lets extract the value from the input elemeent.
+	if(inputElement.tagName != "INPUT"){
+		debugger;
+		console.error("input elmeent does not have type INPUT");
+		return;
+	}
+
+	let newValue = null;
+	if(inputElement.type == "checkbox"){
+		newValue = inputElement.checked;
+	}
+	else{
+		newValue = inputElement.valueAsNumber;
+	}
+
+	return updateChecklistProgress(formId, newValue, classHint, cellHint);
+}
+
+/**
+ * Update save progress for the specified cell.
+ * @param {*} formId formid of the cell to update save data for.
+ * @param {*} value new value
+ * @param {*} classHint optional. classname of hive to search for this cell in.
+ * @param {*} cellHint optional. the cell to update save data for.
+ */
+function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, force = false){
+	let cell = null;
+	if(cellHint != null)
+	{
+		cell = cellHint;
+	}
+	else{
+		cell = findCell(formId, classHint);
+		if(cell == null){
+			throw "Element not found to save progress on."
+		}
+	}
+
+	let valueAsCorrectType;
+	if(cell.type == "number"){
+		switch(typeof(newValue)){
+			case "boolean":
+				valueAsCorrectType = newValue? 1 : 0;
+				break;
+			case "number":
+				valueAsCorrectType = newValue;
+				break;
+			default:
+				throw "unexpected input type";
+		}
+	}
+	else{
+		//cell is bool
+		switch(typeof(newValue)){
+			case "boolean":
+				valueAsCorrectType = newValue;
+				break;
+			case "number":
+				if(newValue == 0){
+					valueAsCorrectType = false;
+				}
+				else{
+					valueAsCorrectType = true;
+				}
+				break;
+			default:
+				throw "unexpected input type";
+		}
+	}
+
+	if(cell.id == null){
+		//we don't need to save this
+		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+			for(const fn of cell.onUpdate){
+				fn(cell, valueAsCorrectType);
+			}
+		}
+		return true;
+	}
+	else{
+		//now we get the save data for this.
+		let oldval = savedata[cell.hive.classname][cell.id];
+		if(!force && valueAsCorrectType == oldval){
+			//do nothing.
+			return false;
+		}
+		else{
+			savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
+			//do post-update stuff here.
+			if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+				for(const fn of cell.onUpdate){
+					fn(cell, valueAsCorrectType);
+				}
+			}
+			return true;
+		}
+	}
+}
 
 /**
  * Recalculate progress
@@ -205,7 +355,7 @@ function recalculateProgress(){
 		percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
 	}
 	
-	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
+	//we can turn percentCompleteSoFar into an act11l percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
 	percentCompleteSoFar = percentCompleteSoFar / totalweight;
 	return percentCompleteSoFar;
@@ -225,8 +375,16 @@ function getSubtotalCompletion(subtotalJsonNode){
 	const [items,total] = sumCompletionItems(subtotalJsonNode);
 	
 	//try to find subtotals
-	//this may fail if we have multiple score nodes from different hives wiht the same name.
-	const overviewId = "overview_"+subtotalJsonNode.name.replaceAll(" ","_").toLowerCase();
+	//this may fail if we have multiple score nodes from different hives with the same name.
+	let nodeInternalName = subtotalJsonNode.classname;
+	if(!nodeInternalName){
+		nodeInternalName = subtotalJsonNode.name;
+	}
+	if(nodeInternalName == null){
+		console.warn("score node has no name");
+		debugger;
+	}
+	const overviewId = "overview_"+nodeInternalName.replaceAll(" ","_").toLowerCase();
 	const maybeItem = document.getElementById(overviewId);
 	if(maybeItem){
 		//add this to correct subtotal slot
@@ -274,7 +432,7 @@ function sumCompletionSingleCell(cell){
 	}
 
 	if(cell.type == "number"){
-		completedElements = savedata[cell.hive.name][cell.id];
+		completedElements = savedata[cell.hive.classname][cell.id];
 		if(cell.max){
 			totalElements = cell.max;
 		}
@@ -285,7 +443,10 @@ function sumCompletionSingleCell(cell){
 	else{
 		//we're a checkbox
 		totalElements = 1;
-		if(savedata[cell.hive.name][cell.id]){
+		if(cell.hive.classname == null){
+			debugger;
+		}
+		if(savedata[cell.hive.classname][cell.id]){
 			completedElements = 1;
 		}
 		else{
