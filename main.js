@@ -22,10 +22,13 @@ function init(){
 				spectateBanner.innerText = "Spectating ⟳";
 				spectateBanner.id = "spectateBanner";
 				spectateBanner.style.backgroundColor = "#90FF90";
-				spectateBanner.title = "last updated xxxx. Click to refresh."
+				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
 				spectateBanner.addEventListener("click", function(){
 					spectateBanner.innerText = "Reloading...";
-					startSpectating(false, true).then(()=>{spectateBanner.innerText = "Spectating ⟳";});
+					startSpectating(false, true).then(()=>{
+						spectateBanner.innerText = "Spectating ⟳";
+						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
+					});
 				})
 				document.getElementById("topbar").appendChild(spectateBanner);
 	
