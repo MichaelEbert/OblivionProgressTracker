@@ -39,7 +39,7 @@ Common to all nodes. All are optional.
 "link": overrides the default UESP link with a different one.
 "notes": will show a warning symbol next to the item with mouseover text.
 "type": change the HTML input type from checkbox to something else. E.g. "type":"number" for save numbers or number of places discovered.
-"max": for type:number elements, determines the max value. Important for progress calculation.
+"max": for type:number elements, determines the max value. Important for progress calculation. for "ref" cells, scales completion of reference cell to this much.
 "ref": get the value for this cell from a different cell with the target formId.
 
 

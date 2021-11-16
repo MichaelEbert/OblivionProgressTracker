@@ -15,7 +15,6 @@
 	]}
 	,{"name":"Places Found","elements":[{"id":"places","formId":"0xFFFFFF06","name":"Places Found","weight":8,"type":"number","max":367}]}
 	,{"name":"Nirnroot","elements":[{"id":"nirnroot","formId":"0xFFFFFF07","name":"Nirnroot","weight":2,"type":"number","max":306}]}
-	,{"name":"Fame","elements":[{"id":25,"formId":"0xFFFFFF08","name":"Fame","weight":5,"type":"number","max":198}]}
 	,{"name":"Pilgrim's Grace","weight":0,"elements":[
 		 {"formId":"0xFFFFFFD0","name":"Akatosh"}
 		,{"formId":"0xFFFFFFD1","name":"Arkay"}
