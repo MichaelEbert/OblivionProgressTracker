@@ -16,7 +16,7 @@ function init(){
     document.getElementById("clearRemoteButton").addEventListener('click',function(){
         let sharecode = document.getElementById("remoteShareCode"); 
         sharecode.value = ""; 
-        onSettingChangeText({target:sharecode});
+        setRemoteUrl({target:sharecode});
         });
     document.addEventListener("progressUpload",updateShareUrl);
 

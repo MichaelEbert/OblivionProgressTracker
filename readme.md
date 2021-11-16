@@ -17,15 +17,30 @@ This will replace foo with a link to the item specified by the clid parameter. H
 For example, the book [Thief] would be clid="book5", as it has id 5 in data/books.js.
 To link NPCs specifically, surround with \<span class="npc">\</span>
 
-## Adding new elements to JSON files
-### Required parameters:
-"id": must be a number. Preferably sequential, but not required. if its too large (>1000), the save might become too large and cookies might break.
-"name": name of the thing
+## JSON file format
+JSON data is in a tree structure.
 
+# Common properties
+Common to all nodes. All are optional.
+"name": display name.
+"elements": list of child elements of this node.
+"weight": weight of this tree in progress calculation.
+"extraColumn": name of field to display as an extra column for this subtree.
+
+## Root node (aka "hive")
+### Required parameters:
+"version": version of the json data. Each new version has additional required fields or layout. current is 4, which this describes.
+"classname": name of the class of the json tree. used to grab additional files and do stuff. Singular, not plural ("quest", not "quests")
+
+## Leaf node (aka "cell")
 ### Optional parameters:
+"id": must be a number. Number to save progress of this node to. Preferably sequential, but not required. if its too large (>1000), the save might become too large and cookies might break. if ID is not included, the element will not be saved.
+"formId": formId of this element. Sometimes it is baseID, sometimes refID. Used as primary key so it'll be the same for other websites.
 "link": overrides the default UESP link with a different one.
 "notes": will show a warning symbol next to the item with mouseover text.
 "type": change the HTML input type from checkbox to something else. E.g. "type":"number" for save numbers or number of places discovered.
+"max": for type:number elements, determines the max value. Important for progress calculation.
+"ref": get the value for this cell from a different cell with the target formId.
 
 
 # Adding Screenshots

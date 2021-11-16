@@ -1,4 +1,4 @@
-{"version":3,"name":"quest","weight":50,"elements":[
+{"version":4,"name":"Quests","classname":"quest","weight":50,"elements":[
     {"name":"Main Questline","elements":[
 	    {"name":"Tutorial","formId":"0x0001E723"}
        ,{"name":"Deliver the Amulet","formId":"0x0001E724"}
