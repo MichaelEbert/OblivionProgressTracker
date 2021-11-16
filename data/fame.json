@@ -1,4 +1,11 @@
-{"version":4,"name":"fame","classname":"Fame","extraColumn":"max","weight":5,"elements":[
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"max","weight":5,"elements":[
+	{"name":"Oblivion Gates","elements":[
+		{"ref":"0x00028C72","name":"Kvatch Gate","max":1}
+		,{"ref":"0xFFFFFF01","max":12}
+		,{"ref":"0xFFFFFF02","max":10}
+		,{"ref":"0xFFFFFF03","max":40}
+		,{"ref":"0xFFFFFF04","max":1}
+	]},
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
 			{"ref":"0x0001E724","max":1}
@@ -70,9 +77,58 @@
 			,{"ref":"0x000146AE","max":1}
 			,{"ref":"0x000146AF","max":1}
 			,{"ref":"0x000146B0","max":1}
+		]},
+		{"name":"Miscellaneous Quests","elements":[
+			{"ref":"0x0002F86B","max":1}
+			,{"ref":"0x0003636F","max":1}
+			,{"ref":"0x0003AF05","max":1}
+			,{"ref":"0x00033E93","max":1}
+			,{"ref":"0x0001F426","max":1}
+			,{"ref":"0x0002CA50","max":1}
+			,{"ref":"0x00017837","max":1}
+			,{"ref":"0x00017839","max":1}
+			,{"ref":"0x00017835","max":2}
+			,{"ref":"0x00017606","max":1}
+			,{"ref":"0x00017838","max":1}
+			,{"ref":"0x00023E85","max":1}
+			,{"ref":"0x0002BA46","max":1}
+			,{"ref":"0x00027815","max":1}
+			,{"ref":"0x0003151E","max":1}
+			,{"ref":"0x00007B2E","max":1}
+			,{"ref":"0x0002AB4A","max":1}
+			,{"ref":"0x0001D21C","max":1}
+			,{"ref":"0x00035CA8","max":1}
+			,{"ref":"0x00022E5A","max":1}
+			,{"ref":"0x00035A95","max":1}
+			,{"ref":"0x0008596C","max":1}
+			,{"ref":"0x00028D83","max":1}
+			,{"ref":"0x0004E936","max":1}
+			,{"ref":"0x00031B77","max":2}
 		]}
+	]},
+	{"name":"Arena Fights","elements":[
+		 {"formId":"0x00027668","name":"1st fight?"}
+		,{"formId":"0x0001DC4D","name":"2nd fight?"}
+		,{"formId":"0x0001DC4C","name":"3rd fight/brawler promo?"}
+		,{"formId":"0x00025B39","name":"4th fight?"}
+		,{"formId":"0x000164C4","name":"5th fight?"}
+		,{"formId":"0x000164CA","name":"6th fight/bloodletter promo?"}
+		,{"formId":"0x00017690","name":"7th fight/redguard?"}
+		,{"formId":"0x00017696","name":"8th fight/breton?"}
+		,{"formId":"0x0001769C","name":"9th fight/myrmidon promo?"}
+		,{"formId":"0x000176A3","name":"10th fight/wood elf?"}
+		,{"formId":"0x000176A9","name":"11th fight/altmer?"}
+		,{"formId":"0x000176AF","name":"12th fight/orc/warrior promo?"}
+		,{"formId":"0x000176B5","name":"13th fight/nord?"}
+		,{"formId":"0x000176B8","name":"14th fight/high elf?"}
+		,{"formId":"0x00017832","name":"15th fight/orc/gladiator promo?"}
+		,{"formId":"0x0001C0CB","name":"16th fight/yellow team?"}
+		,{"formId":"0x0001C0D1","name":"17th fight/cat?"}
+		,{"formId":"0x0001C0D7","name":"18th fight/hero promo?"}
+		,{"formId":"0x0001C0DD","name":"19th fight/hero?"}
+		,{"formId":"0x000176BE","name":"20th fight/elf?"}
+		,{"formId":"0x000176C4","name":"21st fight/yellow team/champion promo?"}
+		,{"formId":"0x0003B1DD","name":"22nd fight/grand champ promo, heavy raiment?","max":10}
+		,{"formId":"0x0003B1DE","name":"22nd fight/grand champ promo, light raiment?","max":0}
 	]}
-	,{"name":"Arena Fights","elements":[
-	]}
-
 ]}

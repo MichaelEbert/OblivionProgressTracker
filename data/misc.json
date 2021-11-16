@@ -10,7 +10,7 @@
 		]}
 		,{"name":"Main Quest Pt. 2","elements":[
 			 {"id":4,"formId":"0xFFFFFF04","name":"Bruma Gate"}
-			,{"id":5,"formId":"0xFFFFFF05","name":"Great Gate"}
+			,{"ref":"0x0001E730","name":"Great Gate"}
 		]}
 	]}
 	,{"name":"Places Found","elements":[{"id":"places","formId":"0xFFFFFF06","name":"Places Found","weight":8,"type":"number","max":367}]}

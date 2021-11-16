@@ -431,7 +431,10 @@ function sumCompletionSingleCell(cell){
 		return [0,0];
 	}
 	let cellToUse = cell;
-
+	if(cell.ref != null){
+		cellToUse = findCell(cell.ref);
+	}
+	
 	if(cellToUse.type == "number"){
 		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];
 		if(cellToUse.max != null){
@@ -464,11 +467,13 @@ function sumCompletionSingleCell(cell){
 	}
 
 	let multiplier = 1.0;
-	if(cell.ref != null){
-		cellToUse = findCell(cell.ref);
-		if(cell.max != null){
-			multiplier = cell.max / totalElements;
-		}
+	if(cell.ref != null && cell.max != null){
+		multiplier = cell.max / totalElements;
+	}
+	
+	if(isNaN(completedElements) || isNaN(totalElements) || isNaN(multiplier)){
+		debugger;
+		return [0,0];
 	}
 
 	return [completedElements*multiplier,totalElements*multiplier];	
