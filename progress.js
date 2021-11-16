@@ -431,17 +431,10 @@ function sumCompletionSingleCell(cell){
 		return [0,0];
 	}
 	let cellToUse = cell;
-	let multiplier = 1.0;
-	if(cell.ref != null){
-		cellToUse = findCell(cell.ref);
-		if(cell.max != null){
-			multiplier = cell.max;
-		}
-	}
 
 	if(cellToUse.type == "number"){
 		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];
-		if(cellToUse.max){
+		if(cellToUse.max != null){
 			totalElements = cellToUse.max;
 		}
 		else{
@@ -451,11 +444,17 @@ function sumCompletionSingleCell(cell){
 	else{
 		//we're a checkbox
 		totalElements = 1;
+
 		if(savedata[cellToUse.hive.classname][cellToUse.id]){
 			completedElements = 1;
 		}
 		else{
 			completedElements = 0;
+		}
+
+		if(cellToUse.max != null){
+			totalElements *= parseFloat(cellToUse.max);
+			completedElements *= parseFloat(cellToUse.max);
 		}
 	}
 	if(completedElements == undefined || totalElements == undefined){
@@ -463,6 +462,15 @@ function sumCompletionSingleCell(cell){
 		console.error(cell);
 		return [0,0];
 	}
+
+	let multiplier = 1.0;
+	if(cell.ref != null){
+		cellToUse = findCell(cell.ref);
+		if(cell.max != null){
+			multiplier = cell.max / totalElements;
+		}
+	}
+
 	return [completedElements*multiplier,totalElements*multiplier];	
 }
 
