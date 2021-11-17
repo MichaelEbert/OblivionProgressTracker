@@ -55,6 +55,12 @@ async function initMap(){
 }
 
 function drawMap(){
+    //Background color behind map. //prevents map from ghosting.
+    ctx.beginPath();
+    ctx.fillStyle = "#FBEFD5";
+    ctx.rect(0,0,viewport.clientWidth,viewport.clientHeight);
+    ctx.fill();
+
     //main map image.
     ctx.drawImage(img_Map, mapX, mapY, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
                                     0, 0, img_Map.width, img_Map.height);
@@ -200,6 +206,10 @@ function moveMap(event){
     if(mapY < 0) mapY = 0;
     if(mapX >= img_Map.width - (viewport.clientWidth * zoomLevel)) mapX = img_Map.width - (viewport.clientWidth * zoomLevel);
     if(mapY >= img_Map.height - (viewport.clientHeight * zoomLevel)) mapY = img_Map.height - (viewport.clientHeight * zoomLevel);
+
+    //snap map to top lefthand side if window is too large/map too small.
+    if(img_Map.width < viewport.clientWidth * zoomLevel) mapX = 0;
+    if(img_Map.height < viewport.clientHeight * zoomLevel) mapY = 0;
 
     drawMap();
 }
