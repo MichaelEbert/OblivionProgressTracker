@@ -1,7 +1,5 @@
 //TODO: Random Gates overlay?
 
-//TODO: Get a nirnroot icon
-
 //TODO: make it so that it zooms into middle of screen rather than top left corner?
 
 //TODO: figure out how discovered locations are tracked and implement it.
@@ -80,8 +78,7 @@ function drawMap(){
     else if(currentOverlay == "NirnRoute"){
         for(let i = 0; i < nirnArr.length;i++){
             if(nirnArr[i].cell == "Outdoors"){ //some nirnroots are indoors, therefore we only draw outdoor nirnroots.
-                //TODO: Get a nirnroot icon
-                drawIcon(iconSwitch("Camp"),(nirnArr[i])); 
+                drawIcon(iconSwitch("Nirnroot"),(nirnArr[i])); 
             }
         }
     }
@@ -225,6 +222,7 @@ async function initImgs(){
                 "Mine",
                 "Landmark",
                 "Shrine",
+                "Nirnroot",
                 "Check",
                 "X"
             ];
@@ -361,6 +359,7 @@ function iconSwitch(Input){
         case "Mine": return icons.Mine;
         case "Settlement": return icons.Settlement;
         case "Shrine": return icons.Shrine;
+        case "Nirnroot": return icons.Nirnroot;
             
         default: 
             console.warn("Element has invalid iconname: " + Input + ".");
