@@ -1,6 +1,6 @@
-//TODO: Random Gates overlay?
+//TODO: Random Gates overlay? -> add random gates into locations.json, make their name "possible random gate."
 
-//TODO: make it so that it zooms into middle of screen rather than top left corner?
+//TODO: make it so that it zooms into middle of screen rather than top left corner? *Wishlist
 
 //TODO: figure out how discovered locations are tracked and implement it.
 
@@ -24,20 +24,20 @@ let mousedown = false;
 let img_Map;
 let icons = {};
 
+//TODO: These all need to be reworked to just use the JsonData trees
 let locArr = [];
 let nirnArr = [];
-
-let debug = false; //makes iframe and guide small by default for map function testing.
-let discovered = false;//to see how it looks when a place is discovered, change this to true.
+let discoveredArr = []; //I know you probably hate me for adding ANOTHER array to fix later.
 
 async function initMap(){
     //load map cord data
     
     //TODO: remove locArr and nirnArr and just use the jsondata trees
-    runOnTree(jsondata.nirnroot, x=>nirnArr.push(x));
+    runOnTree(jsondata.nirnroot, x=>{if(x.cell == "Outdoors")nirnArr.push(x)});
     runOnTree(jsondata.location, x=>locArr.push(x));
-    
-    //TODO: create window here
+       
+    //do we still need to do this if the map is on its own page?
+    //TODO: create window here 
     //TODO: do hide n seek stuff
 
     viewport = document.getElementById("wrapper_Map");
@@ -82,9 +82,19 @@ function drawMap(){
         }
     }
     else if(currentOverlay == "NirnRoute"){
+        let hloc = -1; //tracks hovered location index to redraw it last.
         for(let i = 0; i < nirnArr.length;i++){
             if(nirnArr[i].cell == "Outdoors"){ //some nirnroots are indoors, therefore we only draw outdoor nirnroots.
                 drawIcon(iconSwitch("Nirnroot"),(nirnArr[i])); 
+            }
+
+            if(hoverLocation && nirnArr[i].formid == hoverLocation){
+                hloc = i;
+            }
+            
+            //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
+            if(i == nirnArr.length - 1 && hloc > 0){
+                drawIcon(iconSwitch("Nirnroot"), nirnArr[hloc]);
             }
         }
     }
@@ -120,7 +130,7 @@ function drawIcon(icon, locObj){
     var canvasCords = worldSpaceToCanvasSpace(locObj.x, locObj.y);
 
     //draws the label for the map icon if hovered.
-    if(hoverLocation == locObj.formid){
+    if(hoverLocation == locObj.formid && currentOverlay != "NirnRoute"){
         ctx.beginPath();
         ctx.fillStyle = "#E5D9B9";
         ctx.rect(canvasCords.x, canvasCords.y, (locObj.name.length * 10) + canvasCords.iconH, canvasCords.iconH);
@@ -137,7 +147,7 @@ function drawIcon(icon, locObj){
 
     ctx.drawImage(icon, canvasCords.x, canvasCords.y, canvasCords.iconH, canvasCords.iconH);
     
-    if(discovered){
+    if(discoveredArr.includes(locObj.formid)){
         ctx.drawImage(icons.Check, canvasCords.x, canvasCords.y, canvasCords.iconH, canvasCords.iconH);
     }
 }
@@ -262,6 +272,17 @@ function initListeners(){
             if(hoverOverlayButton == 3) currentOverlay = "Exploration";
             drawMap();
         }
+        else if(hoverLocation != ""){
+            //TODO: this needs to be worked into progression tracking for what's discovered.
+            if(!discoveredArr.includes(hoverLocation)){
+                discoveredArr.push(hoverLocation);    
+            }else{
+                let i = discoveredArr.indexOf(hoverLocation);
+                discoveredArr.splice(i,1);
+            }
+            
+            drawMap();
+        }
         else mousedown = true;
     };
     viewport.onmouseup = function(){
@@ -273,47 +294,46 @@ function initListeners(){
         
         //Overlay mouseover
         if(e.offsetY >= 10  && e.offsetY <= 20){
-            var x = viewport.clientWidth;
-            if(e.offsetX >= 8 && e.offsetX <= x/3 - 1){
+            var arr = viewport.clientWidth;
+            if(e.offsetX >= 8 && e.offsetX <= arr/3 - 1){
                 hoverOverlayButton = 1;
                 drawOverlay();
             }
-            if(e.offsetX >= x/3 && e.offsetX <= x/3*2 - 1){
+            if(e.offsetX >= arr/3 && e.offsetX <= arr/3*2 - 1){
                 hoverOverlayButton = 2;
                 drawOverlay();
             }
-            if(e.offsetX >= x/3*2 && e.offsetX <= x - 8){
+            if(e.offsetX >= arr/3*2 && e.offsetX <= arr - 8){
                 hoverOverlayButton = 3;
                 drawOverlay();
             }
         } else{
-            var redraw = false;//should prevent useless redraws of the overlay when just scrolling.
-            if(hoverOverlayButton != 0){
-                redraw = true;
-            }
-
-            hoverOverlayButton = 0;
-
-            if(redraw){
+            
+            if(hoverOverlayButton != 0) {
+                hoverOverlayButton = 0;
                 drawOverlay();
             }
             //End Overlay mouseover
 
             //mouseover icon
-            if(locArr && !mousedown && currentOverlay == "Locations"){
-                for(let i = 0; i < locArr.length;i++){
+            if(locArr && !mousedown){
+                let arr;
+                if(currentOverlay == "Locations") arr = locArr;
+                if(currentOverlay == "NirnRoute") arr = nirnArr;
+
+                for(let i = 0; i < arr.length;i++){
                     
-                    let cCords = worldSpaceToCanvasSpace(locArr[i].x, locArr[i].y);
+                    let cCords = worldSpaceToCanvasSpace(arr[i].x, arr[i].y);
 
                     if(cCords.x < e.offsetX &&
                         cCords.x + cCords.iconH > e.offsetX &&
                         cCords.y < e.offsetY &&
                         cCords.y + cCords.iconH > e.offsetY){
-                            hoverLocation = locArr[i].formid;
+                            hoverLocation = arr[i].formid;
                             drawMap();
                             break;
                     }
-                    if(i == locArr.length - 1){
+                    if(i == arr.length - 1){
                         hoverLocation= "";
                         drawMap();
                     }
