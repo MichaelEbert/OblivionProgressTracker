@@ -30,7 +30,6 @@ function init(){
 		}
 		replaceElements();
 		linkNPCs();
-		initMap();
 		window.addEventListener("resize",onWindowResize);
 		actuallyResizeWindow();
 	});
@@ -431,7 +430,8 @@ function onWindowResize(event){
 
 function actuallyResizeWindow(event){
 	windowResizeId = null;
-	if(settings.iframeCheck == "on" || (settings.iframeCheck == "auto" && window.innerWidth > 500)){
+	if(settings.iframeCheck == "on" || 
+	(settings.iframeCheck == "auto" && window.innerWidth > 500)){
 		updateIframe(true);
 	}
 	else{
