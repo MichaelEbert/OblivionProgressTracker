@@ -30,6 +30,7 @@ function init(){
 		}
 		replaceElements();
 		linkNPCs();
+		initMap();
 		window.addEventListener("resize",onWindowResize);
 		actuallyResizeWindow();
 	});
