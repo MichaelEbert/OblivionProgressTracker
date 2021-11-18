@@ -33,8 +33,11 @@ async function initMap(){
     //load map cord data
     
     //TODO: remove locArr and nirnArr and just use the jsondata trees
-    runOnTree(jsondata.nirnroot, x=>{if(x.cell == "Outdoors")nirnArr.push(x)});
-    runOnTree(jsondata.location, x=>locArr.push(x));
+    loadJsonData().then(()=>{
+        runOnTree(jsondata.nirnroot, x=>{if(x.cell == "Outdoors")nirnArr.push(x)});
+        runOnTree(jsondata.location, x=>locArr.push(x));
+    });
+    
        
     //do we still need to do this if the map is on its own page?
     //TODO: create window here 
