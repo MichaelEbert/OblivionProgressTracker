@@ -68,35 +68,34 @@ function drawMap(){
 
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
-        let hloc = -1; //tracks hovered location index to redraw it last.
-        for(let i = 0; i < locArr.length;i++){
-            drawIcon(iconSwitch(locArr[i].icon), locArr[i]);
+        let hloc = null; //tracks hovered location index to redraw it last.
+        for(const loc of locArr){
+            drawIcon(iconSwitch(loc.icon), loc);
+            if(hoverLocation && loc.formid == hoverLocation){
+                hloc = loc;
+            }
+        }
 
-            if(hoverLocation && locArr[i].formid == hoverLocation){
-                hloc = i;
-            }
-            
-            //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
-            if(i == locArr.length - 1 && hloc > 0){
-                drawIcon(iconSwitch(locArr[hloc].icon), locArr[hloc]);
-            }
+        //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
+        if(hloc != null){
+            drawIcon(iconSwitch(hloc.icon), hloc);
         }
     }
     else if(currentOverlay == "NirnRoute"){
-        let hloc = -1; //tracks hovered location index to redraw it last.
-        for(let i = 0; i < nirnArr.length;i++){
-            if(nirnArr[i].cell == "Outdoors"){ //some nirnroots are indoors, therefore we only draw outdoor nirnroots.
-                drawIcon(iconSwitch("Nirnroot"),(nirnArr[i])); 
+        let hloc = null; //tracks hovered location index to redraw it last.
+        for(const loc of nirnArr){
+            if(loc.cell == "Outdoors"){ //some nirnroots are indoors, therefore we only draw outdoor nirnroots.
+                drawIcon(iconSwitch("Nirnroot"),loc); 
             }
 
-            if(hoverLocation && nirnArr[i].formid == hoverLocation){
-                hloc = i;
+            if(hoverLocation && loc.formid == hoverLocation){
+                hloc = loc;
             }
-            
-            //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
-            if(i == nirnArr.length - 1 && hloc > 0){
-                drawIcon(iconSwitch("Nirnroot"), nirnArr[hloc]);
-            }
+        }
+
+        //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
+        if(hloc != null){
+            drawIcon(iconSwitch("Nirnroot"), hloc);
         }
     }
     else if(currentOverlay == "Exploration"){
