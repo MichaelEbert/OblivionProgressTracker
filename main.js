@@ -16,6 +16,24 @@ function init(){
 		if(loadProgressFromCookie() == false){
 			resetProgress();
 		}
+		if(settings.remoteShareCode){
+			if(!document.getElementById("spectateBanner")){
+				let spectateBanner = document.createElement("SPAN");
+				spectateBanner.innerText = "Spectating ⟳";
+				spectateBanner.id = "spectateBanner";
+				spectateBanner.style.backgroundColor = "#90FF90";
+				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
+				spectateBanner.addEventListener("click", function(){
+					spectateBanner.innerText = "Reloading...";
+					startSpectating(false, true).then(()=>{
+						spectateBanner.innerText = "Spectating ⟳";
+						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
+					});
+				})
+				document.getElementById("topbar").appendChild(spectateBanner);
+	
+			}
+		}
 	});
 }
 const classNamesForLevels = ["section","category","subcategory"]
@@ -313,6 +331,9 @@ function userInputData(htmlRowId, checkboxElement){
 	
 	recalculateProgressAndUpdateProgressUI();
 	saveProgressToCookie();
+	if(settings.autoUploadCheck){
+		uploadCurrentSave();
+	}
 }
 
 function checkboxClicked(event){

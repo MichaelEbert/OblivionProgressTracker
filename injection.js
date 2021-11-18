@@ -10,6 +10,24 @@ function LinkedElement(element, classname, id){
 function init(){
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
+		if(settings.remoteShareCode){
+			if(!document.getElementById("spectateBanner")){
+				let spectateBanner = document.createElement("SPAN");
+				spectateBanner.innerText = "Spectating ⟳";
+				spectateBanner.id = "spectateBanner";
+				spectateBanner.style.backgroundColor = "#90FF90";
+				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
+				spectateBanner.addEventListener("click", function(){
+					spectateBanner.innerText = "Reloading...";
+					startSpectating(false, true).then(()=>{
+						spectateBanner.innerText = "Spectating ⟳";
+						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
+					});
+				})
+				document.getElementById("topbar").appendChild(spectateBanner);
+	
+			}
+		}
 		replaceElements();
 		linkNPCs();
 		initMap();
@@ -286,6 +304,10 @@ function updateUIFromSaveData2(){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});
+
+	if(settings.autoUploadCheck){
+		uploadCurrentSave();
+	}
 }
 
 function setParentChecked(item){

@@ -185,13 +185,19 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		return downloadSave(downloadUrl)
 		.then((dl)=>{
 			if(dl){
+				//we can't save teh date object so we convert it to a pretty print string here
+				let dlTime = new Date();
+				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
+				saveCookie("settings",settings);
 				saveCookie("progress",dl);
 				if(updateGlobalSaveData){
 					savedata = decompressSaveData(dl);
+
 				}
 				if(notifyOnUpdate){
 					alert("Downloaded");
 				}
+				document.dispatchEvent(new Event("progressLoad"));
 			}
 		});
 	}

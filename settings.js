@@ -9,6 +9,7 @@ function init(){
     loadProgressFromCookie();
     document.getElementById("fileinput").addEventListener('change',importProgress);
     document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
+    document.getElementById("autoUploadCheck").addEventListener('change',onSettingChange);
     document.getElementById("iframeCheck").addEventListener('change',onSettingChangeText);
     document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
     document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
