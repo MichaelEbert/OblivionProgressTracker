@@ -10,12 +10,11 @@
 		]}
 		,{"name":"Main Quest Pt. 2","elements":[
 			 {"id":4,"formId":"0xFFFFFF04","name":"Bruma Gate"}
-			,{"id":5,"formId":"0xFFFFFF05","name":"Great Gate"}
+			,{"ref":"0x0001E730","name":"Great Gate"}
 		]}
 	]}
 	,{"name":"Places Found","elements":[{"id":"places","formId":"0xFFFFFF06","name":"Places Found","weight":8,"type":"number","max":367}]}
 	,{"name":"Nirnroot","elements":[{"id":"nirnroot","formId":"0xFFFFFF07","name":"Nirnroot","weight":2,"type":"number","max":306}]}
-	,{"name":"Fame","elements":[{"id":25,"formId":"0xFFFFFF08","name":"Fame","weight":5,"type":"number","max":198}]}
 	,{"name":"Pilgrim's Grace","weight":0,"elements":[
 		 {"formId":"0xFFFFFFD0","name":"Akatosh"}
 		,{"formId":"0xFFFFFFD1","name":"Arkay"}
@@ -46,7 +45,7 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
 		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
 	]}
-	,{"name":"Artifacts","weight":0,"elements":[
+	,{"name":"Artifacts","weight":1,"elements":[
 		{"ref":"0x000146A2","name":"Azura"},
 		{"ref":"0x000146A3","name":"Boethia"},
 		{"ref":"0x000146A4","name":"Clavicus Vile"},

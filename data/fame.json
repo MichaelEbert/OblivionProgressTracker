@@ -1,78 +1,134 @@
-{"version":4,"name":"fame","classname":"Fame","extraColumn":"amount","weight":0,"elements":[
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"max","weight":5,"elements":[
+	{"name":"Oblivion Gates","elements":[
+		{"ref":"0x00028C72","name":"Kvatch Gate","max":1}
+		,{"ref":"0xFFFFFF01","max":12}
+		,{"ref":"0xFFFFFF02","max":10}
+		,{"ref":"0xFFFFFF03","max":40}
+		,{"ref":"0xFFFFFF04","max":1}
+	]},
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
-			{"ref":"0x0001E724","amount":1}
-			,{"ref":"0x000224D8","amount":1}
-			,{"ref":"0x00028C72","amount":1}
-			,{"ref":"0x0001E726","amount":1}
-			,{"ref":"0x0001E727","amount":1}
-			,{"ref":"0x0001E728","amount":1}
-			,{"ref":"0x0001E729","amount":1}
-			,{"ref":"0x0001E72C","amount":1}
-			,{"ref":"0x0001E72D","amount":7}
-			,{"ref":"0x0001E72E","amount":2}
-			,{"ref":"0x0001E72F","amount":1}
-			,{"ref":"0x0001E730","amount":2}
-			,{"ref":"0x0002A38F","amount":3}
+			{"ref":"0x0001E724","max":1}
+			,{"ref":"0x000224D8","max":1}
+			,{"ref":"0x00028C72","max":1}
+			,{"ref":"0x0001E726","max":1}
+			,{"ref":"0x0001E727","max":1}
+			,{"ref":"0x0001E728","max":1}
+			,{"ref":"0x0001E729","max":1}
+			,{"ref":"0x0001E72C","max":1}
+			,{"ref":"0x0001E72D","max":7}
+			,{"ref":"0x0001E72E","max":2}
+			,{"ref":"0x0001E72F","max":1}
+			,{"ref":"0x0001E730","max":2}
+			,{"ref":"0x0002A38F","max":3}
 		]},
 		{"name":"Fighters Guild","elements":[
-			{"ref":"0x00035713","amount":1}
-			,{"ref":"0x00035714","amount":1}
-			,{"ref":"0x00027F8E","amount":1}
-			,{"ref":"0x00024297","amount":1}
-			,{"ref":"0x0002429C","amount":1}
-			,{"ref":"0x00035715","amount":1}
-			,{"ref":"0x00035718","amount":1}
-			,{"ref":"0x0002D154","amount":1}
-			,{"ref":"0x0002D71A","amount":1}
-			,{"ref":"0x0002D71B","amount":1}
-			,{"ref":"0x00035716","amount":1}
-			,{"ref":"0x00035719","amount":1}
-			,{"ref":"0x0002D71C","amount":1}
-			,{"ref":"0x00035717","amount":1}
-			,{"ref":"0x0003571A","amount":1}
-			,{"ref":"0x0003571B","amount":1}
+			{"ref":"0x00035713","max":1}
+			,{"ref":"0x00035714","max":1}
+			,{"ref":"0x00027F8E","max":1}
+			,{"ref":"0x00024297","max":1}
+			,{"ref":"0x0002429C","max":1}
+			,{"ref":"0x00035715","max":1}
+			,{"ref":"0x00035718","max":1}
+			,{"ref":"0x0002D154","max":1}
+			,{"ref":"0x0002D71A","max":1}
+			,{"ref":"0x0002D71B","max":1}
+			,{"ref":"0x00035716","max":1}
+			,{"ref":"0x00035719","max":1}
+			,{"ref":"0x0002D71C","max":1}
+			,{"ref":"0x00035717","max":1}
+			,{"ref":"0x0003571A","max":1}
+			,{"ref":"0x0003571B","max":1}
 		]},
 		{"name":"Mages Guild","elements":[
-			{"ref":"0x0002CD10","amount":1}
-			,{"ref":"0x0002D936","amount":1}
-			,{"ref":"0x0002D93C","amount":1}
-			,{"ref":"0x0002D410","amount":1}
-			,{"ref":"0x000224E1","amount":2}
-			,{"ref":"0x0002CBC8","amount":1}
-			,{"ref":"0x0002D28B","amount":1}
-			,{"ref":"0x0002D32B","amount":1}
-			,{"ref":"0x00034E14","amount":2}
-			,{"ref":"0x0003564F","amount":1}
-			,{"ref":"0x00035F28","amount":1}
-			,{"ref":"0x00036300","amount":1}
-			,{"ref":"0x0000395F","amount":1}
-			,{"ref":"0x00003960","amount":1}
-			,{"ref":"0x00003961","amount":1}
-			,{"ref":"0x0000C039","amount":1}
-			,{"ref":"0x0000C03A","amount":1}
-			,{"ref":"0x0000C03B","amount":1}
-			,{"ref":"0x0000C03C","amount":3}
+			{"ref":"0x0002CD10","max":1}
+			,{"ref":"0x0002D936","max":1}
+			,{"ref":"0x0002D93C","max":1}
+			,{"ref":"0x0002D410","max":1}
+			,{"ref":"0x000224E1","max":2}
+			,{"ref":"0x0002CBC8","max":1}
+			,{"ref":"0x0002D28B","max":1}
+			,{"ref":"0x0002D32B","max":1}
+			,{"ref":"0x00034E14","max":2}
+			,{"ref":"0x0003564F","max":1}
+			,{"ref":"0x00035F28","max":1}
+			,{"ref":"0x00036300","max":1}
+			,{"ref":"0x0000395F","max":1}
+			,{"ref":"0x00003960","max":1}
+			,{"ref":"0x00003961","max":1}
+			,{"ref":"0x0000C039","max":1}
+			,{"ref":"0x0000C03A","max":1}
+			,{"ref":"0x0000C03B","max":1}
+			,{"ref":"0x0000C03C","max":3}
 		]},
 		{"name":"Daedric Quests","elements":[
-			{"ref":"0x000146A2","amount":1}
-			,{"ref":"0x000146A3","amount":1}
-			,{"ref":"0x000146A4","amount":1}
-			,{"ref":"0x000146A5","amount":1}
-			,{"ref":"0x000146A6","amount":1}
-			,{"ref":"0x000146A7","amount":1}
-			,{"ref":"0x000146A8","amount":1}
-			,{"ref":"0x000146A9","amount":0}
-			,{"ref":"0x000146AA","amount":1}
-			,{"ref":"0x000146AB","amount":1}
-			,{"ref":"0x000146AC","amount":1}
-			,{"ref":"0x000146AD","amount":1}
-			,{"ref":"0x000146AE","amount":1}
-			,{"ref":"0x000146AF","amount":1}
-			,{"ref":"0x000146B0","amount":1}
+			{"ref":"0x000146A2","max":1}
+			,{"ref":"0x000146A3","max":1}
+			,{"ref":"0x000146A4","max":1}
+			,{"ref":"0x000146A5","max":1}
+			,{"ref":"0x000146A6","max":1}
+			,{"ref":"0x000146A7","max":1}
+			,{"ref":"0x000146A8","max":1}
+			,{"ref":"0x000146A9","max":0}
+			,{"ref":"0x000146AA","max":1}
+			,{"ref":"0x000146AB","max":1}
+			,{"ref":"0x000146AC","max":1}
+			,{"ref":"0x000146AD","max":1}
+			,{"ref":"0x000146AE","max":1}
+			,{"ref":"0x000146AF","max":1}
+			,{"ref":"0x000146B0","max":1}
+		]},
+		{"name":"Miscellaneous Quests","elements":[
+			{"ref":"0x0002F86B","max":1}
+			,{"ref":"0x0003636F","max":1}
+			,{"ref":"0x0003AF05","max":1}
+			,{"ref":"0x00033E93","max":1}
+			,{"ref":"0x0001F426","max":1}
+			,{"ref":"0x0002CA50","max":1}
+			,{"ref":"0x00017837","max":1}
+			,{"ref":"0x00017839","max":1}
+			,{"ref":"0x00017835","max":2}
+			,{"ref":"0x00017606","max":1}
+			,{"ref":"0x00017838","max":1}
+			,{"ref":"0x00023E85","max":1}
+			,{"ref":"0x0002BA46","max":1}
+			,{"ref":"0x00027815","max":1}
+			,{"ref":"0x0003151E","max":1}
+			,{"ref":"0x00007B2E","max":1}
+			,{"ref":"0x0002AB4A","max":1}
+			,{"ref":"0x0001D21C","max":1}
+			,{"ref":"0x00035CA8","max":1}
+			,{"ref":"0x00022E5A","max":1}
+			,{"ref":"0x00035A95","max":1}
+			,{"ref":"0x0008596C","max":1}
+			,{"ref":"0x00028D83","max":1}
+			,{"ref":"0x0004E936","max":1}
+			,{"ref":"0x00031B77","max":2}
 		]}
+	]},
+	{"name":"Arena Fights","elements":[
+		 {"formId":"0x00027668","name":"1st fight?"}
+		,{"formId":"0x0001DC4D","name":"2nd fight?"}
+		,{"formId":"0x0001DC4C","name":"3rd fight/brawler promo?"}
+		,{"formId":"0x00025B39","name":"4th fight?"}
+		,{"formId":"0x000164C4","name":"5th fight?"}
+		,{"formId":"0x000164CA","name":"6th fight/bloodletter promo?"}
+		,{"formId":"0x00017690","name":"7th fight/redguard?"}
+		,{"formId":"0x00017696","name":"8th fight/breton?"}
+		,{"formId":"0x0001769C","name":"9th fight/myrmidon promo?"}
+		,{"formId":"0x000176A3","name":"10th fight/wood elf?"}
+		,{"formId":"0x000176A9","name":"11th fight/altmer?"}
+		,{"formId":"0x000176AF","name":"12th fight/orc/warrior promo?"}
+		,{"formId":"0x000176B5","name":"13th fight/nord?"}
+		,{"formId":"0x000176B8","name":"14th fight/high elf?"}
+		,{"formId":"0x00017832","name":"15th fight/orc/gladiator promo?"}
+		,{"formId":"0x0001C0CB","name":"16th fight/yellow team?"}
+		,{"formId":"0x0001C0D1","name":"17th fight/cat?"}
+		,{"formId":"0x0001C0D7","name":"18th fight/hero promo?"}
+		,{"formId":"0x0001C0DD","name":"19th fight/hero?"}
+		,{"formId":"0x000176BE","name":"20th fight/elf?"}
+		,{"formId":"0x000176C4","name":"21st fight/yellow team/champion promo?"}
+		,{"formId":"0x0003B1DD","name":"22nd fight/grand champ promo, heavy raiment?","max":10}
+		,{"formId":"0x0003B1DE","name":"22nd fight/grand champ promo, light raiment?","max":0}
 	]}
-	,{"name":"Arena Fights","elements":[
-	]}
-
 ]}

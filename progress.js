@@ -3,7 +3,7 @@
 
 var savedata;
 var settings;
-const version = 7;
+const version = 8;
 
 function saveCookie(name,value){
 	//save for 10 years
@@ -50,13 +50,16 @@ function upgradeSaveData(){
 					//add fame class
 					savedata.fame = {};
 				case 7:
-					savedata.version = 7;
+					resetProgressForHive(jsondata.fame);
+				case 8:
+					savedata.version = version;
 					//current version, we're done.
 					break;
 				default:
 					alert("error while upgrading");
 					break;
 			}
+			console.log("upgrade succeeded.");
 		}
 		saveProgressToCookie();
 	}
@@ -195,9 +198,14 @@ function loadProgressFromCookie(){
 	}
 }
 
-//helper function for resetProgress
-function resetProgressForTree(classname, rootNode){
-	runOnTree(rootNode,(cell=>{
+/**
+ * Reset savedata progress for specific hive. Helper function for resetProgress.
+ * @param {object} hive hive to reset
+ */
+function resetProgressForHive(hive){
+	const classname = hive.classname;
+	savedata[classname] = {};
+	runOnTree(hive,(cell=>{
 		if(cell.id == null){
 			//this cell doesn't have a sequential ID, so we can't save it.
 			return;
@@ -224,8 +232,7 @@ function resetProgress(shouldConfirm=false){
 		savedata.version = version;
 		
 		for(const klass of progressClasses){
-			savedata[klass.name] = {};
-			resetProgressForTree(klass.name, jsondata[klass.name]);
+			resetProgressForHive(jsondata[klass.name]);
 		}
 	}
 	saveProgressToCookie();
@@ -292,7 +299,9 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				valueAsCorrectType = newValue;
 				break;
 			default:
-				throw "unexpected input type";
+				debugger;
+				console.error("unexpected input type");
+				return;
 		}
 	}
 	else{
@@ -310,7 +319,9 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				}
 				break;
 			default:
-				throw "unexpected input type";
+				debugger;
+				console.error("unexpected input type");
+				return;
 		}
 	}
 
@@ -430,11 +441,15 @@ function sumCompletionSingleCell(cell){
 		console.error(cell);
 		return [0,0];
 	}
-
-	if(cell.type == "number"){
-		completedElements = savedata[cell.hive.classname][cell.id];
-		if(cell.max){
-			totalElements = cell.max;
+	let cellToUse = cell;
+	if(cell.ref != null){
+		cellToUse = findCell(cell.ref);
+	}
+	
+	if(cellToUse.type == "number"){
+		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];
+		if(cellToUse.max != null){
+			totalElements = cellToUse.max;
 		}
 		else{
 			totalElements = Math.max(1,completedElements);
@@ -443,14 +458,17 @@ function sumCompletionSingleCell(cell){
 	else{
 		//we're a checkbox
 		totalElements = 1;
-		if(cell.hive.classname == null){
-			debugger;
-		}
-		if(savedata[cell.hive.classname][cell.id]){
+
+		if(savedata[cellToUse.hive.classname][cellToUse.id]){
 			completedElements = 1;
 		}
 		else{
 			completedElements = 0;
+		}
+
+		if(cellToUse.max != null){
+			totalElements *= parseFloat(cellToUse.max);
+			completedElements *= parseFloat(cellToUse.max);
 		}
 	}
 	if(completedElements == undefined || totalElements == undefined){
@@ -458,7 +476,18 @@ function sumCompletionSingleCell(cell){
 		console.error(cell);
 		return [0,0];
 	}
-	return [completedElements,totalElements];	
+
+	let multiplier = 1.0;
+	if(cell.ref != null && cell.max != null){
+		multiplier = cell.max / totalElements;
+	}
+
+	if(isNaN(completedElements) || isNaN(totalElements) || isNaN(multiplier)){
+		debugger;
+		return [0,0];
+	}
+
+	return [completedElements*multiplier,totalElements*multiplier];	
 }
 
 
