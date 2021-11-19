@@ -1,4 +1,10 @@
-//TODO: Random Gates overlay? -> add random gates into locations.json, make their name "possible random gate."
+//TODO: Figure out Random Gate tracking?
+    //seperate counter for found random gates?
+//TODO: Add pink circle for fixed gates (like guide)
+//TODO: Add green plus for 2 fame gates
+//TODO: add blue star for no-reroll gates
+
+//TODO:add a legend overlay button (replace exploration button?)
 
 //TODO: make it so that it zooms into middle of screen rather than top left corner? *Wishlist
 
@@ -35,6 +41,7 @@ async function initMap(){
     //TODO: remove locArr and nirnArr and just use the jsondata trees
     loadJsonData().then(()=>{
         runOnTree(jsondata.nirnroot, x=>{if(x.cell == "Outdoors")nirnArr.push(x)});
+        console.log(jsondata.location.elements);
         runOnTree(jsondata.location, x=>locArr.push(x));
     });
     
