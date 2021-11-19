@@ -41,7 +41,6 @@ async function initMap(){
     //TODO: remove locArr and nirnArr and just use the jsondata trees
     loadJsonData().then(()=>{
         runOnTree(jsondata.nirnroot, x=>{if(x.cell == "Outdoors")nirnArr.push(x)});
-        console.log(jsondata.location.elements);
         runOnTree(jsondata.location, x=>locArr.push(x));
     });
     
