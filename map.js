@@ -261,7 +261,13 @@ function initTopbar(){
         let wX = viewport.clientWidth;
 
         //update our width here for hit detection
-        this.maxX = wX;
+        if(this.maxX != wX){
+            this.maxX = wX;
+            for(const btn of this.buttons){
+                btn.recalculateBoundingBox();
+            }
+        }
+        
 
         //overlay background
         ctx.beginPath();
