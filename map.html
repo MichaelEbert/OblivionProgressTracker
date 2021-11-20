@@ -73,12 +73,10 @@
 
 <h1 style="text-align: center;">Map Area</h1>
 <p>This is where the explanation goes.</p>
-<div style="height:80vh;" id="wrapper_Map">
-	<canvas id="canvas_Map" width="3544px" height="2895px"></canvas>	
-</div>
+<div style="height:80vh;" id="wrapper_Map"></div>
 
 <script>
-	initMap();
+	loadJsonData().then(initMap);
 </script>
 </body>
 </html>
