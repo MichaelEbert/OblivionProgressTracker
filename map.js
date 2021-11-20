@@ -507,7 +507,9 @@ async function initImgs(){
 }
 
 function onMouseClick(mouseLoc){
-    console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
+    if(window.debug){
+        console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
+    }
     let handled = topbar.click(mouseLoc);
     if(!handled){
         handled = overlayClick(mouseLoc);
