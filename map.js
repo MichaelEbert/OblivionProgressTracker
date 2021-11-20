@@ -75,7 +75,7 @@ let maxZoom = 3.5;
  * Offset from map to screen coordinates.
  */
 let screenOriginInMapCoords = new Point(0,0);
-let iconH = 1;
+let iconH = 20;
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverLocation = "";
 
@@ -101,8 +101,14 @@ function MapObject(){
     this.minY = 0;
     this.maxY = 0;
 }
-
+/**
+ * Does this object contain the specified point?
+ * @param {Point} point point to check
+ */
 MapObject.prototype.contains = function(point){
+    if(point == null){
+        return false;
+    }
     return (this.minX < point.x && point.x < this.maxX && this.minY < point.y && point.y < this.maxY);
 }
 MapObject.prototype.width = function(){
@@ -192,28 +198,33 @@ function drawMapOverlay(){
             icon.recalculateBoundingBox();
         }
     }
+    const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
+            //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
             locIcon.draw(ctx);
-            if(locIcon.contains(lastMouseLoc)){
+            if(locIcon.contains(mouseLocInMapCoords)){
                 hloc = locIcon;
             }
         }
 
         //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
         if(hloc != null){
-            hloc.draw(ctx);
+            hloc.draw(ctx, mouseLocInMapCoords);
         }
     }
     else if(currentOverlay == "NirnRoute"){
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
             nirnIcon.draw(ctx);
-            if(nirnIcon.contains(lastMouseLoc)){
+            if(nirnIcon.contains(mouseLocInMapCoords)){
                 hloc = nirnIcon;
             }
+        }
+        if(hloc != null){
+            hloc.draw(ctx, mouseLocInMapCoords);
         }
     }
     else if(currentOverlay == "Exploration"){
@@ -251,7 +262,7 @@ function overlayClick(clickLoc){
     if(currentOverlay == "Locations"){
         for(const icon of overlay.locations){
             if(icon.contains(clickLocInMapSpace)){
-                //click happened.
+                console.log("location "+icon.cell.formId+"("+icon.cell.name+") clicked");
                 return true;
             }
         }
@@ -259,7 +270,7 @@ function overlayClick(clickLoc){
     else if(currentOverlay == "NirnRoute"){
         for(const icon of overlay.nirnroots){
             if(icon.contains(clickLocInMapSpace)){
-                //TODO
+                console.log("nirnroot "+icon.cell.formId+" clicked");
                 return true;
             }
         }
@@ -275,10 +286,7 @@ function MapIcon(cell){
     MapObject.call(this);
 
     this.cell = cell;
-
     this.recalculateBoundingBox();
-    this.draw = drawIcon2;
-
     if(cell.hive.classname == "nirnroot"){
         this.icon = iconSwitch("Nirnroot");
     }
@@ -292,7 +300,7 @@ MapIcon.prototype = Object.create(MapObject.prototype);
  * whenever we zoom, we will need to call this.
  */
 MapIcon.prototype.recalculateBoundingBox = function(){
-    let mapCoords = worldSpaceToMapSpace(this.cell.x, this.cell.y);
+    let mapCoords = worldSpaceToMapSpace(new Point(this.cell.x, this.cell.y));
     const halfHeightDown = Math.floor(iconH / 2);
     const halfHeightUp = Math.ceil(iconH / 2);
     this.minX = mapCoords.x - halfHeightDown;
@@ -306,13 +314,13 @@ MapIcon.prototype.recalculateBoundingBox = function(){
  * Draw this icon on the canvas.
  * @param {CanvasRenderingContext2D} ctx 
  */
-function drawIcon2(ctx){
+MapIcon.prototype.draw = function(ctx, mouseLoc){
     //draws the name for the map icon if hovered.
     //for drawing, we have to convert back to screen space.
     const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
     const TEXT_PADDING_PX = 2;
     if(this.cell.hive.classname != "nirnroot"){
-        if(this.contains(lastMouseLoc)){
+        if(this.contains(mouseLoc)){
             //create rect that contains text and the icon.
 
             //start by initializing font stuff
@@ -329,7 +337,7 @@ function drawIcon2(ctx){
             ctx.fillStyle = "black";
             ctx.textBaseline = "middle";
             ctx.textAlign = "left";
-            ctx.fillText(textMetrics.text, screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
+            ctx.fillText(this.cell.name, screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
             ctx.fill();
         }
     }
@@ -561,7 +569,7 @@ function initListeners(){
     };
 }
 
-function updateZoom(deltaZ, zoomCenterScreenCoords){
+function updateZoom(deltaZ, zoomPoint){
     const ICON_NATIVE_HEIGHT = 20;
     let oldZoom = zoomLevel;
     zoomLevel += deltaZ;
@@ -580,18 +588,15 @@ function updateZoom(deltaZ, zoomCenterScreenCoords){
     else if(zoomLevel > 1.25)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.25;
     iconH = m_iconH;
 
-    //make map zoom in to center.
-    //1: calculate current map center
-    //screencoord is basically offset from upper left corner.
-    let oldCenterMapCoord = screenSpaceToMapSpace(zoomCenterScreenCoords);
+    //make map zoom in to zoomPoint.
+    //1: calculate current zoomPoint in map coords
+    //2. calculate where that point is on the new map
+    //3. calculate where the corner needs to be to set that point as the center
+    let oldCenterMapCoord = screenSpaceToMapSpace(zoomPoint);
     let newCenterMapCoord = oldCenterMapCoord.multiply(oldZoom/zoomLevel);
-    let newCenterScreenCoord = mapSpaceToScreenSpace(newCenterMapCoord);
-    let newCornerMapCoord = newCenterMapCoord.subtract(zoomCenterScreenCoords);
-    //we need to get the coords un-zoomed to determine where it is.
-    //or just multiply by the zoom factor?
+    let newCornerMapCoord = newCenterMapCoord.subtract(zoomPoint);
 
-    //2. update screen origin to make new map center the same.
-    //to get new upper left, 
+    //moveMap takes a delta, so we subtract new from old. 
     moveMap(screenOriginInMapCoords.subtract(newCornerMapCoord));
 }
 
