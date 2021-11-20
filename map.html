@@ -84,7 +84,10 @@
 	exportNamespace(map);
 
 	(function(){
-		loadJsonData().then(initMap);
+		loadJsonData().then(()=>{
+			loadProgressFromCookie();
+			initMap();
+		});
 	}).call(window);
 </script>
 </body>

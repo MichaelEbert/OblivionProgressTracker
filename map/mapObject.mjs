@@ -95,7 +95,7 @@ MapIcon.prototype.draw = function(ctx, mouseLoc){
     }
     ctx.drawImage(this.icon, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
     if(this.cell.id != null){
-        if(savedata[this.cell.hive.classname][this.cell.id]){
+        if(window.savedata[this.cell.hive.classname][this.cell.id]){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
     }
