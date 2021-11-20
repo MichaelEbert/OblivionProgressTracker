@@ -129,16 +129,17 @@ async function initMap(){
     canvas.height = 2895;
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
-    await initImgs();
-    initTopbar();
-    initOverlay();
-    initListeners();
+    initImgs().then(()=>{
+        initTopbar();
+        initOverlay();
+        initListeners();
 
-    //center map on imp city
-    screenOriginInMapCoords = new Point(1700,885);
+        //center map on imp city
+        screenOriginInMapCoords = new Point(1700,885);
 
-    drawFrame();
-    console.log("map init'd");
+        drawFrame();
+        console.log("map init'd");
+    });
 }
 
 function drawFrame(){
@@ -467,34 +468,35 @@ function moveMap(delta){
 
 async function initImgs(){
     return new Promise((resolve, reject) =>{
+        var iconsToInit = [
+            "Ayleid",
+            "Camp",
+            "Fort",
+            "Gate",
+            "Cave",
+            "Inn",
+            "Settlement",
+            "Mine",
+            "Landmark",
+            "Shrine",
+            "Nirnroot",
+            "Check",
+            "X"
+        ];
+    
+        iconsToInit.forEach(function(i){
+            icons[i] = document.createElement("IMG");
+            icons[i].width = 48;
+            icons[i].height = 48;
+            icons[i].src = "images/Icon_" + i + ".png";
+            }
+        )
+
         img_Map = document.createElement("img");
         img_Map.width = 3544;
         img_Map.height = 2895;
         img_Map.src = "images/Cyrodil_Upscaled.webp";
         img_Map.onload = function(){
-            var iconsToInit = [
-                "Ayleid",
-                "Camp",
-                "Fort",
-                "Gate",
-                "Cave",
-                "Inn",
-                "Settlement",
-                "Mine",
-                "Landmark",
-                "Shrine",
-                "Nirnroot",
-                "Check",
-                "X"
-            ];
-        
-            iconsToInit.forEach(function(i){
-                icons[i] = document.createElement("IMG");
-                icons[i].width = 48;
-                icons[i].height = 48;
-                icons[i].src = "images/Icon_" + i + ".png";
-                }
-            )
             resolve();
         };
 
