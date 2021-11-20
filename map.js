@@ -3,62 +3,12 @@
 //TODO: make it so that it zooms into middle of screen rather than top left corner? *Wishlist
 
 //TODO: figure out how discovered locations are tracked and implement it.
+"use strict";
+export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch};
 
-function Point(x,y){
-    this.x = x;
-    this.y = y;
-}
-Point.prototype.toString = function(){
-    return "("+this.x+","+this.y+")";
-}
-/**
- * Return a point that is the result of adding a scalar or point to this point.
- * @param {*} object scalar or point to add
- * @returns {Point} new point
- */
-Point.prototype.add = function(object){
-    if(typeof(object) == "number"){
-        let asNum = parseFloat(object);
-        return new Point(this.x + asNum, this.y + asNum);
-    }
-    else{
-        //should this typecheck for point? IDK i'm not used to js development
-        return new Point(this.x + object.x, this.y + object.y);
-    }
-}
-/**
- * Return a point that is the result of subtracting a scalar or point from this point.
- * @param {*} object scalar or point to subtract
- * @returns {Point} new point
- */
-Point.prototype.subtract = function(object){
-    if(typeof(object) == "number"){
-        let asNum = parseFloat(object);
-        return new Point(this.x - asNum, this.y - asNum);
-    }
-    else{
-        //should this typecheck for point? IDK i'm not used to js development
-        return new Point(this.x - object.x, this.y - object.y);
-    }
-}
-/**
- * Multiply this point by a scalar.
- * @param {number} number number to multiply by
- * @returns {Point} new point
- */
-Point.prototype.multiply = function(number){
-    let asNum = parseFloat(number);
-    return new Point(this.x * asNum, this.y * asNum);
-}
-/**
- * divide this point by a scalar.
- * @param {number} number number to multiply by
- * @returns {Point} new point
- */
-Point.prototype.divide = function(number){
-    let asNum = parseFloat(number);
-    return new Point(this.x / asNum, this.y / asNum);
-}
+import {Point} from "./map/point.mjs";
+import {MapObject,MapIcon} from "./map/mapObject.mjs";
+
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -75,12 +25,13 @@ let maxZoom = 3.5;
  * Offset from map to screen coordinates.
  */
 let screenOriginInMapCoords = new Point(0,0);
-let iconH = 20;
+let _iconH = 20;
+function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let hoverLocation = "";
 
 //image objects
-let topbar;
+let map_topbar;
 let overlay;
 
 /**
@@ -91,32 +42,6 @@ let mousedown = false;
 
 let img_Map;
 let icons = {};
-
-/**
- * An object that will be displayed on the map canvas.
- */
-function MapObject(){
-    this.minX = 0;
-    this.maxX = 0;
-    this.minY = 0;
-    this.maxY = 0;
-}
-/**
- * Does this object contain the specified point?
- * @param {Point} point point to check
- */
-MapObject.prototype.contains = function(point){
-    if(point == null){
-        return false;
-    }
-    return (this.minX < point.x && point.x < this.maxX && this.minY < point.y && point.y < this.maxY);
-}
-MapObject.prototype.width = function(){
-    return this.maxX - this.minX;
-}
-MapObject.prototype.height = function(){
-    return this.maxY - this.minY;
-}
 
 async function initMap(){
     //load map cord data
@@ -146,7 +71,7 @@ function drawFrame(){
     drawBaseMap();
     drawMapOverlay();
     //TODO: don't have topbar overlay map. or move topbar or something aaa idk
-    topbar.draw(ctx);
+    map_topbar.draw(ctx);
 }
 
 /**
@@ -279,125 +204,60 @@ function overlayClick(clickLoc){
     return false;
 }
 
-/**
- * Construct a map location object from a location json cell.
- * @param {*} cell 
- */
-function MapIcon(cell){
-    MapObject.call(this);
-
-    this.cell = cell;
-    this.recalculateBoundingBox();
-    if(cell.hive.classname == "nirnroot"){
-        this.icon = iconSwitch("Nirnroot");
-    }
-    else{
-        this.icon = iconSwitch(cell.icon);
-    }
-}
-MapIcon.prototype = Object.create(MapObject.prototype);
-
-/**
- * whenever we zoom, we will need to call this.
- */
-MapIcon.prototype.recalculateBoundingBox = function(){
-    let mapCoords = worldSpaceToMapSpace(new Point(this.cell.x, this.cell.y));
-    const halfHeightDown = Math.floor(iconH / 2);
-    const halfHeightUp = Math.ceil(iconH / 2);
-    this.minX = mapCoords.x - halfHeightDown;
-    this.minY = mapCoords.y - halfHeightDown;
-    //default state is only icon, so its easy
-    this.maxX = mapCoords.x + halfHeightUp;
-    this.maxY = mapCoords.y + halfHeightUp;
-}
-
-/**
- * Draw this icon on the canvas.
- * @param {CanvasRenderingContext2D} ctx 
- */
-MapIcon.prototype.draw = function(ctx, mouseLoc){
-    //draws the name for the map icon if hovered.
-    //for drawing, we have to convert back to screen space.
-    const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
-    const TEXT_PADDING_PX = 2;
-    if(this.cell.hive.classname != "nirnroot"){
-        if(this.contains(mouseLoc)){
-            //create rect that contains text and the icon.
-
-            //start by initializing font stuff
-            ctx.font = "16px";
-            let textMetrics = ctx.measureText(this.cell.name);
-
-            //create background of popup window
-            ctx.beginPath();
-            ctx.fillStyle = "#E5D9B9";
-            ctx.rect(screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, textMetrics.width + this.width() + TEXT_PADDING_PX * 2, this.height());
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.fillStyle = "black";
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "left";
-            ctx.fillText(this.cell.name, screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
-            ctx.fill();
-        }
-    }
-    ctx.drawImage(this.icon, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
-    if(this.cell.id != null){
-        if(savedata[this.cell.hive.classname][this.cell.id]){
-            ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
-        }
-    }
-}
-
 /*********************************
  * TOPBAR FUNCTIONS
  *  this is the "topbar" on the map canvas.
  *********************************/
 
 function initTopbar(){
-    function MapButton(x,y,width,height,text){
+    function MapButton(ordinal,y,height,text){
         MapObject.call(this);
-        this.minX = x;
+        this.ordinal = ordinal;
+        //this.minX and this.maxX calculated by recalculateBoundingBox
         this.minY = y;
-        this.maxX = x+width;
         this.maxY = y+height;
         this.name = text;
-        this.draw = function(ctx){
-            let width = this.width();
-            let height = this.height();
-            ctx.beginPath();
-            if(currentOverlay == this.name){
-                ctx.fillStyle = "#ccc";
-            }
-            else{
-                ctx.fillStyle = "#E5D9B9";
-            }
-            ctx.fillRect(this.minX, this.minY, width, height);
-
-            //and now text
-            ctx.beginPath();
-            ctx.fillStyle = "#000000";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "alphabetic";
-            ctx.font = "16px Arial"
-            ctx.fillText(this.name, this.minX + (width/2), this.minY + 16);
-        }
+        this.recalculateBoundingBox();
+        
     }
     MapButton.prototype = Object.create(MapObject.prototype);
+    MapButton.prototype.draw = function(ctx){
+        let width = this.width();
+        let height = this.height();
+        ctx.beginPath();
+        if(currentOverlay == this.name){
+            ctx.fillStyle = "#ccc";
+        }
+        else{
+            ctx.fillStyle = "#E5D9B9";
+        }
+        ctx.fillRect(this.minX, this.minY, width, height);
 
-    topbar = new MapObject();
-    topbar.buttons = [];
-    topbar.minX = 0;
-    topbar.minY = 0;
-    topbar.maxX = viewport.clientWidth;
-    topbar.maxY = 32;
+        //and now text
+        ctx.beginPath();
+        ctx.fillStyle = "#000000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.font = "16px Arial"
+        ctx.fillText(this.name, this.minX + (width/2), this.minY + 16);
+    }
+    MapButton.prototype.recalculateBoundingBox = function(){
+        this.minX = 8 + (map_topbar.width()/3)*this.ordinal;
+        this.maxX = this.minX + (map_topbar.width() - 16)/3;
+    }
 
-    topbar.buttons.push(new MapButton(8,6, topbar.width()/3, 20,"Locations"));
-    topbar.buttons.push(new MapButton(topbar.width()/3,6, topbar.width()/3, 20,"NirnRoute"));
-    topbar.buttons.push(new MapButton(topbar.width()/3*2, 6, topbar.width()/3 - 8, 20, "Exploration"));
+    map_topbar = new MapObject();
+    map_topbar.buttons = [];
+    map_topbar.minX = 0;
+    map_topbar.minY = 0;
+    map_topbar.maxX = viewport.clientWidth;
+    map_topbar.maxY = 32;
 
-    topbar.draw = function(ctx){
+    map_topbar.buttons.push(new MapButton(0, 6, 20, "Locations"));
+    map_topbar.buttons.push(new MapButton(1, 6, 20, "NirnRoute"));
+    map_topbar.buttons.push(new MapButton(2, 6, 20, "Exploration"));
+
+    map_topbar.draw = function(ctx){
         let wX = viewport.clientWidth;
 
         //update our width here for hit detection
@@ -422,7 +282,7 @@ function initTopbar(){
         ctx.fill();
     }
 
-    topbar.click = function topbarClick(coords){
+    map_topbar.click = function topbarClick(coords){
         if(!this.contains(coords)){
             return false;
         }
@@ -510,7 +370,7 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    let handled = topbar.click(mouseLoc);
+    let handled = map_topbar.click(mouseLoc);
     if(!handled){
         handled = overlayClick(mouseLoc);
     }
@@ -590,7 +450,7 @@ function updateZoom(deltaZ, zoomPoint){
     if(zoomLevel > 1.75)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 2;
     else if(zoomLevel > 1.5)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.5;
     else if(zoomLevel > 1.25)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.25;
-    iconH = m_iconH;
+    _iconH = m_iconH;
 
     //make map zoom in to zoomPoint.
     //1: calculate current zoomPoint in map coords
@@ -646,7 +506,6 @@ function mapSpaceToScreenSpace(mapSpacePoint){
 function screenSpaceToMapSpace(screenSpacePoint){
     return screenSpacePoint.add(screenOriginInMapCoords);
 }
-
 
 function iconSwitch(Input){
     switch (Input) {
