@@ -15,10 +15,10 @@ var totalweight;
  * eg., "quest","book", etc.
  * @param {string} name name of the class. Will be used to retrive json data.
  * @param {boolean} containsUserProgress Does this class contain elements that will be tracked as part of 100% progress?
- * @param {boolean} isStandard is boolean and sequential? (see prop for details)
+ * @param {boolean} easyCompress is boolean and sequential? (see prop for details)
  * @param {number} completionWeight default weight for this class in completion.
  */
-function JsonClass(name,containsUserProgress = false, isStandard = false, completionWeight = 0){
+function JsonClass(name,containsUserProgress = false, easyCompress = false, completionWeight = 0){
 	/**
 	 * name of this class (used for property access n stuff)
 	 */
@@ -34,7 +34,7 @@ function JsonClass(name,containsUserProgress = false, isStandard = false, comple
      * 1) be a boolean property (so no "nirnroots collected")
      * 2) have a sequential numeric id (so no id="fame")
 	 */
-	this.standard = isStandard;
+	this.standard = easyCompress;
 	
 	/**
 	 * default weight for this class in completion.
@@ -53,8 +53,8 @@ const classes = [
 	new JsonClass("save",true),
 	new JsonClass("npc",false),
 	new JsonClass("fame",true),
-	new JsonClass("nirnroot",false),//TODO: add nirnroot mapping and set this to "true".
-	new JsonClass("location",true)
+	new JsonClass("nirnroot",true, true),
+	new JsonClass("location",true, true)
 ];
 
 /**

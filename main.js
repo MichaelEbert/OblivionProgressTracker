@@ -178,6 +178,11 @@ function initSingle(cell, classname, extraColumnName){
 		rowhtml.addEventListener('click',rowClicked);
 		
 		//name
+		//temp for nirnroot since they don't have names (yet?)
+		let usableName = cell.name;
+		if(usableName == null){
+			usableName = cell.hive.classname + cell.formId;
+		}
 		var rName = document.createElement("span");
 		rName.classList.add(classname+"Name");
 		var linky = document.createElement("a");
@@ -185,9 +190,9 @@ function initSingle(cell, classname, extraColumnName){
 			linky.href = cell.link;
 		}
 		else{
-			linky.href="https://en.uesp.net/wiki/Oblivion:"+cell.name.replaceAll(" ","_");
+			linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
 		}
-		linky.innerText = cell.name;
+		linky.innerText = usableName;
 		linky.target = "_blank";
 		rName.appendChild(linky);
 		rowhtml.appendChild(rName);

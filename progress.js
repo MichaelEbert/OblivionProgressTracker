@@ -3,7 +3,7 @@
 
 var savedata;
 var settings;
-const version = 8;
+const version = 9;
 
 function saveCookie(name,value){
 	//save for 10 years
@@ -52,6 +52,12 @@ function upgradeSaveData(){
 				case 7:
 					resetProgressForHive(jsondata.fame);
 				case 8:
+					//add nirnroot and locations in v9
+					savedata.nirnroot = {};
+					savedata.location = {};
+					resetProgressForHive(jsondata.nirnroot);
+					resetProgressForHive(jsondata.location);
+				case 9:
 					savedata.version = version;
 					//current version, we're done.
 					break;

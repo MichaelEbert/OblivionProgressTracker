@@ -7,7 +7,8 @@
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="progress.js"></script>
 	<script src="sharing.js"></script>
-	<script src="map.js"></script>
+	<script src="map.js" type="module"></script>
+	<script src="module-shim.js" type="module"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Map — Interactive Oblivion Checklist</title>
 </head>
@@ -75,8 +76,19 @@
 <p>This is where the explanation goes.</p>
 <div style="height:80vh;" id="wrapper_Map"></div>
 
-<script>
-	loadJsonData().then(initMap);
+<script type="module">
+	//normally, we can't call module code from non-module code.
+	//exportNamespace appends everything to window, so it can be called like normal js code.
+	import exportNamespace from './module-shim.js'
+	import * as map from './map.js';
+	exportNamespace(map);
+
+	(function(){
+		loadJsonData().then(()=>{
+			loadProgressFromCookie();
+			initMap();
+		});
+	}).call(window);
 </script>
 </body>
 </html>

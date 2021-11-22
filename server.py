@@ -22,6 +22,7 @@ Handler.extensions_map={
 	'.css':	'text/css',
 	'.js':	'application/javascript',
 	'.json':	'application/json',
+	'.mjs':	'application/javascript',
 	'': 'application/octet-stream', # Default
     }
 
