@@ -73,6 +73,7 @@ img{
 .questName a,
 .bookName a,
 .storeName a,
+.nirnroot a,
 .npc a{
 	color: inherit;
 }
