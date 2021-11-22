@@ -139,7 +139,7 @@ function addParentLinks(node, parent){
 	}
 	
 }
-window.debug=true;
+
 /**
  * turn a bunch of json data from different files into a single js object.
  * @param {Object} hive base hive data
