@@ -247,7 +247,13 @@ function createLinkElement(cell, classname, forceMinipage=false){
 	else{
 		usableId = cell.id;
 	}
-	
+	var usableName;
+	if(cell.name == null){
+		usableName = classname + usableId;
+	}
+	else{
+		usableName = cell.name;
+	}
 	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
 	if(useMinipage){
 		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
@@ -259,7 +265,7 @@ function createLinkElement(cell, classname, forceMinipage=false){
 		linky.href = cell.link;
 	}
 	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+cell.name.replaceAll(" ","_");
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
 	}
 	
 	if(settings.iframeCheck){
@@ -268,8 +274,8 @@ function createLinkElement(cell, classname, forceMinipage=false){
 	else{
 		linky.target="_blank";
 	}
+	linky.innerText = usableName;
 	
-	linky.innerText = cell.name;
 	return linky;
 }
 
