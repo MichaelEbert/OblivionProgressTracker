@@ -10,7 +10,7 @@
 
 //TODO: figure out how discovered locations are tracked and implement it.
 "use strict";
-export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch};
+export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
