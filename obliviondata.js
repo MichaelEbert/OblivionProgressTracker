@@ -139,7 +139,7 @@ function addParentLinks(node, parent){
 	}
 	
 }
-
+window.debug=true;
 /**
  * turn a bunch of json data from different files into a single js object.
  * @param {Object} hive base hive data
@@ -158,7 +158,7 @@ async function mergeData(hive, basedir="."){
 		try{
 			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
-			if(hive.classname == "misc" && window.debug){
+			if(hive.classname == "nirnroot" && window.debug){
 				//debugger;
 			}
 			runOnTree(hive, mergeCell(mapJson));
