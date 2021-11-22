@@ -378,6 +378,7 @@ function updateIframe(visible){
 		else{
 			var resizableContainer = document.createElement("div");
 			resizableContainer.classList.add("resizableContainer");
+			resizableContainer.classList.add("sidebarContainer");
 			resizableContainer.id = "iframeContainer";
 
 			var myframe = document.createElement("iframe");
@@ -386,7 +387,7 @@ function updateIframe(visible){
 			myframe.classList.add("iframe");
 			
 			resizableContainer.appendChild(myframe);
-			var sidebar = document.getElementById("sidebarContainer");
+			var sidebar = document.getElementById("sidebar");
 			if(sidebar != null){
 				sidebar.prepend(resizableContainer);
 			}
