@@ -350,7 +350,7 @@ function checkboxClicked(event){
 
 // when user clicks on the row, not the checkbox
 function rowClicked(event){
-	const checkbox = Array.from(event.target.children).find(x=>x.tagName=="INPUT");
+	const checkbox = Array.from(this.children).find(x=>x.tagName=="INPUT");
 	if(checkbox.type == "number"){
 		checkbox.focus();
 		checkbox.select();

@@ -89,18 +89,13 @@ td{
 	flex-direction: row-reverse;
 }
 
-.resizableWidthContainer{
-	resize:horizontal;
-	overflow:hidden;
-}
-
 .resizableContainer{
-	resize: vertical;
+	resize: both;
 	overflow: hidden;
 }
 
 /*you can't resize iframes, so we use this to give it a nice resizable handle*/
-#sidebarContainer{
+.sidebarContainer{
 	border: 1px solid black;
 	height: 90vh;
 	width: 500px;
