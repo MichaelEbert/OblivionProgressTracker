@@ -4,6 +4,7 @@
 import http.server
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import socketserver
+import socket
 import sys
 PORT = 8080
 
@@ -25,8 +26,10 @@ Handler.extensions_map={
 	'.mjs':	'application/javascript',
 	'': 'application/octet-stream', # Default
     }
+class HTTP6Server(HTTPServer):
+	address_family = socket.AF_INET6
 
-httpd = socketserver.TCPServer(("", PORT), Handler)
+httpd = HTTP6Server(("::", PORT), Handler)
 
 print("serving at port", PORT)
 httpd.serve_forever()
