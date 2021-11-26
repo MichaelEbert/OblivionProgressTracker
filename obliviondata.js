@@ -108,6 +108,13 @@ function mergeCell(mapping){
 				console.warn(cell);
 			}
 			cell.id = maybeMapping.id;
+
+			//not sure why i have to capitalize TSP in general, but it wasn't working here when it was lowercase.
+			if(window.debug && cell.TSP != null){
+				console.warn("cell has 2 TSP values!");
+				console.warn(cell);
+			}
+			cell.TSP = maybeMapping.TSP;
 		}
 	});
 }

@@ -36,8 +36,7 @@ let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
-let hoverLocation = "";
-let drawTSP = true;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
+let drawTSP = false;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
 
 //image objects
 let map_topbar;
@@ -107,7 +106,6 @@ function initOverlay(){
     overlay = {
         locations : [],
         nirnroots : [],
-        _TA:[],
         lastZoomLevel : zoomLevel
     }
 
@@ -121,7 +119,7 @@ function initOverlay(){
         }
     });
 
-    _TA = locations;
+    //init, calculate, and save TSP array.
 }
 /**
  * Draw icons on the map
