@@ -105,21 +105,33 @@ function drawBaseMap(){
 function initOverlay(){
     overlay = {
         locations : [],
+        tsp_locations : [],
         nirnroots : [],
+        tsp_nirnroots : [],
         lastZoomLevel : zoomLevel
     }
 
     runOnTree(jsondata.location, function(loc){
         overlay.locations.push(new MapIcon(loc));
+
+        //takes only what we need for TSP: x, y, and order.
+        overlay.tsp_locations.push({x:loc.x, y:loc.y, tsp:loc.TSP});
     });
 
-    runOnTree(jsondata.nirnroot, function(loc){
-        if(loc.cell == "Outdoors"){
-            overlay.nirnroots.push(new MapIcon(loc));
+    runOnTree(jsondata.nirnroot, function(nirn){
+        if(nirn.cell == "Outdoors"){
+            overlay.nirnroots.push(new MapIcon(nirn));
+
+            //takes only what we need for TSP: x, y, and order.
+            overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tsp:nirn.TSP});
         }
     });
 
     //init, calculate, and save TSP array.
+    for(const loc in overlay.tsp_locations){
+        //sort tsp_locations by TSP //or make this a general function for both TSPs
+    }
+
 }
 /**
  * Draw icons on the map

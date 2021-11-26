@@ -114,7 +114,7 @@ function mergeCell(mapping){
 				console.warn("cell has 2 TSP values!");
 				console.warn(cell);
 			}
-			cell.TSP = maybeMapping.TSP;
+			cell.TSP = maybeMapping.TSP; //may need an undefined check of some sort, if(cell.TSP != null) doesn't work >.<
 		}
 	});
 }
