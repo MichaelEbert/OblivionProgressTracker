@@ -130,6 +130,7 @@ function initOverlay(){
     //remove the tsp:-1 locations, since they're not calculated into a tsp yet.
     while(overlay.tsp_locations[0].tsp == -1)overlay.tsp_locations.shift();
     while(overlay.tsp_nirnroots[0].tsp == -1)overlay.tsp_nirnroots.shift();
+    recalculateTSP();
 }
 
 /**
@@ -562,8 +563,8 @@ function drawTSP(arrTSP){
     if(showTSP){
         for(let i = 1; i < arrTSP.length; i++){
             //Next improvement would be to Precalculate these things on zoomchange, rather than every frame.
-            let pp = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y)));
-            let p = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(arrTSP[i].x, arrTSP[i].y)));
+            let pp = mapSpaceToScreenSpace(new Point(arrTSP[i].x, arrTSP[i].y));
+            let p = mapSpaceToScreenSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y));
             
             ctx.beginPath();
             ctx.lineWidth = 5;
@@ -571,9 +572,30 @@ function drawTSP(arrTSP){
             ctx.lineTo(p.x, p.y);
             ctx.stroke();
         }
+
+        //this draws the last connection from the last point to the first point.
+        let a = mapSpaceToScreenSpace(new Point(arrTSP[0].x, arrTSP[0].y));
+        let z = mapSpaceToScreenSpace(new Point(arrTSP[arrTSP.length - 1].x, arrTSP[arrTSP.length - 1].y));
+        
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(z.x, z.y);
+        ctx.stroke();
     }
 }
 
 function recalculateTSP(){
-
+    for(let i = 0; i < overlay.tsp_locations.length; i++){
+        let p = worldSpaceToMapSpace(new Point(overlay.tsp_locations[i].cell.x, overlay.tsp_locations[i].cell.y));
+        overlay.tsp_locations[i].x = p.x;
+        overlay.tsp_locations[i].y = p.y;
+    }
+    for(let i = 0; i < overlay.tsp_nirnroots.length; i++){
+        let p = worldSpaceToMapSpace(new Point(overlay.tsp_nirnroots[i].cell.x, overlay.tsp_nirnroots[i].cell.y));
+        overlay.tsp_nirnroots[i].x = p.x;
+        overlay.tsp_nirnroots[i].y = p.y;
+    }
+    console.log(overlay.tsp_locations.length - 1);
+    console.log(overlay.tsp_locations[0]);
 }
