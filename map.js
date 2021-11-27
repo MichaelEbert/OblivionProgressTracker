@@ -596,6 +596,4 @@ function recalculateTSP(){
         overlay.tsp_nirnroots[i].x = p.x;
         overlay.tsp_nirnroots[i].y = p.y;
     }
-    console.log(overlay.tsp_locations.length - 1);
-    console.log(overlay.tsp_locations[0]);
 }
