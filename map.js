@@ -6,11 +6,7 @@
 
 //TODO: add a legend overlay button (replace exploration button?)
 
-//TODO: make it so that it zooms into middle of screen rather than top left corner? *Wishlist
-
 //TODO: figure out how discovered locations are tracked and implement it.
-
-//TODO: convert _TA from worldspace to map space.
 
 "use strict";
 export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
@@ -36,7 +32,7 @@ let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
-let drawTSP = false;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
+let showTSP = true;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
 
 //image objects
 let map_topbar;
@@ -113,9 +109,9 @@ function initOverlay(){
 
     runOnTree(jsondata.location, function(loc){
         overlay.locations.push(new MapIcon(loc));
-
-        //takes only what we need for TSP: x, y, and order.
-        overlay.tsp_locations.push({x:loc.x, y:loc.y, tsp:loc.TSP});
+        //takes only what we need for TSP: x, y, and order. 
+            //should we make a seperate "TSP object?" or just leave this as is?
+        overlay.tsp_locations.push({x:loc.x, y:loc.y, tsp:loc.tsp, cell:{x:loc.x, y:loc.y}});
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
@@ -123,16 +119,19 @@ function initOverlay(){
             overlay.nirnroots.push(new MapIcon(nirn));
 
             //takes only what we need for TSP: x, y, and order.
-            overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tsp:nirn.TSP});
+            overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tsp:nirn.tsp, cell:{x:nirn.x, y:nirn.y}});
         }
     });
 
     //init, calculate, and save TSP array.
-    for(const loc in overlay.tsp_locations){
-        //sort tsp_locations by TSP //or make this a general function for both TSPs
-    }
+    overlay.tsp_locations.sort((a, b) => a.tsp - b.tsp);
+    overlay.tsp_nirnroots.sort((a, b) => a.tsp - b.tsp);
 
+    //remove the tsp:-1 locations, since they're not calculated into a tsp yet.
+    while(overlay.tsp_locations[0].tsp == -1)overlay.tsp_locations.shift();
+    while(overlay.tsp_nirnroots[0].tsp == -1)overlay.tsp_nirnroots.shift();
 }
+
 /**
  * Draw icons on the map
  */
@@ -145,23 +144,12 @@ function drawMapOverlay(){
         for(const icon of overlay.nirnroots){
             icon.recalculateBoundingBox();
         }
+        recalculateTSP();
     }
     const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
-        if(drawTSP){
-            for(let i = 1; i < _TA.length; i++){
-            
-                let pp = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(_TA[i - 1].x,_TA[i - 1].y)));
-                let p = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(_TA[i].x,_TA[i].y)));
-                
-                ctx.beginPath();
-                ctx.lineWidth = 5;
-                ctx.moveTo(pp.x, pp.y);
-                ctx.lineTo(p.x, p.y);
-                ctx.stroke();
-            }
-        }
+        if(showTSP) if(showTSP)drawTSP(overlay.tsp_locations);
         
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
@@ -178,6 +166,8 @@ function drawMapOverlay(){
         }
     }
     else if(currentOverlay == "NirnRoute"){
+        if(showTSP)drawTSP(overlay.tsp_nirnroots);
+
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
             nirnIcon.draw(ctx);
@@ -244,7 +234,6 @@ function overlayClick(clickLoc){
  * TOPBAR FUNCTIONS
  *  this is the "topbar" on the map canvas.
  *********************************/
-
 function initTopbar(){
     function MapButton(ordinal,y,height,text){
         MapObject.call(this);
@@ -338,8 +327,6 @@ function initTopbar(){
         return false;
     }
 }
-
-
 
 /*********************************
  * GENERAL FUNCTIONS
@@ -549,6 +536,7 @@ function screenSpaceToMapSpace(screenSpacePoint){
     return screenSpacePoint.add(screenOriginInMapCoords);
 }
 
+/**Returns appropriate icon from string input.*/
 function iconSwitch(Input){
     switch (Input) {
         case "Ayleid":return icons.Ayleid;
@@ -567,4 +555,25 @@ function iconSwitch(Input){
             console.warn("Element has invalid iconname: " + Input + ".");
             return icons.X;
     }
+}
+
+/**draws the Traveling salesman path*/
+function drawTSP(arrTSP){
+    if(showTSP){
+        for(let i = 1; i < arrTSP.length; i++){
+            //Next improvement would be to Precalculate these things on zoomchange, rather than every frame.
+            let pp = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y)));
+            let p = mapSpaceToScreenSpace(worldSpaceToMapSpace(new Point(arrTSP[i].x, arrTSP[i].y)));
+            
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.moveTo(pp.x, pp.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        }
+    }
+}
+
+function recalculateTSP(){
+
 }
