@@ -103,17 +103,9 @@ function mergeCell(mapping){
 	return (cell =>{
 		let maybeMapping = mapping.find(x=>x.formId == cell.formId);
 		if(maybeMapping != null){
-			if(window.debug && cell.id != null){
-				console.warn("cell has 2 IDs!");
-				console.warn(cell);
+			for(const propname in maybeMapping){
+				cell[propname] = maybeMapping[propname]
 			}
-			cell.id = maybeMapping.id;
-
-			if(window.debug && cell.tspID != null){
-				console.warn("cell has 2 tspID values!");
-				console.warn(cell);
-			}
-			cell.tspID = maybeMapping.tspID; //does this need a null/undefined check?
 		}
 	});
 }

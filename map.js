@@ -108,28 +108,28 @@ function initOverlay(){
     }
 
     runOnTree(jsondata.location, function(loc){
-        overlay.locations.push(new MapIcon(loc));
-        //takes only what we need for TSP: x, y, and order. 
-            //should we make a seperate "TSP object?" or just leave this as is?
-        overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:{x:loc.x, y:loc.y}});
+        let newIcon = new MapIcon(loc);
+        overlay.locations.push(newIcon);
+        
+        if(loc.tspID != null){
+            overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:newIcon.cell});
+        }
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors"){
-            overlay.nirnroots.push(new MapIcon(nirn));
+            let newIcon = new MapIcon(nirn)
+            overlay.nirnroots.push(newIcon);
 
-            //takes only what we need for TSP: x, y, and order.
-            overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:{x:nirn.x, y:nirn.y}});
+            if(nirn.tspID != null){
+                overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:newIcon.cell});
+            }
         }
     });
 
     //init, calculate, and save TSP array.
     overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
     overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
-
-    //remove the tsp:-1 locations, since they're not calculated into a tsp yet.
-    while(overlay.tsp_locations[0].tspID == -1)overlay.tsp_locations.shift();
-    while(overlay.tsp_nirnroots[0].tspID == -1)overlay.tsp_nirnroots.shift();
     recalculateTSP();
 }
 
@@ -150,7 +150,9 @@ function drawMapOverlay(){
     const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
-        if(showTSP)drawTSP(overlay.tsp_locations);
+        if(showTSP){
+            drawTSP(overlay.tsp_locations);
+        }
         
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
@@ -167,7 +169,9 @@ function drawMapOverlay(){
         }
     }
     else if(currentOverlay == "NirnRoute"){
-        if(showTSP)drawTSP(overlay.tsp_nirnroots);
+        if(showTSP){
+            drawTSP(overlay.tsp_nirnroots);
+        }
 
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
@@ -180,7 +184,7 @@ function drawMapOverlay(){
             hloc.draw(ctx, mouseLocInMapCoords);
         }
     }
-    else if(currentOverlay == "Exploration"){//We may not really need this third overlay, since we can just draw the TSP underneath the normal icons.
+    else if(currentOverlay == "Exploration"){//TODO: Remove this overlay when we migrate UI out of javascript
         //traveling salesmen overlay.
         var x = viewport.clientWidth;
         var y = viewport.clientHeight;
@@ -586,14 +590,14 @@ function drawTSP(arrTSP){
 }
 
 function recalculateTSP(){
-    for(let i = 0; i < overlay.tsp_locations.length; i++){
-        let p = worldSpaceToMapSpace(new Point(overlay.tsp_locations[i].cell.x, overlay.tsp_locations[i].cell.y));
-        overlay.tsp_locations[i].x = p.x;
-        overlay.tsp_locations[i].y = p.y;
+    for(const loc of overlay.tsp_locations){
+        let p = worldSpaceToMapSpace(new Point(loc.cell.x, loc.cell.y));
+        loc.x = p.x;
+        loc.y = p.y;
     }
-    for(let i = 0; i < overlay.tsp_nirnroots.length; i++){
-        let p = worldSpaceToMapSpace(new Point(overlay.tsp_nirnroots[i].cell.x, overlay.tsp_nirnroots[i].cell.y));
-        overlay.tsp_nirnroots[i].x = p.x;
-        overlay.tsp_nirnroots[i].y = p.y;
+    for(const nirn of overlay.tsp_nirnroots){
+        let p = worldSpaceToMapSpace(new Point(nirn.cell.x, nirn.cell.y));
+        nirn.x = p.x;
+        nirn.y = p.y;
     }
 }
