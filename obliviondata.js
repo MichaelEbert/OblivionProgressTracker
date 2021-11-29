@@ -109,11 +109,11 @@ function mergeCell(mapping){
 			}
 			cell.id = maybeMapping.id;
 
-			if(window.debug && cell.tsp != null){
-				console.warn("cell has 2 TSP values!");
+			if(window.debug && cell.tspID != null){
+				console.warn("cell has 2 tspID values!");
 				console.warn(cell);
 			}
-			cell.tsp = maybeMapping.tsp; //does this need a null/undefined check?
+			cell.tspID = maybeMapping.tspID; //does this need a null/undefined check?
 		}
 	});
 }
