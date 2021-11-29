@@ -1,12 +1,16 @@
 //TODO: Figure out Random Gate tracking?
     //seperate counter for found random gates?
-//TODO: Add pink circle for fixed gates (like guide)
-//TODO: Add green plus for 2 fame gates
-//TODO: add blue star for no-reroll gates
 
-//TODO: add a legend overlay button (replace exploration button?)
+//some decorations from the guide that might be useful.
+    //TODO: Add pink circle for fixed gates 
+    //TODO: Add green plus for 2 fame gates
+    //TODO: add blue star for no-reroll gates
+
+//TODO: add a legend overlay button (probably can be put into the explnation/help button after UI migration)
 
 //TODO: figure out how discovered locations are tracked and implement it.
+
+//TODO: get topbar percentage working on map.js
 
 "use strict";
 export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
@@ -127,7 +131,7 @@ function initOverlay(){
         }
     });
 
-    //init, calculate, and save TSP array.
+    //Sort and run intial world->map->screen space calculations for TSP arrays.
     overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
     overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
     recalculateTSP();
@@ -565,19 +569,21 @@ function iconSwitch(Input){
 /**draws the Traveling salesman path*/
 function drawTSP(arrTSP){
     if(showTSP){
+        //draw from prev point to current point
         for(let i = 1; i < arrTSP.length; i++){
-            //Next improvement would be to Precalculate these things on zoomchange, rather than every frame.
             let pp = mapSpaceToScreenSpace(new Point(arrTSP[i].x, arrTSP[i].y));
             let p = mapSpaceToScreenSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y));
             
+            //TODO: add in custom color/line width selection.
+            //TODO: add in secondary line outline to make line "pop" on map better.
             ctx.beginPath();
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 5; 
             ctx.moveTo(pp.x, pp.y);
             ctx.lineTo(p.x, p.y);
             ctx.stroke();
         }
 
-        //this draws the last connection from the last point to the first point.
+        //draws the last connection from the last point to the first point.
         let a = mapSpaceToScreenSpace(new Point(arrTSP[0].x, arrTSP[0].y));
         let z = mapSpaceToScreenSpace(new Point(arrTSP[arrTSP.length - 1].x, arrTSP[arrTSP.length - 1].y));
         
