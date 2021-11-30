@@ -103,11 +103,9 @@ function mergeCell(mapping){
 	return (cell =>{
 		let maybeMapping = mapping.find(x=>x.formId == cell.formId);
 		if(maybeMapping != null){
-			if(window.debug && cell.id != null){
-				console.warn("cell has 2 IDs!");
-				console.warn(cell);
+			for(const propname in maybeMapping){
+				cell[propname] = maybeMapping[propname]
 			}
-			cell.id = maybeMapping.id;
 		}
 	});
 }

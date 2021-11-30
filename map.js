@@ -1,20 +1,22 @@
 //TODO: Figure out Random Gate tracking?
     //seperate counter for found random gates?
-//TODO: Add pink circle for fixed gates (like guide)
-//TODO: Add green plus for 2 fame gates
-//TODO: add blue star for no-reroll gates
 
-//TODO:add a legend overlay button (replace exploration button?)
+//some decorations from the guide that might be useful.
+    //TODO: Add pink circle for fixed gates 
+    //TODO: Add green plus for 2 fame gates
+    //TODO: add blue star for no-reroll gates
 
-//TODO: make it so that it zooms into middle of screen rather than top left corner? *Wishlist
+//TODO: add a legend overlay button (probably can be put into the explnation/help button after UI migration)
 
 //TODO: figure out how discovered locations are tracked and implement it.
+
+//TODO: get topbar percentage working on map.js
+
 "use strict";
 export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
-
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -34,7 +36,7 @@ let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
-let hoverLocation = "";
+let showTSP = true;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
 
 //image objects
 let map_topbar;
@@ -103,20 +105,38 @@ function drawBaseMap(){
 function initOverlay(){
     overlay = {
         locations : [],
+        tsp_locations : [],
         nirnroots : [],
+        tsp_nirnroots : [],
         lastZoomLevel : zoomLevel
     }
 
     runOnTree(jsondata.location, function(loc){
-        overlay.locations.push(new MapIcon(loc));
-    });
-
-    runOnTree(jsondata.nirnroot, function(loc){
-        if(loc.cell == "Outdoors"){
-            overlay.nirnroots.push(new MapIcon(loc));
+        let newIcon = new MapIcon(loc);
+        overlay.locations.push(newIcon);
+        
+        if(loc.tspID != null){
+            overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:newIcon.cell});
         }
     });
+
+    runOnTree(jsondata.nirnroot, function(nirn){
+        if(nirn.cell == "Outdoors"){
+            let newIcon = new MapIcon(nirn)
+            overlay.nirnroots.push(newIcon);
+
+            if(nirn.tspID != null){
+                overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:newIcon.cell});
+            }
+        }
+    });
+
+    //Sort and run intial world->map->screen space calculations for TSP arrays.
+    overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
+    overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
+    recalculateTSP();
 }
+
 /**
  * Draw icons on the map
  */
@@ -129,10 +149,15 @@ function drawMapOverlay(){
         for(const icon of overlay.nirnroots){
             icon.recalculateBoundingBox();
         }
+        recalculateTSP();
     }
     const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
+        if(showTSP){
+            drawTSP(overlay.tsp_locations);
+        }
+        
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
@@ -148,6 +173,10 @@ function drawMapOverlay(){
         }
     }
     else if(currentOverlay == "NirnRoute"){
+        if(showTSP){
+            drawTSP(overlay.tsp_nirnroots);
+        }
+
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
             nirnIcon.draw(ctx);
@@ -159,7 +188,7 @@ function drawMapOverlay(){
             hloc.draw(ctx, mouseLocInMapCoords);
         }
     }
-    else if(currentOverlay == "Exploration"){
+    else if(currentOverlay == "Exploration"){//TODO: Remove this overlay when we migrate UI out of javascript
         //traveling salesmen overlay.
         var x = viewport.clientWidth;
         var y = viewport.clientHeight;
@@ -214,7 +243,6 @@ function overlayClick(clickLoc){
  * TOPBAR FUNCTIONS
  *  this is the "topbar" on the map canvas.
  *********************************/
-
 function initTopbar(){
     function MapButton(ordinal,y,height,text){
         MapObject.call(this);
@@ -308,8 +336,6 @@ function initTopbar(){
         return false;
     }
 }
-
-
 
 /*********************************
  * GENERAL FUNCTIONS
@@ -519,6 +545,7 @@ function screenSpaceToMapSpace(screenSpacePoint){
     return screenSpacePoint.add(screenOriginInMapCoords);
 }
 
+/**Returns appropriate icon from string input.*/
 function iconSwitch(Input){
     switch (Input) {
         case "Ayleid":return icons.Ayleid;
@@ -536,5 +563,47 @@ function iconSwitch(Input){
         default: 
             console.warn("Element has invalid iconname: " + Input + ".");
             return icons.X;
+    }
+}
+
+/**draws the Traveling salesman path*/
+function drawTSP(arrTSP){
+    if(showTSP){
+        //draw from prev point to current point
+        for(let i = 1; i < arrTSP.length; i++){
+            let pp = mapSpaceToScreenSpace(new Point(arrTSP[i].x, arrTSP[i].y));
+            let p = mapSpaceToScreenSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y));
+            
+            //TODO: add in custom color/line width selection.
+            //TODO: add in secondary line outline to make line "pop" on map better.
+            ctx.beginPath();
+            ctx.lineWidth = 5; 
+            ctx.moveTo(pp.x, pp.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        }
+
+        //draws the last connection from the last point to the first point.
+        let a = mapSpaceToScreenSpace(new Point(arrTSP[0].x, arrTSP[0].y));
+        let z = mapSpaceToScreenSpace(new Point(arrTSP[arrTSP.length - 1].x, arrTSP[arrTSP.length - 1].y));
+        
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(z.x, z.y);
+        ctx.stroke();
+    }
+}
+
+function recalculateTSP(){
+    for(const loc of overlay.tsp_locations){
+        let p = worldSpaceToMapSpace(new Point(loc.cell.x, loc.cell.y));
+        loc.x = p.x;
+        loc.y = p.y;
+    }
+    for(const nirn of overlay.tsp_nirnroots){
+        let p = worldSpaceToMapSpace(new Point(nirn.cell.x, nirn.cell.y));
+        nirn.x = p.x;
+        nirn.y = p.y;
     }
 }
