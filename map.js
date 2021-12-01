@@ -39,7 +39,6 @@ let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let showTSP = false;
 
 //image objects
-let map_topbar;
 let overlay;
 
 /**
@@ -63,12 +62,11 @@ async function initMap(){
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
     initImgs().then(()=>{
-        initTopbar();
         initOverlay();
         initListeners();
 
         //center map on imp city
-        screenOriginInMapCoords = new Point(1700,885);
+        screenOriginInMapCoords = new Point(1300,625);
 
         drawFrame();
         console.log("map init'd");
@@ -79,7 +77,6 @@ function drawFrame(){
     drawBaseMap();
     drawMapOverlay();
     //TODO: don't have topbar overlay map. or move topbar or something aaa idk
-    //map_topbar.draw(ctx);
 }
 
 /**
@@ -240,104 +237,6 @@ function overlayClick(clickLoc){
 }
 
 /*********************************
- * TOPBAR FUNCTIONS
- *  this is the "topbar" on the map canvas.
- *********************************/
-function initTopbar(){
-    function MapButton(ordinal,y,height,text){
-        MapObject.call(this);
-        this.ordinal = ordinal;
-        //this.minX and this.maxX calculated by recalculateBoundingBox
-        this.minY = y;
-        this.maxY = y+height;
-        this.name = text;
-        this.recalculateBoundingBox();
-        
-    }
-    MapButton.prototype = Object.create(MapObject.prototype);
-    MapButton.prototype.draw = function(ctx){
-        let width = this.width();
-        let height = this.height();
-        ctx.beginPath();
-        if(currentOverlay == this.name){
-            ctx.fillStyle = "#ccc";
-        }
-        else{
-            ctx.fillStyle = "#E5D9B9";
-        }
-        ctx.fillRect(this.minX, this.minY, width, height);
-
-        //and now text
-        ctx.beginPath();
-        ctx.fillStyle = "#000000";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        ctx.font = "16px Arial"
-        ctx.fillText(this.name, this.minX + (width/2), this.minY + 16);
-    }
-    MapButton.prototype.recalculateBoundingBox = function(){
-        this.minX = 8 + (map_topbar.width()/3)*this.ordinal;
-        this.maxX = this.minX + (map_topbar.width() - 16)/3;
-    }
-
-    map_topbar = new MapObject();
-    map_topbar.buttons = [];
-    map_topbar.minX = 0;
-    map_topbar.minY = 0;
-    map_topbar.maxX = viewport.clientWidth;
-    map_topbar.maxY = 32;
-
-    map_topbar.buttons.push(new MapButton(0, 6, 20, "Locations"));
-    map_topbar.buttons.push(new MapButton(1, 6, 20, "NirnRoute"));
-    map_topbar.buttons.push(new MapButton(2, 6, 20, "Exploration"));
-
-    map_topbar.draw = function(ctx){
-        let wX = viewport.clientWidth;
-
-        //update our width here for hit detection
-        if(this.maxX != wX){
-            this.maxX = wX;
-            for(const btn of this.buttons){
-                btn.recalculateBoundingBox();
-            }
-        }
-        
-
-        //overlay background
-        ctx.beginPath();
-        ctx.fillStyle = "#FBEFD5";
-        ctx.rect(0,0, wX,32);
-        ctx.fill();
-
-        //overlay buttons
-        for(const btn of this.buttons){
-            btn.draw(ctx);
-        }
-
-        //overlay button dividers.
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.rect(wX/3, 6, 1, 20);
-        ctx.rect(wX/3*2, 6, 1, 20);
-        ctx.fill();
-    }
-
-    map_topbar.click = function topbarClick(coords){
-        if(!this.contains(coords)){
-            return false;
-        }
-        
-        for(const btn of this.buttons){
-            if(btn.contains(coords)){
-                currentOverlay = btn.name;
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-/*********************************
  * GENERAL FUNCTIONS
  *  this is the "topbar" on the map canvas.
  *********************************/
@@ -408,7 +307,7 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    let handled = map_topbar.click(mouseLoc);
+    let handled = false; //do you want to keep this? we may use this kind of thing later on. IDK when tho.
     if(!handled){
         handled = overlayClick(mouseLoc);
     }
