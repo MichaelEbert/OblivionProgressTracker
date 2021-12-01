@@ -36,7 +36,7 @@ let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
-let showTSP = true;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
+let showTSP = false;
 
 //image objects
 let map_topbar;
@@ -79,7 +79,7 @@ function drawFrame(){
     drawBaseMap();
     drawMapOverlay();
     //TODO: don't have topbar overlay map. or move topbar or something aaa idk
-    map_topbar.draw(ctx);
+    //map_topbar.draw(ctx);
 }
 
 /**
@@ -469,6 +469,9 @@ function initListeners(){
         
         drawFrame();
     };
+    document.getElementById("button_Location").addEventListener("click", function(){currentOverlay = "Locations"; drawFrame();});
+    document.getElementById("button_Nirnroot").addEventListener("click", function(){currentOverlay = "NirnRoute"; drawFrame();});
+    document.getElementById("button_ToggleTSP").addEventListener("click", function(){showTSP = !showTSP; drawFrame();});
 }
 
 function updateZoom(deltaZ, zoomPoint){
