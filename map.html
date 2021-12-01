@@ -98,10 +98,15 @@
 	}).call(window);
 </script>
 <script>
+	//I divided these like so for easier editing. 
+		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
 	let welcome = "Welcome to the map!\n\n";
 	let clickIcon = "Click on an icon when it's been discovered/picked.\n\n";
 	let tspExplanation = "The Traveling Salesman Path is a calculated fastest route between each icon, it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.\n\n";
+	
+	//this isn't implemented yet, but should be noted so people aren't surprised when it happens during their run.
 	let randomGateNote = "You need to only discover 40 random oblivion gates. Once you discover 40, the map will stop showing the remaining random gate locations."
+	
 	let helpText = welcome + clickIcon + tspExplanation + randomGateNote;
 	function showHelp(){
 		alert(helpText);
