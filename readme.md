@@ -44,7 +44,7 @@ Common to all nodes. All are optional.
 
 
 # Adding Screenshots
-Screenshots should be taken from the maximum distance at which you can interact with the object. They must be saved as webp and be <= 200 KiB. (a quality setting of 80-90 is about 200 mb if you don't want to fiddle with each image)
+Screenshots should be taken from the maximum distance at which you can interact with the object. They must be saved as webp and be <= 200 KiB. (a quality setting of 80-90 is about 200 kib if you don't want to fiddle with each image)
 
 # License
 This program is free software: you can redistribute it and/or modify
