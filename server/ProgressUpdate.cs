@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 
 namespace ShareApi
 {
+    /// <summary>
+    /// User sends JSON matching this format to input data.
+    /// </summary>
     public class ProgressUpdate
     {
-        public string SaveData { get; set; }
+        public string? SaveData { get; set; }
         /// <summary>
         /// url to publish to. Leave blank if you do not have a url yet.
         /// </summary>
-        public string Url { get; set; }
+        public string? Url { get; set; }
         /// <summary>
         /// 64-byte key used for url validation
         /// </summary>
-        public byte[] Key { get; set; }
+        public byte[]? Key { get; set; }
     }
 }

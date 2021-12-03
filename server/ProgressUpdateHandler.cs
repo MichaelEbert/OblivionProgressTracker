@@ -4,15 +4,15 @@ namespace ShareApi
 {
     [ApiController]
     [Route("share")]
-    public class ProgressManagerHandler : ControllerBase
+    public class ProgressUpdateHandler : ControllerBase
     {
+        private static ProgressManager mgr = new ProgressManager();
         [HttpPost]
         public ActionResult<ProgressUpdate> HandleProgressUpdate(ProgressUpdate update){
-            var good = ProgressUpdateValidator.Validate(update);
-            if (good == ValidationFailedReason.NONE)
+            bool passed = ProgressUpdateValidator.Validate(update, out var reason);
+            if (passed)
             {
-                ProgressManager mgr = new ProgressManager();
-                string newurl = mgr.HandleUpdate(update);
+                string? newurl = mgr.HandleUpdate(update);
                 if (newurl != null)
                 {
                     return Ok(newurl);
@@ -24,7 +24,7 @@ namespace ShareApi
             }
             else
             {
-                return BadRequest(good.ToString());
+                return BadRequest(reason.ToString());
             }
         }
     }

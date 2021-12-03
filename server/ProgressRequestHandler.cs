@@ -17,7 +17,7 @@ namespace ShareApi
             {
                 using (ProgressManagerSql sql = new ProgressManagerSql())
                 {
-                    var result = sql.SqlSaveSelect(url);
+                    var result = ProgressManager.Cache.Get(url, sql.SqlSaveSelect);
                     if(result != null)
                     {
                         return Ok(result);
