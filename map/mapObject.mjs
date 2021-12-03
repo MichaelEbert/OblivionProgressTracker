@@ -106,6 +106,9 @@ MapIcon.prototype.onClick = function(clickPos){
         //no id, so you can't click it.
         return false;
     }
+    if(window.debug){
+        console.log(this.cell.name + " clicked (formId "+this.cell.formId+")");
+    }
     const classname = this.cell.hive.classname;
     let prevState = window.savedata[classname][this.cell.id];
     window.updateChecklistProgress(null, !prevState, null, this.cell);

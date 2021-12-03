@@ -88,7 +88,9 @@
 	//exportNamespace appends everything to window, so it can be called like normal js code.
 	import exportNamespace from './module-shim.js'
 	import * as map from './map.js';
+	import * as point from './map/point.mjs';
 	exportNamespace(map);
+	exportNamespace(point);
 
 	(function(){
 		loadJsonData().then(()=>{

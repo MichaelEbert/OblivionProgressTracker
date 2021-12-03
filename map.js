@@ -11,7 +11,7 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
+export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
@@ -62,8 +62,8 @@ async function initMap(){
         initOverlay();
         initListeners();
 
-        //center map on imp city
-        screenOriginInMapCoords = new Point(1300,625);
+        screenOriginInMapCoords = new Point(0,0);
+        zoomToInitialLocation();
 
         drawFrame();
         console.log("map init'd");
@@ -88,6 +88,33 @@ function drawBaseMap(){
     //main map image.
     ctx.drawImage(img_Map, screenOriginInMapCoords.x * zoomLevel, screenOriginInMapCoords.y * zoomLevel, (img_Map.width * zoomLevel), (img_Map.height * zoomLevel), 
                                     0, 0, img_Map.width, img_Map.height);
+}
+
+/**
+ * Called on map load. Loads the map to the specified point.
+ */
+function zoomToInitialLocation(){
+    let windowParams = new URLSearchParams(window.location.search);
+    //default to imperial city coords
+    let coords = new Point(27223,65975);
+    let maybeFormId = windowParams.get("formId");
+    if(maybeFormId != null){
+        //focus on formId
+        let targetCell = findCell(maybeFormId);
+        if(targetCell != null){
+            coords = new Point(targetCell.x, targetCell.y);
+        }
+    }
+    else 
+    {
+        let maybeX = windowParams.get("x");
+        let maybeY = windowParams.get("y");
+        if(maybeX != null && maybeY != null){
+            coords = new Point(maybeX, maybeY);
+
+        }
+    }
+    centerMap(worldSpaceToMapSpace(coords));
 }
 
 
@@ -211,8 +238,20 @@ function overlayClick(clickLoc){
 
 /*********************************
  * GENERAL FUNCTIONS
- *  this is the "topbar" on the map canvas.
  *********************************/
+
+/**
+ * Center the map on the specified point.
+ * @param {Point} mapPoint point in map coords to center on.
+ */
+function centerMap(mapPoint){
+    let cornerOffset = new Point(viewport.clientWidth / 2, viewport.clientHeight / 2);
+    let newCornerMapCoord = mapPoint.subtract(cornerOffset);
+
+    //moveMap takes a delta, so we subtract new from old. 
+    moveMap(screenOriginInMapCoords.subtract(newCornerMapCoord));
+}
+
 /**
  * Move the map by the specified amount
  * @param {Point} delta delta x and y to move the map, in screen space coords
@@ -410,6 +449,29 @@ function worldSpaceToMapSpace(point){
     let map_y = (MapH * fraction_y) / zoomLevel;
 
     return new Point(map_x, map_y);
+}
+
+//really only useful for debugging
+/**
+ * 
+ * @param {Point} point 
+ */
+function mapSpaceToWorldSpace(point){
+    var mapW = img_Map.width;
+    var mapH = img_Map.height;
+    const worldW = 480000;
+    const worldH = 400000;
+
+    //convert back to float
+    point = point.multiply(zoomLevel);
+    let fractionX = point.x / mapW;
+    let fractionY = point.y / mapH;
+
+    //and multiply
+    let pointX = fractionX * worldW - worldW / 2;
+    let pointY = -1 * (fractionY * worldH - worldH / 2);
+
+    return new Point(pointX, pointY);
 }
 
 /**
