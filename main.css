@@ -41,10 +41,47 @@ td{
 }
 
 .topbar{
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items:stretch;
+	width: 99%; /*99% prevents the rightside of the topbar from hiding behind the scrollbar*/
+	max-height: 2em;
 	position: fixed;
-	background-color: #E5D9B9;
+	background-color: #FBEFD5;
 	padding:0.5em;
 	top: 0; /* hug the top of the window instead of having a buffer */
+	left: 0;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
+}
+
+.topbarSection{
+	flex:1 1 14%;
+	text-align: center;
+	background-color: #EBDFC5;
+	border-right: 1px solid black;
+}
+
+.topbarSublist{
+	background-color: #EBDFC5;
+	display: none;
+}
+
+.topbarSublist a{
+	display:block;
+}
+
+.topbarSection:hover{
+	background-color: #cccccc;
+}
+
+.topbarSublist a:hover{
+	background-color: #cccccc;
+}
+
+.topbarSection a,
+.topbarSection:hover .topbarSublist{
+	display: block;
 }
 
 .contentContainer{
@@ -54,17 +91,29 @@ td{
 
 .resizableContainer{
 	resize: both;
-	overflow:hidden;
-	
+	overflow: hidden;
 }
 
 /*you can't resize iframes, so we use this to give it a nice resizable handle*/
-#iframeContainer{
+.sidebarContainer{
 	border: 1px solid black;
-	height: 500px;
+	height: 90vh;
 	width: 500px;
 	position: sticky;
-	top: 1em;
+	top: 3em;
+	display: flex;
+	flex-direction: column;
+}
+
+#iframeContainer{
+	height: 200px;/*initial  height. User can drag to resize.*/
+	flex: none;/*since this is first, we want it to be the exact size the user specifies. Map is below and will take up all the rest of the space.*/
+}
+
+#wrapper_Map{
+	margin-top: 1em;
+	background-color: #FBEFD5;
+	overflow: hidden;
 }
 
 .iframe{
@@ -72,10 +121,6 @@ td{
 	border: 1px solid gray;
 	width: calc( 100% - 2px);
 	height: 100%
-}
-
-.sidebar{
-	
 }
 
 .main{
@@ -88,7 +133,7 @@ td{
 	font-weight: bold;
 }
 
-.h2{
+.h2,.sectionTitle{
 	font-size: 2.2em;
 	font-weight: bold;
 }
@@ -152,3 +197,21 @@ input[type="number"]{
 	margin-right:0.5em;
 }
 
+.place{
+	text-decoration:underline;
+}
+
+/*mobile/thin window CSS*/
+@media only screen and (orientation: portrait){
+	.topbar{
+		flex-wrap: wrap;
+		max-height: 4em;
+	}
+	.topbarSection{
+		flex:1 0 auto;
+		width:25vw;
+	}
+	.topbarSection:hover .topbarSublist{
+		display: none;/*no more crazy links for mobile*/
+	}
+}

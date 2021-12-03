@@ -31,19 +31,19 @@ function displayPageReferences(unsafeReferences){
 		if(appearance.anchor == null || appearance.path == null){
 			continue;
 		}
+		//table row
 		var elementContainer = document.createElement('tr');
 		elementContainer.classList.add("referenceRow");
-		var nameElement = document.createElement('td');
-		nameElement.innerText = appearance.path;
+
+		//table cell: link to reference
 		var spacerElement = document.createElement('td');
 		var linkElement = document.createElement('a');
-		linkElement.innerText = appearance.anchor;
+		linkElement.innerText = appearance.path;
 		linkElement.href = "../../../speedrun-3.html#"+appearance.anchor;
 		linkElement.target="_top"
-		
-		elementContainer.appendChild(nameElement);
-		elementContainer.appendChild(spacerElement);
 		spacerElement.appendChild(linkElement);
+
+		elementContainer.appendChild(spacerElement);
 		referencesContainer.appendChild(elementContainer);
 	}
 	document.getElementById("references")?.appendChild(referencesContainer);

@@ -73,6 +73,12 @@ function removeUselessSpans(root){
 	}
 }
 
+//call this to do the stuff
+function doIt(){
+	collapseHtml(document.body);
+	removeUselessSpans(document.body);
+}
+
 // regex's to make stuff nicer:
 //remove excess font tags:
 //s/<font[^>]*>//g
@@ -85,3 +91,6 @@ function removeUselessSpans(root){
 //s/<\/span><span[^>]*>//g
 //s/ </span>/</span> /g
 //s/(<span[^>]*>) / $1/g
+
+//replace quest stuff with titles
+//s/^<span class="quest">(.*)<\/span>/<\/div>\r\n\r\n<div class="category">\r\n<div class="categoryTitle">$1<\/div>/g

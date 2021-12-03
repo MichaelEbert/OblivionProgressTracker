@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" ><head>
 	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bree%20Serif"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<script src="obliviondata.js"></script>
@@ -13,44 +14,87 @@
 </head>
 <body>
 <div id="topbar" class="topbar">
-	<div id="progress" class="progress">Total Progress: <span id="totalProgressPercent">0</span>%</div>
-	<div id="links">
-		<a href="./glitches.html">Glitches</a> | 
-		<a href="./casual.html">Casual Guide</a> | 
-		<a href="./speedrun-3.html">Speedrun Guide (v3)</a> | 
-		<a href="./settings.html">Settings</a>
+	<a href="./index.html" class="topbarSection"> Checklist</a>
+	
+	<div class="topbarSection">
+		<a href="./glitches.html">Glitches</a>
+		<div class="topbarSublist">
+			<a href="./glitches.html#permakey">Perma Key</a>
+			<a href="./glitches.html#boostjump">Boost Jump</a>
+			<a href="./glitches.html#duping">Dupe/Duping</a>
+			<a href="./glitches.html#qsqldeaggro">QSQL De-Aggro</a>
+			<a href="./glitches.html#saveclip">Save Clip</a>
+			<a href="./glitches.html#voidwarp">Void Warp</a>
+			<a href="./glitches.html#yieldglitch">Yield Glitch</a>
+			<a href="./glitches.html#eightpotionglitch">8 Potion Glitch</a>
+		</div>
 	</div>
+
+	<div class="topbarSection">
+		<a href="./casual.html">Casual Guide</a>
+		<div class="topbarSublist">
+			<a href="./casual.html#top">item1</a>
+		</div>
+	</div>
+	
+	<div class="topbarSection">
+		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
+		<div class="topbarSublist">
+            <a href="./speedrun-3.html#guide_Pregame">Pregame</a>
+            <a href="./speedrun-3.html#guide_Tutorial">Tutorial</a>
+            <a href="./speedrun-3.html#guide_ImperialCityMarketDistrict">Imperial City Market District</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt1">Mages Guild Pt1</a>
+            <a href="./speedrun-3.html#guide_GoldFarming">Gold Farming/Arcane University</a>
+            <a href="./speedrun-3.html#guide_InvestingCircuit">Investing Circuit</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt2">Mages Guild Pt2</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt1">Main Quest Pt1</a>
+            <a href="./speedrun-3.html#guide_MapExploration">Map Exploration</a>
+            <a href="./speedrun-3.html#guide_TheNirnroute">The Nirnroute</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt2">Main Quest Pt2</a>
+            <a href="./speedrun-3.html#guide_FightersGuild">Fighters Guild</a>
+            <a href="./speedrun-3.html#guide_TheArena">The Arena</a>
+            <a href="./speedrun-3.html#guide_SideQuests">Side Quests</a>
+            <a href="./speedrun-3.html#guide_DarkBrotherhood">Dark Brotherhood</a>
+            <a href="./speedrun-3.html#guide_PowerLeveling">Power Leveling</a>
+            <a href="./speedrun-3.html#guide_ThievesGuild">Thieves Guild</a>
+            <a href="./speedrun-3.html#guide_DaedricShrines">Daedric Shrines</a>
+            <a href="./speedrun-3.html#guide_HeavenStoneGreaterPowers">Heaven Stone Greater Powers</a>
+            <a href="./speedrun-3.html#guide_RandomSkillBooks">Random Skill Books</a>
+            <a href="./speedrun-3.html#guide_TheGreatSkillGrind">The Great Skill Grind</a>
+            <a href="./speedrun-3.html#guide_AnUnexpectedVoyage">An Unexpected Voyage</a>
+            <a href="./speedrun-3.html#guide_ImperialDragonArmor">Imperial Dragon Armor</a>
+        </div>
+	</div>
+	
+	<a href="./settings.html" class="topbarSection"> Settings</a>
+
+	<a href="./map.html" class="topbarSection"> Map</a>
+
+	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
 </div>
-<br/><br/><br/><br/>
+<br/><br/>
+<article id="main" class="main">
+<div id="progress" class="progress">Total Progress: <span class="totalProgressPercent">0</span>%</div>
 <div id="overview" class="section">
 	<div class="h2">Checklist Overview</div>
 
 	<table>
-	<tr><td>Quests Completed(199 + 9 Blood Prices)</td><td><span id="overview_quest"/></td></tr>
-	<tr><td>Master Skills</td><td><span id="overview_skill"/></td></tr>
-	<tr><td>Oblivion Gates Shut</td><td><span id="overview_oblivion_gates"/></td></tr>
-	<tr><td>Horses Owned</td><td><span id="overview_houses"/></td></tr>
-	<tr><td>Houses Owned</td><td><span id="overview_horses"/></td></tr>
-	<tr><td>Stores Invested In</td><td><span id="overview_store"/></td></tr>
-	<tr><td>Artifacts Found</td><td><span id="overview_artifacts"/></td></tr>
-	<tr><td>Skill Books Read</td><td><span id="overview_book"/></td></tr>
-	<tr><td>Places Found</td><td><span id="overview_places_found"/></td></tr>
-	<tr><td>Fame</td><td><span id="overview_fame"/></td></tr>
-	<tr><td>Nirnroots Found</td><td><span id="overview_nirnroot"/></td></tr>
+	<tr><td>Quests Completed(199 + 9 Blood Prices)</td><td><span id="overview_quest"></span></td></tr>
+	<tr><td>Master Skills</td><td><span id="overview_skill"></span></td></tr>
+	<tr><td>Oblivion Gates Shut</td><td><span id="overview_oblivion_gates"></span></td></tr>
+	<tr><td>Horses Owned</td><td><span id="overview_houses"></span></td></tr>
+	<tr><td>Houses Owned</td><td><span id="overview_horses"></span></td></tr>
+	<tr><td>Stores Invested In</td><td><span id="overview_store"></span></td></tr>
+	<tr><td>Artifacts Found</td><td><span id="overview_artifacts"></span></td></tr>
+	<tr><td>Skill Books Read</td><td><span id="overview_book"></span></td></tr>
+	<tr><td>Places Found</td><td><span id="overview_places_found"></span></td></tr>
+	<tr><td>Fame</td><td><span id="overview_fame"></span></td></tr>
+	<tr><td>Nirnroots Found</td><td><span id="overview_nirnroot"></span></td></tr>
 	</table>
 </div>
 
-<div id="questsection" class="section"><div class="h2">Quests</div></div>
-<div id="skillsection" class="section"><div class="h2">Skills</div></div>
-<div id="booksection" class="section"><div class="h2">Books</div></div>
-<div id="storesection" class="section"><div class="h2">Stores invested in</div></div>
-
-<div id="miscsection" class="section">
-	<div class="h2">Other</div>
-</div>
-<button id="resetbutton" onclick="resetProgress(true)">reset progress</button>
-
-
+</article>
+<button id="resetbutton" onclick="resetProgress(true)">Reset progress</button>
 <script>
 init()
 </script>

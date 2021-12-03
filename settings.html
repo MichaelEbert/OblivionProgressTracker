@@ -1,105 +1,101 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="obliviondata.js"></script>
 	<script src="progress.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="sharing.js"></script>
+	<script src="settings.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
 <body>
 <div id="topbar" class="topbar">
-	<div id="links">
-		<a href="./index.html">Checklist</a>
+	<a href="./index.html" class="topbarSection"> Checklist</a>
+	
+	<div class="topbarSection">
 		<a href="./glitches.html">Glitches</a>
-		<a href="./casual.html">Casual Guide</a>
-		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
-		<a href="./settings.html">Settings</a>
+		<div class="topbarSublist">
+			<a href="./glitches.html#permakey">Perma Key</a>
+			<a href="./glitches.html#boostjump">Boost Jump</a>
+			<a href="./glitches.html#duping">Dupe/Duping</a>
+			<a href="./glitches.html#qsqldeaggro">QSQL De-Aggro</a>
+			<a href="./glitches.html#saveclip">Save Clip</a>
+			<a href="./glitches.html#voidwarp">Void Warp</a>
+			<a href="./glitches.html#yieldglitch">Yield Glitch</a>
+			<a href="./glitches.html#eightpotionglitch">8 Potion Glitch</a>
+		</div>
 	</div>
-</div><br/><br/>
+
+	<div class="topbarSection">
+		<a href="./casual.html">Casual Guide</a>
+		<div class="topbarSublist">
+			<a href="./casual.html#top">item1</a>
+		</div>
+	</div>
+	
+	<div class="topbarSection">
+		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
+		<div class="topbarSublist">
+            <a href="./speedrun-3.html#guide_Pregame">Pregame</a>
+            <a href="./speedrun-3.html#guide_Tutorial">Tutorial</a>
+            <a href="./speedrun-3.html#guide_ImperialCityMarketDistrict">Imperial City Market District</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt1">Mages Guild Pt1</a>
+            <a href="./speedrun-3.html#guide_GoldFarming">Gold Farming/Arcane University</a>
+            <a href="./speedrun-3.html#guide_InvestingCircuit">Investing Circuit</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt2">Mages Guild Pt2</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt1">Main Quest Pt1</a>
+            <a href="./speedrun-3.html#guide_MapExploration">Map Exploration</a>
+            <a href="./speedrun-3.html#guide_TheNirnroute">The Nirnroute</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt2">Main Quest Pt2</a>
+            <a href="./speedrun-3.html#guide_FightersGuild">Fighters Guild</a>
+            <a href="./speedrun-3.html#guide_TheArena">The Arena</a>
+            <a href="./speedrun-3.html#guide_SideQuests">Side Quests</a>
+            <a href="./speedrun-3.html#guide_DarkBrotherhood">Dark Brotherhood</a>
+            <a href="./speedrun-3.html#guide_PowerLeveling">Power Leveling</a>
+            <a href="./speedrun-3.html#guide_ThievesGuild">Thieves Guild</a>
+            <a href="./speedrun-3.html#guide_DaedricShrines">Daedric Shrines</a>
+            <a href="./speedrun-3.html#guide_HeavenStoneGreaterPowers">Heaven Stone Greater Powers</a>
+            <a href="./speedrun-3.html#guide_RandomSkillBooks">Random Skill Books</a>
+            <a href="./speedrun-3.html#guide_TheGreatSkillGrind">The Great Skill Grind</a>
+            <a href="./speedrun-3.html#guide_AnUnexpectedVoyage">An Unexpected Voyage</a>
+            <a href="./speedrun-3.html#guide_ImperialDragonArmor">Imperial Dragon Armor</a>
+        </div>
+	</div>
+	
+	<a href="./settings.html" class="topbarSection"> Settings</a>
+
+	<a href="./map.html" class="topbarSection"> Map</a>
+</div>
+<br/><br/>
 <div class="h2">Settings</div>
-<input type="checkbox" id="minipageCheck"/> Link books to local page (instead of direct to UESP)<br/>
-<input type="checkbox" id="iframeCheck"/> enable opening in iframe<br/>
-<input type="text" id="serverUrl" size="80"/>Share server path <br/>
-<input type="text" id="myShareUrl" readonly="true"/>my share path <button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress</button><br/>
-<input type="text" id="remoteShareUrl"/>remote share path<br/>
-<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
-<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
-
+<div class="section">
+<div class="sectionTitle">Preferences</div>
+	<input type="checkbox" id="minipageCheck"/> Link books to local page (uncheck for direct UESP links)<br/>
+	<select name="iframeCheck" id="iframeCheck">
+		<option value="auto">Auto</option>
+		<option value="on">Always on</option>
+		<option value="off">Always off</option>
+	</select> enable opening links in-page on iframe<br/>
+</div>
+<div class="section">
+<div class="sectionTitle">Sharing</div>
+	<input type="text" id="serverUrl" size="60"/>Share server path <br/>
+	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
+	<input type="checkbox" id="autoUploadCheck"/>Auto upload save on change<br/>
+	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
+</div>
+<div class="section">
+<div class="sectionTitle">Import/Export</div>
+	<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
+	<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
+</div>
+<p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 <script>
-loadProgressFromCookie();
-document.getElementById("fileinput").addEventListener('change',importProgress);
-document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
-document.getElementById("iframeCheck").addEventListener('change',onSettingChange);
-document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
-document.getElementById("myShareUrl").addEventListener('change',onSettingChangeText);
-document.getElementById("remoteShareUrl").addEventListener('change',setRemoteUrl);
-
-if(settings.minipageCheck){
-	document.getElementById("minipageCheck").checked = true;
-}
-else{
-	document.getElementById("minipageCheck").checked = false;
-}
-
-if(settings.iframeCheck){
-	document.getElementById("iframeCheck").checked = true;
-}
-else{
-	document.getElementById("iframeCheck").checked = false;
-}
-
-
-if(settings.serverUrl){
-	document.getElementById("serverUrl").value = settings.serverUrl;
-}
-
-if(settings.myShareUrl){
-	document.getElementById("myShareUrl").value = settings.myShareUrl;
-}
-
-if(settings.remoteShareUrl){
-	document.getElementById("remoteShareUrl").value = settings.remoteShareUrl;
-}
-
-function onSettingChange(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.checked;
-	saveCookie("settings",settings);	
-}
-
-function onSettingChangeText(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.value;
-	saveCookie("settings",settings);
-}
-
-function exportProgress(){
-	//from stackoverflow
-	const progressString = new Blob([JSON.stringify(savedata)], {type:"text/plain"});
-	const element = document.createElement('a');
-	element.href = window.URL.createObjectURL(progressString);
-	element.download = "oblivionProgressTracker.save"
-	document.body.appendChild(element);
-	element.click();
-	document.body.removeChild(element);
-	window.URL.revokeObjectURL(progressString);
-}
-
-function importProgress(eventargs){
-	var filedata = document.getElementById("fileinput").files[0].text();
-	filedata.then(x => {
-		savedata = JSON.parse(x);
-		saveProgress();
-		alert("progress imported");
-	});
-}
-
-
-
+	init();
 </script>
 </body>
 </html>

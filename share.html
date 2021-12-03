@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+    <link rel="stylesheet" type="text/css" href="guide.css"/>
+    <script src="progress.js"></script>
+	<script src="base64ArrayBuffer.js"></script>
+	<script src="sharing.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Share — Interactive Oblivion Checklist</title>
+</head>
+<body>
+    Downloading Save...
+    <script>
+        //load a very minimal set of scripts, just enough to download progress.
+        let shareCode = new URLSearchParams(window.location.search).get("code");
+        if(shareCode == null || shareCode == ""){
+            window.location.href = "./index.html";
+        }
+        else{
+            loadSettingsFromCookie();
+
+            settings.remoteShareCode = shareCode;
+            saveCookie("settings",settings);
+            startSpectating(false,false)
+                .then(()=>window.location.href = "./index.html")
+                .catch(()=>alert("invalid url"));
+        }
+    </script>
+</body>
+</html>

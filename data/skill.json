@@ -1,25 +1,29 @@
-{"version":1,"elements":[
-{"id":0,"name":"Armorer","specialization":"Combat"}
-,{"id":1,"name":"Athletics","specialization":"Combat"}
-,{"id":2,"name":"Blade","specialization":"Combat"}
-,{"id":3,"name":"Block","specialization":"Combat"}
-,{"id":4,"name":"Blunt","specialization":"Combat"}
-,{"id":5,"name":"Hand to Hand","specialization":"Combat"}
-,{"id":6,"name":"Heavy Armor","specialization":"Combat"}
-
-,{"id":7,"name":"Alchemy","specialization":"Magic"}
-,{"id":8,"name":"Alteration","specialization":"Magic"}
-,{"id":9,"name":"Conjuration","specialization":"Magic"}
-,{"id":10,"name":"Destruction","specialization":"Magic"}
-,{"id":11,"name":"Illusion","specialization":"Magic"}
-,{"id":12,"name":"Mysticism","specialization":"Magic"}
-,{"id":13,"name":"Restoration","specialization":"Magic"}
-
-,{"id":14,"name":"Acrobatics","specialization":"Stealth"}
-,{"id":15,"name":"Light Armor","specialization":"Stealth"}
-,{"id":16,"name":"Marksman","specialization":"Stealth"}
-,{"id":17,"name":"Mercantile","specialization":"Stealth"}
-,{"id":18,"name":"Security","specialization":"Stealth"}
-,{"id":19,"name":"Sneak","specialization":"Stealth"}
-,{"id":20,"name":"Speechcraft","specialization":"Stealth"}
+{"version":4,"name":"Skills","classname":"skill","weight":15,"elements":[
+    {"name":"Combat","elements":[
+		{"formId":"0xFFFFFFE0","name":"Armorer"}
+		,{"formId":"0xFFFFFFE1","name":"Athletics"}
+		,{"formId":"0xFFFFFFE2","name":"Blade"}
+		,{"formId":"0xFFFFFFE3","name":"Block"}
+		,{"formId":"0xFFFFFFE4","name":"Blunt"}
+		,{"formId":"0xFFFFFFE5","name":"Hand to Hand"}
+		,{"formId":"0xFFFFFFE6","name":"Heavy Armor"}
+	]}
+	,{"name":"Magic","elements":[
+		{"formId":"0xFFFFFFE7","name":"Alchemy"}
+		,{"formId":"0xFFFFFFE8","name":"Alteration"}
+		,{"formId":"0xFFFFFFE9","name":"Conjuration"}
+		,{"formId":"0xFFFFFFEA","name":"Destruction"}
+		,{"formId":"0xFFFFFFEB","name":"Illusion"}
+		,{"formId":"0xFFFFFFEC","name":"Mysticism"}
+		,{"formId":"0xFFFFFFED","name":"Restoration"}
+	]}
+	,{"name":"Stealth","elements":[
+		{"formId":"0xFFFFFFEE","name":"Acrobatics"}
+		,{"formId":"0xFFFFFFEF","name":"Light Armor"}
+		,{"formId":"0xFFFFFFF0","name":"Marksman"}
+		,{"formId":"0xFFFFFFF1","name":"Mercantile"}
+		,{"formId":"0xFFFFFFF2","name":"Security"}
+		,{"formId":"0xFFFFFFF3","name":"Sneak"}
+		,{"formId":"0xFFFFFFF4","name":"Speechcraft"}
+	]}
 ]}
