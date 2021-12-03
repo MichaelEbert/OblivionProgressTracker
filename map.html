@@ -73,9 +73,15 @@
 </div>
 <br/>
 
-<h1 style="text-align: center;">Map Area</h1>
-<p>This is where the explanation goes.</p>
-<div style="height:80vh;" id="wrapper_Map"></div>
+
+<div style="margin-top: 1em;">
+	<button id="button_Location" title="Shows all Locations that need to be discovered.">Locations</button> 
+	<button id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</button>
+	<button id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Toggle Traveling Salesman Path</button>
+	<button onclick="showHelp()">Help!</button>
+</div>
+
+<div style="height:85vh; border: solid 1px" id="wrapper_Map"></div>
 
 <script type="module">
 	//normally, we can't call module code from non-module code.
@@ -90,6 +96,21 @@
 			initMap();
 		});
 	}).call(window);
+</script>
+<script>
+	//I divided these like so for easier editing. 
+		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
+	let welcome = "Welcome to the map!\n\n";
+	let clickIcon = "Click on an icon when it's been discovered/picked.\n\n";
+	let tspExplanation = "The Traveling Salesman Path is a calculated fastest route between each icon, it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.\n\n";
+	
+	//this isn't implemented yet, but should be noted so people aren't surprised when it happens during their run.
+	let randomGateNote = "You need to only discover 40 random oblivion gates. Once you discover 40, the map will stop showing the remaining random gate locations."
+	
+	let helpText = welcome + clickIcon + tspExplanation + randomGateNote;
+	function showHelp(){
+		alert(helpText);
+	}
 </script>
 </body>
 </html>

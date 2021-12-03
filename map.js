@@ -1,12 +1,10 @@
 //TODO: Figure out Random Gate tracking?
-    //seperate counter for found random gates?
+    //seperate counter for found random gates, count to 40 and stop drawing remaining gates.
 
-//some decorations from the guide that might be useful.
-    //TODO: Add pink circle for fixed gates 
+//some decorations from the guide that might be useful. //or We could just insert these things into the name of the gates.
+    //TODO: Add pink circle for fixed gates  
     //TODO: Add green plus for 2 fame gates
     //TODO: add blue star for no-reroll gates
-
-//TODO: add a legend overlay button (probably can be put into the explnation/help button after UI migration)
 
 //TODO: figure out how discovered locations are tracked and implement it.
 
@@ -36,17 +34,15 @@ let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
 let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
-let showTSP = true;//draw traveling salesman path. - should be a checkbox when we change over to UI being in HTML
+let showTSP = false;
 
 //image objects
-let map_topbar;
 let overlay;
 
 /**
  * Last position of the mouse. used for rendering mouseover stuff.
  */
 var lastMouseLoc = new Point(0,0);
-let mousedown = false;
 
 let img_Map;
 let icons = {};
@@ -63,12 +59,11 @@ async function initMap(){
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
     initImgs().then(()=>{
-        initTopbar();
         initOverlay();
         initListeners();
 
         //center map on imp city
-        screenOriginInMapCoords = new Point(1700,885);
+        screenOriginInMapCoords = new Point(1300,625);
 
         drawFrame();
         console.log("map init'd");
@@ -78,8 +73,6 @@ async function initMap(){
 function drawFrame(){
     drawBaseMap();
     drawMapOverlay();
-    //TODO: don't have topbar overlay map. or move topbar or something aaa idk
-    map_topbar.draw(ctx);
 }
 
 /**
@@ -188,28 +181,6 @@ function drawMapOverlay(){
             hloc.draw(ctx, mouseLocInMapCoords);
         }
     }
-    else if(currentOverlay == "Exploration"){//TODO: Remove this overlay when we migrate UI out of javascript
-        //traveling salesmen overlay.
-        var x = viewport.clientWidth;
-        var y = viewport.clientHeight;
-
-        ctx.beginPath();
-        ctx.fillStyle = "#FBEFD5";
-        ctx.rect(x/2 - 125, y/2 - 75, 250, 150);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = "#E5D9B9";
-        ctx.rect(x/2 - 100, y/2 - 50, 200, 100);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-        ctx.font = "16px Arial";
-        ctx.fillText("Not yet implemented. :(", x/2 , y/2);
-        ctx.fill();
-    }
 }
 
 /**
@@ -240,104 +211,6 @@ function overlayClick(clickLoc){
 }
 
 /*********************************
- * TOPBAR FUNCTIONS
- *  this is the "topbar" on the map canvas.
- *********************************/
-function initTopbar(){
-    function MapButton(ordinal,y,height,text){
-        MapObject.call(this);
-        this.ordinal = ordinal;
-        //this.minX and this.maxX calculated by recalculateBoundingBox
-        this.minY = y;
-        this.maxY = y+height;
-        this.name = text;
-        this.recalculateBoundingBox();
-        
-    }
-    MapButton.prototype = Object.create(MapObject.prototype);
-    MapButton.prototype.draw = function(ctx){
-        let width = this.width();
-        let height = this.height();
-        ctx.beginPath();
-        if(currentOverlay == this.name){
-            ctx.fillStyle = "#ccc";
-        }
-        else{
-            ctx.fillStyle = "#E5D9B9";
-        }
-        ctx.fillRect(this.minX, this.minY, width, height);
-
-        //and now text
-        ctx.beginPath();
-        ctx.fillStyle = "#000000";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        ctx.font = "16px Arial"
-        ctx.fillText(this.name, this.minX + (width/2), this.minY + 16);
-    }
-    MapButton.prototype.recalculateBoundingBox = function(){
-        this.minX = 8 + (map_topbar.width()/3)*this.ordinal;
-        this.maxX = this.minX + (map_topbar.width() - 16)/3;
-    }
-
-    map_topbar = new MapObject();
-    map_topbar.buttons = [];
-    map_topbar.minX = 0;
-    map_topbar.minY = 0;
-    map_topbar.maxX = viewport.clientWidth;
-    map_topbar.maxY = 32;
-
-    map_topbar.buttons.push(new MapButton(0, 6, 20, "Locations"));
-    map_topbar.buttons.push(new MapButton(1, 6, 20, "NirnRoute"));
-    map_topbar.buttons.push(new MapButton(2, 6, 20, "Exploration"));
-
-    map_topbar.draw = function(ctx){
-        let wX = viewport.clientWidth;
-
-        //update our width here for hit detection
-        if(this.maxX != wX){
-            this.maxX = wX;
-            for(const btn of this.buttons){
-                btn.recalculateBoundingBox();
-            }
-        }
-        
-
-        //overlay background
-        ctx.beginPath();
-        ctx.fillStyle = "#FBEFD5";
-        ctx.rect(0,0, wX,32);
-        ctx.fill();
-
-        //overlay buttons
-        for(const btn of this.buttons){
-            btn.draw(ctx);
-        }
-
-        //overlay button dividers.
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.rect(wX/3, 6, 1, 20);
-        ctx.rect(wX/3*2, 6, 1, 20);
-        ctx.fill();
-    }
-
-    map_topbar.click = function topbarClick(coords){
-        if(!this.contains(coords)){
-            return false;
-        }
-        
-        for(const btn of this.buttons){
-            if(btn.contains(coords)){
-                currentOverlay = btn.name;
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-/*********************************
  * GENERAL FUNCTIONS
  *  this is the "topbar" on the map canvas.
  *********************************/
@@ -353,8 +226,12 @@ function moveMap(delta){
     }
     
     //clamp values to prevent moving map off screen.
-    if(screenOriginInMapCoords.x < 0) screenOriginInMapCoords.x = 0;
-    if(screenOriginInMapCoords.y < 0) screenOriginInMapCoords.y = 0;
+    if(screenOriginInMapCoords.x < 0) {
+        screenOriginInMapCoords.x = 0;
+    }
+    if(screenOriginInMapCoords.y < 0) {
+        screenOriginInMapCoords.y = 0;
+    }
 
     const currentMapWidth = img_Map.width / zoomLevel;
     const currentMapHeight = img_Map.height / zoomLevel;
@@ -408,7 +285,7 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    let handled = map_topbar.click(mouseLoc);
+    let handled = false; //do we keep this? idk what else we'd use it for.
     if(!handled){
         handled = overlayClick(mouseLoc);
     }
@@ -469,6 +346,18 @@ function initListeners(){
         
         drawFrame();
     };
+    document.getElementById("button_Location").addEventListener("click", function(){
+        currentOverlay = "Locations"; 
+        drawFrame();
+    });
+    document.getElementById("button_Nirnroot").addEventListener("click", function(){
+        currentOverlay = "NirnRoute"; 
+        drawFrame();
+    });
+    document.getElementById("button_ToggleTSP").addEventListener("click", function(){
+        showTSP = !showTSP; 
+        drawFrame();
+    });
 }
 
 function updateZoom(deltaZ, zoomPoint){
