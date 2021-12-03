@@ -41,7 +41,7 @@ namespace ShareApi
         public ReadCache()
         {
         }
-        
+
         public string? Get(string key, Func<string, string?> readFunction)
         {
             bool cacheHit = cache.TryGetValue(key, out CacheEntry? maybeValue);
@@ -86,13 +86,14 @@ namespace ShareApi
                 //first, grab data from SQL.
                 //then, add to cache.
                 string? value = readFunction(key);
-                if(value == null)
+                if (value == null)
                 {
                     return null;
                 }
 
                 //now that we have data, lock and add to cache.
-                lock (lockObj) {
+                lock (lockObj)
+                {
                     //first, remove teh oldest entry if needed.
                     if (cache.Count >= NUM_CACHE_ENTRIES)
                     {
@@ -111,7 +112,7 @@ namespace ShareApi
                     SetMostRecentlyUsed(newEntry);
 
                     //if this is the first element, oldest is null. lets fix that.
-                    if(oldest == null)
+                    if (oldest == null)
                     {
                         oldest = newEntry;
                     }
@@ -156,3 +157,4 @@ namespace ShareApi
             newest = entry;
         }
     }
+}

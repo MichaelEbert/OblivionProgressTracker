@@ -63,10 +63,10 @@ namespace ShareApi
         /// <param name="update"></param>
         /// <returns></returns>
         public string? HandleUpdate(ProgressUpdate update){
-            string url = update.Url;
+            string? url = update.Url;
             using(ProgressManagerSql sql = new ProgressManagerSql()) { 
                 var storedUrl = sql.SqlUrlSelect(update.Key);
-                if (storedUrl == null && update.Url == null){
+                if (storedUrl == null && url == null){
                     //this is a new request. 
                     url = GenerateNewUrlAndInsert(sql, update.Key);
                 }
