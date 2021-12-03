@@ -76,7 +76,7 @@ MapIcon.prototype.draw = function(ctx, mouseLoc){
             //create rect that contains text and the icon.
 
             //start by initializing font stuff
-            ctx.font = "16px";
+            ctx.font = "16px serif";
             let textMetrics = ctx.measureText(this.cell.name);
 
             //create background of popup window
