@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace ShareApi
 {
+    /// <summary>
+    /// User sends JSON matching this format to input data.
+    /// </summary>
     public class ProgressUpdate
     {
         public string SaveData { get; set; }
