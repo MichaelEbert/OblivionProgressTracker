@@ -100,3 +100,14 @@ MapIcon.prototype.draw = function(ctx, mouseLoc){
         }
     }
 }
+
+MapIcon.prototype.onClick = function(clickPos){
+    if(this.cell.id == null){
+        //no id, so you can't click it.
+        return false;
+    }
+    const classname = this.cell.hive.classname;
+    let prevState = window.savedata[classname][this.cell.id];
+    window.updateChecklistProgress(null, !prevState, null, this.cell);
+    return true;
+}

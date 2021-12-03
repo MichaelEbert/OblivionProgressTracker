@@ -194,16 +194,15 @@ function overlayClick(clickLoc){
     if(currentOverlay == "Locations"){
         for(const icon of overlay.locations){
             if(icon.contains(clickLocInMapSpace)){
-                console.log("location "+icon.cell.formId+"("+icon.cell.name+") clicked");
-                return true;
+                //first, get current state.
+                return icon.onClick(clickLoc);
             }
         }
     }
     else if(currentOverlay == "NirnRoute"){
         for(const icon of overlay.nirnroots){
             if(icon.contains(clickLocInMapSpace)){
-                console.log("nirnroot "+icon.cell.formId+" clicked");
-                return true;
+                return icon.onClick(clickLoc);
             }
         }
     }
@@ -285,10 +284,7 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    let handled = false; //do we keep this? idk what else we'd use it for.
-    if(!handled){
-        handled = overlayClick(mouseLoc);
-    }
+    let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
     if(handled){
         drawFrame();
     }
