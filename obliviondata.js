@@ -154,7 +154,7 @@ async function mergeData(hive, basedir="."){
 	if(hive.version >= 3){
 		//jsonTree is by formId. load IDs.
 		try{
-			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
+			const mapFilename = hive.classname.toLowerCase()+"_custom.json";
 			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
 			if(hive.classname == "nirnroot" && window.debug){
 				//debugger;
