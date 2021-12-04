@@ -11,17 +11,20 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons};
+export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
-
+window.debug = true;
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
  */
 let viewport;
 let canvas;
 let ctx;
+function getCtx(){
+    return ctx;
+}
 
 let zoomLevel = 1;
 let minZoom = 0.2;
@@ -37,7 +40,10 @@ let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
 let showTSP = false;
 
 //image objects
-let overlay;
+let _overlay;
+function getOverlay(){
+    return _overlay;
+}
 
 /**
  * Last position of the mouse. used for rendering mouseover stuff.
@@ -123,37 +129,38 @@ function zoomToInitialLocation(){
  *  this is the icons n stuff on the map canvas.
  *********************************/
 function initOverlay(){
-    overlay = {
+    _overlay = {
         locations : [],
         tsp_locations : [],
         nirnroots : [],
         tsp_nirnroots : [],
-        lastZoomLevel : zoomLevel
+        lastZoomLevel : zoomLevel,
+        currentLocation : null
     }
 
     runOnTree(jsondata.location, function(loc){
         let newIcon = new MapIcon(loc);
-        overlay.locations.push(newIcon);
+        _overlay.locations.push(newIcon);
         
         if(loc.tspID != null){
-            overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:newIcon.cell});
+            _overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:newIcon.cell});
         }
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors"){
             let newIcon = new MapIcon(nirn)
-            overlay.nirnroots.push(newIcon);
+            _overlay.nirnroots.push(newIcon);
 
             if(nirn.tspID != null){
-                overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:newIcon.cell});
+                _overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:newIcon.cell});
             }
         }
     });
 
     //Sort and run intial world->map->screen space calculations for TSP arrays.
-    overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
-    overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
+    _overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
+    _overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
     recalculateTSP();
 }
 
@@ -161,12 +168,12 @@ function initOverlay(){
  * Draw icons on the map
  */
 function drawMapOverlay(){
-    if(zoomLevel != overlay.lastZoomLevel){
-        overlay.lastZoomLevel = zoomLevel;
-        for(const locIcon of overlay.locations){
+    if(zoomLevel != _overlay.lastZoomLevel){
+        _overlay.lastZoomLevel = zoomLevel;
+        for(const locIcon of _overlay.locations){
             locIcon.recalculateBoundingBox();
         }
-        for(const icon of overlay.nirnroots){
+        for(const icon of _overlay.nirnroots){
             icon.recalculateBoundingBox();
         }
         recalculateTSP();
@@ -175,13 +182,13 @@ function drawMapOverlay(){
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
         if(showTSP){
-            drawTSP(overlay.tsp_locations);
+            drawTSP(_overlay.tsp_locations);
         }
         
         let hloc = null; //tracks hovered location index to redraw it last.
-        for(const locIcon of overlay.locations){
+        for(const locIcon of _overlay.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
-            locIcon.draw(ctx);
+            locIcon.draw(ctx, null, _overlay.currentLocation);
             if(locIcon.contains(mouseLocInMapCoords)){
                 hloc = locIcon;
             }
@@ -189,16 +196,16 @@ function drawMapOverlay(){
 
         //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
         if(hloc != null){
-            hloc.draw(ctx, mouseLocInMapCoords);
+            hloc.draw(ctx, mouseLocInMapCoords, _overlay.currentLocation);
         }
     }
     else if(currentOverlay == "NirnRoute"){
         if(showTSP){
-            drawTSP(overlay.tsp_nirnroots);
+            drawTSP(_overlay.tsp_nirnroots);
         }
 
         let hloc = null; //tracks hovered location index to redraw it last.
-        for(const nirnIcon of overlay.nirnroots){
+        for(const nirnIcon of _overlay.nirnroots){
             nirnIcon.draw(ctx);
             if(nirnIcon.contains(mouseLocInMapCoords)){
                 hloc = nirnIcon;
@@ -210,6 +217,33 @@ function drawMapOverlay(){
     }
 }
 
+function overlayClick(clickLoc){
+    const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
+    if(currentOverlay == "Locations"){
+        for(const icon of _overlay.locations){
+            if(icon.contains(clickLocInMapSpace)){
+                if(window.debug){
+                    console.log("selected "+icon.cell.formId);
+                }
+                _overlay.currentLocation = icon;
+                return true;
+            }
+        }
+    }
+    else if(currentOverlay == "NirnRoute"){
+        for(const icon of _overlay.nirnroots){
+            if(icon.contains(clickLocInMapSpace)){
+                if(window.debug){
+                    console.log("selected "+icon.cell.formId);
+                }
+                _overlay.currentLocation = icon;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 /**
  * Handle click on the overlay layer.
  * @param {Point} lastMouseLoc screen space coordinates of mouse click
@@ -219,15 +253,14 @@ function overlayDoubleClick(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
     const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
     if(currentOverlay == "Locations"){
-        for(const icon of overlay.locations){
+        for(const icon of _overlay.locations){
             if(icon.contains(clickLocInMapSpace)){
-                //first, get current state.
                 return icon.onClick(clickLoc);
             }
         }
     }
     else if(currentOverlay == "NirnRoute"){
-        for(const icon of overlay.nirnroots){
+        for(const icon of _overlay.nirnroots){
             if(icon.contains(clickLocInMapSpace)){
                 return icon.onClick(clickLoc);
             }
@@ -323,10 +356,10 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    //let handled = overlayDoubleClick(mouseLoc); //do we keep this? idk what else we'd use it for.
-    //if(handled){
-    //    drawFrame();
-    //}
+    let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
+    if(handled){
+        drawFrame();
+    }
 }
 
 function onMouseDoubleClick(mouseLoc){
@@ -566,12 +599,12 @@ function drawTSP(arrTSP){
 }
 
 function recalculateTSP(){
-    for(const loc of overlay.tsp_locations){
+    for(const loc of _overlay.tsp_locations){
         let p = worldSpaceToMapSpace(new Point(loc.cell.x, loc.cell.y));
         loc.x = p.x;
         loc.y = p.y;
     }
-    for(const nirn of overlay.tsp_nirnroots){
+    for(const nirn of _overlay.tsp_nirnroots){
         let p = worldSpaceToMapSpace(new Point(nirn.cell.x, nirn.cell.y));
         nirn.x = p.x;
         nirn.y = p.y;

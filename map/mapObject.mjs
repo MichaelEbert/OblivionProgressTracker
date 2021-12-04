@@ -66,7 +66,7 @@ MapIcon.prototype.recalculateBoundingBox = function(){
  * Draw this icon on the canvas.
  * @param {CanvasRenderingContext2D} ctx 
  */
-MapIcon.prototype.draw = function(ctx, mouseLoc){
+MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //draws the name for the map icon if hovered.
     //for drawing, we have to convert back to screen space.
     const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
@@ -91,7 +91,16 @@ MapIcon.prototype.draw = function(ctx, mouseLoc){
             ctx.textAlign = "left";
             ctx.fillText(this.cell.name, screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
             ctx.fill();
+
+            //TODO: distance here.
         }
+    }
+    if(currentSelection == this){
+        ctx.beginPath();
+        ctx.fillStyle = "#00DD00";
+        ctx.rect(screenSpaceIconOrigin.x - 1, screenSpaceIconOrigin.y - 1, this.width() + 2, this.height() + 2);
+        ctx.fill();
+
     }
     ctx.drawImage(this.icon, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
     if(this.cell.id != null){
