@@ -15,7 +15,7 @@ export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpa
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
-window.debug = true;
+
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
  */
