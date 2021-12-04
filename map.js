@@ -215,7 +215,7 @@ function drawMapOverlay(){
  * @param {Point} lastMouseLoc screen space coordinates of mouse click
  * @returns if click was handled (ie, something was clicked on)
  */
-function overlayClick(clickLoc){
+function overlayDoubleClick(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
     const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
     if(currentOverlay == "Locations"){
@@ -323,7 +323,14 @@ function onMouseClick(mouseLoc){
     if(window.debug){
         console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
     }
-    let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
+    //let handled = overlayDoubleClick(mouseLoc); //do we keep this? idk what else we'd use it for.
+    //if(handled){
+    //    drawFrame();
+    //}
+}
+
+function onMouseDoubleClick(mouseLoc){
+    let handled = overlayDoubleClick(mouseLoc); //do we keep this? idk what else we'd use it for.
     if(handled){
         drawFrame();
     }
@@ -332,14 +339,23 @@ function onMouseClick(mouseLoc){
 function initListeners(){
     const CLICK_LIMIT_PIXELS = 8;
     const CLICK_LIMIT_DOWN_MS = 150;
+    //a little more time than 2 clicks
+    const DOUBLE_CLICK_LIMIT_MS = 350;
 
     /**
      * mouse down location
      */
     let mouseDownLoc = {x:null,y:null}
-    let clickStartTime;
+    let clickStartTime = 0;
     let isDown = false;
+    let doubleClickStartTime = 0;
+    let doubleClickMouseDownLoc = new Point(null,null);
     viewport.addEventListener("mousedown", function(event){
+        //check double click stuff
+        if(Date.now() - clickStartTime < DOUBLE_CLICK_LIMIT_MS){
+            doubleClickMouseDownLoc = mouseDownLoc;
+            doubleClickStartTime = clickStartTime;
+        }
         mouseDownLoc = new Point(event.offsetX, event.offsetY);
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         clickStartTime = Date.now();
@@ -359,13 +375,20 @@ function initListeners(){
     viewport.addEventListener("mouseup", function(event){
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         isDown = false;
-        //yay we get to interpret clicks on our own! /s
-        if(Math.abs(mouseDownLoc.x - event.offsetX) < CLICK_LIMIT_PIXELS &&
-            Math.abs(mouseDownLoc.y - event.offsetY) < CLICK_LIMIT_PIXELS &&
-            Date.now() - clickStartTime < CLICK_LIMIT_DOWN_MS){
-                onMouseClick(lastMouseLoc);
+        //interpret double-clicks first.
+        if(Math.abs(doubleClickMouseDownLoc.x - event.offsetX) < CLICK_LIMIT_PIXELS &&
+            Math.abs(doubleClickMouseDownLoc.y - event.offsetY) < CLICK_LIMIT_PIXELS &&
+            Date.now() - doubleClickStartTime < DOUBLE_CLICK_LIMIT_MS){
+                //double click.
+                onMouseDoubleClick(lastMouseLoc);
         }
-        //TODO: handle double clicks
+        else{
+            if(Math.abs(mouseDownLoc.x - event.offsetX) < CLICK_LIMIT_PIXELS &&
+                Math.abs(mouseDownLoc.y - event.offsetY) < CLICK_LIMIT_PIXELS &&
+                Date.now() - clickStartTime < CLICK_LIMIT_DOWN_MS){
+                    onMouseClick(lastMouseLoc);
+            }
+        }
     });
     viewport.onmouseout = function(){isDown = false;};
     viewport.onwheel = function(e){    
