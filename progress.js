@@ -338,6 +338,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				fn(cell, valueAsCorrectType);
 			}
 		}
+		saveProgressToCookie();
 		return true;
 	}
 	else{
@@ -355,6 +356,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 					fn(cell, valueAsCorrectType);
 				}
 			}
+			saveProgressToCookie();
 			return true;
 		}
 	}

@@ -74,18 +74,19 @@
 <div class="h2">Settings</div>
 <div class="section">
 <div class="sectionTitle">Preferences</div>
-	<input type="checkbox" id="minipageCheck"/> Link books to local page (uncheck for direct UESP links)<br/>
+	<input type="checkbox" id="minipageCheck" class="autosetting"/> Link books to local page (uncheck for direct UESP links)<br/>
 	<select name="iframeCheck" id="iframeCheck">
 		<option value="auto">Auto</option>
 		<option value="on">Always on</option>
 		<option value="off">Always off</option>
 	</select> enable opening links in-page on iframe<br/>
+	<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"/> Show distance between locations on map<br/>
 </div>
 <div class="section">
 <div class="sectionTitle">Sharing</div>
 	<input type="text" id="serverUrl" size="60"/>Share server path <br/>
 	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
-	<input type="checkbox" id="autoUploadCheck"/>Auto upload save on change<br/>
+	<input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change<br/>
 	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
 </div>
 <div class="section">
