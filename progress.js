@@ -175,7 +175,7 @@ function initSettings(){
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	
 	//TODO: fix my shit encapsulation. until then...
-	if(initShareSettings != null){
+	if(typeof(initShareSettings) != "undefined"){
 		initShareSettings();
 	}
 
