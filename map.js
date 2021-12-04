@@ -223,9 +223,15 @@ function overlayClick(clickLoc){
         for(const icon of _overlay.locations){
             if(icon.contains(clickLocInMapSpace)){
                 if(window.debug){
-                    console.log("selected "+icon.cell.formId);
+                    let name = icon.cell.name ?? icon.cell.formId;
+                    console.log("selected "+name);
                 }
-                _overlay.currentLocation = icon;
+                if(_overlay.currentLocation == icon){
+                    _overlay.currentLocation = null;
+                }
+                else{
+                    _overlay.currentLocation = icon;
+                }
                 return true;
             }
         }
@@ -234,9 +240,15 @@ function overlayClick(clickLoc){
         for(const icon of _overlay.nirnroots){
             if(icon.contains(clickLocInMapSpace)){
                 if(window.debug){
-                    console.log("selected "+icon.cell.formId);
+                    let name = icon.cell.name ?? icon.cell.formId;
+                    console.log("selected "+name);
                 }
-                _overlay.currentLocation = icon;
+                if(_overlay.currentLocation == icon){
+                    _overlay.currentLocation = null;
+                }
+                else{
+                    _overlay.currentLocation = icon;
+                }
                 return true;
             }
         }
