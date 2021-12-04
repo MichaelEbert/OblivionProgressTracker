@@ -7,9 +7,16 @@ function updateShareUrl(){
 
 function init(){
     loadProgressFromCookie();
+    //all checkboxes with class "autosetting" will automatically have a setting created for them.
+    let autoSettings = document.getElementsByClassName("autosetting");
+    for(const setting of autoSettings){
+        setting.addEventListener('change', onSettingChange);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.checked = settings[settingName];
+        }
+    }
     document.getElementById("fileinput").addEventListener('change',importProgress);
-    document.getElementById("minipageCheck").addEventListener('change',onSettingChange);
-    document.getElementById("autoUploadCheck").addEventListener('change',onSettingChange);
     document.getElementById("iframeCheck").addEventListener('change',onSettingChangeText);
     document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
     document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
@@ -19,13 +26,6 @@ function init(){
         setRemoteUrl({target:sharecode});
         });
     document.addEventListener("progressUpload",updateShareUrl);
-
-    if(settings.minipageCheck){
-        document.getElementById("minipageCheck").checked = true;
-    }
-    else{
-        document.getElementById("minipageCheck").checked = false;
-    }
 
     if(settings.iframeCheck){
         document.getElementById("iframeCheck").value = settings.iframeCheck;

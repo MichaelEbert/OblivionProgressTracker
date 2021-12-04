@@ -76,7 +76,7 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
             let linesToRender = [this.cell.name];
 
             //calculate distance to display.
-            if(currentSelection != null){
+            if(currentSelection != null && window.settings.mapShowDistanceCheck){
                 let dx = this.cell.x - currentSelection.cell.x;
                 let dy = this.cell.y - currentSelection.cell.y;
                 let dist = Math.round(Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2)));
