@@ -274,7 +274,10 @@ function createLinkElement(cell, classname, forceMinipage=false){
 	else{
 		linky.target="_blank";
 	}
-	linky.innerText = usableName;
+
+	//capitalize classname
+	let capitalClassName = classname[0].toUpperCase() + classname.substring(1);
+	linky.innerText = "["+capitalClassName+"] "+usableName;
 	
 	return linky;
 }

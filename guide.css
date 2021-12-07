@@ -78,27 +78,12 @@ img{
 	color: inherit;
 }
 
-.save a:before{
-	content: "[Save] ";
-}
 .book{
 	color: magenta;
 }
 
-.book a:before{
-	content: "[Book] ";
-}
-
 .quest{
 	color: darkred;
-}
-
-.quest a:before{
-	content: "[Quest] ";
-}
-
-.store a:before{
-	content: "[Store] ";
 }
 
 .spellname{
