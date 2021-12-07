@@ -110,6 +110,7 @@ function zoomToInitialLocation(){
         if(targetCell != null){
             coords = new Point(targetCell.x, targetCell.y);
         }
+        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
     }
     else 
     {
