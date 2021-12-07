@@ -29,7 +29,6 @@ function init(){
 			}
 		}
 		replaceElements();
-		linkNPCs();
 		window.addEventListener("resize",onWindowResize);
 		actuallyResizeWindow();
 	});
@@ -37,101 +36,97 @@ function init(){
 
 /**
  * Initial function to replace checkboxes n stuff.
+ * 
+ * Note: We could search all trees for a match, so if the user got the classname wrong, it'll still work, but
+ * I think we'll leave that as an error. Programatically it doesn't matter, but it is simpler and it will
+ * helps when you're looking in the html.
  */
 function replaceElements(){
 	//TODO: incorporate NPC elements in to this general method.
-	var replaceableParts = classes.filter(x=>x.name != "npc").flatMap(x=>Array.of(...document.getElementsByClassName(x.name)));
+	for(const klass of classes){
+		let replaceableParts = Array.of(...document.getElementsByClassName(klass.name));
+		for(const element of replaceableParts){
+			//step 1: get the target element data.
+			var found = false;
+			var cell = null;
+			var elementid = null;
+			const checklistid = element.getAttribute("clid");
 
-	for(let element of replaceableParts){
-		const checklistid = element.getAttribute("clid");
-		//step 1: get the target element data.
-		var found = false;
-		var cell = null;
-		var elementclass = null;
-		var elementid = null;
-		for (const klass of classes){
-			if(checklistid?.startsWith(klass.name)){
-				elementid = parseInt(checklistid.substring(klass.name.length));
-				cell = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
-				elementclass = klass.name;
-				if(cell){found=true;}
-				break;
-			}
-		}
-		if(!found){
-			if(checklistid?.startsWith("save")){
-				elementid = checklistid.substring("save".length);
-				cell = findOnTree(jsondata["save"], x=>x.id == elementid);
-				elementclass = "save";
-				found=true;
-			}
-		}
-		if(!found){
-			//try formId
+			//check in the following order: formid, sequentialid, innerText as name
 			if(checklistid?.startsWith("0x")){
-				for(var propname in jsondata){
-					if(jsondata[propname]?.elements != null){
-						var maybeJson = findOnTree(jsondata[propname], (x=>x.formId == checklistid));
-						if(maybeJson != null){
-							elementid = maybeJson.id;
-							cell = maybeJson;
-							elementclass = propname;
-							found=true;
-							break;
-						}
+				let maybeJson = findCell(checklistid, klass.name);
+				if(maybeJson != null){
+					elementid = maybeJson.id;
+					cell = maybeJson;
+					found=true;
+				}
+			}
+
+			if(!found && checklistid?.startsWith(klass.name)){
+				elementid = checklistid.substring(klass.name.length);
+				cell = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
+				if(cell){found=true;}
+			}
+
+			if(!found){
+				//element didn't have a formid. search by name.
+				//maybe we can look up by name
+				let elementType = element?.classList[0];
+				if(elementType != null){
+					let elementName = element.innerText;
+
+					//sanitize name if possible
+					let firstBracketPos = elementName.indexOf("[");
+					if(firstBracketPos != -1){
+						elementName = elementName.substring(0,firstBracketPos);
+					}
+					elementName = elementName.trim();
+
+					var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
+					if(maybeCell != null){
+						elementid = maybeCell.id;
+						cell = maybeCell;
+						found = true;
+					}
+
+					//for NPC, we don't have all teh data.
+					//but we can fake it.
+					if(!found && klass.name == "npc"){
+						cell = {name:elementName, hive:jsondata.npc};
+						found = true;
 					}
 				}
 			}
-		}
-		if(!found){
-			//element didn't have a formid. search by name.
-			//maybe we can look up by name
-			let elementType = element?.classList[0];
-			if(elementType != null){
-				let elementName = element.innerText;
-				let firstBracketPos = elementName.indexOf("[");
-				if(firstBracketPos != -1){
-					elementName = elementName.substring(0,firstBracketPos);
+	
+			if(found){
+				//step 2: create the internal stuff.
+				element.innerText = "";
+				const elementclass = cell.hive.classname;
+				var newElement = initSingleCell(cell, elementclass)
+				if(element.getAttribute("disabled") == "true"){
+					newElement.children[1].disabled = true;
 				}
-				elementName = elementName.trim();
-				var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
-				if(maybeCell != null){
-					elementid = maybeCell.id;
-					cell = maybeCell;
-					elementclass = elementType;
-					found = true;
+				element.replaceWith(newElement);
+				//step 3: load current data from cookies
+				if(newElement == null || elementclass == null){
+					debugger;
+				}
+				if(elementid != null){
+					linkedElements.push(new LinkedElement(newElement, elementclass, elementid));
 				}
 			}
-		}
-
-		if(!found){
-			//skip this iteration and move to the next one.
-			element.classList.remove("replaceable");
-			element.classList.add("replaceableError");
-			replaceableParts = document.getElementsByClassName("replaceable");
-			let identifiedClass = element?.classList[0];
-			let classStuff = {
-				clid: checklistid,
-				identifiedClass: element?.classList[0],
-				contents: element?.innerText
+			else{
+				//element not found. skip this iteration and move to the next one.
+				element.classList.add("replaceableError");
+				let classStuff = {
+					clid: checklistid,
+					identifiedClass: element?.classList[0],
+					contents: element?.innerText
+				}
+				console.warn("replaceable element not found in reference: ");
+				console.warn(classStuff);
 			}
-			console.warn("replaceable element not found in reference: ");
-			console.warn(classStuff);
-			
-			continue;
 		}
-		//step 2: create the internal stuff.
-		element.innerText = "";
-		var newElement = initSingleCell(cell, elementclass)
-		if(element.getAttribute("disabled") == "true"){
-			newElement.children[1].disabled = true;
-		}
-		element.replaceWith(newElement);
-		//step 3: load current data from cookies
-		if(newElement == null || elementclass == null || elementid == null){
-			debugger;
-		}
-		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
 	}
 	updateUIFromSaveData2();
 }
