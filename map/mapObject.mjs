@@ -66,32 +66,75 @@ MapIcon.prototype.recalculateBoundingBox = function(){
  * Draw this icon on the canvas.
  * @param {CanvasRenderingContext2D} ctx 
  */
-MapIcon.prototype.draw = function(ctx, mouseLoc){
+MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //draws the name for the map icon if hovered.
     //for drawing, we have to convert back to screen space.
     const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
     const TEXT_PADDING_PX = 2;
     if(this.cell.hive.classname != "nirnroot"){
         if(this.contains(mouseLoc)){
+            let linesToRender = [this.cell.name];
+
+            //calculate distance to display.
+            if(currentSelection != null && window.settings.mapShowDistanceCheck){
+                let dx = this.cell.x - currentSelection.cell.x;
+                let dy = this.cell.y - currentSelection.cell.y;
+                let dist = Math.round(Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2)));
+                linesToRender.push("distance: "+dist)
+            }
+
             //create rect that contains text and the icon.
+            
+
+
 
             //start by initializing font stuff
-            ctx.font = "16px";
-            let textMetrics = ctx.measureText(this.cell.name);
+            const TEXT_HEIGHT = 16;
+            ctx.font = "16px serif";
+
+            
 
             //create background of popup window
             ctx.beginPath();
             ctx.fillStyle = "#E5D9B9";
-            ctx.rect(screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, textMetrics.width + this.width() + TEXT_PADDING_PX * 2, this.height());
+            let maxTextWidth = 0;
+            for(let i = 0; i < linesToRender.length; i++){
+                let textMetrics = ctx.measureText(linesToRender[i]);
+                if(textMetrics.width > maxTextWidth){
+                    maxTextWidth = textMetrics.width;
+                }
+            }
+
+            let backgroundWidth = this.width() + maxTextWidth + TEXT_PADDING_PX * 2;
+            let backgroundHeight = Math.max(this.height(), (TEXT_HEIGHT+TEXT_PADDING_PX) * linesToRender.length);
+            ctx.rect(screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, backgroundWidth, backgroundHeight);
             ctx.fill();
 
+            //draw all text
             ctx.beginPath();
             ctx.fillStyle = "black";
             ctx.textBaseline = "middle";
             ctx.textAlign = "left";
-            ctx.fillText(this.cell.name, screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
+
+            const startingOffset = TEXT_PADDING_PX + TEXT_HEIGHT / 2;
+            for(let i = 0; i < linesToRender.length; i++){
+                if(linesToRender.length == 1){
+                    ctx.fillText(linesToRender[i], screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, screenSpaceIconOrigin.y + this.height() / 2);
+                }
+                else{
+                    let currentLineY = screenSpaceIconOrigin.y + startingOffset + (TEXT_HEIGHT + TEXT_PADDING_PX) * i;
+                    ctx.fillText(linesToRender[i], screenSpaceIconOrigin.x + this.width() + TEXT_PADDING_PX, currentLineY);
+                }
+            }
             ctx.fill();
         }
+    }
+    if(currentSelection == this){
+        ctx.beginPath();
+        ctx.fillStyle = "#00DD00";
+        ctx.rect(screenSpaceIconOrigin.x - 1, screenSpaceIconOrigin.y - 1, this.width() + 2, this.height() + 2);
+        ctx.fill();
+
     }
     ctx.drawImage(this.icon, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
     if(this.cell.id != null){
@@ -99,4 +142,18 @@ MapIcon.prototype.draw = function(ctx, mouseLoc){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
     }
+}
+
+MapIcon.prototype.onClick = function(clickPos){
+    if(this.cell.id == null){
+        //no id, so you can't click it.
+        return false;
+    }
+    if(window.debug){
+        console.log(this.cell.name + " clicked (formId "+this.cell.formId+")");
+    }
+    const classname = this.cell.hive.classname;
+    let prevState = window.savedata[classname][this.cell.id];
+    window.updateChecklistProgress(null, !prevState, null, this.cell);
+    return true;
 }
