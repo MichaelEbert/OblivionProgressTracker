@@ -54,7 +54,7 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
-		let maybeElement = initSingleCell(root, root.hive.classname, extraColumnName, CELL_FORMAT_CHECKLIST);
+		let maybeElement = initSingleCell(root, extraColumnName, CELL_FORMAT_CHECKLIST);
 		if(maybeElement != null){
 			parentElement.appendChild(maybeElement);
 		}
@@ -118,11 +118,15 @@ function recalculateProgressAndUpdateProgressUI(){
  */
 function updateHtmlElementFromSaveData(cell){
 	const classname = cell.hive.classname
-	const checkbox = document.getElementById(classname+cell.formId+"check");
+	let usableId = cell.formId;
+	if(usableId == null){
+		usableId = cell.id;
+	}
+	let checkbox = document.getElementById(classname+usableId+"check");
 	if(checkbox == null){
-		if(window.debug){
+		if(usableId != null && window.debug){
 			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
-			console.warn("unable to find checkbox element for modifiable cell '"+classname+cell.formId+"' (id "+cell.id+")");
+			console.warn("unable to find checkbox element for modifiable cell '"+classname+usableId+"' (id "+cell.id+")");
 		}
 		return;
 	}

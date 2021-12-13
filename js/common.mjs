@@ -3,22 +3,20 @@
 
 export {createLinkElement, initSingleCell, CELL_FORMAT_GUIDE, CELL_FORMAT_CHECKLIST, CELL_FORMAT_DISABLE_CHECKBOX}
 
-
 /**
  * create link element for a data cell. 
  * classname is for minipages. ex: book, npc, etc.
  * @param {object} cell 
- * @param {string} classname class name
+ * @param {string} linkName displayed name of the link
  * @param {boolean} forceMinipage force minipage link, even if we don't have a usable id.
  * @param {boolean} forceNewTab force link target to be _blank. Otherwise, will open in iframe.
- * @param {boolean} showClassName Show [classname] before the link title.
  */
-function createLinkElement(cell, classname, forceMinipage=false, forceNewTab=false, showClassName = true){
-	const linky = document.createElement("a");
+function createLinkElement(cell, linkName, forceMinipage=false, forceNewTab=false){
+    const linky = document.createElement("a");
+    const classname = cell.hive.classname;
 	
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
 	var usableId = cell.formId ?? cell.id;
-	var usableName = cell.name ?? classname + usableId;
 	
 	const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
 	if(useMinipage){
@@ -36,7 +34,7 @@ function createLinkElement(cell, classname, forceMinipage=false, forceNewTab=fal
                 linky.href = "./map.html?formId="+cell.formId
             }            
         }
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
+		linky.href="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
 	}
 	
 	if(!forceNewTab && settings.iframeCheck){
@@ -46,13 +44,7 @@ function createLinkElement(cell, classname, forceMinipage=false, forceNewTab=fal
 		linky.target="_blank";
 	}
 
-    //capitalize classname
-    let capitalClassName = "";
-    if(showClassName){
-        capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
-    }
-
-	linky.innerText = capitalClassName+usableName;
+	linky.innerText = linkName;
 	return linky;
 }
 
@@ -64,7 +56,7 @@ const CELL_FORMAT_SET_IDS          = 0x0004; //do we want to set the html ids
 const CELL_FORMAT_SET_ROW_ONCLICK  = 0x0008; //do we add onclick element to the html row
 const CELL_FORMAT_NAMELINK_ENABLE  = 0x0010;//should name be a link or just text?
 const CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME = 0x0020; //should name link open in iframe?
-const CELL_FORMAT_NAMELINK_SHOW_CLASSNAME = 0x0040; //should name show class in front of it? //TODO enable for non-link?
+const CELL_FORMAT_NAMELINK_SHOW_CLASSNAME = 0x0040; //should name show class in front of it?
 const CELL_FORMAT_SHOW_NOTES       = 0x0080;//should we show notes?
 const CELL_FORMAT_SHOW_EXTRACOLUMN = 0x0100;//should we show extra column?
 const CELL_FORMAT_DISABLE_CHECKBOX         = 0x0200; //disable checkmark
@@ -105,7 +97,7 @@ function adjustFormatting(cell, defaultFormatting){
         defaultFormatting &= ~CELL_FORMAT_PUSH_REFERENCES;
     }
 
-    if(cell.hive.classname == "save"){
+    if(cell.hive.classname == "save" || cell.hive.classname == "nirnroot"){
         defaultFormatting &= ~CELL_FORMAT_NAMELINK_ENABLE;
     }
 
@@ -118,7 +110,8 @@ function adjustFormatting(cell, defaultFormatting){
  * @param classname 
  * @param format if format == 0, then regular cell. format == 1 then 
  */
-function initSingleCell(cell, classname, extraColumnName, format = CELL_FORMAT_CHECKLIST){
+function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
+    const classname = cell.hive.classname;
     if(cell == null){
 		console.error("null cell data for class"+classname);
 		return;
@@ -138,7 +131,7 @@ function initSingleCell(cell, classname, extraColumnName, format = CELL_FORMAT_C
 		}
     }
 
-    usableId = cell.formId??classname+cell.id;
+    usableId = cell.formId ?? cell.id;
     if(format & CELL_FORMAT_INDIRECT){
         usableId = refCell.formId;
     }
@@ -161,19 +154,19 @@ function initSingleCell(cell, classname, extraColumnName, format = CELL_FORMAT_C
     //name
 	var rName = document.createElement("span");
     rName.classList.add(classname+"Name");
-    
+
+    let usableName = createUsableName(cell, (format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME), refCell, usableId);
     if(format & CELL_FORMAT_NAMELINK_ENABLE){
-        let linkElement = createLinkElement(cell, classname, false, !(format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME), (format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME));
+        let linkElement = createLinkElement(cell, usableName, false, !(format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME));
         if(linkElement != null){
             if(format & CELL_FORMAT_PUSH_REFERENCES){
                 linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
             }
             rName.appendChild(linkElement);
         }
-        
     }
     else{
-        rName.innerText = cell.name ?? refCell.name;
+        rName.innerText = usableName;
     }
 
     rowhtml.appendChild(rName);
@@ -236,6 +229,24 @@ function initSingleCell(cell, classname, extraColumnName, format = CELL_FORMAT_C
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId);
 
     return rowhtml;
+}
+
+/**
+ * Create a usable name for a html cell element.
+ * @param cell 
+ * @param showClassName 
+ * @param refCell 
+ */
+function createUsableName(cell, showClassName, refCell, usableId){
+    const classname = cell.hive.classname;
+    //capitalize classname
+    let capitalClassName = "";
+    if(showClassName){
+        capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
+    }
+
+    let usableName = cell.name ?? refCell?.name ?? classname + usableId;
+    return capitalClassName + usableName;
 }
 
 /**

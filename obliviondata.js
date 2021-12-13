@@ -161,7 +161,7 @@ async function mergeData(hive, basedir="."){
 				}
 				return resp.json();
 			});
-			
+
 			if(mapJson != null){
 				runOnTree(hive, mergeCell(mapJson));
 			}
@@ -288,6 +288,12 @@ function findCell(formId, classHint = null){
 		cell = findOnTree(jsondata[klass.name], x=>x.formId == formId);
 		if(cell != null){
 			break;
+		}
+	}
+	//try to find with sequentialID. used for saves.
+	if(cell == null && classHint != null){
+		for(const klass of classesToSearch){
+			cell = findOnTree(jsondata[klass.name], x=>x.id == formId);
 		}
 	}
 	return cell;
