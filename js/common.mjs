@@ -173,7 +173,11 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         }
     }
     else{
-        rName.innerText = usableName;
+        let capitalClassName = "";
+        if(format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME){
+            capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
+        }
+        rName.innerText = capitalClassName + usableName;
     }
 
     rowhtml.appendChild(rName);
