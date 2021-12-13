@@ -5,6 +5,7 @@
 function init(){
 	document.addEventListener("progressLoad",updateUIFromSaveData);
 	loadJsonData().then(()=>{
+		loadSettingsFromCookie();
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
@@ -53,7 +54,7 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
-		let maybeElement = initSingle(root, root.hive.classname, extraColumnName);
+		let maybeElement = initSingleCell(root, root.hive.classname, extraColumnName, CELL_FORMAT_CHECKLIST);
 		if(maybeElement != null){
 			parentElement.appendChild(maybeElement);
 		}
@@ -91,165 +92,6 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 		parentElement.appendChild(subtreeRoot);
 	}
 }
-
-/**
- * Creates a function that will be added to the other cell's html that updates this cell's html.
- * @param {*} indirectCell 
- */
-function createIndirectUpdater(indirectHtml, indirectCell){
-	return function(refCell, newValue){
-		console.log("indirect update!");
-		const myInputHtml = Array.from(indirectHtml.children).find(x=>x.tagName=="INPUT");
-		updateChecklistProgress(null, newValue, null, indirectCell);
-	}
-}
-
-//init a single leaf node
-//imma call single leaf nodes "cells" because its memorable
-function initSingle(cell, classname, extraColumnName){
-	//hack for fame
-	if(cell.ref != null){
-		//this is an indirect class.
-		let refCell;
-		refCell = findCell(cell.ref);
-		if(refCell == null){
-			console.error("Object not found with form id "+cell.ref);
-			return null;
-		}
-	
-	
-		var usableId = refCell.formId;
-		
-		var rowhtml = document.createElement("div");
-		rowhtml.classList.add(classname);
-		rowhtml.classList.add("item");
-		rowhtml.id = classname+usableId.toString();
-		//indirect elements are disabled and you can't click them.
-		//rowhtml.addEventListener('click',rowClicked);
-		
-		//name
-		var rName = document.createElement("span");
-		rName.classList.add(classname+"Name");
-		if(cell.name != null){
-			rName.innerText = cell.name;
-		}
-		else{
-			rName.innerText = refCell.name;
-		}
-		rowhtml.appendChild(rName);
-		
-		//checkbox
-		var rcheck = document.createElement("input")
-		if(refCell.type){
-			rcheck.type= refCell.type;
-			//rcheck.addEventListener('change',checkboxClicked);
-			rcheck.size=4;
-			if(refCell.max){
-				rcheck.max = refCell.max;
-			}
-		}
-		else{
-			rcheck.type="checkbox";
-			//rcheck.addEventListener('click',checkboxClicked);
-		}
-	
-		rcheck.classList.add(classname+"Check")
-		rcheck.classList.add("check")
-		rcheck.id = rowhtml.id+"check"
-		rcheck.disabled = true;
-		rowhtml.appendChild(rcheck);
-
-		//add indirect updater to referenced cell
-		refCell.onUpdate.push(createIndirectUpdater(rowhtml, cell));
-
-	}
-	else{
-		
-		var usableId = cell.formId;
-		if(usableId == null){
-			console.log("no formid for "+cell.name);
-			return;
-		}
-		
-		var rowhtml = document.createElement("div");
-		rowhtml.classList.add(classname);
-		rowhtml.classList.add("item");
-		rowhtml.id = classname+usableId.toString();
-		rowhtml.addEventListener('click',rowClicked);
-		
-		//name
-		//temp for nirnroot since they don't have names (yet?)
-		let usableName = cell.name;
-		if(usableName == null){
-			usableName = cell.hive.classname + cell.formId;
-		}
-		var rName = document.createElement("span");
-		rName.classList.add(classname+"Name");
-		var linky = document.createElement("a");
-		if(cell.link){
-			linky.href = cell.link;
-		}
-		else{
-			linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
-		}
-		linky.innerText = usableName;
-		linky.target = "_blank";
-		rName.appendChild(linky);
-		rowhtml.appendChild(rName);
-		
-		//checkbox
-		var rcheck = document.createElement("input")
-		if(cell.type){
-			rcheck.type= cell.type;
-			rcheck.addEventListener('change',checkboxClicked);
-			rcheck.size=4;
-			if(cell.max){
-				rcheck.max = cell.max;
-			}
-		}
-		else{
-			rcheck.type="checkbox";
-			rcheck.addEventListener('click',checkboxClicked);
-		}
-		rcheck.classList.add(classname+"Check")
-		rcheck.classList.add("check")
-		rcheck.id = rowhtml.id+"check"
-		rowhtml.appendChild(rcheck)
-
-
-		//UNIQUE
-		//notes
-		if(cell.notes){
-			var notesIcon = document.createElement("span");
-			notesIcon.title = cell.notes;
-			notesIcon.innerText = "⚠"
-			rowhtml.appendChild(notesIcon);
-		}
-	}
-	
-	//COMMON
-	if(extraColumnName && cell[extraColumnName] != null){
-		let extraCol = document.createElement("span");
-		extraCol.classList.add("detailColumn");
-		extraCol.innerText = cell[extraColumnName];
-		rowhtml.appendChild(extraCol);
-	}
-	
-	//COMMON
-	//update the UI on progress update
-	cell.onUpdate.push(function(cell, newValue){
-		if(cell.type == "number"){
-			rcheck.value = newValue;
-		}
-		else{
-			rcheck.checked = newValue;
-			setParentChecked(rcheck);
-		}
-	});
-
-	return rowhtml;
-}
-
 
 //==========================
 // Functions that deal with progress

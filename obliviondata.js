@@ -155,17 +155,22 @@ async function mergeData(hive, basedir="."){
 		//jsonTree is by formId. load IDs.
 		try{
 			const mapFilename = hive.classname.toLowerCase()+"_custom.json";
-			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
-			if(hive.classname == "nirnroot" && window.debug){
-				//debugger;
+			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>{
+				if(resp.status == 404){
+					return null;
+				}
+				return resp.json();
+			});
+			
+			if(mapJson != null){
+				runOnTree(hive, mergeCell(mapJson));
 			}
-			runOnTree(hive, mergeCell(mapJson));
 			
 			console.log("merged "+hive.classname);
 		}
 		catch(ex){
 			if(window.debug){
-				console.error("error for "+hive.classname);
+				console.error("error when merging custom data for "+hive.classname);
 				console.error(ex);
 			}
 		}//there may not be any other data, so just continue in that case.
