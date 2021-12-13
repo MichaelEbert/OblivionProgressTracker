@@ -1,4 +1,5 @@
 "use strict"
+
 var linkedElements = [];
 
 function LinkedElement(element, classname, id){
@@ -100,19 +101,21 @@ function replaceElements(){
 	
 			if(found){
 				//step 2: create the internal stuff.
-				element.innerText = "";
 				const elementclass = cell.hive.classname;
-				var newElement = initSingleCell(cell, elementclass)
+				let format = CELL_FORMAT_GUIDE;
 				if(element.getAttribute("disabled") == "true"){
-					newElement.children[1].disabled = true;
+					format |= CELL_FORMAT_DISABLE_CHECKBOX;
 				}
+
+				if(elementclass == "npc"){
+					format |= CELL_FORMAT_SKIP_ID;
+					format &= ~CELL_FORMAT_SHOW_CHECKBOX;
+				}
+				let newElement = initSingleCell(cell, null, format);
 				element.replaceWith(newElement);
 				//step 3: load current data from cookies
 				if(newElement == null || elementclass == null){
 					debugger;
-				}
-				if(elementid != null){
-					linkedElements.push(new LinkedElement(newElement, elementclass, elementid));
 				}
 			}
 			else{
@@ -128,7 +131,7 @@ function replaceElements(){
 			}
 		}
 	}
-	updateUIFromSaveData2();
+	updateUIFromSaveData();
 }
 
 
@@ -163,141 +166,9 @@ function getNpcData(npcElement){
 }
 
 /**
- * Create links for npc elements on page.
+ * Recalculate the total progress, and update UI elements.
  */
-function linkNPCs(){
-	var npcs = document.getElementsByClassName("npc");
-	for(var element of npcs){
-		const npcData = getNpcData(element);
-		if(npcData == null){
-			continue;
-		}
-		const linky = createLinkElement(npcData, "npc", true);
-		linky.addEventListener('click',pushNpcReferencesToMinipage);
-		element.innerText = "";
-		element.appendChild(linky);
-	}
-}
-
-/**
- * Initialize the html for a single data cell.
- * @param {object} cell 
- * @param {string} classname 
- */
-function initSingleCell(cell, classname){
-	if(cell == null){
-		console.error("null cell data for class"+classname);
-		return;
-	}
-	var rowhtml = document.createElement("span");
-	rowhtml.classList.add(classname);
-	rowhtml.classList.add("item");
-	
-	rowhtml.setAttribute("clid",classname+cell.id);
-	
-	//name
-	var rName = document.createElement("span");
-	rName.classList.add(classname+"Name");
-	
-	rName.appendChild(createLinkElement(cell, classname));
-	rowhtml.appendChild(rName);
-	
-	//checkbox
-	var rcheck = document.createElement("input")
-	if(cell.type){
-		rcheck.type= cell.type;
-		rcheck.addEventListener('change',checkboxClicked2);
-		rcheck.size=4;
-		if(cell.max){
-			rcheck.max = cell.max;
-		}
-	}
-	else{
-		rcheck.type="checkbox";
-		rcheck.addEventListener('click',checkboxClicked2);
-	}
-	rcheck.classList.add(classname+"Check")
-	rcheck.classList.add("check")
-	rowhtml.appendChild(rcheck)
-	
-	return rowhtml;
-}
-
-
-/**
- * create link element for a data cell. 
- * classname is for minipages. ex: book, npc, etc.
- * @param {object} cell 
- * @param {string} classname class name
- * @param {boolean} forceMinipage force minipage link, even if we don't have a usable id.
- */
-function createLinkElement(cell, classname, forceMinipage=false){
-	const linky = document.createElement("a");
-	
-	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
-	var usableId;
-	if(cell.formId != null){
-		usableId = cell.formId;
-	}
-	else{
-		usableId = cell.id;
-	}
-	var usableName;
-	if(cell.name == null){
-		usableName = classname + usableId;
-	}
-	else{
-		usableName = cell.name;
-	}
-	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
-	if(useMinipage){
-		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
-		if(usableId == null){
-			linky.href +="&name="+cell.name.replace(" ","_");
-		}
-	}
-	else if(cell.link){
-		linky.href = cell.link;
-	}
-	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
-	}
-	
-	if(settings.iframeCheck){
-		linky.target="myframe";
-	}
-	else{
-		linky.target="_blank";
-	}
-
-	//capitalize classname
-	let capitalClassName = classname[0].toUpperCase() + classname.substring(1);
-	linky.innerText = "["+capitalClassName+"] "+usableName;
-	
-	return linky;
-}
-
-/**
- * Updates UI elements from save data.
- * Call this when save data changes.
- * since these pages may contain multiple references to teh same object, we need to do this from the element side, not from the data side.
- */
-function updateUIFromSaveData2(){
-	for(const linkedElement of linkedElements){
-		var checkbox = Array.from(linkedElement.htmlElement.children).find(x=>x.tagName=="INPUT");
-		if(checkbox.type=="checkbox"){
-			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
-			if(checkbox.checked){
-				linkedElement.htmlElement.classList.add("checked");
-			}
-			else{
-				linkedElement.htmlElement.classList.remove("checked");
-			}
-		}
-		else{
-			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
-		}
-	}
+function recalculateProgressAndUpdateProgressUI(){
 	let percentCompleteSoFar = recalculateProgress();
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
@@ -307,61 +178,65 @@ function updateUIFromSaveData2(){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});
+}
 
+/**
+ * helper function for updateUIFromSaveData
+ * @param {} cell 
+ */
+function updateHtmlElementFromSaveData(cell){
+	const classname = cell.hive.classname
+	let usableId = cell.formId;
+	if(usableId == null){
+		usableId = cell.id;
+	}
+	let checkbox = document.getElementById(classname+usableId+"check");
+	if(checkbox == null){
+		if(usableId != null && window.debug){
+			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
+			console.warn("unable to find checkbox element for modifiable cell '"+classname+usableId+"' (id "+cell.id+")");
+		}
+		return;
+	}
+	let newval = null;
+	if(cell.ref == null){
+		//we call updateChecklistProgress so indirect elements will update from this
+		if(cell.id != null){
+			if(savedata[classname] == null){
+				debugger;
+			}
+			newval = savedata[classname][cell.id];
+			updateChecklistProgress(null, newval, null, cell, true);
+		}
+	}
+}
+
+/**
+ * When savedata is loaded, we need to bulk change all of the HTML to match the savedata state.
+ * This function does that.
+ */
+function updateUIFromSaveData(){
+	for(const klass of progressClasses){
+		const hive = jsondata[klass.name];
+		runOnTree(hive, updateHtmlElementFromSaveData);
+	}
+
+	recalculateProgressAndUpdateProgressUI();
+}
+
+function checkboxClicked(event){
+	const rowHtml = event.target.parentElement;
+
+	var parentid = rowHtml.getAttribute("clid");
+	var classname = rowHtml.classList[0];
+	updateChecklistProgressFromInputElement(parentid, event.target, classname);
+	
+	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
+	recalculateProgressAndUpdateProgressUI();
+	saveProgressToCookie();
 	if(settings.autoUploadCheck){
 		uploadCurrentSave();
 	}
-}
-
-function setParentChecked(item){
-	if(item.checked){
-		item.parentElement.classList.add("checked");
-	}
-	else{
-		item.parentElement.classList.remove("checked");
-	}
-}
-
-function checkboxClicked2(event){
-	var parentid = event.target.parentElement.getAttribute("clid");
-
-	//extract what it is from the parent id so we can update progress
-	var found = false;
-	for (const klass of progressClasses){
-		if(parentid.startsWith(klass.name)){
-			var rowid = parseInt(parentid.substring(klass.name.length));
-			savedata[klass.name][rowid] = event.target.checked;
-			setParentChecked(event.target);
-			found=true;
-			break;
-		}
-	}
-	if(!found){
-		if(parentid.startsWith("save")){
-			var rowid = parentid.substring("save".length);
-			savedata["save"][rowid] = event.target.valueAsNumber;
-			found=true;
-		}
-	}
-	if(!found){
-		if(parentid.startsWith("misc")){
-			var rowid = parentid.substring("misc".length);
-			savedata["misc"][rowid] = event.target.checked;
-			setParentChecked(event.target);
-			found=true;
-		}
-	}
-	if(!found){
-		if(event.target.id == "placesfoundcheck") {
-			savedata["misc"]["placesfound"] = event.target.valueAsNumber;
-		}
-		if(event.target.id == "nirnrootcheck") {
-			savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
-		}
-	}
-	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
-	updateUIFromSaveData2();
-	saveProgressToCookie();
 }
 
 var displayIframe = false;
