@@ -200,6 +200,8 @@ function loadProgressFromCookie(){
 		return true;
 	}
 	else{
+		//could not find savedata. create new savedata.
+		resetProgress(false);
 		return false;
 	}
 }
