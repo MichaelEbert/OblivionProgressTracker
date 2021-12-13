@@ -29,16 +29,19 @@ function createLinkElement(cell, linkName, forceMinipage=false, forceNewTab=fals
 		linky.href = cell.link;
 	}
 	else{
-        if(classname == "location"){
-            if(cell.formId){
-                linky.href = "./map.html?formId="+cell.formId
-            }            
+        if(classname == "location" && cell.formId != null){
+            linky.href = "./map.html?formId="+cell.formId;
+            if(!forceNewTab && settings.iframeCheck){
+                linky.href += "&topbar=false";
+            }
         }
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
+        else{
+            linky.href="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
+        }
 	}
 	
 	if(!forceNewTab && settings.iframeCheck){
-		linky.target="myframe";
+        linky.target="myframe";
 	}
 	else{
 		linky.target="_blank";
