@@ -1,7 +1,7 @@
 "use strict"
 export {MapObject, MapIcon}
 
-import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons} from "../map.js"
+import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons} from "../map.mjs"
 import {Point} from "./point.mjs"
 
 /**

@@ -243,7 +243,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     }
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId);
-
     return rowhtml;
 }
 
