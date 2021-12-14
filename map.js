@@ -6,8 +6,6 @@
     //TODO: Add green plus for 2 fame gates
     //TODO: add blue star for no-reroll gates
 
-//TODO: figure out how discovered locations are tracked and implement it.
-
 //TODO: get topbar percentage working on map.js
 
 "use strict";

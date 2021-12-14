@@ -81,6 +81,14 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
                 let dy = this.cell.y - currentSelection.cell.y;
                 let dist = Math.round(Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2)));
                 linesToRender.push("distance: "+dist)
+                
+                let tTime = Math.floor(dist/50000);
+                //Use a switch to get correct grammar.
+                switch(tTime){
+                    case 0: linesToRender.push("travel time: <1hr"); break;
+                    case 1: linesToRender.push("travel time: 1hr"); break;
+                    default: linesToRender.push("travel time: "+tTime+"hrs"); break;
+                }
             }
 
             //create rect that contains text and the icon.
