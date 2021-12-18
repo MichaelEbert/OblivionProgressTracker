@@ -600,6 +600,7 @@ function drawTSP(arrTSP){
             //TODO: add in custom color/line width selection.
             //TODO: add in secondary line outline to make line "pop" on map better.
             ctx.beginPath();
+            ctx.strokeStyle="#FF0000";
             ctx.lineWidth = 5; 
             ctx.moveTo(pp.x, pp.y);
             ctx.lineTo(p.x, p.y);
@@ -611,6 +612,7 @@ function drawTSP(arrTSP){
         let z = mapSpaceToScreenSpace(new Point(arrTSP[arrTSP.length - 1].x, arrTSP[arrTSP.length - 1].y));
         
         ctx.beginPath();
+        ctx.strokeStyle="#FF0000";
         ctx.lineWidth = 5;
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(z.x, z.y);
