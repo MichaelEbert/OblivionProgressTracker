@@ -66,45 +66,9 @@
 	<a href="../map.html" class="topbarSection"> Map</a>
 </div>
 <br/><br/>
-<div class="h2">Distance calculator</div>
-<div class="section" id="distanceCalcSection">
-	<select name="loc1" id="loc1"></select> to <select name="loc2" id="loc2"></select> is <span id="output"></span>
-</div>
-<script>
-	const first = document.getElementById("loc1");
-	const second = document.getElementById("loc2");
-	loadJsonData("..",c=>c.name == "location").then(()=>{
-		first.addEventListener("change",recalc);
-		second.addEventListener("change",recalc);
-
-		//we want to sort alphabetically
-		let locArray = [];
-		//populate
-		runOnTree(jsondata.location, (loc)=>{
-			locArray.push(loc);
-		});
-
-		locArray.sort((a,b)=>{if(a.name.toUpperCase() < b.name.toUpperCase()){return -1;}if(a.name.toUpperCase() > b.name.toUpperCase()){return 1;}return 0;});
-
-		for(const loc of locArray){
-			let option = document.createElement("OPTION");
-			option.value = loc.formId;
-			option.innerText = loc.name;
-			first.appendChild(option);
-			let option2 = document.createElement("OPTION");
-			option2.value = loc.formId;
-			option2.innerText = loc.name;
-			second.appendChild(option2);
-		}
-	});
-
-	function recalc(event){
-		let outHTML = document.getElementById("output");
-		let cellA = findCell(first.value, "location");
-		let cellB = findCell(second.value, "location");
-		let dist = Math.sqrt(Math.pow(cellA.x - cellB.x,2) + Math.pow(cellA.y - cellB.y,2));
-		outHTML.innerText = Math.round(dist)
-	}
-</script>
+<div class="h2">Tools</div>
+<p>Misc tools</p>
+<a href="./distance.html">Distance calculator between locations</a><br/>
+<a href="./chairlookup.html">Calculate closest chair to location</a>
 </body>
 </html>
