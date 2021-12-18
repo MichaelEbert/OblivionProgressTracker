@@ -126,8 +126,10 @@ function replaceElements(){
 					identifiedClass: element?.classList[0],
 					contents: element?.innerText
 				}
-				console.warn("replaceable element not found in reference: ");
-				console.warn(classStuff);
+				if(window.debug){
+					console.warn("replaceable element not found in reference: ");
+					console.warn(classStuff);
+				}
 			}
 		}
 	}
