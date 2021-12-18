@@ -1,4 +1,5 @@
 "use strict"
+
 var linkedElements = [];
 
 function LinkedElement(element, classname, id){
@@ -29,7 +30,6 @@ function init(){
 			}
 		}
 		replaceElements();
-		linkNPCs();
 		window.addEventListener("resize",onWindowResize);
 		actuallyResizeWindow();
 	});
@@ -37,103 +37,103 @@ function init(){
 
 /**
  * Initial function to replace checkboxes n stuff.
+ * 
+ * Note: We could search all trees for a match, so if the user got the classname wrong, it'll still work, but
+ * I think we'll leave that as an error. Programatically it doesn't matter, but it is simpler and it will
+ * helps when you're looking in the html.
  */
 function replaceElements(){
 	//TODO: incorporate NPC elements in to this general method.
-	var replaceableParts = classes.filter(x=>x.name != "npc").flatMap(x=>Array.of(...document.getElementsByClassName(x.name)));
+	for(const klass of classes){
+		let replaceableParts = Array.of(...document.getElementsByClassName(klass.name));
+		for(const element of replaceableParts){
+			//step 1: get the target element data.
+			var found = false;
+			var cell = null;
+			var elementid = null;
+			const checklistid = element.getAttribute("clid");
 
-	for(let element of replaceableParts){
-		const checklistid = element.getAttribute("clid");
-		//step 1: get the target element data.
-		var found = false;
-		var cell = null;
-		var elementclass = null;
-		var elementid = null;
-		for (const klass of classes){
-			if(checklistid?.startsWith(klass.name)){
-				elementid = parseInt(checklistid.substring(klass.name.length));
-				cell = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
-				elementclass = klass.name;
-				if(cell){found=true;}
-				break;
-			}
-		}
-		if(!found){
-			if(checklistid?.startsWith("save")){
-				elementid = checklistid.substring("save".length);
-				cell = findOnTree(jsondata["save"], x=>x.id == elementid);
-				elementclass = "save";
-				found=true;
-			}
-		}
-		if(!found){
-			//try formId
+			//check in the following order: formid, sequentialid, innerText as name
 			if(checklistid?.startsWith("0x")){
-				for(var propname in jsondata){
-					if(jsondata[propname]?.elements != null){
-						var maybeJson = findOnTree(jsondata[propname], (x=>x.formId == checklistid));
-						if(maybeJson != null){
-							elementid = maybeJson.id;
-							cell = maybeJson;
-							elementclass = propname;
-							found=true;
-							break;
-						}
+				let maybeJson = findCell(checklistid, klass.name);
+				if(maybeJson != null){
+					elementid = maybeJson.id;
+					cell = maybeJson;
+					found=true;
+				}
+			}
+
+			if(!found && checklistid?.startsWith(klass.name)){
+				elementid = checklistid.substring(klass.name.length);
+				cell = findOnTree(jsondata[klass.name],(x=>x.id == elementid));
+				if(cell){found=true;}
+			}
+
+			if(!found){
+				//element didn't have a formid. search by name.
+				//maybe we can look up by name
+				let elementType = element?.classList[0];
+				if(elementType != null){
+					let elementName = element.innerText;
+
+					//sanitize name if possible
+					let firstBracketPos = elementName.indexOf("[");
+					if(firstBracketPos != -1){
+						elementName = elementName.substring(0,firstBracketPos);
+					}
+					elementName = elementName.trim();
+
+					var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
+					if(maybeCell != null){
+						elementid = maybeCell.id;
+						cell = maybeCell;
+						found = true;
+					}
+
+					//for NPC, we don't have all teh data.
+					//but we can fake it.
+					if(!found && klass.name == "npc"){
+						cell = {name:elementName, hive:jsondata.npc};
+						found = true;
 					}
 				}
 			}
-		}
-		if(!found){
-			//element didn't have a formid. search by name.
-			//maybe we can look up by name
-			let elementType = element?.classList[0];
-			if(elementType != null){
-				let elementName = element.innerText;
-				let firstBracketPos = elementName.indexOf("[");
-				if(firstBracketPos != -1){
-					elementName = elementName.substring(0,firstBracketPos);
+	
+			if(found){
+				//step 2: create the internal stuff.
+				const elementclass = cell.hive.classname;
+				let format = CELL_FORMAT_GUIDE;
+				if(element.getAttribute("disabled") == "true"){
+					format |= CELL_FORMAT_DISABLE_CHECKBOX;
 				}
-				elementName = elementName.trim();
-				var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
-				if(maybeCell != null){
-					elementid = maybeCell.id;
-					cell = maybeCell;
-					elementclass = elementType;
-					found = true;
-				}
-			}
-		}
 
-		if(!found){
-			//skip this iteration and move to the next one.
-			element.classList.remove("replaceable");
-			element.classList.add("replaceableError");
-			replaceableParts = document.getElementsByClassName("replaceable");
-			let identifiedClass = element?.classList[0];
-			let classStuff = {
-				clid: checklistid,
-				identifiedClass: element?.classList[0],
-				contents: element?.innerText
+				if(elementclass == "npc"){
+					format |= CELL_FORMAT_SKIP_ID;
+					format &= ~CELL_FORMAT_SHOW_CHECKBOX;
+				}
+				let newElement = initSingleCell(cell, null, format);
+				element.replaceWith(newElement);
+				//step 3: load current data from cookies
+				if(newElement == null || elementclass == null){
+					debugger;
+				}
 			}
-			console.warn("replaceable element not found in reference: ");
-			console.warn(classStuff);
-			
-			continue;
+			else{
+				//element not found. skip this iteration and move to the next one.
+				element.classList.add("replaceableError");
+				let classStuff = {
+					clid: checklistid,
+					identifiedClass: element?.classList[0],
+					contents: element?.innerText
+				}
+				if(window.debug){
+					console.warn("replaceable element not found in reference: ");
+					console.warn(classStuff);
+				}
+			}
 		}
-		//step 2: create the internal stuff.
-		element.innerText = "";
-		var newElement = initSingleCell(cell, elementclass)
-		if(element.getAttribute("disabled") == "true"){
-			newElement.children[1].disabled = true;
-		}
-		element.replaceWith(newElement);
-		//step 3: load current data from cookies
-		if(newElement == null || elementclass == null || elementid == null){
-			debugger;
-		}
-		linkedElements.push(new LinkedElement(newElement, elementclass, elementid))
 	}
-	updateUIFromSaveData2();
+	updateUIFromSaveData();
 }
 
 
@@ -168,141 +168,9 @@ function getNpcData(npcElement){
 }
 
 /**
- * Create links for npc elements on page.
+ * Recalculate the total progress, and update UI elements.
  */
-function linkNPCs(){
-	var npcs = document.getElementsByClassName("npc");
-	for(var element of npcs){
-		const npcData = getNpcData(element);
-		if(npcData == null){
-			continue;
-		}
-		const linky = createLinkElement(npcData, "npc", true);
-		linky.addEventListener('click',pushNpcReferencesToMinipage);
-		element.innerText = "";
-		element.appendChild(linky);
-	}
-}
-
-/**
- * Initialize the html for a single data cell.
- * @param {object} cell 
- * @param {string} classname 
- */
-function initSingleCell(cell, classname){
-	if(cell == null){
-		console.error("null cell data for class"+classname);
-		return;
-	}
-	var rowhtml = document.createElement("span");
-	rowhtml.classList.add(classname);
-	rowhtml.classList.add("item");
-	
-	rowhtml.setAttribute("clid",classname+cell.id);
-	
-	//name
-	var rName = document.createElement("span");
-	rName.classList.add(classname+"Name");
-	
-	rName.appendChild(createLinkElement(cell, classname));
-	rowhtml.appendChild(rName);
-	
-	//checkbox
-	var rcheck = document.createElement("input")
-	if(cell.type){
-		rcheck.type= cell.type;
-		rcheck.addEventListener('change',checkboxClicked2);
-		rcheck.size=4;
-		if(cell.max){
-			rcheck.max = cell.max;
-		}
-	}
-	else{
-		rcheck.type="checkbox";
-		rcheck.addEventListener('click',checkboxClicked2);
-	}
-	rcheck.classList.add(classname+"Check")
-	rcheck.classList.add("check")
-	rowhtml.appendChild(rcheck)
-	
-	return rowhtml;
-}
-
-
-/**
- * create link element for a data cell. 
- * classname is for minipages. ex: book, npc, etc.
- * @param {object} cell 
- * @param {string} classname class name
- * @param {boolean} forceMinipage force minipage link, even if we don't have a usable id.
- */
-function createLinkElement(cell, classname, forceMinipage=false){
-	const linky = document.createElement("a");
-	
-	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
-	var usableId;
-	if(cell.formId != null){
-		usableId = cell.formId;
-	}
-	else{
-		usableId = cell.id;
-	}
-	var usableName;
-	if(cell.name == null){
-		usableName = classname + usableId;
-	}
-	else{
-		usableName = cell.name;
-	}
-	const useMinipage = settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || forceMinipage);
-	if(useMinipage){
-		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
-		if(usableId == null){
-			linky.href +="&name="+cell.name.replace(" ","_");
-		}
-	}
-	else if(cell.link){
-		linky.href = cell.link;
-	}
-	else{
-		linky.href="https://en.uesp.net/wiki/Oblivion:"+usableName.replaceAll(" ","_");
-	}
-	
-	if(settings.iframeCheck){
-		linky.target="myframe";
-	}
-	else{
-		linky.target="_blank";
-	}
-
-	//capitalize classname
-	let capitalClassName = classname[0].toUpperCase() + classname.substring(1);
-	linky.innerText = "["+capitalClassName+"] "+usableName;
-	
-	return linky;
-}
-
-/**
- * Updates UI elements from save data.
- * Call this when save data changes.
- * since these pages may contain multiple references to teh same object, we need to do this from the element side, not from the data side.
- */
-function updateUIFromSaveData2(){
-	for(const linkedElement of linkedElements){
-		var checkbox = Array.from(linkedElement.htmlElement.children).find(x=>x.tagName=="INPUT");
-		if(checkbox.type=="checkbox"){
-			checkbox.checked = savedata[linkedElement.classname][linkedElement.id];
-			if(checkbox.checked){
-				linkedElement.htmlElement.classList.add("checked");
-			}
-			else{
-				linkedElement.htmlElement.classList.remove("checked");
-			}
-		}
-		else{
-			checkbox.value = savedata[linkedElement.classname][linkedElement.id];
-		}
-	}
+function recalculateProgressAndUpdateProgressUI(){
 	let percentCompleteSoFar = recalculateProgress();
 	//round progress to 2 decimal places
 	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
@@ -312,61 +180,65 @@ function updateUIFromSaveData2(){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});
+}
 
+/**
+ * helper function for updateUIFromSaveData
+ * @param {} cell 
+ */
+function updateHtmlElementFromSaveData(cell){
+	const classname = cell.hive.classname
+	let usableId = cell.formId;
+	if(usableId == null){
+		usableId = cell.id;
+	}
+	let checkbox = document.getElementById(classname+usableId+"check");
+	if(checkbox == null){
+		if(usableId != null && window.debug){
+			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
+			console.warn("unable to find checkbox element for modifiable cell '"+classname+usableId+"' (id "+cell.id+")");
+		}
+		return;
+	}
+	let newval = null;
+	if(cell.ref == null){
+		//we call updateChecklistProgress so indirect elements will update from this
+		if(cell.id != null){
+			if(savedata[classname] == null){
+				debugger;
+			}
+			newval = savedata[classname][cell.id];
+			updateChecklistProgress(null, newval, null, cell, true);
+		}
+	}
+}
+
+/**
+ * When savedata is loaded, we need to bulk change all of the HTML to match the savedata state.
+ * This function does that.
+ */
+function updateUIFromSaveData(){
+	for(const klass of progressClasses){
+		const hive = jsondata[klass.name];
+		runOnTree(hive, updateHtmlElementFromSaveData);
+	}
+
+	recalculateProgressAndUpdateProgressUI();
+}
+
+function checkboxClicked(event){
+	const rowHtml = event.target.parentElement;
+
+	var parentid = rowHtml.getAttribute("clid");
+	var classname = rowHtml.classList[0];
+	updateChecklistProgressFromInputElement(parentid, event.target, classname);
+	
+	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
+	recalculateProgressAndUpdateProgressUI();
+	saveProgressToCookie();
 	if(settings.autoUploadCheck){
 		uploadCurrentSave();
 	}
-}
-
-function setParentChecked(item){
-	if(item.checked){
-		item.parentElement.classList.add("checked");
-	}
-	else{
-		item.parentElement.classList.remove("checked");
-	}
-}
-
-function checkboxClicked2(event){
-	var parentid = event.target.parentElement.getAttribute("clid");
-
-	//extract what it is from the parent id so we can update progress
-	var found = false;
-	for (const klass of progressClasses){
-		if(parentid.startsWith(klass.name)){
-			var rowid = parseInt(parentid.substring(klass.name.length));
-			savedata[klass.name][rowid] = event.target.checked;
-			setParentChecked(event.target);
-			found=true;
-			break;
-		}
-	}
-	if(!found){
-		if(parentid.startsWith("save")){
-			var rowid = parentid.substring("save".length);
-			savedata["save"][rowid] = event.target.valueAsNumber;
-			found=true;
-		}
-	}
-	if(!found){
-		if(parentid.startsWith("misc")){
-			var rowid = parentid.substring("misc".length);
-			savedata["misc"][rowid] = event.target.checked;
-			setParentChecked(event.target);
-			found=true;
-		}
-	}
-	if(!found){
-		if(event.target.id == "placesfoundcheck") {
-			savedata["misc"]["placesfound"] = event.target.valueAsNumber;
-		}
-		if(event.target.id == "nirnrootcheck") {
-			savedata["misc"]["nirnroot"] = event.target.valueAsNumber;
-		}
-	}
-	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
-	updateUIFromSaveData2();
-	saveProgressToCookie();
 }
 
 var displayIframe = false;

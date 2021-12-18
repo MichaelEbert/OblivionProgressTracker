@@ -26,10 +26,13 @@ Handler.extensions_map={
 	'.mjs':	'application/javascript',
 	'': 'application/octet-stream', # Default
     }
-class HTTP6Server(HTTPServer):
-	address_family = socket.AF_INET6
+if(len(sys.argv) > 2 and sys.argv[2] == "6"):
+	class HTTP6Server(HTTPServer):
+		address_family = socket.AF_INET6
 
-httpd = HTTP6Server(("::", PORT), Handler)
+	httpd = HTTP6Server(("::", PORT), Handler)
+else:
+	httpd = HTTPServer(("", PORT), Handler)
 
 print("serving at port", PORT)
 httpd.serve_forever()

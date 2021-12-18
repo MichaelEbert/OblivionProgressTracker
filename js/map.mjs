@@ -53,6 +53,15 @@ let icons = {};
 
 async function initMap(){
     //load map cord data
+    let windowParams = new URLSearchParams(window.location.search);
+    if(windowParams.get("topbar") == "false"){
+        //TODO: put this in css files
+        document.getElementById("topbar").remove();
+        let mapContainer = document.getElementById("mapContainer");
+        if(mapContainer != null){
+            mapContainer.style = "top:0;padding:2px;"
+        }
+    }
 
     viewport = document.getElementById("wrapper_Map");
 
@@ -108,6 +117,7 @@ function zoomToInitialLocation(){
         if(targetCell != null){
             coords = new Point(targetCell.x, targetCell.y);
         }
+        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
     }
     else 
     {

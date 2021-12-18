@@ -2,8 +2,8 @@
 <html lang="en-US" ><head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bree%20Serif"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<script src="./js/module-shim.mjs" type="module"></script>
 	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="progress.js"></script>
@@ -95,7 +95,15 @@
 
 </article>
 <button id="resetbutton" onclick="resetProgress(true)">Reset progress</button>
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as common from './js/common.mjs';
+	exportNamespace(common);
+</script>
 <script>
-init()
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
+	init();
 </script>
 </body></html>

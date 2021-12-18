@@ -154,18 +154,23 @@ async function mergeData(hive, basedir="."){
 	if(hive.version >= 3){
 		//jsonTree is by formId. load IDs.
 		try{
-			const mapFilename = "mapping_"+hive.classname.toLowerCase()+"_v"+hive.version+".json";
-			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>resp.json());
-			if(hive.classname == "nirnroot" && window.debug){
-				//debugger;
+			const mapFilename = hive.classname.toLowerCase()+"_custom.json";
+			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>{
+				if(resp.status == 404){
+					return null;
+				}
+				return resp.json();
+			});
+
+			if(mapJson != null){
+				runOnTree(hive, mergeCell(mapJson));
 			}
-			runOnTree(hive, mergeCell(mapJson));
 			
 			console.log("merged "+hive.classname);
 		}
 		catch(ex){
 			if(window.debug){
-				console.error("error for "+hive.classname);
+				console.error("error when merging custom data for "+hive.classname);
 				console.error(ex);
 			}
 		}//there may not be any other data, so just continue in that case.
@@ -283,6 +288,12 @@ function findCell(formId, classHint = null){
 		cell = findOnTree(jsondata[klass.name], x=>x.formId == formId);
 		if(cell != null){
 			break;
+		}
+	}
+	//try to find with sequentialID. used for saves.
+	if(cell == null && classHint != null){
+		for(const klass of classesToSearch){
+			cell = findOnTree(jsondata[klass.name], x=>x.id == formId);
 		}
 	}
 	return cell;
