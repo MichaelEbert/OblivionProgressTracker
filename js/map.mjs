@@ -9,7 +9,7 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
+export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
@@ -28,6 +28,15 @@ function getCtx(){
 let zoomLevel = 1;
 let minZoom = 0.2;
 let maxZoom = 3.5;
+
+let mapAdjust = {
+    preX: -2437,
+    preY: 2265,
+    postX: 0,
+    postY: 0,
+    width: 0,
+    height: 0
+}
 
 /**
  * Offset from map to screen coordinates.
@@ -516,8 +525,8 @@ function worldSpaceToMapSpace(point){
     //first, we convert world space into map space.
     var MapW = img_Map.width;
     var MapH = img_Map.height;
-    const worldW = 480000;
-    const worldH = 400000;
+    const worldW = 485000 + mapAdjust.width;
+    const worldH = 398000 + mapAdjust.height;
     
     //world coords are -240,000 to 240,000 in the x direction
     //and -200,000 to 200,000 in the y direction
@@ -525,12 +534,12 @@ function worldSpaceToMapSpace(point){
     //for most things, we store the "map coords", and then that gets converted to viewport(aka canvas) coords with simple vector addition at draw time.
 
     //first, convert to positive number between 0 and 1.
-    let fraction_x = (Math.round(point.x) + worldW / 2) / worldW;
-    let fraction_y = (-Math.round(point.y) + worldH / 2) / worldH;
+    let fraction_x = (Math.round(point.x+ mapAdjust.preX) + worldW / 2 ) / worldW;
+    let fraction_y = (-Math.round(point.y+ mapAdjust.preY) + worldH / 2 ) / worldH;
 
     //then adjust for the new map height/width.
-    let map_x = (MapW * fraction_x) / zoomLevel;
-    let map_y = (MapH * fraction_y) / zoomLevel;
+    let map_x = (MapW * fraction_x) / zoomLevel + mapAdjust.postX;
+    let map_y = (MapH * fraction_y) / zoomLevel + mapAdjust.postY;
 
     return new Point(map_x, map_y);
 }
@@ -543,19 +552,19 @@ function worldSpaceToMapSpace(point){
 function mapSpaceToWorldSpace(point){
     var mapW = img_Map.width;
     var mapH = img_Map.height;
-    const worldW = 480000;
-    const worldH = 400000;
+    const worldW = 485000 + mapAdjust.width;
+    const worldH = 398000 + mapAdjust.height;
 
     //convert back to float
     point = point.multiply(zoomLevel);
-    let fractionX = point.x / mapW;
-    let fractionY = point.y / mapH;
+    let fractionX = (point.x - mapAdjust.postX)/ mapW;
+    let fractionY = (point.y - mapAdjust.postY)/ mapH;
 
     //and multiply
     let pointX = fractionX * worldW - worldW / 2;
     let pointY = -1 * (fractionY * worldH - worldH / 2);
 
-    return new Point(pointX, pointY);
+    return new Point(pointX - mapAdjust.preX, pointY - mapAdjust.preY);
 }
 
 /**
