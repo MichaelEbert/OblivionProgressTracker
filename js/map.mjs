@@ -13,6 +13,7 @@ export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpa
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
+import { MapPOI } from "./map/mapObject.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -124,8 +125,8 @@ function zoomToInitialLocation(){
         let maybeX = windowParams.get("x");
         let maybeY = windowParams.get("y");
         if(maybeX != null && maybeY != null){
-            coords = new Point(maybeX, maybeY);
-
+            coords = new Point(parseInt(maybeX), parseInt(maybeY));
+            overlay.poi = new MapPOI("POI", -15,-36,coords);
         }
     }
     centerMap(worldSpaceToMapSpace(coords));
@@ -184,27 +185,26 @@ function drawMapOverlay(){
         for(const icon of overlay.nirnroots){
             icon.recalculateBoundingBox();
         }
+        if(overlay.poi != null){
+            overlay.poi.recalculateBoundingBox();
+        }
         recalculateTSP();
     }
     const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
+
+    let hloc = null; //tracks hovered location index to redraw it last.
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
         if(showTSP){
             drawTSP(overlay.tsp_locations);
         }
         
-        let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
             locIcon.draw(ctx, null, overlay.currentLocation);
             if(locIcon.contains(mouseLocInMapCoords)){
                 hloc = locIcon;
             }
-        }
-
-        //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
-        if(hloc != null){
-            hloc.draw(ctx, mouseLocInMapCoords, overlay.currentLocation);
         }
     }
     else if(currentOverlay == "NirnRoute"){
@@ -219,9 +219,15 @@ function drawMapOverlay(){
                 hloc = nirnIcon;
             }
         }
-        if(hloc != null){
-            hloc.draw(ctx, mouseLocInMapCoords);
-        }
+    }
+
+    if(overlay.poi != null){
+        overlay.poi.draw(ctx);
+    }
+
+    //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
+    if(hloc != null){
+        hloc.draw(ctx, mouseLocInMapCoords, overlay.currentLocation);
     }
 }
 
@@ -347,7 +353,8 @@ async function initImgs(){
             "Shrine",
             "Nirnroot",
             "Check",
-            "X"
+            "X",
+            "POI"
         ];
     
         iconsToInit.forEach(function(i){
@@ -374,7 +381,8 @@ async function initImgs(){
 
 function onMouseClick(mouseLoc){
     if(window.debug){
-        console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
+        let mapLoc = screenSpaceToMapSpace(mouseLoc);
+        console.log("click at screen: " + mouseLoc+", map: "+mapLoc+" world: "+mapSpaceToWorldSpace(mapLoc));
     }
     let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
     if(handled){
@@ -582,6 +590,7 @@ function iconSwitch(Input){
         case "Settlement": return icons.Settlement;
         case "Shrine": return icons.Shrine;
         case "Nirnroot": return icons.Nirnroot;
+        case "POI": return icons.POI;
             
         default: 
             console.warn("Element has invalid iconname: " + Input + ".");

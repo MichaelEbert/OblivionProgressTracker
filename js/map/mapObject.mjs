@@ -1,5 +1,5 @@
 "use strict"
-export {MapObject, MapIcon}
+export {MapObject, MapIcon, MapPOI}
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons} from "../map.mjs"
 import {Point} from "./point.mjs"
@@ -28,6 +28,31 @@ MapObject.prototype.width = function(){
 }
 MapObject.prototype.height = function(){
     return this.maxY - this.minY;
+}
+
+function MapPOI(iconName,xOffset, yOffset, worldLocation){
+    this.icon = iconSwitch(iconName);
+    this.iconOffset = new Point(xOffset,yOffset);
+    this.name = "aaaaa";
+    this.worldLoc = worldLocation;
+    this.recalculateBoundingBox();
+}
+
+MapPOI.prototype = Object.create(MapObject.prototype);
+
+MapPOI.prototype.draw = function(ctx, _mouseLoc, _currentSelection){
+    const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
+    ctx.drawImage(this.icon, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+}
+
+MapPOI.prototype.recalculateBoundingBox = function(){
+    let mapCoords = worldSpaceToMapSpace(this.worldLoc);
+    const halfHeightDown = Math.floor(iconH() / 2);
+    const halfHeightUp = Math.ceil(iconH() / 2);
+    this.minX = mapCoords.x + this.iconOffset.x;
+    this.minY = mapCoords.y + this.iconOffset.y;
+    this.maxX = mapCoords.x + (30 + this.iconOffset.x);
+    this.maxY = mapCoords.y + (37 + this.iconOffset.y);
 }
 
 /**
@@ -90,17 +115,11 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
                     default: linesToRender.push("travel time: "+tTime+"hrs"); break;
                 }
             }
-
             //create rect that contains text and the icon.
-            
-
-
 
             //start by initializing font stuff
             const TEXT_HEIGHT = 16;
             ctx.font = "16px serif";
-
-            
 
             //create background of popup window
             ctx.beginPath();

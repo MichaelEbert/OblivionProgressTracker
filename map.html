@@ -87,6 +87,10 @@
 	import * as point from './js/map/point.mjs';
 	exportNamespace(map);
 	exportNamespace(point);
+	
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
 
 	(function(){
 		loadJsonData().then(()=>{
@@ -96,6 +100,7 @@
 	}).call(window);
 </script>
 <script>
+	
 	//I divided these like so for easier editing. 
 		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
 	let welcome = "Welcome to the map!\n\n";
