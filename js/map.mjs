@@ -9,10 +9,11 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
+export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
+import { MapPOI } from "./map/mapObject.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -27,6 +28,15 @@ function getCtx(){
 let zoomLevel = 1;
 let minZoom = 0.2;
 let maxZoom = 3.5;
+
+let mapAdjust = {
+    preX: -2437,
+    preY: 2265,
+    postX: 0,
+    postY: 0,
+    width: 0,
+    height: 0
+}
 
 /**
  * Offset from map to screen coordinates.
@@ -124,8 +134,8 @@ function zoomToInitialLocation(){
         let maybeX = windowParams.get("x");
         let maybeY = windowParams.get("y");
         if(maybeX != null && maybeY != null){
-            coords = new Point(maybeX, maybeY);
-
+            coords = new Point(parseInt(maybeX), parseInt(maybeY));
+            overlay.poi = new MapPOI("POI", -15,-36,coords);
         }
     }
     centerMap(worldSpaceToMapSpace(coords));
@@ -184,27 +194,26 @@ function drawMapOverlay(){
         for(const icon of overlay.nirnroots){
             icon.recalculateBoundingBox();
         }
+        if(overlay.poi != null){
+            overlay.poi.recalculateBoundingBox();
+        }
         recalculateTSP();
     }
     const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
+
+    let hloc = null; //tracks hovered location index to redraw it last.
     //Overlay Else if chain
     if(currentOverlay == "Locations"){
         if(showTSP){
             drawTSP(overlay.tsp_locations);
         }
         
-        let hloc = null; //tracks hovered location index to redraw it last.
         for(const locIcon of overlay.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
             locIcon.draw(ctx, null, overlay.currentLocation);
             if(locIcon.contains(mouseLocInMapCoords)){
                 hloc = locIcon;
             }
-        }
-
-        //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
-        if(hloc != null){
-            hloc.draw(ctx, mouseLocInMapCoords, overlay.currentLocation);
         }
     }
     else if(currentOverlay == "NirnRoute"){
@@ -219,9 +228,15 @@ function drawMapOverlay(){
                 hloc = nirnIcon;
             }
         }
-        if(hloc != null){
-            hloc.draw(ctx, mouseLocInMapCoords);
-        }
+    }
+
+    if(overlay.poi != null){
+        overlay.poi.draw(ctx);
+    }
+
+    //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
+    if(hloc != null){
+        hloc.draw(ctx, mouseLocInMapCoords, overlay.currentLocation);
     }
 }
 
@@ -347,7 +362,8 @@ async function initImgs(){
             "Shrine",
             "Nirnroot",
             "Check",
-            "X"
+            "X",
+            "POI"
         ];
     
         iconsToInit.forEach(function(i){
@@ -374,7 +390,8 @@ async function initImgs(){
 
 function onMouseClick(mouseLoc){
     if(window.debug){
-        console.log("click at screen: " + mouseLoc+", map: "+screenSpaceToMapSpace(mouseLoc));
+        let mapLoc = screenSpaceToMapSpace(mouseLoc);
+        console.log("click at screen: " + mouseLoc+", map: "+mapLoc+" world: "+mapSpaceToWorldSpace(mapLoc));
     }
     let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
     if(handled){
@@ -508,8 +525,8 @@ function worldSpaceToMapSpace(point){
     //first, we convert world space into map space.
     var MapW = img_Map.width;
     var MapH = img_Map.height;
-    const worldW = 480000;
-    const worldH = 400000;
+    const worldW = 485000 + mapAdjust.width;
+    const worldH = 398000 + mapAdjust.height;
     
     //world coords are -240,000 to 240,000 in the x direction
     //and -200,000 to 200,000 in the y direction
@@ -517,12 +534,12 @@ function worldSpaceToMapSpace(point){
     //for most things, we store the "map coords", and then that gets converted to viewport(aka canvas) coords with simple vector addition at draw time.
 
     //first, convert to positive number between 0 and 1.
-    let fraction_x = (Math.round(point.x) + worldW / 2) / worldW;
-    let fraction_y = (-Math.round(point.y) + worldH / 2) / worldH;
+    let fraction_x = (Math.round(point.x+ mapAdjust.preX) + worldW / 2 ) / worldW;
+    let fraction_y = (-Math.round(point.y+ mapAdjust.preY) + worldH / 2 ) / worldH;
 
     //then adjust for the new map height/width.
-    let map_x = (MapW * fraction_x) / zoomLevel;
-    let map_y = (MapH * fraction_y) / zoomLevel;
+    let map_x = (MapW * fraction_x) / zoomLevel + mapAdjust.postX;
+    let map_y = (MapH * fraction_y) / zoomLevel + mapAdjust.postY;
 
     return new Point(map_x, map_y);
 }
@@ -535,19 +552,19 @@ function worldSpaceToMapSpace(point){
 function mapSpaceToWorldSpace(point){
     var mapW = img_Map.width;
     var mapH = img_Map.height;
-    const worldW = 480000;
-    const worldH = 400000;
+    const worldW = 485000 + mapAdjust.width;
+    const worldH = 398000 + mapAdjust.height;
 
     //convert back to float
     point = point.multiply(zoomLevel);
-    let fractionX = point.x / mapW;
-    let fractionY = point.y / mapH;
+    let fractionX = (point.x - mapAdjust.postX)/ mapW;
+    let fractionY = (point.y - mapAdjust.postY)/ mapH;
 
     //and multiply
     let pointX = fractionX * worldW - worldW / 2;
     let pointY = -1 * (fractionY * worldH - worldH / 2);
 
-    return new Point(pointX, pointY);
+    return new Point(pointX - mapAdjust.preX, pointY - mapAdjust.preY);
 }
 
 /**
@@ -582,6 +599,7 @@ function iconSwitch(Input){
         case "Settlement": return icons.Settlement;
         case "Shrine": return icons.Shrine;
         case "Nirnroot": return icons.Nirnroot;
+        case "POI": return icons.POI;
             
         default: 
             console.warn("Element has invalid iconname: " + Input + ".");
