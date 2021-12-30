@@ -1,7 +1,7 @@
 "use strict"
 export {MapObject, MapIcon, MapPOI}
 
-import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount} from "../map.mjs"
+import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, randomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
 
 /**
@@ -170,8 +170,12 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
         }
     }
 
+    //Draw extra gate icons
     if(this.cell.hive.classname == "location" && this.cell.name.includes("Oblivion Gate")){
         let n = this.cell.name;
+        if(n.includes("Random") && randomGateCount >= 40){
+            ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+        }
         if(n.includes("Fixed")){
             ctx.drawImage(icons.Fixed, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }

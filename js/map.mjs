@@ -56,11 +56,13 @@ function updateRandomGateCount(Found){
         randomGateCount--;
     }
 
-    if(randomGateCount == 40){
+    if(randomGateCount >= 40){
         document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
+        document.getElementById("random_Gate_Count").style = "color:green";
     }
     else{
         document.getElementById("random_Gate_Count").innerText = randomGateCount;    
+        document.getElementById("random_Gate_Count").style = "color:black";
     }
 }
 function initRandomGateCount(){
@@ -71,11 +73,12 @@ function initRandomGateCount(){
             randomGateCount++;
         }
     }
-    if(randomGateCount == 40){
+    if(randomGateCount >= 40){
         document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
+        document.getElementById("random_Gate_Count").style = "color:green";
     }
     else{
-        document.getElementById("random_Gate_Count").innerText = randomGateCount;    
+        document.getElementById("random_Gate_Count").innerText = randomGateCount;
     }
 }
 
