@@ -9,7 +9,7 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
+export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx, updateRandomGateCount, randomGateCount};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
@@ -44,8 +44,40 @@ let mapAdjust = {
 let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
-let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
+let currentOverlay = "Locations"; // Locations, NirnRoute
 let showTSP = false;
+
+let randomGateCount = 0;
+function updateRandomGateCount(Found){
+    if(Found){
+        randomGateCount++;
+    }
+    else{
+        randomGateCount--;
+    }
+
+    if(randomGateCount == 40){
+        document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
+    }
+    else{
+        document.getElementById("random_Gate_Count").innerText = randomGateCount;    
+    }
+}
+function initRandomGateCount(){
+    //Init randomGateCount. 
+        //Is there a better way to do this? Only issue I think this presents is if we change the location IDs.
+    for(let i = 189; i <= 268; i++){
+        if(window.savedata.location[i]){
+            randomGateCount++;
+        }
+    }
+    if(randomGateCount == 40){
+        document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
+    }
+    else{
+        document.getElementById("random_Gate_Count").innerText = randomGateCount;    
+    }
+}
 
 //image objects
 let overlay;
@@ -84,6 +116,7 @@ async function initMap(){
     initImgs().then(()=>{
         initOverlay();
         initListeners();
+        initRandomGateCount()
 
         screenOriginInMapCoords = new Point(0,0);
         zoomToInitialLocation();

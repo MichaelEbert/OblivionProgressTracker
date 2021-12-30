@@ -1,7 +1,7 @@
 "use strict"
 export {MapObject, MapIcon, MapPOI}
 
-import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons} from "../map.mjs"
+import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
 
 /**
@@ -182,5 +182,9 @@ MapIcon.prototype.onClick = function(clickPos){
     const classname = this.cell.hive.classname;
     let prevState = window.savedata[classname][this.cell.id];
     window.updateChecklistProgress(null, !prevState, null, this.cell);
+    
+    if(this.cell.name.includes("Random")){
+        updateRandomGateCount(!prevState);
+    }
     return true;
 }
