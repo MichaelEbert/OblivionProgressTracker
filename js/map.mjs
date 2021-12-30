@@ -1,11 +1,3 @@
-//TODO: Figure out Random Gate tracking?
-    //seperate counter for found random gates, count to 40 and stop drawing remaining gates.
-
-//some decorations from the guide that might be useful. //or We could just insert these things into the name of the gates.
-    //TODO: Add pink circle for fixed gates  
-    //TODO: Add green plus for 2 fame gates
-    //TODO: add blue star for no-reroll gates
-
 //TODO: get topbar percentage working on map.js
 
 "use strict";
