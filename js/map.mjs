@@ -396,7 +396,10 @@ async function initImgs(){
             "Nirnroot",
             "Check",
             "X",
-            "POI"
+            "POI",
+            "Fixed",
+            "No_Reroll",
+            "Two_Fame"
         ];
     
         iconsToInit.forEach(function(i){
