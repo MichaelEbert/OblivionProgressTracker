@@ -61,35 +61,43 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 	}
 	else{
 		// not a leaf node, so create a subtree, with a title n stuff.
-		let subtreeName;
-		//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
-		if(root.classname != null){
-			subtreeName = root.classname.replaceAll(" ","_");
+		if(depth < classNamesForLevels.length){
+			let subtreeName;
+			//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+			if(root.classname != null){
+				subtreeName = root.classname.replaceAll(" ","_");
+			}
+			else{
+				subtreeName = root.name.replaceAll(" ", "_");
+			}
+			const subtreeRoot = document.createElement("div");
+			subtreeRoot.classList.add(classNamesForLevels[depth]);
+			subtreeRoot.id = parentElement.id + "_" + subtreeName;
+			
+			const subtreeTitle = document.createElement("div");
+			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
+			subtreeTitle.innerText = root.name;
+			subtreeRoot.appendChild(subtreeTitle);
+			
+			//if we need to change the extra column name, do that before initializing child elements.
+			if(root.extraColumn != null){
+				extraColumnName = root.extraColumn;
+			}
+			
+			//fill out this element with the child elements
+			for(const datum of root.elements) {
+				initMultiV2(datum, subtreeRoot, depth+1, extraColumnName);
+			}
+
+			//finally, append the fully created element to parent.
+			parentElement.appendChild(subtreeRoot);
 		}
 		else{
-			subtreeName = root.name.replaceAll(" ", "_");
+			//we ran out of levels. Just put everything else in the same level.
+			for(const datum of root.elements){
+				initMultiV2(datum, parentElement, depth + 1, extraColumnName);
+			}
 		}
-		const subtreeRoot = document.createElement("div");
-		subtreeRoot.classList.add(classNamesForLevels[depth]);
-		subtreeRoot.id = parentElement.id + "_" + subtreeName;
-		
-		const subtreeTitle = document.createElement("div");
-		subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
-		subtreeTitle.innerText = root.name;
-		subtreeRoot.appendChild(subtreeTitle);
-		
-		//if we need to change the extra column name, do that before initializing child elements.
-		if(root.extraColumn != null){
-			extraColumnName = root.extraColumn;
-		}
-		
-		//fill out this element with the child elements
-		for(const datum of root.elements) {
-			initMultiV2(datum, subtreeRoot, depth+1, extraColumnName);
-		}
-
-		//finally, append the fully created element to parent.
-		parentElement.appendChild(subtreeRoot);
 	}
 }
 
