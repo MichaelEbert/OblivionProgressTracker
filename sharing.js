@@ -192,6 +192,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				saveCookie("progress",dl);
 				if(updateGlobalSaveData){
 					savedata = decompressSaveData(dl);
+					upgradeSaveData();
 
 				}
 				if(notifyOnUpdate){
