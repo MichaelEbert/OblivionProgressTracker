@@ -100,6 +100,12 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
         if(this.contains(mouseLoc)){
             let linesToRender = [this.cell.name];
 
+            if(this.cell.notes){
+                this.cell.notes.split(", ").forEach(note => {
+                    linesToRender.push(note);
+                });
+            }
+
             //calculate distance to display.
             if(currentSelection != null && window.settings.mapShowDistanceCheck){
                 let dx = this.cell.x - currentSelection.cell.x;
@@ -171,8 +177,8 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     }
 
     //Draw extra gate icons
-    if(this.cell.hive.classname == "location" && this.cell.name.includes("Oblivion Gate")){
-        let n = this.cell.name;
+    if(this.cell.name.includes("Oblivion Gate")){
+        let n = this.cell.notes;
         if(n.includes("Random") && randomGateCount >= 40){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
