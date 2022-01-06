@@ -1,4 +1,5 @@
 //TODO: get topbar percentage working on map.js
+//TODO: add in the gates to the fame section. Because we need the fame and the discovery separately.
 
 "use strict";
 export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx, updateRandomGateCount, getRandomGateCount};
@@ -52,12 +53,12 @@ function updateRandomGateCount(Found){
     }
 
     if(randomGateCount >= 40){
-        document.getElementById("random_Gate_Count").innerText = getRandomGateCount() + "✔";
-        document.getElementById("random_Gate_Count").style = "color:green";
+        document.getElementById("randomGateCount").innerText = getRandomGateCount() + "✔";
+        document.getElementById("randomGateCount").style = "color:green";
     }
     else{
-        document.getElementById("random_Gate_Count").innerText = getRandomGateCount();    
-        document.getElementById("random_Gate_Count").style = "color:black";
+        document.getElementById("randomGateCount").innerText = getRandomGateCount();    
+        document.getElementById("randomGateCount").style = "color:black";
     }
 }
 function initRandomGateCount(){
@@ -67,11 +68,11 @@ function initRandomGateCount(){
     randomGateCount = completed[0];
 
     if(randomGateCount >= 40){
-        document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
-        document.getElementById("random_Gate_Count").style = "color:green";
+        document.getElementById("randomGateCount").innerText = randomGateCount + "✔";
+        document.getElementById("randomGateCount").style = "color:green";
     }
     else{
-        document.getElementById("random_Gate_Count").innerText = randomGateCount;
+        document.getElementById("randomGateCount").innerText = randomGateCount;
     }
 }
 
