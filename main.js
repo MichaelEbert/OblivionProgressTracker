@@ -111,7 +111,7 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 function recalculateProgressAndUpdateProgressUI(){
 	let percentCompleteSoFar = recalculateProgress();
 	//round progress to 2 decimal places
-	progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerHTML = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
