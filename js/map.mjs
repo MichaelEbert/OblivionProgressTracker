@@ -9,7 +9,20 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx};
+export {
+    initMap, 
+    mapAdjust, 
+    worldSpaceToMapSpace, 
+    mapSpaceToWorldSpace, 
+    mapSpaceToScreenSpace, 
+    iconH, 
+    iconSwitch, 
+    icons, 
+    //debugging variables
+    getOverlay,
+    getCtx,
+    getZoomLevel
+};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
@@ -25,6 +38,9 @@ function getCtx(){
     return ctx;
 }
 
+function getZoomLevel(){
+    return zoomLevel;
+}
 let zoomLevel = 1;
 let minZoom = 0.2;
 let maxZoom = 3.5;
@@ -505,6 +521,9 @@ function updateZoom(deltaZ, zoomPoint){
     if(zoomLevel > 1.75)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 2;
     else if(zoomLevel > 1.5)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.5;
     else if(zoomLevel > 1.25)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.25;
+    else if(zoomLevel > 0.21)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel ;
+    //for super zoomed in, shrink the icons again, as user probably wants precision.
+    else m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 0.5;
     _iconH = m_iconH;
 
     //make map zoom in to zoomPoint.

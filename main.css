@@ -1,9 +1,16 @@
+:root{
+	--highlight-color: #66666640;
+	--base-color: #E5D9B9;
+	--lighter-color: #FBEFD5;
+	--lightest-color: #FFF5B5;
+}
+
 html{
 	font-family: serif;
 }
 
 body{
-	background-color: #E5D9B9;
+	background-color: var(--base-color);
 }
 
 br{
@@ -46,10 +53,10 @@ td{
 	justify-content: space-evenly;
 	align-items:stretch;
 	width: 100%;
-	max-height: 2em;
+	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
 	position: fixed;
-	background-color: #FBEFD5;
-	padding:0.5em;
+	background-color: var(--base-color);
+	padding:0.3em;
 	box-sizing:border-box;
 	top: 0; /* hug the top of the window instead of having a buffer */
 	left: 0;
@@ -59,12 +66,12 @@ td{
 .topbarSection{
 	flex:1 1 14%;
 	text-align: center;
-	background-color: #EBDFC5;
+	background-color: var(--lighter-color);
 	border-right: 1px solid black;
 }
 
 .topbarSublist{
-	background-color: #EBDFC5;
+	background-color: var(--lighter-color);
 	display: none;
 }
 
@@ -73,11 +80,11 @@ td{
 }
 
 .topbarSection:hover{
-	background-color: #cccccc;
+	background-color: var(--highlight-color);
 }
 
 .topbarSublist a:hover{
-	background-color: #cccccc;
+	background-color: var(--highlight-color);
 }
 
 .topbarSection a,
@@ -112,7 +119,7 @@ td{
 }
 
 .iframe{
-	background-color: #FBEFD5;
+	background-color: var(--lighter-color);
 	border: 1px solid gray;
 	width: calc( 100% - 2px);
 	height: 100%
@@ -137,7 +144,7 @@ td{
 	margin: 1em;
 	margin-left: 1vw;
 	margin-right: 1vw;
-	background-color: #FBEFD5;
+	background-color: var(--lighter-color);
 	column-width: 18em;
 	padding: 0.5em;
 }
@@ -166,7 +173,7 @@ td{
 }
 
 .item:hover{
-	background-color: #66666640;
+	background-color: var(--highlight-color);
 }
 
 .item.checked:hover{
@@ -214,7 +221,7 @@ input[type="number"]{
 }
 
 .mapWrapper{
-	background-color: #FBEFD5;
+	background-color: var(--lighter-color);
 	max-width:100%;
 	overflow: hidden;
 }
