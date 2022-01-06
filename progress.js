@@ -434,6 +434,10 @@ function sumCompletionItems(jsonNode){
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
+		if(jsonNode.max != null){
+			let max = parseInt(jsonNode.max);
+			return [Math.min(max, completed), Math.min(max,total)];
+		}
 		return [completed,total];
 	}
 }
