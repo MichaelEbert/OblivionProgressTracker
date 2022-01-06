@@ -1,12 +1,5 @@
-//TODO: Figure out Random Gate tracking?
-    //seperate counter for found random gates, count to 40 and stop drawing remaining gates.
-
-//some decorations from the guide that might be useful. //or We could just insert these things into the name of the gates.
-    //TODO: Add pink circle for fixed gates  
-    //TODO: Add green plus for 2 fame gates
-    //TODO: add blue star for no-reroll gates
-
 //TODO: get topbar percentage working on map.js
+//TODO: add in the gates to the fame section. Because we need the fame and the discovery separately.
 
 "use strict";
 export {
@@ -60,8 +53,44 @@ let mapAdjust = {
 let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
-let currentOverlay = "Locations"; // Locations, NirnRoute, Exploration.
+let currentOverlay = "Locations"; // Locations, NirnRoute
 let showTSP = false;
+
+let randomGateCount = 0;
+function getRandomGateCount(){
+    return randomGateCount;
+}
+function updateRandomGateCount(Found){
+    if(Found){
+        randomGateCount++;
+    }
+    else{
+        randomGateCount--;
+    }
+
+    if(randomGateCount >= 40){
+        document.getElementById("randomGateCount").innerText = getRandomGateCount() + "✔";
+        document.getElementById("randomGateCount").style = "color:green";
+    }
+    else{
+        document.getElementById("randomGateCount").innerText = getRandomGateCount();    
+        document.getElementById("randomGateCount").style = "color:black";
+    }
+}
+function initRandomGateCount(){
+    //Init randomGateCount. 
+    let root = window.findOnTree(window.jsondata.location, x=>x.name == "Random Gates", y=>y.name == "Random Gates" || y.elements == null)
+    let completed = window.sumCompletionItems(root);
+    randomGateCount = completed[0];
+
+    if(randomGateCount >= 40){
+        document.getElementById("randomGateCount").innerText = randomGateCount + "✔";
+        document.getElementById("randomGateCount").style = "color:green";
+    }
+    else{
+        document.getElementById("randomGateCount").innerText = randomGateCount;
+    }
+}
 
 //image objects
 let overlay;
@@ -100,6 +129,7 @@ async function initMap(){
     initImgs().then(()=>{
         initOverlay();
         initListeners();
+        initRandomGateCount()
 
         screenOriginInMapCoords = new Point(0,0);
         zoomToInitialLocation();
@@ -379,7 +409,10 @@ async function initImgs(){
             "Nirnroot",
             "Check",
             "X",
-            "POI"
+            "POI",
+            "Overlay_Fixed",
+            "Overlay_No_Reroll",
+            "Overlay_Two_Fame"
         ];
     
         iconsToInit.forEach(function(i){

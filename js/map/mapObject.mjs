@@ -1,7 +1,7 @@
 "use strict"
 export {MapObject, MapIcon, MapPOI}
 
-import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons} from "../map.mjs"
+import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
 
 /**
@@ -100,6 +100,12 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
         if(this.contains(mouseLoc)){
             let linesToRender = [this.cell.name];
 
+            if(this.cell.notes){
+                this.cell.notes.split(", ").forEach(note => {
+                    linesToRender.push(note);
+                });
+            }
+
             //calculate distance to display.
             if(currentSelection != null && window.settings.mapShowDistanceCheck){
                 let dx = this.cell.x - currentSelection.cell.x;
@@ -169,6 +175,19 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
     }
+
+    //Draw extra gate icons
+    if(this.cell.name.includes("Oblivion Gate")){
+        let n = this.cell.notes;
+        this.cell.notes.split(", ").forEach(note => {
+            if(icons["Overlay_" + note]){
+                ctx.drawImage(icons["Overlay_" + note], screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+            }
+        });
+        if(n.includes("Random") && getRandomGateCount() >= 40){
+            ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+        }
+    }
 }
 
 MapIcon.prototype.onClick = function(clickPos){
@@ -182,5 +201,9 @@ MapIcon.prototype.onClick = function(clickPos){
     const classname = this.cell.hive.classname;
     let prevState = window.savedata[classname][this.cell.id];
     window.updateChecklistProgress(null, !prevState, null, this.cell);
+    
+    if(this.cell.notes && this.cell.notes.includes("Random")){
+        updateRandomGateCount(!prevState);
+    }
     return true;
 }
