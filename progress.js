@@ -28,7 +28,7 @@ function loadCookie(name){
 }
 
 function upgradeSaveData(){
-	//we use not >= so it'll handle stuff like undefined, nan, or strings.
+	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
 	if(!(savedata.version >= 5)){
 		//tell user we can't upgrade.
 		let reset = confirm("Save data is out of date. Percentages may be wrong. Would you like to reset progress?");
@@ -37,7 +37,7 @@ function upgradeSaveData(){
 		}
 	}
 	else{
-		var shouldAttemptUpgrade;
+		var shouldAttemptUpgrade = false;
 		if(savedata.version < version){
 			//ask if user wants to attempt upgrade
 			shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
@@ -306,9 +306,10 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			case "number":
 				valueAsCorrectType = newValue;
 				break;
+			case "undefined":
 			default:
 				debugger;
-				console.error("unexpected input type");
+				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
 				return;
 		}
 	}
@@ -326,9 +327,11 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 					valueAsCorrectType = true;
 				}
 				break;
+			case "undefined":
+				valueAsCorrectType = false;
 			default:
 				debugger;
-				console.error("unexpected input type");
+				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
 				return;
 		}
 	}
@@ -433,6 +436,10 @@ function sumCompletionItems(jsonNode){
 			let innerResult = sumCompletionItems(element);
 			completed += innerResult[0];
 			total += innerResult[1];
+		}
+		if(jsonNode.max != null){
+			let max = parseInt(jsonNode.max);
+			return [Math.min(max, completed), Math.min(max,total)];
 		}
 		return [completed,total];
 	}

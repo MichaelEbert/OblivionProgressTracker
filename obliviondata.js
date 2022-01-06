@@ -225,23 +225,18 @@ function elementsUndefinedOrNull(node){
  * @param {(x:object)=>boolean} isLeafFunc function to determine if this element is a leaf node and should be searched.
  */
 function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
-	if(isLeafFunc(root)){
-		if(findfunc(root)){
-			return root;
-		}
-		else{
-			return null;
-		}
+	if(isLeafFunc(root) && findfunc(root)){
+		return root;
 	}
-	else{
-		if(root?.elements == null){
-			debugger;
-		}
-		for(const e of root.elements){
-			const mayberesult = findOnTree(e, findfunc, isLeafFunc);
-			if(!(mayberesult == null)){
-				return mayberesult;
-			}
+
+	if(root?.elements == null){
+		return null;
+	}
+	
+	for(const e of root.elements){
+		const mayberesult = findOnTree(e, findfunc, isLeafFunc);
+		if(!(mayberesult == null)){
+			return mayberesult;
 		}
 	}
 }
