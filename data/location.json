@@ -1,4 +1,4 @@
-{"version":4, "name":"Locations","classname":"location", "weight":0, "elements":[
+{"version":4, "name":"Locations","classname":"location", "weight":8, "elements":[
     {"name":"Atrene Camp","x":-198683,"y":-6236,"formId":"0x000175fb","icon":"Camp"},
     {"name":"Varus Camp","x":-182337,"y":26619,"formId":"0x000175e3","icon":"Camp"},
     {"name":"Bodean Camp","x":-174144,"y":6144,"formId":"0x000175f5","icon":"Camp"},
