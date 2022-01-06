@@ -179,17 +179,14 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //Draw extra gate icons
     if(this.cell.name.includes("Oblivion Gate")){
         let n = this.cell.notes;
-
         this.cell.notes.split(", ").forEach(note => {
             if(icons["Overlay_" + note]){
                 ctx.drawImage(icons["Overlay_" + note], screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
             }
         });
-        
         if(n.includes("Random") && getRandomGateCount() >= 40){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
-        
     }
 }
 
