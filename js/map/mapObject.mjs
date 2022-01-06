@@ -1,7 +1,7 @@
 "use strict"
 export {MapObject, MapIcon, MapPOI}
 
-import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, randomGateCount} from "../map.mjs"
+import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
 
 /**
@@ -179,7 +179,7 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //Draw extra gate icons
     if(this.cell.name.includes("Oblivion Gate")){
         let n = this.cell.notes;
-        if(n.includes("Random") && randomGateCount >= 40){
+        if(n.includes("Random") && getRandomGateCount() >= 40){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
         if(n.includes("Fixed")){
@@ -207,7 +207,7 @@ MapIcon.prototype.onClick = function(clickPos){
     let prevState = window.savedata[classname][this.cell.id];
     window.updateChecklistProgress(null, !prevState, null, this.cell);
     
-    if(this.cell.name.includes("Random")){
+    if(this.cell.notes && this.cell.notes.includes("Random")){
         updateRandomGateCount(!prevState);
     }
     return true;

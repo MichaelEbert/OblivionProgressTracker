@@ -1,7 +1,7 @@
 //TODO: get topbar percentage working on map.js
 
 "use strict";
-export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx, updateRandomGateCount, randomGateCount};
+export {initMap, mapAdjust, worldSpaceToMapSpace, mapSpaceToWorldSpace, mapSpaceToScreenSpace, iconH, iconSwitch, icons, getOverlay, getCtx, updateRandomGateCount, getRandomGateCount};
 
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
@@ -40,6 +40,9 @@ let currentOverlay = "Locations"; // Locations, NirnRoute
 let showTSP = false;
 
 let randomGateCount = 0;
+function getRandomGateCount(){
+    return randomGateCount;
+}
 function updateRandomGateCount(Found){
     if(Found){
         randomGateCount++;
@@ -49,11 +52,11 @@ function updateRandomGateCount(Found){
     }
 
     if(randomGateCount >= 40){
-        document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
+        document.getElementById("random_Gate_Count").innerText = getRandomGateCount() + "✔";
         document.getElementById("random_Gate_Count").style = "color:green";
     }
     else{
-        document.getElementById("random_Gate_Count").innerText = randomGateCount;    
+        document.getElementById("random_Gate_Count").innerText = getRandomGateCount();    
         document.getElementById("random_Gate_Count").style = "color:black";
     }
 }
