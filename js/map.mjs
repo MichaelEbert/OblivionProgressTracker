@@ -62,12 +62,10 @@ function updateRandomGateCount(Found){
 }
 function initRandomGateCount(){
     //Init randomGateCount. 
-        //Is there a better way to do this? Only issue I think this presents is if we change the location IDs.
-    for(let i = 189; i <= 268; i++){
-        if(window.savedata.location[i]){
-            randomGateCount++;
-        }
-    }
+    let root = window.findOnTree(window.jsondata.location, x=>x.name == "Random Gates", y=>y.name == "Random Gates" || y.elements == null)
+    let completed = window.sumCompletionItems(root);
+    randomGateCount = completed[0];
+
     if(randomGateCount >= 40){
         document.getElementById("random_Gate_Count").innerText = randomGateCount + "✔";
         document.getElementById("random_Gate_Count").style = "color:green";
@@ -395,9 +393,9 @@ async function initImgs(){
             "Check",
             "X",
             "POI",
-            "Fixed",
-            "No_Reroll",
-            "Two_Fame"
+            "Overlay_Fixed",
+            "Overlay_No_Reroll",
+            "Overlay_Two_Fame"
         ];
     
         iconsToInit.forEach(function(i){

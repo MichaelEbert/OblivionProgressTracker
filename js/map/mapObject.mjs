@@ -183,13 +183,13 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
         if(n.includes("Fixed")){
-            ctx.drawImage(icons.Fixed, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+            ctx.drawImage(icons.Overlay_Fixed, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
         if(n.includes("No Reroll")){    
-            ctx.drawImage(icons.No_Reroll, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+            ctx.drawImage(icons.Overlay_No_Reroll, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
         if(n.includes("2 Fame")){
-            ctx.drawImage(icons.Two_Fame, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+            ctx.drawImage(icons.Overlay_Two_Fame, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
         
     }
