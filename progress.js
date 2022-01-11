@@ -173,6 +173,8 @@ function initSettings(){
 
 	changed |= initProperty(settings, "minipageCheck",true);
 	changed |= initProperty(settings, "iframeCheck", "auto");
+	changed |= initProperty(settings, "iframeMinWidth", 600);
+	changed |= initProperty(settings, "iframeWidth", "45vw");
 	
 	//TODO: fix my shit encapsulation. until then...
 	if(typeof(initShareSettings) != "undefined"){

@@ -15,10 +15,25 @@ function init(){
         if(settings[settingName] != null){
             setting.checked = settings[settingName];
         }
+        if(window.debug){
+            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
+        }
     }
+
+    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
+    for(const setting of autoTextSettings){
+        setting.addEventListener('change', onSettingChangeText);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.value = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
+        }
+    }
+    
+    //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);
-    document.getElementById("iframeCheck").addEventListener('change',onSettingChangeText);
-    document.getElementById("serverUrl").addEventListener('change',onSettingChangeText);
     document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
     document.getElementById("clearRemoteButton").addEventListener('click',function(){
         let sharecode = document.getElementById("remoteShareCode"); 
@@ -26,14 +41,6 @@ function init(){
         setRemoteUrl({target:sharecode});
         });
     document.addEventListener("progressUpload",updateShareUrl);
-
-    if(settings.iframeCheck){
-        document.getElementById("iframeCheck").value = settings.iframeCheck;
-    }
-
-    if(settings.serverUrl){
-        document.getElementById("serverUrl").value = settings.serverUrl;
-    }
 
     if(settings.myShareCode){
         updateShareUrl();

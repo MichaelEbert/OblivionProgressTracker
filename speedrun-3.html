@@ -4743,7 +4743,10 @@ You have completed the 100% run!
 	exportNamespace(common);
 </script>
 <script>
-init();
-makeCollapsible();
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
+	init();
+	makeCollapsible();
 </script>
 </body>

@@ -73,16 +73,18 @@
 <div class="section">
 <div class="sectionTitle">Preferences</div>
 	<input type="checkbox" id="minipageCheck" class="autosetting"/> Link books to local page (uncheck for direct UESP links)<br/>
-	<select name="iframeCheck" id="iframeCheck">
+	<select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
 		<option value="auto">Auto</option>
 		<option value="on">Always on</option>
 		<option value="off">Always off</option>
-	</select> enable opening links in-page on iframe<br/>
+	</select> enable opening links in-page on right side of screen<br/>
+	<input type="number" id="iframeMinWidth" class="autoTextSetting"/>Minimum page width to show second column (for auto)<br/>
+	<input type="text" id="iframeWidth" class="autoTextSetting"/>Width of second column (when shown)<br/>
 	<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"/> Show distance between locations on map<br/>
 </div>
 <div class="section">
 <div class="sectionTitle">Sharing</div>
-	<input type="text" id="serverUrl" size="60"/>Share server path <br/>
+	<input type="text" id="serverUrl" size="60" class="autoTextSetting"/>Share server path <br/>
 	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
 	<input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change<br/>
 	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
@@ -94,6 +96,9 @@
 </div>
 <p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 <script>
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
 	init();
 </script>
 </body>

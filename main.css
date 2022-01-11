@@ -114,11 +114,6 @@ td{
 	flex-direction: column;
 }
 
-#iframeContainer{
-	height: 200px;/*initial  height. User can drag to resize.*/
-	flex: none;/*since this is first, we want it to be the exact size the user specifies. Map is below and will take up all the rest of the space.*/
-}
-
 .iframe{
 	background-color: var(--lighter-color);
 	border: 1px solid gray;
