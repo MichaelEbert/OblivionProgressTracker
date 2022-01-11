@@ -213,7 +213,6 @@ input[type="number"]{
 
 .mapButtonBar{
 	margin: 0.5em;
-	margin-top:1em;/*because the topbar has weird margins and i don't feel like fixing it right now*/
 }
 
 .mapWrapper{
