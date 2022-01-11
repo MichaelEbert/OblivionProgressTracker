@@ -11,6 +11,7 @@ html{
 
 body{
 	background-color: var(--base-color);
+	margin-top: 0;
 }
 
 br{
@@ -51,13 +52,13 @@ td{
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
-	align-items:stretch;
+	align-items: stretch;
 	width: 100%;
 	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
-	position: fixed;
+	position: sticky;
 	background-color: var(--base-color);
-	padding:0.3em;
-	box-sizing:border-box;
+	padding: 0.3em;
+	box-sizing: border-box;
 	top: 0; /* hug the top of the window instead of having a buffer */
 	left: 0;
 	z-index: 1;/*Lets topbar render ontop of iframe*/
@@ -224,6 +225,10 @@ input[type="number"]{
 	background-color: var(--lighter-color);
 	max-width:100%;
 	overflow: hidden;
+}
+
+h1{
+	margin: 0.5em;
 }
 
 /*mobile/thin window CSS*/
