@@ -50,11 +50,11 @@ const classes = [
 	new JsonClass("skill",true,true),
 	new JsonClass("store",true,true),
 	new JsonClass("misc",true),
-	new JsonClass("save",true),
 	new JsonClass("npc",false),
 	new JsonClass("fame",true),
 	new JsonClass("nirnroot",true, true),
-	new JsonClass("location",true, true)
+	new JsonClass("location",true, true),
+	new JsonClass("save",true)
 ];
 
 /**
