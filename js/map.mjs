@@ -11,6 +11,8 @@ export {
     iconH, 
     iconSwitch, 
     icons, 
+    getRandomGateCount,
+    updateRandomGateCount,
     //debugging variables
     getOverlay,
     getCtx,
@@ -20,6 +22,7 @@ export {
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
+import { GateIcon } from "./map/mapObject.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -203,7 +206,13 @@ function initOverlay(){
     }
 
     runOnTree(jsondata.location, function(loc){
-        let newIcon = new MapIcon(loc);
+        let newIcon = null;
+        if(loc.name.includes("Oblivion Gate")){
+            newIcon = new GateIcon(loc);
+        }
+        else{
+            newIcon = new MapIcon(loc);
+        }
         overlay.locations.push(newIcon);
         
         if(loc.tspID != null){

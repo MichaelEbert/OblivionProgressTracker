@@ -1,5 +1,10 @@
 "use strict"
-export {MapObject, MapIcon, MapPOI}
+export {
+    MapObject, 
+    MapIcon, 
+    MapPOI,
+    GateIcon
+}
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
@@ -175,19 +180,6 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
             ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
         }
     }
-
-    //Draw extra gate icons
-    if(this.cell.name.includes("Oblivion Gate")){
-        let n = this.cell.notes;
-        this.cell.notes.split(", ").forEach(note => {
-            if(icons["Overlay_" + note]){
-                ctx.drawImage(icons["Overlay_" + note], screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
-            }
-        });
-        if(n.includes("Random") && getRandomGateCount() >= 40){
-            ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
-        }
-    }
 }
 
 MapIcon.prototype.onClick = function(clickPos){
@@ -202,8 +194,45 @@ MapIcon.prototype.onClick = function(clickPos){
     let prevState = window.savedata[classname][this.cell.id];
     window.updateChecklistProgress(null, !prevState, null, this.cell);
     
-    if(this.cell.notes && this.cell.notes.includes("Random")){
-        updateRandomGateCount(!prevState);
-    }
     return true;
+}
+
+//Gate icons are special, so they get their own class.
+function GateIcon(cell){
+    MapIcon.call(this, cell);
+    this.isRandom = cell.notes?.includes("Random") ?? false;
+}
+
+GateIcon.prototype = Object.create(MapIcon.prototype);
+
+GateIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
+    if(this.isRandom){
+        if(getRandomGateCount() >= 40){
+            //draw in grey? idk.
+        }
+
+    }
+    MapIcon.prototype.draw.call(this, ctx, mouseLoc, currentSelection);
+    //Draw extra gate icons
+    const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
+    let n = this.cell.notes;
+    this.cell.notes.split(", ").forEach(note => {
+        if(icons["Overlay_" + note]){
+            ctx.drawImage(icons["Overlay_" + note], screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+        }
+    });
+    if(this.isRandom && getRandomGateCount() >= 40){
+        ctx.drawImage(icons.Check, screenSpaceIconOrigin.x, screenSpaceIconOrigin.y, this.width(), this.height());
+    }
+}
+
+GateIcon.prototype.onClick = function(clickPos){
+    if(MapIcon.prototype.onClick.call(this, clickPos)){
+        if(this.isRandom){
+            updateRandomGateCount(window.savedata[this.cell.hive.classname][this.cell.id]);
+        }
+        return true;
+    }
+    return false;
+    
 }
