@@ -177,7 +177,14 @@ function zoomToInitialLocation(){
         if(targetCell != null){
             coords = new Point(targetCell.x, targetCell.y);
         }
-        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
+        if(targetCell.hive.classname == "nirnroot"){
+            document.getElementById("button_Nirnroot").checked = true;
+            currentOverlay = "NirnRoute"
+            overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
+        }
+        else{
+            overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
+        }
     }
     else 
     {
@@ -279,7 +286,7 @@ function drawMapOverlay(){
 
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
-            nirnIcon.draw(ctx);
+            nirnIcon.draw(ctx, null, overlay.currentLocation);
             if(nirnIcon.contains(mouseLocInMapCoords)){
                 hloc = nirnIcon;
             }
@@ -545,6 +552,15 @@ function initListeners(){
         showTSP = !showTSP; 
         drawFrame();
     });
+    if(document.getElementById("button_Nirnroot").checked){
+        currentOverlay = "NirnRoute";
+    }
+    else{
+        currentOverlay = "Locations";
+    }
+    if(document.getElementById("button_ToggleTSP").checked){
+        showTSP = true;
+    }
 }
 
 function updateZoom(deltaZ, zoomPoint){
