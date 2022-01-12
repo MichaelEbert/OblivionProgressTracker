@@ -11,6 +11,8 @@ export {
     iconH, 
     iconSwitch, 
     icons, 
+    getRandomGateCount,
+    updateRandomGateCount,
     //debugging variables
     getOverlay,
     getCtx,
@@ -20,6 +22,7 @@ export {
 import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
+import { GateIcon } from "./map/mapObject.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -173,7 +176,14 @@ function zoomToInitialLocation(){
         if(targetCell != null){
             coords = new Point(targetCell.x, targetCell.y);
         }
-        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
+        if(targetCell.hive.classname == "nirnroot"){
+            document.getElementById("button_Nirnroot").checked = true;
+            currentOverlay = "NirnRoute"
+            overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
+        }
+        else{
+            overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
+        }
     }
     else 
     {
@@ -203,7 +213,13 @@ function initOverlay(){
     }
 
     runOnTree(jsondata.location, function(loc){
-        let newIcon = new MapIcon(loc);
+        let newIcon = null;
+        if(loc.name.includes("Oblivion Gate")){
+            newIcon = new GateIcon(loc);
+        }
+        else{
+            newIcon = new MapIcon(loc);
+        }
         overlay.locations.push(newIcon);
         
         if(loc.tspID != null){
@@ -269,7 +285,7 @@ function drawMapOverlay(){
 
         let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
-            nirnIcon.draw(ctx);
+            nirnIcon.draw(ctx, null, overlay.currentLocation);
             if(nirnIcon.contains(mouseLocInMapCoords)){
                 hloc = nirnIcon;
             }
@@ -535,6 +551,15 @@ function initListeners(){
         showTSP = !showTSP; 
         drawFrame();
     });
+    if(document.getElementById("button_Nirnroot").checked){
+        currentOverlay = "NirnRoute";
+    }
+    else{
+        currentOverlay = "Locations";
+    }
+    if(document.getElementById("button_ToggleTSP").checked){
+        showTSP = true;
+    }
 }
 
 function updateZoom(deltaZ, zoomPoint){

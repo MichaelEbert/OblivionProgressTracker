@@ -75,7 +75,6 @@
 	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
 </div>
 
-<br/>
 <div class="contentContainer">
 
 <div class="sidebar" id="sidebar"></div>
@@ -84,6 +83,7 @@
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
 <button onclick="initSpeak()" id="enable_speech_btn">Enable speech</button>
+<a href="./map.html?topbar=false" target="_blank">Open Map</a>
 
 <div class="section" id="guide_Pregame">
 <div class="sectionTitle">Pregame</div>
@@ -4744,7 +4744,10 @@ You have completed the 100% run!
 	exportNamespace(common);
 </script>
 <script>
-init();
-makeCollapsible();
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
+	init();
+	makeCollapsible();
 </script>
 </body>

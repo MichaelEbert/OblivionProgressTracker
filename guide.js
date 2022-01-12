@@ -31,7 +31,7 @@ function init(){
 		}
 		replaceElements();
 		window.addEventListener("resize",onWindowResize);
-		actuallyResizeWindow();
+		checkIframeSize();
 	});
 }
 
@@ -192,14 +192,6 @@ function updateHtmlElementFromSaveData(cell){
 	if(usableId == null){
 		usableId = cell.id;
 	}
-	let checkbox = document.getElementById(classname+usableId+"check");
-	if(checkbox == null){
-		if(usableId != null && window.debug){
-			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
-			console.warn("unable to find checkbox element for modifiable cell '"+classname+usableId+"' (id "+cell.id+")");
-		}
-		return;
-	}
 	let newval = null;
 	if(cell.ref == null){
 		//we call updateChecklistProgress so indirect elements will update from this
@@ -241,15 +233,19 @@ function checkboxClicked(event){
 	}
 }
 
-var displayIframe = false;
+var __displayingIframe = false;
 /**
  * Update iframe visibility
- * @param {boolean} visible 
+ * @param {boolean} visible should iframe be visible
  */
 function updateIframe(visible){
 	//if we're not changing the visibility of the iframe, do nothing.
-	if(visible == displayIframe){
+	if(visible == __displayingIframe){
 		return;
+	}
+	if(window.debug){
+		let newstate = visible?"on":"off"
+		console.log("updating iframe to "+newstate);
 	}
 	if(visible){
 		//iframe going from off to on
@@ -257,23 +253,32 @@ function updateIframe(visible){
 			document.getElementById("iframeContainer").style.display = ""
 		}
 		else{
-			var resizableContainer = document.createElement("div");
-			resizableContainer.classList.add("resizableContainer");
-			resizableContainer.classList.add("sidebarContainer");
-			resizableContainer.id = "iframeContainer";
+			var iframeContainer = document.createElement("div");
+			iframeContainer.classList.add("resizableContainer");
+			iframeContainer.classList.add("sidebarContainer");
+			iframeContainer.id = "iframeContainer";
 
 			var myframe = document.createElement("iframe");
 			myframe.name="myframe";
 			myframe.id="myframe";
 			myframe.classList.add("iframe");
 			
-			resizableContainer.appendChild(myframe);
+			iframeContainer.appendChild(myframe);
+			iframeContainer.addEventListener('mouseup',(event)=>{
+				if(settings.iframeWidth != event.target.style.width){
+					settings.iframeWidth = event.target.style.width;
+					saveCookie("settings",settings);
+				}
+			});
 			var sidebar = document.getElementById("sidebar");
 			if(sidebar != null){
-				sidebar.prepend(resizableContainer);
+				sidebar.prepend(iframeContainer);
 			}
 			else{
-				document.body.prepend(resizableContainer);
+				document.body.prepend(iframeContainer);
+			}
+			if(settings?.iframeWidth){
+				iframeContainer.style.width = settings.iframeWidth;
 			}
 		}
 		
@@ -284,6 +289,7 @@ function updateIframe(visible){
 				lnk.target = "myframe";
 			}
 		}
+		__displayingIframe = true;
 	}
 	else{
 		//iframe going from on to off
@@ -297,6 +303,7 @@ function updateIframe(visible){
 				lnk.target = "_blank";
 			}
 		}
+		__displayingIframe = false;
 	}
 }
 
@@ -307,20 +314,18 @@ function onWindowResize(event){
 	if(windowResizeId != null){
 		clearTimeout(windowResizeId);
 	}
-	windowResizeId = setTimeout(actuallyResizeWindow,100,event);
+	windowResizeId = setTimeout(checkIframeSize,50,event);
 }
 
-function actuallyResizeWindow(event){
+function checkIframeSize(event){
 	windowResizeId = null;
 	if(settings.iframeCheck == "on" || 
-	(settings.iframeCheck == "auto" && window.innerWidth > 500)){
+	(settings.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){
 		updateIframe(true);
 	}
 	else{
 		updateIframe(false);
 	}
-	console.log("update window size");
-
 }
 
 function pushNpcReferencesToMinipage(event){

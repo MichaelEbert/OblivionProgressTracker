@@ -70,10 +70,13 @@
 </div>
 <div class="mapContainer" id="mapContainer">
 	<div class="mapButtonBar">
-		<button id="button_Location" title="Shows all Locations that need to be discovered.">Locations</button> 
-		<button id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</button>
-		<button id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Toggle Traveling Salesman Path</button>
+		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</input> 
+		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</input>
+		<span>&nbsp;&nbsp;&nbsp;</span>
+		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
+		<span>&nbsp;&nbsp;&nbsp;</span>
 		<button onclick="showHelp()">Help!</button>
+		<span>&nbsp;&nbsp;&nbsp;</span>
 		<span>Random gates found: 
 			<span id="randomGateCount">##</span> 
 		</span>
@@ -102,11 +105,10 @@
 	}).call(window);
 </script>
 <script>
-	
 	//I divided these like so for easier editing. 
 		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
 	let welcome = "Welcome to the map!\n\n";
-	let clickIcon = "Click on an icon when it's been discovered/picked.\n\n";
+	let clickIcon = "Double-click on an icon when it's been discovered.\n\n";
 	let tspExplanation = "The Traveling Salesman Path is a calculated fastest route between each icon, it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.\n\n";
 	
 	//this isn't implemented yet, but should be noted so people aren't surprised when it happens during their run.
