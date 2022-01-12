@@ -115,7 +115,6 @@ async function initMap(){
     if(windowParams.get("topbar") == "false"){
         //TODO: put this in css files
         document.getElementById("topbar").remove();
-        document.getElementById("title").remove();
         let mapContainer = document.getElementById("mapContainer");
         if(mapContainer != null){
             mapContainer.style = "top:0;padding:2px;"
