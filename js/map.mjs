@@ -228,7 +228,7 @@ function initOverlay(){
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
-        if(nirn.cell == "Outdoors"){
+        if(nirn.name){
             let newIcon = new MapIcon(nirn)
             overlay.nirnroots.push(newIcon);
 
