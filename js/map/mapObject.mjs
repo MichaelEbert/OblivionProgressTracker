@@ -101,7 +101,7 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //for drawing, we have to convert back to screen space.
     const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
     const TEXT_PADDING_PX = 2;
-    if(this.cell.hive.classname != "nirnroot"){
+    if(this.cell.name){
         if(this.contains(mouseLoc)){
             let linesToRender = [this.cell.name];
 

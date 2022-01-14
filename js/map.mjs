@@ -283,7 +283,6 @@ function drawMapOverlay(){
             drawTSP(overlay.tsp_nirnroots);
         }
 
-        let hloc = null; //tracks hovered location index to redraw it last.
         for(const nirnIcon of overlay.nirnroots){
             nirnIcon.draw(ctx, null, overlay.currentLocation);
             if(nirnIcon.contains(mouseLocInMapCoords)){
