@@ -6,7 +6,6 @@
 	<script src="./js/module-shim.mjs" type="module"></script>
 	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
-	<script src="progress.js"></script>
 	<script src="sharing.js"></script>
 	<script src="main.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,12 +96,16 @@
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
 	import * as common from './js/common.mjs';
+	import * as progress from './js/progress.mjs'
+	import * as userdata from './js/userdata.mjs'
 	exportNamespace(common);
-</script>
-<script>
-	if(loadCookie("debug") == true){
+	exportNamespace(progress);
+	exportNamespace(userdata);
+	(function(){
+		if(window.loadCookie("debug") == true){
 		window.debug = true;
-	}
-	init();
+		}
+		init();
+	}).call(window);
 </script>
 </body></html>

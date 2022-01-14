@@ -5,7 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="obliviondata.js"></script>
-	<script src="progress.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="sharing.js"></script>
 	<script src="settings.js"></script>
@@ -95,11 +94,17 @@
 	<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 </div>
 <p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
-<script>
-	if(loadCookie("debug") == true){
-		window.debug = true;
-	}
-	init();
+
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as userdata from './js/userdata.mjs'
+	exportNamespace(userdata);
+	(function(){
+		if(window.loadCookie("debug") == true){
+			window.debug = true;
+		}
+		init();
+	}).call(window);
 </script>
 </body>
 </html>
