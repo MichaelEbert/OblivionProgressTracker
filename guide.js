@@ -9,6 +9,10 @@ function LinkedElement(element, classname, id){
 }
 
 function init(){
+	//preload settings so we can get iframe loaded fast
+	window.settings = loadCookie("settings");
+	checkIframeSize();
+	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
 		if(settings.remoteShareCode){
@@ -30,8 +34,6 @@ function init(){
 			}
 		}
 		replaceElements();
-		window.addEventListener("resize",onWindowResize);
-		checkIframeSize();
 	});
 }
 
