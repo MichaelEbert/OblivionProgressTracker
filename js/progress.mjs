@@ -92,6 +92,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				break;
 			case "undefined":
 				valueAsCorrectType = false;
+				break;
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
