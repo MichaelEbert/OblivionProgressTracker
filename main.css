@@ -65,7 +65,7 @@ td{
 }
 
 .topbarSection{
-	flex:1 1 14%;
+	flex:1 1 10%;
 	text-align: center;
 	background-color: var(--lighter-color);
 	border-right: 1px solid black;

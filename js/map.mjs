@@ -13,6 +13,9 @@ export {
     icons, 
     getRandomGateCount,
     updateRandomGateCount,
+    zoomToFormId,
+    drawFrame as draw,
+    setZoomLevel,
     //debugging variables
     getOverlay,
     getCtx,
@@ -37,6 +40,10 @@ function getCtx(){
 
 function getZoomLevel(){
     return zoomLevel;
+}
+
+function setZoomLevel(level){
+    updateZoom((level - zoomLevel), null);
 }
 let zoomLevel = 1;
 let minZoom = 0.2;
@@ -130,17 +137,18 @@ async function initMap(){
     canvas.height = 2895;
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
-    initImgs().then(()=>{
-        initOverlay();
-        initListeners();
-        initRandomGateCount()
+    await initImgs();
+    
+    initOverlay();
+    initListeners();
+    initRandomGateCount()
 
-        screenOriginInMapCoords = new Point(0,0);
-        zoomToInitialLocation();
+    screenOriginInMapCoords = new Point(0,0);
+    zoomToInitialLocation();
 
-        drawFrame();
-        console.log("map init'd");
-    });
+    drawFrame();
+    console.log("overlay is "+overlay);
+    console.log("map init'd");
 }
 
 function drawFrame(){
@@ -173,18 +181,7 @@ function zoomToInitialLocation(){
     let maybeFormId = windowParams.get("formId");
     if(maybeFormId != null){
         //focus on formId
-        let targetCell = findCell(maybeFormId);
-        if(targetCell != null){
-            coords = new Point(targetCell.x, targetCell.y);
-        }
-        if(targetCell.hive.classname == "nirnroot"){
-            document.getElementById("button_Nirnroot").checked = true;
-            currentOverlay = "NirnRoute"
-            overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
-        }
-        else{
-            overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
-        }
+        zoomToFormId(maybeFormId);
     }
     else 
     {
@@ -194,6 +191,23 @@ function zoomToInitialLocation(){
             coords = new Point(parseInt(maybeX), parseInt(maybeY));
             overlay.poi = new MapPOI("POI", -15,-36,coords);
         }
+        centerMap(worldSpaceToMapSpace(coords));
+    }
+}
+
+function zoomToFormId(formid){
+    let coords = new Point(0,0);
+    let targetCell = findCell(formid);
+    if(targetCell != null){
+        coords = new Point(targetCell.x, targetCell.y);
+    }
+    if(targetCell.hive.classname == "nirnroot"){
+        document.getElementById("button_Nirnroot").checked = true;
+        currentOverlay = "NirnRoute"
+        overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
+    }
+    else{
+        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
     }
     centerMap(worldSpaceToMapSpace(coords));
 }
@@ -229,7 +243,7 @@ function initOverlay(){
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
-        if(nirn.name){
+        if(nirn.cell == "Outdoors"){
             let newIcon = new MapIcon(nirn)
             overlay.nirnroots.push(newIcon);
 
@@ -547,16 +561,19 @@ function initListeners(){
         currentOverlay = "NirnRoute"; 
         drawFrame();
     });
-    document.getElementById("button_ToggleTSP").addEventListener("click", function(){
-        showTSP = !showTSP; 
+
+    document.getElementById("button_ToggleTSP").addEventListener("change", function(event){
+        showTSP = event.target.checked;
         drawFrame();
     });
+
     if(document.getElementById("button_Nirnroot").checked){
         currentOverlay = "NirnRoute";
     }
     else{
         currentOverlay = "Locations";
     }
+
     if(document.getElementById("button_ToggleTSP").checked){
         showTSP = true;
     }
@@ -588,12 +605,14 @@ function updateZoom(deltaZ, zoomPoint){
     //1: calculate current zoomPoint in map coords
     //2. calculate where that point is on the new map
     //3. calculate where the corner needs to be to set that point as the center
-    let oldCenterMapCoord = screenSpaceToMapSpace(zoomPoint);
-    let newCenterMapCoord = oldCenterMapCoord.multiply(oldZoom/zoomLevel);
-    let newCornerMapCoord = newCenterMapCoord.subtract(zoomPoint);
+    if(zoomPoint){
+        let oldCenterMapCoord = screenSpaceToMapSpace(zoomPoint);
+        let newCenterMapCoord = oldCenterMapCoord.multiply(oldZoom/zoomLevel);
+        let newCornerMapCoord = newCenterMapCoord.subtract(zoomPoint);
 
-    //moveMap takes a delta, so we subtract new from old. 
-    moveMap(screenOriginInMapCoords.subtract(newCornerMapCoord));
+        //moveMap takes a delta, so we subtract new from old. 
+        moveMap(screenOriginInMapCoords.subtract(newCornerMapCoord));
+    }
 }
 
 //converts worldspace cords into map coords.

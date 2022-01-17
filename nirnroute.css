@@ -1,0 +1,7 @@
+.mapContainer{
+	position: sticky;
+	height:95vh;/*this is only initial height, client can resize if they want*/
+}
+img{
+	max-width:100%;
+}

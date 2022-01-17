@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<link rel="stylesheet" type="text/css" href="guide.css"/>
+	<link rel="stylesheet" type="text/css" href="nirnroute.css"/>
+	<script src="obliviondata.js"></script>
+	<script src="base64ArrayBuffer.js"></script>
+	<script src="sharing.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nirnroute — Interactive Oblivion Checklist</title>
+</head>
+<body>
+<div id="topbar" class="topbar">
+	<a href="./index.html" class="topbarSection"> Checklist</a>
+	
+	<div class="topbarSection">
+		<a href="./glitches.html">Glitches</a>
+		<div class="topbarSublist">
+			<a href="./glitches.html#permakey">Perma Key</a>
+			<a href="./glitches.html#boostjump">Boost Jump</a>
+			<a href="./glitches.html#duping">Dupe/Duping</a>
+			<a href="./glitches.html#qsqldeaggro">QSQL De-Aggro</a>
+			<a href="./glitches.html#saveclip">Save Clip</a>
+			<a href="./glitches.html#voidwarp">Void Warp</a>
+			<a href="./glitches.html#yieldglitch">Yield Glitch</a>
+			<a href="./glitches.html#eightpotionglitch">8 Potion Glitch</a>
+		</div>
+	</div>
+
+	<div class="topbarSection">
+		<a href="./casual.html">Casual Guide</a>
+		<div class="topbarSublist">
+			<a href="./casual.html#top">item1</a>
+		</div>
+	</div>
+	
+	<div class="topbarSection">
+		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
+		<div class="topbarSublist">
+            <a href="./speedrun-3.html#guide_Pregame">Pregame</a>
+            <a href="./speedrun-3.html#guide_Tutorial">Tutorial</a>
+            <a href="./speedrun-3.html#guide_ImperialCityMarketDistrict">Imperial City Market District</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt1">Mages Guild Pt1</a>
+            <a href="./speedrun-3.html#guide_GoldFarming">Gold Farming/Arcane University</a>
+            <a href="./speedrun-3.html#guide_InvestingCircuit">Investing Circuit</a>
+            <a href="./speedrun-3.html#guide_MagesGuildPt2">Mages Guild Pt2</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt1">Main Quest Pt1</a>
+            <a href="./speedrun-3.html#guide_MapExploration">Map Exploration</a>
+            <a href="./speedrun-3.html#guide_TheNirnroute">The Nirnroute</a>
+            <a href="./speedrun-3.html#guide_MainQuestPt2">Main Quest Pt2</a>
+            <a href="./speedrun-3.html#guide_FightersGuild">Fighters Guild</a>
+            <a href="./speedrun-3.html#guide_TheArena">The Arena</a>
+            <a href="./speedrun-3.html#guide_SideQuests">Side Quests</a>
+            <a href="./speedrun-3.html#guide_DarkBrotherhood">Dark Brotherhood</a>
+            <a href="./speedrun-3.html#guide_PowerLeveling">Power Leveling</a>
+            <a href="./speedrun-3.html#guide_ThievesGuild">Thieves Guild</a>
+            <a href="./speedrun-3.html#guide_DaedricShrines">Daedric Shrines</a>
+            <a href="./speedrun-3.html#guide_HeavenStoneGreaterPowers">Heaven Stone Greater Powers</a>
+            <a href="./speedrun-3.html#guide_RandomSkillBooks">Random Skill Books</a>
+            <a href="./speedrun-3.html#guide_TheGreatSkillGrind">The Great Skill Grind</a>
+            <a href="./speedrun-3.html#guide_AnUnexpectedVoyage">An Unexpected Voyage</a>
+            <a href="./speedrun-3.html#guide_ImperialDragonArmor">Imperial Dragon Armor</a>
+        </div>
+	</div>
+	<a href="./map.html" class="topbarSection">Map</a>
+	<a href="./nirnroute.html" class="topbarSection">Nirnroute</a>
+	<a href="./settings.html" class="topbarSection">Settings</a>
+    <div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+</div>
+<div class="contentContainer">
+<div class="sidebar" id="sidebar">
+<!-- sidebar contains images n navigation n stuff.-->
+<h1 id="nirnName">Nirnroot Title</h1>
+<button id="prevButton">Prev</button><button id="nextButton">Next</button>
+<h2>Far image</h2>
+<img src="" id="farImage" alt="far image">
+<h2>Close image</h2>
+<img src="" id="closeImage" alt="close image">
+</div>
+<div id="mapColumn">
+<div class="mapContainer resizableContainer" id="mapContainer">
+	<div class="mapButtonBar">
+		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</input> 
+		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</input>
+		<span>&nbsp;&nbsp;&nbsp;</span>
+		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
+		<span>&nbsp;&nbsp;&nbsp;</span>
+		<button onclick="showHelp()">Help!</button>
+		<span>&nbsp;&nbsp;&nbsp;</span>
+		<span>Random gates found: 
+			<span id="randomGateCount">##</span> 
+		</span>
+	</div>
+	<div id="wrapper_Map" class="mapWrapper"></div>
+</div>
+</div>
+
+</div>
+<script type="module">
+	//normally, we can't call module code from non-module code.
+	//exportNamespace appends everything to window, so it can be called like normal js code.
+	import exportNamespace from './js/module-shim.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as map from './js/map.mjs';
+	import * as point from './js/map/point.mjs';
+	import * as nirn from './js/nirnroute.mjs';
+	exportNamespace(map);
+	exportNamespace(point);
+	exportNamespace(userdata);
+	exportNamespace(nirn);
+	
+	if(loadCookie("debug") == true){
+		window.debug = true;
+	}
+
+	(function(){
+		loadJsonData().then(()=>{
+			loadProgressFromCookie();
+			nirn.init();
+		});
+	}).call(window);
+</script>
+<script>
+	//I divided these like so for easier editing. 
+		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
+	let welcome = "Welcome to the map!\n\n";
+	let clickIcon = "Double-click on an icon when it's been discovered.\n\n";
+	let tspExplanation = "The Traveling Salesman Path is a calculated fastest route between each icon, it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.\n\n";
+	
+	//this isn't implemented yet, but should be noted so people aren't surprised when it happens during their run.
+	let randomGateNote = "You need to only discover 40 random oblivion gates. Once you discover 40, the map will automatically check off the remaining random gate locations on the map, but not on the checklist."
+	
+	let helpText = welcome + clickIcon + tspExplanation + randomGateNote;
+	function showHelp(){
+		alert(helpText);
+	}
+</script>
+</body>
+</html>
