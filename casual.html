@@ -1515,12 +1515,19 @@ Taking the Iron Key off the Goblin in the first rat area and making a save will 
 </article>
 </div>
 <script type="module">
-	import exportNamespace from './js/module-shim.mjs'
+	import exportNamespace from './js/module-shim.mjs';
 	import * as common from './js/common.mjs';
+	import * as progress from './js/progress.mjs';
+	import * as userdata from './js/userdata.mjs';
 	exportNamespace(common);
-</script>
-<script>
-init();
-makeCollapsible();
+	exportNamespace(progress);
+	exportNamespace(userdata);
+	(function(){
+		if(window.loadCookie("debug") == true){
+		window.debug = true;
+		}
+		init();
+		makeCollapsible();
+	}).call(window);
 </script>
 </body>

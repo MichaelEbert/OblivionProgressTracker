@@ -23,6 +23,7 @@ import {Point} from "./map/point.mjs";
 import {MapObject,MapIcon} from "./map/mapObject.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { GateIcon } from "./map/mapObject.mjs";
+import { sumCompletionItems } from "./progress.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -83,7 +84,7 @@ function updateRandomGateCount(Found){
 function initRandomGateCount(){
     //Init randomGateCount. 
     let root = window.findOnTree(window.jsondata.location, x=>x.name == "Random Gates", y=>y.name == "Random Gates" || y.elements == null)
-    let completed = window.sumCompletionItems(root);
+    let completed = sumCompletionItems(root);
     randomGateCount = completed[0];
 
     if(randomGateCount >= 40){

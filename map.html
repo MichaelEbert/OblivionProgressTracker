@@ -6,7 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
-	<script src="progress.js"></script>
 	<script src="sharing.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Map — Interactive Oblivion Checklist</title>
@@ -88,10 +87,12 @@
 	//normally, we can't call module code from non-module code.
 	//exportNamespace appends everything to window, so it can be called like normal js code.
 	import exportNamespace from './js/module-shim.mjs'
+	import * as userdata from './js/userdata.mjs'
 	import * as map from './js/map.mjs';
 	import * as point from './js/map/point.mjs';
 	exportNamespace(map);
 	exportNamespace(point);
+	exportNamespace(userdata);
 	
 	if(loadCookie("debug") == true){
 		window.debug = true;

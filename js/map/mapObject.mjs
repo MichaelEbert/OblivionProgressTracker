@@ -8,7 +8,7 @@ export {
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, iconH, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
-
+import {updateChecklistProgress} from "../progress.mjs"
 /**
  * An object that will be displayed on the map canvas.
  */
@@ -190,7 +190,7 @@ MapIcon.prototype.onClick = function(clickPos){
     }
     const classname = this.cell.hive.classname;
     let prevState = window.savedata[classname][this.cell.id];
-    window.updateChecklistProgress(null, !prevState, null, this.cell);
+    updateChecklistProgress(null, !prevState, null, this.cell);
     
     return true;
 }
