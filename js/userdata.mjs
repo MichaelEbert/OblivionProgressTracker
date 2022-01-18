@@ -3,6 +3,8 @@ export{
 	saveCookie,
 	loadCookie,
 	upgradeSaveData,
+	compressSaveData,
+	decompressSaveData,
 	saveProgressToCookie,
 	loadSettingsFromCookie,
     loadProgressFromCookie,
