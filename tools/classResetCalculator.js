@@ -96,22 +96,34 @@ function initAttributes(){
     favoredAttribute2Element.value = favoredAttribute2Name;
 }
 
+//put skill checkboxes here first so we can sort them alphabetically
+var skillCheckboxContainers = [];
+var skillTableRows = [];
+
 function initSkills(){
     //populate 'major skill' checkboxes
-    runOnTree(jsondata.skill, createCheckboxForSkill);
+    runOnTree(jsondata.skill, initSingleSkill);
     //children[1] is the label, so we can sort on that
-    skillCheckboxContainers.sort((a,b)=>a.children[1].innerText - b.children[1].innerText);
+    skillCheckboxContainers.sort((a,b)=>a.children[1].innerText > b.children[1].innerText);
 
     let majorSkillsCheckboxesElement = document.getElementById("majorSkillsCheckboxes");
     for(var container of skillCheckboxContainers){
         majorSkillsCheckboxesElement.appendChild(container);
     }
+
+    //first sort by governing attrib, then by specialization
+    skillTableRows.sort((a,b)=>a.children[0].innerText > b.children[0].innerText);
+    //TODO: uncomment after we add specialization
+    //skillTableRows.sort((a,b)=>a.children[1].innerText > b.children[1].innerText);
+
+    const skillTable = document.getElementById("skillTable");
+    for(var row of skillTableRows){
+        skillTable.appendChild(row);
+    }
 }
 
-//put skill checkboxes here first so we can sort them alphabetically
-var skillCheckboxContainers = [];
 
-function createCheckboxForSkill(skill){
+function initSingleSkill(skill){
     //the checkbox and its text aren't associated, so we have to wrap them in another element so they're next to each other
     let skillCheckboxWrapper = document.createElement("DIV");
 
@@ -131,7 +143,16 @@ function createCheckboxForSkill(skill){
     //finally, put the label+checkbox combination in the majorSkillsCheckboxes section
     skillCheckboxContainers.push(skillCheckboxWrapper);
 
+    //TODO: update the "skills" table with elements
     //other things you can get from the 'skill' object: skill.parent.name for specialization, skill.attribute for attribute.
+    let skillRow = document.createElement("TR");
+    let skillGov = document.createElement("TD");
+    skillGov.innerText = skill.attribute.substring(0,3);
+    skillRow.appendChild(skillGov);
+    //TODO: create other cells in the skill table
+
+    //as with the checkboxes, we want to sort these by governing attribute, so put them in an array and then sort them later.
+    skillTableRows.push(skillRow);
 }
 
 // called when user updates a value
