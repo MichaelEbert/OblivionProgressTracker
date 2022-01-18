@@ -1,29 +1,29 @@
 {"version":4,"name":"Skills","classname":"skill","weight":15,"elements":[
     {"name":"Combat","elements":[
-		{"formId":"0xFFFFFFE0","name":"Armorer"}
-		,{"formId":"0xFFFFFFE1","name":"Athletics"}
-		,{"formId":"0xFFFFFFE2","name":"Blade"}
-		,{"formId":"0xFFFFFFE3","name":"Block"}
-		,{"formId":"0xFFFFFFE4","name":"Blunt"}
-		,{"formId":"0xFFFFFFE5","name":"Hand to Hand"}
-		,{"formId":"0xFFFFFFE6","name":"Heavy Armor"}
+		{"formId":"0xFFFFFFE0","name":"Armorer","attribute":"Endurance"}
+		,{"formId":"0xFFFFFFE1","name":"Athletics","attribute":"Speed"}
+		,{"formId":"0xFFFFFFE2","name":"Blade","attribute":"Strength"}
+		,{"formId":"0xFFFFFFE3","name":"Block","attribute":"Endurance"}
+		,{"formId":"0xFFFFFFE4","name":"Blunt","attribute":"Strength"}
+		,{"formId":"0xFFFFFFE5","name":"Hand to Hand","attribute":"Strength"}
+		,{"formId":"0xFFFFFFE6","name":"Heavy Armor","attribute":"Endurance"}
 	]}
 	,{"name":"Magic","elements":[
-		{"formId":"0xFFFFFFE7","name":"Alchemy"}
-		,{"formId":"0xFFFFFFE8","name":"Alteration"}
-		,{"formId":"0xFFFFFFE9","name":"Conjuration"}
-		,{"formId":"0xFFFFFFEA","name":"Destruction"}
-		,{"formId":"0xFFFFFFEB","name":"Illusion"}
-		,{"formId":"0xFFFFFFEC","name":"Mysticism"}
-		,{"formId":"0xFFFFFFED","name":"Restoration"}
+		{"formId":"0xFFFFFFE7","name":"Alchemy","attribute":"Intelligence"}
+		,{"formId":"0xFFFFFFE8","name":"Alteration","attribute":"Willpower"}
+		,{"formId":"0xFFFFFFE9","name":"Conjuration","attribute":"Intelligence"}
+		,{"formId":"0xFFFFFFEA","name":"Destruction","attribute":"Willpower"}
+		,{"formId":"0xFFFFFFEB","name":"Illusion","attribute":"Personality"}
+		,{"formId":"0xFFFFFFEC","name":"Mysticism","attribute":"Intelligence"}
+		,{"formId":"0xFFFFFFED","name":"Restoration","attribute":"Willpower"}
 	]}
 	,{"name":"Stealth","elements":[
-		{"formId":"0xFFFFFFEE","name":"Acrobatics"}
-		,{"formId":"0xFFFFFFEF","name":"Light Armor"}
-		,{"formId":"0xFFFFFFF0","name":"Marksman"}
-		,{"formId":"0xFFFFFFF1","name":"Mercantile"}
-		,{"formId":"0xFFFFFFF2","name":"Security"}
-		,{"formId":"0xFFFFFFF3","name":"Sneak"}
-		,{"formId":"0xFFFFFFF4","name":"Speechcraft"}
+		{"formId":"0xFFFFFFEE","name":"Acrobatics","attribute":"Speed"}
+		,{"formId":"0xFFFFFFEF","name":"Light Armor","attribute":"Speed"}
+		,{"formId":"0xFFFFFFF0","name":"Marksman","attribute":"Agility"}
+		,{"formId":"0xFFFFFFF1","name":"Mercantile","attribute":"Personality"}
+		,{"formId":"0xFFFFFFF2","name":"Security","attribute":"Agility"}
+		,{"formId":"0xFFFFFFF3","name":"Sneak","attribute":"Agility"}
+		,{"formId":"0xFFFFFFF4","name":"Speechcraft","attribute":"Personality"}
 	]}
 ]}
