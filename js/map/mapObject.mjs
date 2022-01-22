@@ -75,6 +75,12 @@ function MapIcon(cell){
     else{
         this.icon = iconSwitch(cell.icon);
     }
+    if(this.cell.parent.name == "Prediscovered"){
+        this.prediscovered = true;
+    }
+    else{
+        this.prediscovered = false;
+    }
 }
 MapIcon.prototype = Object.create(MapObject.prototype);
 
@@ -101,6 +107,10 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     //for drawing, we have to convert back to screen space.
     const screenSpaceIconOrigin = mapSpaceToScreenSpace(new Point(this.minX, this.minY));
     const TEXT_PADDING_PX = 2;
+
+    if(window.settings.mapShowPrediscovered == false && this.prediscovered){
+        return;
+    }
     if(this.contains(mouseLoc)){
         let linesToRender = [this.cell.name];
 
@@ -180,7 +190,11 @@ MapIcon.prototype.draw = function(ctx, mouseLoc, currentSelection){
     }
 }
 
+//actually happens on double click
 MapIcon.prototype.onClick = function(clickPos){
+    if(window.settings.mapShowPrediscovered == false && this.prediscovered){
+        return false;
+    }
     if(this.cell.id == null){
         //no id, so you can't click it.
         return false;

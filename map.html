@@ -84,7 +84,8 @@
 		<input type="checkbox" id="showHideMapSettingsCheck"/><label>Show Settings</label>
 	</div>
 	<div id="mapSettingsContainer" style="display:none">
-		<input type="checkbox" id="mapShowPrediscovered"><label>Show prediscovered locations</label>
+		<input type="checkbox" id="mapShowPrediscovered" class="autosetting"><label>Show prediscovered locations</label><br/>
+		<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"><label>Show distance between locations</label>
 		<!-- TODO-->
 		<h2>FAQ</h2>
 		<h3>How to use?</h3>
@@ -127,9 +128,18 @@
 				mapSettingsContainer.style.display = "none";
 			}
 		});
+		if(document.getElementById("showHideMapSettingsCheck").checked){
+			mapSettingsContainer.style.display = "unset";
+		}
+		else{
+			mapSettingsContainer.style.display = "none";
+		}
+		
+
 		loadJsonData().then(()=>{
 			loadProgressFromCookie();
 			initMap();
+			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
 		});
 	}).call(window);
 </script>

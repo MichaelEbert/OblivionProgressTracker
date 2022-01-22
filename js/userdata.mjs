@@ -169,6 +169,7 @@ function initSettings(){
 	changed |= initProperty(window, "settings", {});
 
 	//UPGRADES:
+	//use this (and bump the settings version) when there is a breaking change in the format.
 	switch(settings.version){
 		case null:
 		case undefined:
@@ -182,10 +183,13 @@ function initSettings(){
 			break;
 	}
 
+	//default values
+
 	changed |= initProperty(settings, "minipageCheck",true);
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	changed |= initProperty(settings, "iframeMinWidth", 600);
 	changed |= initProperty(settings, "iframeWidth", "45vw");
+	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	
 	//TODO: fix my shit encapsulation. until then...
 	if(typeof(initShareSettings) != "undefined"){

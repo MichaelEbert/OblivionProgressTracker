@@ -128,6 +128,9 @@ async function initMap(){
             mapContainer.style = "top:0;padding:2px;"
         }
     }
+    //start image loading here, we will wait for it later.
+    let images = initImgs();
+    initAutoSettings();
 
     viewport = document.getElementById("wrapper_Map");
 
@@ -137,8 +140,8 @@ async function initMap(){
     canvas.height = 2895;
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
-    await initImgs();
-    
+
+    await images;
     initOverlay();
     initListeners();
     initRandomGateCount()
@@ -750,10 +753,44 @@ function recalculateTSP(){
 }
 
 /**
- * Initialize map-specific settings
+ * TODO: merge this with the implementation in settings.js
  */
-function initMapSettings(){
-    if(document.getElementById("mapSettingsContainer") != null){
-        const mapPrediscoverd = document.getElementById("mapShowPrediscovered");
+function initAutoSettings(){
+    let autoSettings = document.getElementsByClassName("autosetting");
+    for(const setting of autoSettings){
+        setting.addEventListener('change', onSettingChange);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.checked = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
+        }
     }
+    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
+    for(const setting of autoTextSettings){
+        setting.addEventListener('change', onSettingChangeText);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.value = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
+        }
+    }
+}
+
+/**
+ * on boolean settings change 
+ */
+function onSettingChange(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.checked;
+	saveCookie("settings",settings);	
+}
+
+function onSettingChangeText(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.value;
+	saveCookie("settings",settings);
 }
