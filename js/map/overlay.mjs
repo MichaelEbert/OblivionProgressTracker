@@ -43,6 +43,21 @@ function Overlay(){
         }
     });
 
+    runOnTree(jsondata.locationPrediscovered, function(loc){
+        let newIcon = null;
+        if(loc.name.includes("Oblivion Gate")){
+            newIcon = new GateIcon(loc);
+        }
+        else{
+            newIcon = new MapIcon(loc);
+        }
+        ovr.locations.push(newIcon);
+        
+        if(loc.tspID != null){
+            locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspID));
+        }
+    });
+
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors"){
             let newIcon = new MapIcon(nirn)

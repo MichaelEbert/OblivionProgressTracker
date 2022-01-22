@@ -75,7 +75,7 @@ function MapIcon(cell){
     else{
         this.icon = iconSwitch(cell.icon);
     }
-    if(this.cell.parent.name == "Prediscovered"){
+    if(this.cell.hive.classname=="locationPrediscovered"){
         this.prediscovered = true;
     }
     else{
