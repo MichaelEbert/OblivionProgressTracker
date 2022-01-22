@@ -226,6 +226,10 @@ function checkboxClicked(event){
 
 // when user clicks on the row, not the checkbox
 function rowClicked(event){
+	if(event.target.nodeName == "A"){
+		//if user clicks link, don't treat that as checking off the element.
+		return;
+	}
 	const checkbox = Array.from(this.children).find(x=>x.tagName=="INPUT");
 	if(checkbox.type == "number"){
 		checkbox.focus();
