@@ -126,7 +126,8 @@ function replaceElements(){
 				let classStuff = {
 					clid: checklistid,
 					identifiedClass: element?.classList[0],
-					contents: element?.innerText
+					contents: element?.innerText,
+					context:element.parentElement.innerText
 				}
 				if(window.debug){
 					console.warn("replaceable element not found in reference: ");

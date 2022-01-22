@@ -8,6 +8,7 @@ export {
     worldSpaceToMapSpace, 
     mapSpaceToWorldSpace, 
     mapSpaceToScreenSpace, 
+    screenSpaceToMapSpace,
     iconH, 
     iconSwitch, 
     icons, 
@@ -16,17 +17,16 @@ export {
     zoomToFormId,
     drawFrame as draw,
     setZoomLevel,
+    getZoomLevel,
     //debugging variables
     getOverlay,
-    getCtx,
-    getZoomLevel
+    getCtx
 };
 
 import {Point} from "./map/point.mjs";
-import {MapObject,MapIcon} from "./map/mapObject.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
-import { GateIcon } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progress.mjs";
+import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -64,7 +64,6 @@ let mapAdjust = {
 let screenOriginInMapCoords = new Point(0,0);
 let _iconH = 20;
 function iconH(){return _iconH;};
-let currentOverlay = "Locations"; // Locations, NirnRoute
 let showTSP = false;
 
 let randomGateCount = 0;
@@ -128,6 +127,9 @@ async function initMap(){
             mapContainer.style = "top:0;padding:2px;"
         }
     }
+    //start image loading here, we will wait for it later.
+    let images = initImgs();
+    initAutoSettings();
 
     viewport = document.getElementById("wrapper_Map");
 
@@ -137,23 +139,23 @@ async function initMap(){
     canvas.height = 2895;
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
-    await initImgs();
+
     
-    initOverlay();
+    overlay = new Overlay();
     initListeners();
-    initRandomGateCount()
+    initRandomGateCount();
 
     screenOriginInMapCoords = new Point(0,0);
     zoomToInitialLocation();
 
+    await images;
     drawFrame();
-    console.log("overlay is "+overlay);
     console.log("map init'd");
 }
 
 function drawFrame(){
     drawBaseMap();
-    drawMapOverlay();
+    overlay.draw(ctx, zoomLevel, showTSP, lastMouseLoc);
 }
 
 /**
@@ -203,7 +205,7 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        currentOverlay = "NirnRoute"
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
         overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
     }
     else{
@@ -213,172 +215,7 @@ function zoomToFormId(formid){
 }
 
 
-/*********************************
- * OVERLAY FUNCTIONS
- *  this is the icons n stuff on the map canvas.
- *********************************/
-function initOverlay(){
-    overlay = {
-        locations : [],
-        tsp_locations : [],
-        nirnroots : [],
-        tsp_nirnroots : [],
-        lastZoomLevel : zoomLevel,
-        currentLocation : null
-    }
 
-    runOnTree(jsondata.location, function(loc){
-        let newIcon = null;
-        if(loc.name.includes("Oblivion Gate")){
-            newIcon = new GateIcon(loc);
-        }
-        else{
-            newIcon = new MapIcon(loc);
-        }
-        overlay.locations.push(newIcon);
-        
-        if(loc.tspID != null){
-            overlay.tsp_locations.push({x:loc.x, y:loc.y, tspID:loc.tspID, cell:newIcon.cell});
-        }
-    });
-
-    runOnTree(jsondata.nirnroot, function(nirn){
-        if(nirn.cell == "Outdoors"){
-            let newIcon = new MapIcon(nirn)
-            overlay.nirnroots.push(newIcon);
-
-            if(nirn.tspID != null){
-                overlay.tsp_nirnroots.push({x:nirn.x, y:nirn.y, tspID:nirn.tspID, cell:newIcon.cell});
-            }
-        }
-    });
-
-    //Sort and run intial world->map->screen space calculations for TSP arrays.
-    overlay.tsp_locations.sort((a, b) => a.tspID - b.tspID);
-    overlay.tsp_nirnroots.sort((a, b) => a.tspID - b.tspID);
-    recalculateTSP();
-}
-
-/**
- * Draw icons on the map
- */
-function drawMapOverlay(){
-    if(zoomLevel != overlay.lastZoomLevel){
-        overlay.lastZoomLevel = zoomLevel;
-        for(const locIcon of overlay.locations){
-            locIcon.recalculateBoundingBox();
-        }
-        for(const icon of overlay.nirnroots){
-            icon.recalculateBoundingBox();
-        }
-        if(overlay.poi != null){
-            overlay.poi.recalculateBoundingBox();
-        }
-        recalculateTSP();
-    }
-    const mouseLocInMapCoords = screenSpaceToMapSpace(lastMouseLoc);
-
-    let hloc = null; //tracks hovered location index to redraw it last.
-    //Overlay Else if chain
-    if(currentOverlay == "Locations"){
-        if(showTSP){
-            drawTSP(overlay.tsp_locations);
-        }
-        
-        for(const locIcon of overlay.locations){
-            //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
-            locIcon.draw(ctx, null, overlay.currentLocation);
-            if(locIcon.contains(mouseLocInMapCoords)){
-                hloc = locIcon;
-            }
-        }
-    }
-    else if(currentOverlay == "NirnRoute"){
-        if(showTSP){
-            drawTSP(overlay.tsp_nirnroots);
-        }
-
-        for(const nirnIcon of overlay.nirnroots){
-            nirnIcon.draw(ctx, null, overlay.currentLocation);
-            if(nirnIcon.contains(mouseLocInMapCoords)){
-                hloc = nirnIcon;
-            }
-        }
-    }
-
-    if(overlay.poi != null){
-        overlay.poi.draw(ctx);
-    }
-
-    //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
-    if(hloc != null){
-        hloc.draw(ctx, mouseLocInMapCoords, overlay.currentLocation);
-    }
-}
-
-function overlayClick(clickLoc){
-    const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
-    if(currentOverlay == "Locations"){
-        for(const icon of overlay.locations){
-            if(icon.contains(clickLocInMapSpace)){
-                if(window.debug){
-                    let name = icon.cell.name ?? icon.cell.formId;
-                    console.log("selected "+name);
-                }
-                if(overlay.currentLocation == icon){
-                    overlay.currentLocation = null;
-                }
-                else{
-                    overlay.currentLocation = icon;
-                }
-                return true;
-            }
-        }
-    }
-    else if(currentOverlay == "NirnRoute"){
-        for(const icon of overlay.nirnroots){
-            if(icon.contains(clickLocInMapSpace)){
-                if(window.debug){
-                    let name = icon.cell.name ?? icon.cell.formId;
-                    console.log("selected "+name);
-                }
-                if(overlay.currentLocation == icon){
-                    overlay.currentLocation = null;
-                }
-                else{
-                    overlay.currentLocation = icon;
-                }
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-/**
- * Handle click on the overlay layer.
- * @param {Point} lastMouseLoc screen space coordinates of mouse click
- * @returns if click was handled (ie, something was clicked on)
- */
-function overlayDoubleClick(clickLoc){
-    //overlay coordinates are all in map space, so we convert to that before checking.
-    const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
-    if(currentOverlay == "Locations"){
-        for(const icon of overlay.locations){
-            if(icon.contains(clickLocInMapSpace)){
-                return icon.onClick(clickLoc);
-            }
-        }
-    }
-    else if(currentOverlay == "NirnRoute"){
-        for(const icon of overlay.nirnroots){
-            if(icon.contains(clickLocInMapSpace)){
-                return icon.onClick(clickLoc);
-            }
-        }
-    }
-    return false;
-}
 
 /*********************************
  * GENERAL FUNCTIONS
@@ -436,6 +273,7 @@ async function initImgs(){
             "Mine",
             "Landmark",
             "Shrine",
+            "City",
             "Nirnroot",
             "Check",
             "X",
@@ -472,15 +310,13 @@ function onMouseClick(mouseLoc){
         let mapLoc = screenSpaceToMapSpace(mouseLoc);
         console.log("click at screen: " + mouseLoc+", map: "+mapLoc+" world: "+mapSpaceToWorldSpace(mapLoc));
     }
-    let handled = overlayClick(mouseLoc); //do we keep this? idk what else we'd use it for.
-    if(handled){
+    if(overlay.click(mouseLoc)){
         drawFrame();
     }
 }
 
 function onMouseDoubleClick(mouseLoc){
-    let handled = overlayDoubleClick(mouseLoc); //do we keep this? idk what else we'd use it for.
-    if(handled){
+    if(overlay.doubleClick(mouseLoc)){
         drawFrame();
     }
 }
@@ -554,11 +390,11 @@ function initListeners(){
         drawFrame();
     };
     document.getElementById("button_Location").addEventListener("click", function(){
-        currentOverlay = "Locations"; 
+        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
         drawFrame();
     });
     document.getElementById("button_Nirnroot").addEventListener("click", function(){
-        currentOverlay = "NirnRoute"; 
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
         drawFrame();
     });
 
@@ -568,10 +404,10 @@ function initListeners(){
     });
 
     if(document.getElementById("button_Nirnroot").checked){
-        currentOverlay = "NirnRoute";
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
     }
     else{
-        currentOverlay = "Locations";
+        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
     }
 
     if(document.getElementById("button_ToggleTSP").checked){
@@ -690,6 +526,7 @@ function iconSwitch(Input){
         case "Fort": return icons.Fort;
         case "Gate": return icons.Gate;
         case "Inn": return icons.Inn;
+        case "City": return icons.City;
         case "Landmark": return icons.Landmark;
         case "Mine": return icons.Mine;
         case "Settlement": return icons.Settlement;
@@ -703,46 +540,45 @@ function iconSwitch(Input){
     }
 }
 
-/**draws the Traveling salesman path*/
-function drawTSP(arrTSP){
-    if(showTSP){
-        //draw from prev point to current point
-        for(let i = 1; i < arrTSP.length; i++){
-            let pp = mapSpaceToScreenSpace(new Point(arrTSP[i].x, arrTSP[i].y));
-            let p = mapSpaceToScreenSpace(new Point(arrTSP[i - 1].x, arrTSP[i - 1].y));
-            
-            //TODO: add in custom color/line width selection.
-            //TODO: add in secondary line outline to make line "pop" on map better.
-            ctx.beginPath();
-            ctx.strokeStyle="#FF0000";
-            ctx.lineWidth = 5; 
-            ctx.moveTo(pp.x, pp.y);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
+/**
+ * TODO: merge this with the implementation in settings.js
+ */
+function initAutoSettings(){
+    let autoSettings = document.getElementsByClassName("autosetting");
+    for(const setting of autoSettings){
+        setting.addEventListener('change', onSettingChange);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.checked = settings[settingName];
         }
-
-        //draws the last connection from the last point to the first point.
-        let a = mapSpaceToScreenSpace(new Point(arrTSP[0].x, arrTSP[0].y));
-        let z = mapSpaceToScreenSpace(new Point(arrTSP[arrTSP.length - 1].x, arrTSP[arrTSP.length - 1].y));
-        
-        ctx.beginPath();
-        ctx.strokeStyle="#FF0000";
-        ctx.lineWidth = 5;
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(z.x, z.y);
-        ctx.stroke();
+        if(window.debug){
+            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
+        }
+    }
+    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
+    for(const setting of autoTextSettings){
+        setting.addEventListener('change', onSettingChangeText);
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.value = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
+        }
     }
 }
 
-function recalculateTSP(){
-    for(const loc of overlay.tsp_locations){
-        let p = worldSpaceToMapSpace(new Point(loc.cell.x, loc.cell.y));
-        loc.x = p.x;
-        loc.y = p.y;
-    }
-    for(const nirn of overlay.tsp_nirnroots){
-        let p = worldSpaceToMapSpace(new Point(nirn.cell.x, nirn.cell.y));
-        nirn.x = p.x;
-        nirn.y = p.y;
-    }
+/**
+ * on boolean settings change 
+ */
+function onSettingChange(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.checked;
+	saveCookie("settings",settings);	
+}
+
+function onSettingChangeText(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.value;
+	saveCookie("settings",settings);
 }

@@ -5,9 +5,11 @@ function updateShareUrl(){
 	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
 }
 
-function init(){
-    loadProgressFromCookie();
-    //all checkboxes with class "autosetting" will automatically have a setting created for them.
+/**
+ * all checkboxes with class "autosetting" will automatically have a setting created for them.
+ * all input with class "autoTextSetting" will automatically have a setting created for them.
+ */
+function initAutoSettings(){
     let autoSettings = document.getElementsByClassName("autosetting");
     for(const setting of autoSettings){
         setting.addEventListener('change', onSettingChange);
@@ -19,7 +21,6 @@ function init(){
             console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
         }
     }
-
     let autoTextSettings = document.getElementsByClassName("autoTextSetting");
     for(const setting of autoTextSettings){
         setting.addEventListener('change', onSettingChangeText);
@@ -31,6 +32,14 @@ function init(){
             console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
         }
     }
+}
+
+function init(){
+    loadProgressFromCookie();
+    
+    
+    initAutoSettings();
+    
     
     //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);

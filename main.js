@@ -196,8 +196,8 @@ function userInputData(htmlRowId, checkboxElement){
 }
 
 function checkboxClicked(event){
-	const parentid = event.target.parentElement.id;
-	userInputData(parentid, event.target);
+	const parentid = this.parentElement.id;
+	userInputData(parentid, this);
 	//so that it doesn't trigger rowClicked()
 	event.stopPropagation();
 }
@@ -211,6 +211,6 @@ function rowClicked(event){
 	}
 	else{
 		checkbox.checked = !checkbox.checked;
-		userInputData(event.target.id, checkbox);
+		userInputData(this.id, checkbox);
 	}
 }

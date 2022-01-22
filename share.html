@@ -3,7 +3,6 @@
 	<meta charset="UTF-8"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
     <link rel="stylesheet" type="text/css" href="guide.css"/>
-    <script src="progress.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
 	<script src="sharing.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +10,31 @@
 </head>
 <body>
     Downloading Save...
-    <script>
+    <script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as userdata from './js/userdata.mjs'
+	exportNamespace(userdata);
+	(function(){
+		if(window.loadCookie("debug") == true){
+			window.debug = true;
+        }
         //load a very minimal set of scripts, just enough to download progress.
         let shareCode = new URLSearchParams(window.location.search).get("code");
         if(shareCode == null || shareCode == ""){
             window.location.href = "./index.html";
         }
         else{
-            loadSettingsFromCookie();
+            userdata.loadSettingsFromCookie();
 
             settings.remoteShareCode = shareCode;
-            saveCookie("settings",settings);
+            userdata.saveCookie("settings",settings);
             startSpectating(false,false)
                 .then(()=>window.location.href = "./index.html")
                 .catch(()=>alert("invalid url"));
         }
+	}).call(window);
+        
+        
     </script>
 </body>
 </html>
