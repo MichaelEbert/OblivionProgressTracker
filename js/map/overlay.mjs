@@ -22,8 +22,7 @@ function Overlay(){
     this.tsp_nirnroots = [];
     this.lastZoomLevel = getZoomLevel();
     this.currentLocation = null;
-    this.showLocations = true;
-    this.showNirnroots = false;
+    this.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
 
     //the following funcitons need a captured this variable
     let ovr = this;
@@ -82,9 +81,10 @@ Overlay.prototype.draw = function(ctx, zoomLevel, showTSP, mouseLoc){
     const mouseLocInMapCoords = screenSpaceToMapSpace(mouseLoc);
 
     let hloc = null; //tracks hovered location index to redraw it last.
-    //Overlay Else if chain
     if(this.showLocations){
-        if(showTSP){
+        if(showTSP && !this.showNirnroots){
+            //only draw this if we're not drawing nirnroot TSP.
+            //because 2 TSP at the same time is ususable.
             this.tsp_locations.draw(ctx);
         }
         
@@ -111,6 +111,10 @@ Overlay.prototype.draw = function(ctx, zoomLevel, showTSP, mouseLoc){
 
     if(this.poi != null){
         this.poi.draw(ctx);
+    }
+
+    if(this.currentLocation != null){
+        this.currentLocation.draw(ctx, null, this.currentLocation);
     }
 
     //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
@@ -196,10 +200,18 @@ Overlay.prototype.setActiveLayer = function(layer){
     }
     else if(layer == OVERLAY_LAYER_NIRNROOTS){
         this.showNirnroots = true;
-        this.showLocations = false;
+        if(window.settings.mapShowLocationsOnNirnroot){
+            this.showLocations = true;
+        }
+        else{
+            this.showLocations = false;
+        }
     }
     else{
         this.showNirnroots = false;
         this.showLocations = false;
+        if(window.debug){
+            console.log("set active layer to none.... why did you do that?");
+        }
     }
 }

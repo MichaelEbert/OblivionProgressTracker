@@ -75,7 +75,7 @@
 		<span>&nbsp;&nbsp;&nbsp;</span>
 		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
 		<span>&nbsp;&nbsp;&nbsp;</span>
-		<button onclick="showHelp()">Help!</button>
+		<button id="helpButton">Help!</button>
 		<span>&nbsp;&nbsp;&nbsp;</span>
 		<span>Random gates found: 
 			<span id="randomGateCount">##</span> 
@@ -85,8 +85,10 @@
 	</div>
 	<div id="mapSettingsContainer" style="display:none">
 		<input type="checkbox" id="mapShowPrediscovered" class="autosetting"><label>Show prediscovered locations</label><br/>
-		<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"><label>Show distance between locations</label>
-		<!-- TODO-->
+		<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"><label>Show distance between locations</label><br/>
+		<input type="checkbox" id="mapShowLocationsOnNirnroot" class="autosetting"><label>Show fast travel locations on nirnroot map</label><br/>
+	</div>
+	<div id="help" style="display:none">
 		<h2>FAQ</h2>
 		<h3>How to use?</h3>
 		<p>Double click on an icon to toggle its state between discovered/undiscovered.</p>
@@ -99,6 +101,10 @@
 		<p>On this map, the icons are centered on the exact locations that they are in the oblivion world. 
 			In other words, if you go to the center of the icon on this map, you'll be at the exact location of the marker.</p>
 		<p>On the in-game map, all icons are offset slightly to the right, which is confusing for first-time users.</p>
+
+		<h3>How do random gates work?</h3>
+		<p>You need to only discover 40 random oblivion gates. 
+			Once you discover 40, the map will automatically check off the remaining random gate locations on the map, but not on the checklist.</p>
 	</div>
 
 	<div id="wrapper_Map" class="mapWrapper"></div>
@@ -117,9 +123,22 @@
 	if(loadCookie("debug") == true){
 		window.debug = true;
 	}
+	document.getElementById("helpButton").addEventListener('click',function (){
+		const button = document.getElementById("helpButton");
+		const helpWindow = document.getElementById("help");
+		if(button.innerText == "Help!"){
+			helpWindow.style.display = "unset";
+			button.innerText = "hide help"
+		}
+		else{
+			helpWindow.style.display = "none";
+			button.innerText = "Help!"
+		}
+	});
+
 
 	(function(){
-		document.getElementById("showHideMapSettingsCheck").addEventListener('change',()=>{
+		document.getElementById("showHideMapSettingsCheck").addEventListener('change', ()=>{
 			const mapSettingsContainer = document.getElementById("mapSettingsContainer");
 			if(document.getElementById("showHideMapSettingsCheck").checked){
 				mapSettingsContainer.style.display = "unset";
@@ -139,9 +158,21 @@
 		loadJsonData().then(()=>{
 			loadProgressFromCookie();
 			initMap();
+			//need to add events to redraw immediately upon change
+			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
+			document.getElementById("mapShowLocationsOnNirnroot").addEventListener('change',()=>{
+				if(document.getElementById("button_Nirnroot").checked){
+					map.getOverlay().setActiveLayer(2);
+				}
+				else{
+					map.getOverlay().setActiveLayer(1);
+				}
+				map.draw();
+			});
 		});
 	}).call(window);
+
 </script>
 <script>
 	//I divided these like so for easier editing. 
@@ -154,9 +185,7 @@
 	let randomGateNote = "You need to only discover 40 random oblivion gates. Once you discover 40, the map will automatically check off the remaining random gate locations on the map, but not on the checklist."
 	
 	let helpText = welcome + clickIcon + tspExplanation + randomGateNote;
-	function showHelp(){
-		alert(helpText);
-	}
+	
 </script>
 </body>
 </html>
