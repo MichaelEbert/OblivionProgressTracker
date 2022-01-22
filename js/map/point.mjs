@@ -7,9 +7,18 @@ export {Point};
  * @param y y of point
  */
 function Point(x,y){
-    this.x = x;
-    this.y = y;
+    //allow passing in single object instead of x,y coords
+    if(typeof(x) == "object" && y === undefined){//triple equals because we don't want (null, null) to trigger this
+        this.x = x.x;
+        this.y = x.y;
+    }
+    else{
+        this.x = x;
+        this.y = y;
+    }
 }
+
+
 Point.prototype.toString = function(){
     return "("+this.x+","+this.y+")";
 }
