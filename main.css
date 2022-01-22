@@ -146,7 +146,7 @@ td{
 }
 
 .category{
-	break-inside: avoid;
+	/*break-inside: avoid; this is really messy on chrome... ugh.*/ 
 	break-after: always;
 }
 

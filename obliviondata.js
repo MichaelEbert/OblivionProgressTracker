@@ -291,5 +291,13 @@ function findCell(formId, classHint = null){
 			cell = findOnTree(jsondata[klass.name], x=>x.id == formId);
 		}
 	}
+	//hack for oblivion gates...
+	// we want them to find the location before the close.
+	if(classHint == null && cell?.hive.name =="misc"){
+		let maybeCell = findOnTree(jsondata.location, x=>x.formId == formId);
+		if(maybeCell != null){
+			cell = maybeCell;
+		}
+	}
 	return cell;
 }

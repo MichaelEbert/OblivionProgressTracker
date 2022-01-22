@@ -1,63 +1,159 @@
 {"version":4,"name":"Misc","classname":"misc","elements":[
-	{"name":"Oblivion Gates","weight":5,"elements":[
-		{"name":"Main Quest Pt. 1","elements":[
-			{"id":0,"formId":"0xFFFFFF00","name":"Kvatch Gate","category":"Oblivion Gates"}
+    {"name":"Oblivion Gates","weight":5,"elements":[
+        {"name":"Main Quest Pt. 1","elements":[
+            {"name":"Oblivion Gate - Kvatch","formId":"0x0000CEF7","notes":"Fixed","icon":"Gate"}
+        ]}
+		,{"name":"17 Fixed Gates","elements":[
+			{"name":"Oblivion Gate - Anvil","formId":"0x000CD414","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Chorrol","formId":"0x0000CEFB","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Skingrad","formId":"0x0000CEFD","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Bravil","formId":"0x0000CEF9","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Leyawiin","formId":"0x0000CEFC","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Cheydinhal","formId":"0x0000CEF8","notes":"Fixed, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000CD09","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D1A","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038CC","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CA","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039D3","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038FE","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003967","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003937","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003986","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038A9","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B4","notes":"Fixed","icon":"Gate"}
 		]}
-		,{"name":"Map Exploration","elements":[
-			 {"id":1,"formId":"0xFFFFFF01","name":"12 Fixed Single Fame Gates","type":"number","max":40}
-			,{"id":2,"formId":"0xFFFFFF02","name":"5 Fixed Double Fame Gates","type":"number","max":5}
-			,{"id":3,"formId":"0xFFFFFF03","name":"40 Random Gates","type":"number","max":40}
+		,{"name":"40 Random Gates","elements":[
+			{"name":"Oblivion Gate","formId":"0x00014D15","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D17","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000CD413","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D1C","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D1B","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D18","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00014D19","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038CD","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039EC","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038C6","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038CE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038D9","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038F0","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038EF","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038DA","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039EA","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038EB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039EB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039E8","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038DB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038E6","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038E8","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039B5","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039D2","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039D1","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038F6","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CF","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003907","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000398C","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003909","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CD","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CC","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003906","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000390D","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039D0","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000398E","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003905","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039CE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003915","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000392D","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038FF","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000394B","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003957","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003940","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003959","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003930","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000395A","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F8","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038AC","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003963","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F7","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003910","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x0000398D","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038AE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B6","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F9","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B0","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038BE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039EE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039C7","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038AF","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B8","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F6","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F1","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FC","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B1","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FA","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039F5","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038B2","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FD","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038BB","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039C8","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FF","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000038C5","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039C9","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x000039FE","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003A00","notes":"Random","icon":"Gate"},
+			{"name":"Oblivion Gate","formId":"0x00003A02","notes":"Random","icon":"Gate"}
 		]}
-		,{"name":"Main Quest Pt. 2","elements":[
-			 {"id":4,"formId":"0xFFFFFF04","name":"Bruma Gate"}
-			,{"ref":"0x0001E730","name":"Great Gate"}
-		]}
-	]}
-	,{"name":"Pilgrim's Grace","weight":0,"elements":[
-		 {"formId":"0xFFFFFFD0","name":"Akatosh"}
-		,{"formId":"0xFFFFFFD1","name":"Arkay"}
-		,{"formId":"0xFFFFFFD2","name":"Dibella"}
-		,{"formId":"0xFFFFFFD3","name":"Julianos"}
-		,{"formId":"0xFFFFFFD4","name":"Kynareth"}
-		,{"formId":"0xFFFFFFD5","name":"Mara"}
-		,{"formId":"0xFFFFFFD6","name":"Stendarr"}
-		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)"}
-		,{"formId":"0xFFFFFFD8","name":"Zenithar"}
-	]}
-	,{"name":"Houses","weight":1,"elements":[
-		 {"formId":"0x0003636F","name":"Benirus Manor"}
-		,{"formId":"0x00085480","name":"Bravil House for Sale"}
-		,{"formId":"0x00085481","name":"Bruma House for Sale"}
-		,{"formId":"0x00085483","name":"Cheydinhal House for Sale"}
-		,{"formId":"0x00085482","name":"Arborwatch"}
-		,{"formId":"0x00085485","name":"Shack for Sale"}
-		,{"formId":"0x0008547F","name":"Leyawiin House for Sale"}
-		,{"formId":"0x00085484","name":"Rosethorn Hall"}
-	]}
-	,{"name":"Horses","weight":1,"extraColumn":"city","elements":[
-		 {"formId":"0x0004E28E","name":"White Horse","city":"Anvil"}
-		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil"}
-		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma"}
-		,{"formId":"0x0004BF2F","name":"Black Horse","city":"Cheydinhal"}
-		,{"formId":"0x0004DE96","name":"Chestnut Horse","city":"Chorrol"}
-		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
-		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
-	]}
-	,{"name":"Artifacts","weight":1,"elements":[
-		{"ref":"0x000146A2","name":"Azura"},
-		{"ref":"0x000146A3","name":"Boethia"},
-		{"ref":"0x000146A4","name":"Clavicus Vile"},
-		{"ref":"0x000146AF","name":"Hermaeus Mora"},
-		{"ref":"0x000146A5","name":"Hircine"},
-		{"ref":"0x000146A6","name":"Malacath"},
-		{"ref":"0x000146A7","name":"Mephala"},
-		{"ref":"0x000146A8","name":"Meridia"},
-		{"ref":"0x000146B0","name":"Molag Bal"},
-		{"ref":"0x000146A9","name":"Namira"},
-		{"ref":"0x000146AA","name":"Nocturnal"},
-		{"ref":"0x000146AB","name":"Peryite"},
-		{"ref":"0x000146AC","name":"Sanguine"},
-		{"ref":"0x000146AD","name":"Sheogorath"},
-		{"ref":"0x000146AE","name":"Vaermina"}
-	]}
+        ,{"name":"Main Quest Pt. 2","elements":[
+             {"name":"Oblivion Gate - Bruma","formId":"0x0000CEFA","notes":"Fixed","icon":"Gate"}
+            ,{"ref":"0x0001E730","name":"Great Gate"}
+        ]}
+    ]}
+    ,{"name":"Pilgrim's Grace","weight":0,"elements":[
+         {"formId":"0xFFFFFFD0","name":"Akatosh"}
+        ,{"formId":"0xFFFFFFD1","name":"Arkay"}
+        ,{"formId":"0xFFFFFFD2","name":"Dibella"}
+        ,{"formId":"0xFFFFFFD3","name":"Julianos"}
+        ,{"formId":"0xFFFFFFD4","name":"Kynareth"}
+        ,{"formId":"0xFFFFFFD5","name":"Mara"}
+        ,{"formId":"0xFFFFFFD6","name":"Stendarr"}
+        ,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)"}
+        ,{"formId":"0xFFFFFFD8","name":"Zenithar"}
+    ]}
+    ,{"name":"Houses","weight":1,"elements":[
+         {"formId":"0x0003636F","name":"Benirus Manor"}
+        ,{"formId":"0x00085480","name":"Bravil House for Sale"}
+        ,{"formId":"0x00085481","name":"Bruma House for Sale"}
+        ,{"formId":"0x00085483","name":"Cheydinhal House for Sale"}
+        ,{"formId":"0x00085482","name":"Arborwatch"}
+        ,{"formId":"0x00085485","name":"Shack for Sale"}
+        ,{"formId":"0x0008547F","name":"Leyawiin House for Sale"}
+        ,{"formId":"0x00085484","name":"Rosethorn Hall"}
+    ]}
+    ,{"name":"Horses","weight":1,"extraColumn":"city","elements":[
+         {"formId":"0x0004E28E","name":"White Horse","city":"Anvil"}
+        ,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil"}
+        ,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma"}
+        ,{"formId":"0x0004BF2F","name":"Black Horse","city":"Cheydinhal"}
+        ,{"formId":"0x0004DE96","name":"Chestnut Horse","city":"Chorrol"}
+        ,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
+        ,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
+    ]}
+    ,{"name":"Artifacts","weight":1,"elements":[
+        {"ref":"0x000146A2","name":"Azura"},
+        {"ref":"0x000146A3","name":"Boethia"},
+        {"ref":"0x000146A4","name":"Clavicus Vile"},
+        {"ref":"0x000146AF","name":"Hermaeus Mora"},
+        {"ref":"0x000146A5","name":"Hircine"},
+        {"ref":"0x000146A6","name":"Malacath"},
+        {"ref":"0x000146A7","name":"Mephala"},
+        {"ref":"0x000146A8","name":"Meridia"},
+        {"ref":"0x000146B0","name":"Molag Bal"},
+        {"ref":"0x000146A9","name":"Namira"},
+        {"ref":"0x000146AA","name":"Nocturnal"},
+        {"ref":"0x000146AB","name":"Peryite"},
+        {"ref":"0x000146AC","name":"Sanguine"},
+        {"ref":"0x000146AD","name":"Sheogorath"},
+        {"ref":"0x000146AE","name":"Vaermina"}
+    ]}
 ]}
