@@ -37,7 +37,8 @@ function init(){
 		}
 	});
 }
-const classNamesForLevels = ["section","category","subcategory"]
+const classNamesForLevels = ["section","category","subcategory"];
+const MAX_DEPTH = classNamesForLevels.length-1;
 
 function createLeafContainer(){
 	let leafContainer = document.createElement("DIV");
@@ -84,56 +85,41 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 			parentElement.appendChild(leafContainerPtr.value);
 			leafContainerPtr.value = null;
 		}
-		if(depth < classNamesForLevels.length){
-			leafContainerPtr.value = createLeafContainer();
-			let subtreeName;
-			//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
-			if(root.classname != null){
-				subtreeName = root.classname.replaceAll(" ","_");
-			}
-			else{
-				subtreeName = root.name.replaceAll(" ", "_");
-			}
-			const subtreeRoot = document.createElement("div");
-			subtreeRoot.classList.add(classNamesForLevels[depth]);
-			subtreeRoot.id = parentElement.id + "_" + subtreeName;
-			
-			const subtreeTitle = document.createElement("div");
-			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
-			subtreeTitle.innerText = root.name;
-			leafContainerPtr.value.appendChild(subtreeTitle);
-			
-			//if we need to change the extra column name, do that before initializing child elements.
-			if(root.extraColumn != null){
-				extraColumnName = root.extraColumn;
-			}
-
-			//fill out this element with the child elements
-			for(const datum of root.elements) {
-				initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
-			}
-
-			//if we had any leaf nodes, append their container to this element before we finish.
-			if(leafContainerPtr.value != null){
-				subtreeRoot.appendChild(leafContainerPtr.value);
-				leafContainerPtr.value = null;
-			}
-				//finally, append the fully created element to parent.
-			parentElement.appendChild(subtreeRoot);
+		leafContainerPtr.value = createLeafContainer();
+		let subtreeName;
+		//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+		if(root.classname != null){
+			subtreeName = root.classname.replaceAll(" ","_");
 		}
 		else{
-			//we ran out of levels. Just put everything else in the same level.
-			for(const datum of root.elements){
-				initMultiInternal(datum, parentElement, depth + 1, extraColumnName, leafContainerPtr);
-			}
-			//if we had any leaf nodes, append their container to this element before we finish.
-			//we are out of new sublevels, so just append to the parent level.
-			if(leafContainerPtr.value != null){
-				parentElement.appendChild(leafContainerPtr.value);
-				leafContainerPtr.value = null;
-			}
+			subtreeName = root.name.replaceAll(" ", "_");
 		}
+		const subtreeRoot = document.createElement("div");
+		subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
+		subtreeRoot.id = parentElement.id + "_" + subtreeName;
 		
+		const subtreeTitle = document.createElement("div");
+		subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
+		subtreeTitle.innerText = root.name;
+		leafContainerPtr.value.appendChild(subtreeTitle);
+		
+		//if we need to change the extra column name, do that before initializing child elements.
+		if(root.extraColumn != null){
+			extraColumnName = root.extraColumn;
+		}
+
+		//fill out this element with the child elements
+		for(const datum of root.elements) {
+			initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
+		}
+
+		//if we had any leaf nodes, append their container to this element before we finish.
+		if(leafContainerPtr.value != null){
+			subtreeRoot.appendChild(leafContainerPtr.value);
+			leafContainerPtr.value = null;
+		}
+			//finally, append the fully created element to parent.
+		parentElement.appendChild(subtreeRoot);
 	}
 }
 
