@@ -70,8 +70,8 @@
 </div>
 <div class="mapContainer" id="mapContainer">
 	<div class="mapButtonBar">
-		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</input> 
-		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</input>
+		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered."><label>Locations</label>
+		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/><label>Nirnroots</label>
 		<span>&nbsp;&nbsp;&nbsp;</span>
 		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
 		<span>&nbsp;&nbsp;&nbsp;</span>
@@ -80,6 +80,24 @@
 		<span>Random gates found: 
 			<span id="randomGateCount">##</span> 
 		</span>
+
+		<input type="checkbox" id="showHideMapSettingsCheck"/><label>Show Settings</label>
+	</div>
+	<div id="mapSettingsContainer" style="display:none">
+		<input type="checkbox" id="mapShowPrediscovered"><label>Show prediscovered locations</label>
+		<!-- TODO-->
+		<h2>FAQ</h2>
+		<h3>How to use?</h3>
+		<p>Double click on an icon to toggle its state between discovered/undiscovered.</p>
+
+		<h3>What is TSP?</h3>
+		<p>The Traveling Salesman Path (TSP) is a calculated fastest route between each icon,
+			 it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.</p>
+
+		<h3>Why are icons inaccurate?</h3>
+		<p>On this map, the icons are centered on the exact locations that they are in the oblivion world. 
+			In other words, if you go to the center of the icon on this map, you'll be at the exact location of the marker.</p>
+		<p>On the in-game map, all icons are offset slightly to the right, which is confusing for first-time users.</p>
 	</div>
 
 	<div id="wrapper_Map" class="mapWrapper"></div>
@@ -100,6 +118,15 @@
 	}
 
 	(function(){
+		document.getElementById("showHideMapSettingsCheck").addEventListener('change',()=>{
+			const mapSettingsContainer = document.getElementById("mapSettingsContainer");
+			if(document.getElementById("showHideMapSettingsCheck").checked){
+				mapSettingsContainer.style.display = "unset";
+			}
+			else{
+				mapSettingsContainer.style.display = "none";
+			}
+		});
 		loadJsonData().then(()=>{
 			loadProgressFromCookie();
 			initMap();

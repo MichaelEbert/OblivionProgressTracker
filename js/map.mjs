@@ -436,6 +436,7 @@ async function initImgs(){
             "Mine",
             "Landmark",
             "Shrine",
+            "City",
             "Nirnroot",
             "Check",
             "X",
@@ -690,6 +691,7 @@ function iconSwitch(Input){
         case "Fort": return icons.Fort;
         case "Gate": return icons.Gate;
         case "Inn": return icons.Inn;
+        case "City": return icons.City;
         case "Landmark": return icons.Landmark;
         case "Mine": return icons.Mine;
         case "Settlement": return icons.Settlement;
@@ -744,5 +746,14 @@ function recalculateTSP(){
         let p = worldSpaceToMapSpace(new Point(nirn.cell.x, nirn.cell.y));
         nirn.x = p.x;
         nirn.y = p.y;
+    }
+}
+
+/**
+ * Initialize map-specific settings
+ */
+function initMapSettings(){
+    if(document.getElementById("mapSettingsContainer") != null){
+        const mapPrediscoverd = document.getElementById("mapShowPrediscovered");
     }
 }
