@@ -15,6 +15,8 @@ var favoredAttribute1Name = ATTRIBUTES.strength;
 var favoredAttribute2Name = ATTRIBUTES.speed;
 var resetLevel = 1;
 
+
+
 async function init(){
     //make sure skill names n stuff are loaded first
     await loadJsonData("..");
@@ -100,6 +102,40 @@ function initAttributes(){
 var skillCheckboxContainers = [];
 var skillTableRows = [];
 
+
+// Used for restricting # of skills to 7
+var numSelectedSkills = 0;
+
+/// Run when the skill specialization is changed.
+function modifySkill(skillBox) {
+    let isAdd = skillBox.checked;
+    if (isAdd) {
+	numSelectedSkills += 1;
+
+	// If 7 skills are selected, gray out adding any more.
+	if (numSelectedSkills >= 7) {
+	    for (var checkbox of skillCheckboxContainers ){
+		if (!checkbox.childNodes[0].checked) {
+		    checkbox.childNodes[0].disabled = true;
+		}
+	    }
+	}
+    }
+    else {
+	// If less than 7 skills are selected, allow selection
+	if (numSelectedSkills == 7) {
+	    for (var checkbox of skillCheckboxContainers ){
+		if (!checkbox.childNodes[0].checked) {
+		    checkbox.childNodes[0].disabled = false;
+		}
+	    }
+	}
+	numSelectedSkills -= 1;
+    }
+    // Call general update for skill calculations
+    onUpdate();
+}
+
 function initSkills(){
     //populate 'major skill' checkboxes
     runOnTree(jsondata.skill, initSingleSkill);
@@ -109,6 +145,9 @@ function initSkills(){
     let majorSkillsCheckboxesElement = document.getElementById("majorSkillsCheckboxes");
     for(var container of skillCheckboxContainers){
         majorSkillsCheckboxesElement.appendChild(container);
+	container.addEventListener('change', e => {
+	    modifySkill(e.target);
+	});
     }
 
     //first sort by governing attrib, then by specialization
@@ -161,6 +200,8 @@ function onUpdate(){
     for(let attribute in ATTRIBUTES){
         updateAttribute(ATTRIBUTES[attribute]);
     }
+
+    
 }
 
 function updateAttribute(attributeName){

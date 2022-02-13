@@ -28,7 +28,7 @@ function S1_H_S2_H_WM_spell_multiplier(stacks, bodies) {
 	}
 	
     }
-    return 1 + weak_stack[0] + weak_stack[1];
+    return 1 + weak_stack[0] + weak_stack[1] + weak_stack[2];
 }
 
 
