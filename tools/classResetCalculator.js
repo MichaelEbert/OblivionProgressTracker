@@ -11,11 +11,41 @@ const ATTRIBUTES = {
     "luck"        : "Luck"
 };
 
+// TODO: fill this in with json values
+// Using high elf female stats for now...
+var racialAttributes = {
+    "Strength": 30,
+    "Intelligence": 50,
+    "Willpower": 40,
+    "Agility": 40,
+    "Speed": 40,
+    "Endurance": 30,
+    "Personality": 40,
+    "Luck": 50
+};
+
+// TODO: fill this in with json values
+// Using Steed attributes for now.
+var birthsignAttributes = {
+    "Strength": 0,
+    "Intelligence": 0,
+    "Willpower": 0,
+    "Agility": 0,
+    "Speed": 20,
+    "Endurance": 0,
+    "Personality": 0,
+    "Luck": 0
+};
+
 var favoredAttribute1Name = ATTRIBUTES.strength;
 var favoredAttribute2Name = ATTRIBUTES.speed;
 var resetLevel = 1;
 
+var skillGovernAttributeMap = {};
 
+var skillSpecializeMap = {};
+
+var birthsign = "Steed";
 
 async function init(){
     //make sure skill names n stuff are loaded first
@@ -106,7 +136,7 @@ var skillTableRows = [];
 // Used for restricting # of skills to 7
 var numSelectedSkills = 0;
 
-/// Run when the skill specialization is changed.
+/// Run when a major skill is changed.
 function modifySkill(skillBox) {
     let isAdd = skillBox.checked;
     if (isAdd) {
@@ -145,7 +175,7 @@ function initSkills(){
     let majorSkillsCheckboxesElement = document.getElementById("majorSkillsCheckboxes");
     for(var container of skillCheckboxContainers){
         majorSkillsCheckboxesElement.appendChild(container);
-	container.addEventListener('change', e => {
+	container.addEventListener('change', e => { // Monitor changes in these boxes.
 	    modifySkill(e.target);
 	});
     }
@@ -192,29 +222,77 @@ function initSingleSkill(skill){
 
     //as with the checkboxes, we want to sort these by governing attribute, so put them in an array and then sort them later.
     skillTableRows.push(skillRow);
+
+
+    skillGovernAttributeMap[skill.formId] = skill.attribute;
+    skillSpecializeMap[skill.formId] = skill.parent.name;
 }
 
 // called when user updates a value
 function onUpdate(){
+    // Determine which skills are major
+    let majorSkillIds = [];
+    for (var checkbox of skillCheckboxContainers ){
+	if (checkbox.childNodes[0].checked) {
+	    let m_id = checkbox.childNodes[0].id;
+	    majorSkillIds.push(
+		m_id.substring(5, m_id.length)); // strip out the "skill" prefix.
+	}
+    }
+    console.log(majorSkillIds);
+
+    // Determine the amount of skills with given governed stats.
+    let attrLinkedSkills = {"Strength":0,
+			    "Intelligence":0,
+			    "Willpower":0,
+			    "Agility":0,
+			    "Speed":0,
+			    "Endurance":0,
+			    "Personality":0,
+			    "Luck":0};
+    
+    for (let skid of majorSkillIds) {
+	console.log(skid);
+	attrLinkedSkills[skillGovernAttributeMap[skid]] += 1;
+    }
+
+    console.log(attrLinkedSkills);
+    
     //update all attribute calculations
     for(let attribute in ATTRIBUTES){
-        updateAttribute(ATTRIBUTES[attribute]);
+	
+        updateAttribute(ATTRIBUTES[attribute], attrLinkedSkills[ATTRIBUTES[attribute]]);
+	
     }
 
     
+    
 }
 
-function updateAttribute(attributeName){
-    let baseValue = 40;
-    if(favoredAttribute1Name == attributeName || favoredAttribute2Name == attributeName){
-        baseValue +=5;
-    }
-    //TODO: other value stuff
+function updateAttribute(attributeName, govStatModifier){
+    //TODO: race values.
+    let baseValue = racialAttributes[attributeName];
+    if (attributeName != 'Luck') {
+	if(favoredAttribute1Name == attributeName || favoredAttribute2Name == attributeName){
+            baseValue +=5;
+	}
 
-    //TODO: leveled stuff
-    let leveledValue = baseValue + (1 * resetLevel);
+	// Leveled states
+	let leveledValue = Math.round(Math.min(100, baseValue + ((0.6  + 0.8 * govStatModifier) * (resetLevel-1))));
+
+	//Add on birth values
+	leveledValue += birthsignAttributes[attributeName];
+
+	// Subtract vampirism cure.
+	
+	document.getElementById(attributeName+"_leveled").innerText = leveledValue;
+    }
+    else {
+	let leveledValue = baseValue;
+	document.getElementById(attributeName+"_leveled").innerText = leveledValue;
+    }
 
     document.getElementById(attributeName+"_base").innerText = baseValue;
-    document.getElementById(attributeName+"_leveled").innerText = leveledValue;
+    
     
 }
