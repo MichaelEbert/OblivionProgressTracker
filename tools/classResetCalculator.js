@@ -173,6 +173,28 @@ function initCharacterFields(){
     
 }
 
+function updateAvailableAttributes() {
+    for(const attribName in ATTRIBUTES){
+	const attrib = ATTRIBUTES[attribName];
+
+	const at1 = document.getElementById("favAttr1_" + attrib);
+	const at2 = document.getElementById("favAttr2_" + attrib);
+	if (attrib == favoredAttribute2Name) {
+	    at1.disabled = true;
+	}
+	else {
+	    at1.disabled = false;
+	}
+	if (attrib == favoredAttribute1Name) {
+	    at2.disabled = true;
+	}
+	else {
+	    at2.disabled = false;
+	}
+    }
+    
+}
+
 /**
  * Populate attribute names in favored attribute dropdowns and add rows to base/leveled stats.
  * Additionally set up onChange formats for attributes.
@@ -185,15 +207,17 @@ function initAttributes(){
     const specializationElement = document.getElementById("inputSpecialization")
     for(const attribName in ATTRIBUTES){
         const attrib = ATTRIBUTES[attribName];
-        let e = document.createElement("OPTION");
-        e.value = attrib;
-        e.innerText = attrib;
-        favoredAttribute1Element.appendChild(e);
-
+	let e = document.createElement("OPTION");
+	e.value = attrib;
+	e.id = "favAttr1_" + attrib;
+	e.innerText = attrib;
+	favoredAttribute1Element.appendChild(e);
+	
         let f = document.createElement("OPTION");
-        f.value = attrib;
-        f.innerText = attrib;
-        favoredAttribute2Element.appendChild(f);
+	f.value = attrib;
+	f.id = "favAttr2_" + attrib;
+	f.innerText = attrib;
+	favoredAttribute2Element.appendChild(f);
 
         //for the table, we ahve to create more framework stuff.
         let tableRow = document.createElement("TR");
@@ -214,18 +238,26 @@ function initAttributes(){
 
         attributeTable.appendChild(tableRow);
     }
+    // Update routines for the attribute options
+    updateAvailableAttributes();
+        
+
+    
     //while we're here, set up onChange() handlers to update favoredAttribute variables when they are changed in the html.
     favoredAttribute1Element.addEventListener('change', ()=>{
         favoredAttribute1Name = favoredAttribute1Element.value;
+	updateAvailableAttributes();
         onUpdate();
     });
     favoredAttribute2Element.addEventListener('change', ()=>{
         favoredAttribute2Name = favoredAttribute2Element.value;
+	updateAvailableAttributes();
         onUpdate();
     });
     //finally, set the default values of the skill elements.
     favoredAttribute1Element.value = favoredAttribute1Name;
     favoredAttribute2Element.value = favoredAttribute2Name;
+
 
 
     // Log specialization values.

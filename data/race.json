@@ -309,7 +309,7 @@
 	      "Speed":30,
 	      "Endurance":50,
 	      "Personality":30,
-	      "Luck":0},
+	      "Luck":50},
 	  "skills":{
 	      "Acrobatics":0,
 	      "Alchemy":0,
@@ -683,7 +683,7 @@
 	      "Speed":30,
 	      "Endurance":50,
 	      "Personality":25,
-	      "Luck":0},
+	      "Luck":50},
 	  "skills":{
 	      "Acrobatics":0,
 	      "Alchemy":0,
