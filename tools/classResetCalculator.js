@@ -11,6 +11,15 @@ const ATTRIBUTES = {
     "luck"        : "Luck"
 };
 
+const vampStats = ["0xFFFFFFEE", // acrobatics
+		   "0xFFFFFFE1", // athletics
+		   "0xFFFFFFEA", // destruction
+		   "0xFFFFFFE5", //hand to hand
+		   "0xFFFFFFEB", //Illusion
+		   "0xFFFFFFEC", //Mysticism
+		   "0xFFFFFFF3" //Sneak
+		  ];
+
 // TODO: fill this in with json values
 // Using high elf female stats for now...
 var racialAttributes = {
@@ -41,11 +50,18 @@ var favoredAttribute1Name = ATTRIBUTES.strength;
 var favoredAttribute2Name = ATTRIBUTES.speed;
 var resetLevel = 1;
 
+var specialization = "Combat";
+
 var skillGovernAttributeMap = {};
 
 var skillSpecializeMap = {};
 
 var birthsign = "Steed";
+
+var vampFlag = false;
+const vampFortifySkillAmount = 20;
+
+
 
 async function init(){
     //make sure skill names n stuff are loaded first
@@ -72,6 +88,14 @@ function initCharacterFields(){
     });
     //...and update initial value from html:
     resetLevel = resetLevelField.value;
+
+
+    const cureVampField = document.getElementById("cureVamp");
+    cureVampField.addEventListener('change',()=>{
+	vampFlag = cureVampField.checked;
+	onUpdate();
+    });
+    vampFlag = cureVampField.checked;
 }
 
 /**
@@ -83,6 +107,7 @@ function initAttributes(){
     const favoredAttribute1Element = document.getElementById("inputAttr1");
     const favoredAttribute2Element = document.getElementById("inputAttr2");
     const attributeTable = document.getElementById("attributeTable");
+    const specializationElement = document.getElementById("inputSpecialization")
     for(const attribName in ATTRIBUTES){
         const attrib = ATTRIBUTES[attribName];
         let e = document.createElement("OPTION");
@@ -126,6 +151,15 @@ function initAttributes(){
     //finally, set the default values of the skill elements.
     favoredAttribute1Element.value = favoredAttribute1Name;
     favoredAttribute2Element.value = favoredAttribute2Name;
+
+
+    // Log specialization values.
+    specializationElement.addEventListener('change', ()=>{
+	specialization = specializationElement.value;
+	onUpdate();
+    });
+    specializationElement.value = specialization;
+						
 }
 
 //put skill checkboxes here first so we can sort them alphabetically
@@ -218,7 +252,29 @@ function initSingleSkill(skill){
     let skillGov = document.createElement("TD");
     skillGov.innerText = skill.attribute.substring(0,3);
     skillRow.appendChild(skillGov);
-    //TODO: create other cells in the skill table
+    
+    // Skill Type
+    let skillType = document.createElement("TD");
+    skillType.id = "typeSkill_"+skill.formId;
+    skillRow.appendChild(skillType);
+
+    // Skill Name
+    let skillNameE = document.createElement("TD");
+    skillNameE.innerText = skill.name;
+    skillRow.appendChild(skillNameE);
+
+    let skillBase = document.createElement("TD");
+    skillBase.innerText = 0;
+    skillBase.id = "baseSkill_"+skill.formId;
+    skillRow.appendChild(skillBase);
+
+    let skillLeveled = document.createElement("TD");
+    skillLeveled.innerText = 0;
+    skillLeveled.id = "leveledSkill_"+skill.formId;
+    skillRow.appendChild(skillLeveled);
+    
+    
+    
 
     //as with the checkboxes, we want to sort these by governing attribute, so put them in an array and then sort them later.
     skillTableRows.push(skillRow);
@@ -239,7 +295,6 @@ function onUpdate(){
 		m_id.substring(5, m_id.length)); // strip out the "skill" prefix.
 	}
     }
-    console.log(majorSkillIds);
 
     // Determine the amount of skills with given governed stats.
     let attrLinkedSkills = {"Strength":0,
@@ -252,17 +307,19 @@ function onUpdate(){
 			    "Luck":0};
     
     for (let skid of majorSkillIds) {
-	console.log(skid);
 	attrLinkedSkills[skillGovernAttributeMap[skid]] += 1;
     }
 
-    console.log(attrLinkedSkills);
-    
     //update all attribute calculations
     for(let attribute in ATTRIBUTES){
 	
         updateAttribute(ATTRIBUTES[attribute], attrLinkedSkills[ATTRIBUTES[attribute]]);
 	
+    }
+
+    // Update skill value calculations
+    for (let skillId in skillSpecializeMap ) {
+	updateSkills(skillId, majorSkillIds);
     }
 
     
@@ -283,7 +340,7 @@ function updateAttribute(attributeName, govStatModifier){
 	//Add on birth values
 	leveledValue += birthsignAttributes[attributeName];
 
-	// Subtract vampirism cure.
+	// TODO: Subtract vampirism cure...
 	
 	document.getElementById(attributeName+"_leveled").innerText = leveledValue;
     }
@@ -295,4 +352,50 @@ function updateAttribute(attributeName, govStatModifier){
     document.getElementById(attributeName+"_base").innerText = baseValue;
     
     
+}
+
+
+function updateSkills(skillId, majorSkillIds) {
+    
+    let baseValue = 5; // TODO: modify this based on race.
+    
+    let multiplier = 0.1;
+    let specFlag = skillSpecializeMap[skillId] == specialization;
+    let majFlag = majorSkillIds.includes(skillId);
+    if (specFlag) {
+	multiplier += 0.5
+	baseValue += 5;
+    }
+
+    if (majFlag){
+	multiplier += 0.9;
+	baseValue += 20;
+    }
+
+    let typeStr = "m";
+    if (majFlag && specFlag) {
+	typeStr = "M+S";
+    }
+    else if (specFlag) {
+	typeStr = "S";
+    }
+    else if (majFlag){
+	typeStr = "M";
+    }
+    
+
+    let leveledValue = Math.round(Math.min(100, baseValue + multiplier * (resetLevel-1)));
+
+    // Under/Overflow stats if vamp flag is active
+    if (vampFlag && vampStats.includes(skillId)) {
+	leveledValue -= vampFortifySkillAmount;
+	if (leveledValue < 0) {// value has underflowed
+	    leveledValue = 256 + leveledValue;
+	}
+    }
+
+    
+    document.getElementById("baseSkill_" + skillId).innerText = baseValue;
+    document.getElementById("leveledSkill_" + skillId).innerText = leveledValue;
+    document.getElementById("typeSkill_" + skillId).innerText = typeStr;
 }
