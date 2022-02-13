@@ -33,9 +33,14 @@ var racialAttributes = {
     "Luck": 50
 };
 
-// TODO: fill this in with json values
-// Using Steed attributes for now.
+var racialSkills = {
+};
+
+
 var birthsignAttributes = {
+    "Health": 0,
+    "Magicka": 100,
+    "Fatigue": 0,
     "Strength": 0,
     "Intelligence": 0,
     "Willpower": 0,
@@ -56,11 +61,22 @@ var skillGovernAttributeMap = {};
 
 var skillSpecializeMap = {};
 
-var birthsign = "Steed";
+var birthsign = "Apprentice";
 
 var vampFlag = false;
 const vampFortifySkillAmount = 20;
 
+
+var birthsignAttributeMap = {};
+
+var raceSkillMap = {};
+var raceAttributeMap = {
+    "m":{},
+    "f":{},
+};
+var currentRace = "High Elf";
+var currentGender = "f";
+var skillNameFormIDMap = {};
 
 
 async function init(){
@@ -96,6 +112,65 @@ function initCharacterFields(){
 	onUpdate();
     });
     vampFlag = cureVampField.checked;
+
+
+    // Populate Birthsign
+    const birthsignElement = document.getElementById("inputBirthsign");
+    for (var bs of jsondata.birthsign.elements) {
+	let bsName = bs.name;
+	let birthsignOption = document.createElement("Option");
+	birthsignOption.value = bsName;
+	birthsignOption.innerText = bsName;
+	birthsignElement.appendChild(birthsignOption);
+	
+	birthsignAttributeMap[bsName] = bs.attributes;
+    }
+    // Update listeners.
+    birthsignElement.addEventListener('change', e => {
+	//update birthsign attributes
+	birthsign = e.target.value;
+	birthsignAttributes = birthsignAttributeMap[birthsign];
+	onUpdate();
+    });
+    birthsignElement.value = birthsign;
+    birthsignAttributes = birthsignAttributeMap[birthsign];
+
+
+    // Populate racial data
+    const raceElement = document.getElementById("inputRace");
+    const genderElement = document.getElementById("inputGender")
+    for (var race of jsondata.race.elements[0].racevalues) {
+	let raceName = race.name;
+	let raceOption = document.createElement("Option");
+	raceOption.value = raceName;
+	raceOption.innerText = raceName;
+	raceElement.appendChild(raceOption);
+
+	raceSkillMap[raceName] = race.skills; //Note: skills are identical for both genders.
+
+	raceAttributeMap["m"][raceName] = race.attributes;
+    }
+    for (var race of jsondata.race.elements[1].racevalues) { // fill in female values.
+	let raceName = race.name;
+	raceAttributeMap["f"][raceName] = race.attributes;
+    }
+    // Update listeners
+    raceElement.addEventListener("change", e => {
+	currentRace = e.target.value;
+	racialAttributes = raceAttributeMap[currentGender][currentRace];
+	racialSkills = raceSkillMap[currentRace];
+	onUpdate();
+    });
+    raceElement.value = currentRace;
+    genderElement.addEventListener("change", e => {
+	currentGender = e.target.value;
+	racialAttributes = raceAttributeMap[currentGender][currentRace];
+	onUpdate();
+    });
+    genderElement.value = currentGender;
+    racialSkills = raceSkillMap[currentRace];
+    racialAttributes = raceAttributeMap[currentGender][currentRace];
+    
 }
 
 /**
@@ -215,7 +290,8 @@ function initSkills(){
     }
 
     //first sort by governing attrib, then by specialization
-    skillTableRows.sort((a,b)=>a.children[0].innerText > b.children[0].innerText);
+    //skillTableRows.sort((a,b)=>a.children[0].innerText > b.children[0].innerText);
+    skillTableRows.sort((a,b)=>a.id > b.id);
     //TODO: uncomment after we add specialization
     //skillTableRows.sort((a,b)=>a.children[1].innerText > b.children[1].innerText);
 
@@ -282,6 +358,7 @@ function initSingleSkill(skill){
 
     skillGovernAttributeMap[skill.formId] = skill.attribute;
     skillSpecializeMap[skill.formId] = skill.parent.name;
+    skillNameFormIDMap[skill.formId] = skill.name;
 }
 
 // called when user updates a value
@@ -328,24 +405,21 @@ function onUpdate(){
 
 function updateAttribute(attributeName, govStatModifier){
     //TODO: race values.
-    let baseValue = racialAttributes[attributeName];
+    let baseValue = racialAttributes[attributeName] ;
     if (attributeName != 'Luck') {
 	if(favoredAttribute1Name == attributeName || favoredAttribute2Name == attributeName){
             baseValue +=5;
 	}
 
 	// Leveled states
-	let leveledValue = Math.round(Math.min(100, baseValue + ((0.6  + 0.8 * govStatModifier) * (resetLevel-1))));
-
-	//Add on birth values
-	leveledValue += birthsignAttributes[attributeName];
+	let leveledValue = Math.round(Math.min(100, baseValue + ((0.6  + 0.8 * govStatModifier) * (resetLevel-1)))) + birthsignAttributes[attributeName];
 
 	// TODO: Subtract vampirism cure...
 	
 	document.getElementById(attributeName+"_leveled").innerText = leveledValue;
     }
     else {
-	let leveledValue = baseValue;
+	let leveledValue = baseValue + birthsignAttributes[attributeName];
 	document.getElementById(attributeName+"_leveled").innerText = leveledValue;
     }
 
@@ -357,7 +431,7 @@ function updateAttribute(attributeName, govStatModifier){
 
 function updateSkills(skillId, majorSkillIds) {
     
-    let baseValue = 5; // TODO: modify this based on race.
+    let baseValue = 5 + racialSkills[skillNameFormIDMap[skillId]]; // TODO: modify this based on race.
     
     let multiplier = 0.1;
     let specFlag = skillSpecializeMap[skillId] == specialization;
