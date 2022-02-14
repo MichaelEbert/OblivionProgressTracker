@@ -97,12 +97,12 @@ function doIt(){
 
 
 //generate custom formIDs for gate closures.
-let startNumber;
-let saveStartNumber;
-let miscData;
-let mapCustomData;
-let mapData;
-let miscCustomData;
+let startNumber = {};
+let saveStartNumber = {};
+let miscData = {};
+let miscCustomData = {};
+let mapData = {};
+let mapCustomData = {};
 startNumber = 0xFFFFFF50;
 saveStartNumber = 33;
 miscData = await fetch("./data/misc.json").then(x=>x.json());
@@ -112,11 +112,11 @@ mapCustomData = await fetch("./data/location_custom.json").then(x=>x.json());
 
 function idNumberToString(idNumber){
 	return "0x"+idNumber.toString(16).toUpperCase();
-  }
+}
 
 function addIdNumber(mapGateObject){
 	//first, get the custom data for this map object.
-	let mapCustomObject = findOnTree(mapCustomData, (x=>x.formId == mapGateObject.formId));
+	let mapCustomObject = mapCustomData.find(x=>x.formId == mapGateObject.formId);
 	if(mapCustomObject == null){
 		console.debug("map custom object for "+mapGateObject.formId+" not found");
 		mapCustomObject = {};
@@ -142,4 +142,4 @@ function addIdNumber(mapGateObject){
 	miscCustomData.push(customObject);
 }
 
-// runOnTree(miscdata.elements[0], addIdNumber);
+// runOnTree(mapData.elements[8], addIdNumber);
