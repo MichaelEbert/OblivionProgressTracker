@@ -94,3 +94,52 @@ function doIt(){
 
 //replace quest stuff with titles
 //s/^<span class="quest">(.*)<\/span>/<\/div>\r\n\r\n<div class="category">\r\n<div class="categoryTitle">$1<\/div>/g
+
+
+//generate custom formIDs for gate closures.
+let startNumber;
+let saveStartNumber;
+let miscData;
+let mapCustomData;
+let mapData;
+let miscCustomData;
+startNumber = 0xFFFFFF50;
+saveStartNumber = 33;
+miscData = await fetch("./data/misc.json").then(x=>x.json());
+miscCustomData = await fetch("./data/misc_custom.json").then(x=>x.json());
+mapData = await fetch("./data/location.json").then(x=>x.json());
+mapCustomData = await fetch("./data/location_custom.json").then(x=>x.json());
+
+function idNumberToString(idNumber){
+	return "0x"+idNumber.toString(16).toUpperCase();
+  }
+
+function addIdNumber(mapGateObject){
+	//first, get the custom data for this map object.
+	let mapCustomObject = findOnTree(mapCustomData, (x=>x.formId == mapGateObject.formId));
+	if(mapCustomObject == null){
+		console.debug("map custom object for "+mapGateObject.formId+" not found");
+		mapCustomObject = {};
+		mapCustomObject.formId = mapGateObject.formId;
+		mapCustomData.push(mapCustomObject);
+	}
+	//then, add close id link
+	const gateCloseId = idNumberToString(startNumber);
+	startNumber += 1;
+	mapCustomObject.gateCloseLink = gateCloseId;
+
+	//then set miscdata id to close id.
+	let gateClose = findOnTree(miscData, (x=>x.formId == mapGateObject.formId));
+	if(gateClose == null){
+		debugger;
+	}
+	gateClose.formId = gateCloseId;
+	//then add to misc_custom
+	let customObject = {};
+	customObject.formId = gateCloseId;
+	customObject.id = saveStartNumber;
+	saveStartNumber +=1;
+	miscCustomData.push(customObject);
+}
+
+// runOnTree(miscdata.elements[0], addIdNumber);
