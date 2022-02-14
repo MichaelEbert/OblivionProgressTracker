@@ -1,6 +1,7 @@
 export{
     init,
-    getNirnroots
+    getNirnroots,
+    activateNirnroot
 }
 
 import * as map from './map.mjs'

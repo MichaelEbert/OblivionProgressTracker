@@ -190,6 +190,7 @@ function initSettings(){
 	changed |= initProperty(settings, "iframeMinWidth", 600);
 	changed |= initProperty(settings, "iframeWidth", "45vw");
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
+	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
 	
 	//TODO: fix my shit encapsulation. until then...
 	if(typeof(initShareSettings) != "undefined"){

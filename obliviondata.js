@@ -54,7 +54,10 @@ const classes = [
 	new JsonClass("fame",true),
 	new JsonClass("nirnroot",true, true),
 	new JsonClass("location",true, true),
-	new JsonClass("save",true)
+	new JsonClass("save",true),
+        new JsonClass("locationPrediscovered",false),
+        new JsonClass("race", true),
+        new JsonClass("birthsign", true)
 ];
 
 /**

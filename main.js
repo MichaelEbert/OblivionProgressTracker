@@ -11,7 +11,7 @@ function init(){
 		const base = document.getElementById("main");
 		for(const klass of progressClasses){
 			const hive = jsondata[klass.name];
-			initMultiV2(hive, base,0);
+			initMulti(hive, base,0);
 		}
 	}).then(()=>{
 		if(loadProgressFromCookie() == false){
@@ -37,16 +37,32 @@ function init(){
 		}
 	});
 }
-const classNamesForLevels = ["section","category","subcategory"]
+const classNamesForLevels = ["section","category","subcategory"];
+const MAX_DEPTH = classNamesForLevels.length-1;
 
+function createLeafContainer(){
+	let leafContainer = document.createElement("DIV");
+	leafContainer.classList.add("itemContainer");
+	return leafContainer;
+}
+
+function initMulti(root, parentElement, depth, extraColumnName){
+	let leafContainerPtr = {value:null};
+	initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr);
+	if(leafContainerPtr.value != null){
+		debugger;
+		console.warning("something failed during init. orphan leaf container left over.");
+	}
+
+}
 /**
  * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
  * @param {object} root root node
  * @param {Element} parentElement parent html element
- * @param {int} depth depth of this node in the tree.
+ * @param {number} depth depth of this node in the tree.
  * @param {string} extraColumnName name of extra column. undefined if no extra column name.
  */
-function initMultiV2(root, parentElement, depth, extraColumnName){
+function initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr){
 	if(root == null){
 		console.log(parentElement);
 		debugger;
@@ -56,48 +72,54 @@ function initMultiV2(root, parentElement, depth, extraColumnName){
 		//this is a leaf node. so we just have to init this single thing.
 		let maybeElement = initSingleCell(root, extraColumnName, CELL_FORMAT_CHECKLIST);
 		if(maybeElement != null){
-			parentElement.appendChild(maybeElement);
+			if(leafContainerPtr.value == null){
+				leafContainerPtr.value = createLeafContainer();
+			}
+			leafContainerPtr.value.appendChild(maybeElement);
 		}
 	}
 	else{
 		// not a leaf node, so create a subtree, with a title n stuff.
-		if(depth < classNamesForLevels.length){
-			let subtreeName;
-			//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
-			if(root.classname != null){
-				subtreeName = root.classname.replaceAll(" ","_");
-			}
-			else{
-				subtreeName = root.name.replaceAll(" ", "_");
-			}
-			const subtreeRoot = document.createElement("div");
-			subtreeRoot.classList.add(classNamesForLevels[depth]);
-			subtreeRoot.id = parentElement.id + "_" + subtreeName;
-			
-			const subtreeTitle = document.createElement("div");
-			subtreeTitle.classList.add(classNamesForLevels[depth]+"Title");
-			subtreeTitle.innerText = root.name;
-			subtreeRoot.appendChild(subtreeTitle);
-			
-			//if we need to change the extra column name, do that before initializing child elements.
-			if(root.extraColumn != null){
-				extraColumnName = root.extraColumn;
-			}
-			
-			//fill out this element with the child elements
-			for(const datum of root.elements) {
-				initMultiV2(datum, subtreeRoot, depth+1, extraColumnName);
-			}
-
-			//finally, append the fully created element to parent.
-			parentElement.appendChild(subtreeRoot);
+		//We're starting a new subtree, so append the parent's leaves to it, if necessary.
+		if(leafContainerPtr.value != null){
+			parentElement.appendChild(leafContainerPtr.value);
+			leafContainerPtr.value = null;
+		}
+		leafContainerPtr.value = createLeafContainer();
+		let subtreeName;
+		//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+		if(root.classname != null){
+			subtreeName = root.classname.replaceAll(" ","_");
 		}
 		else{
-			//we ran out of levels. Just put everything else in the same level.
-			for(const datum of root.elements){
-				initMultiV2(datum, parentElement, depth + 1, extraColumnName);
-			}
+			subtreeName = root.name.replaceAll(" ", "_");
 		}
+		const subtreeRoot = document.createElement("div");
+		subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
+		subtreeRoot.id = parentElement.id + "_" + subtreeName;
+		
+		const subtreeTitle = document.createElement("div");
+		subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
+		subtreeTitle.innerText = root.name;
+		leafContainerPtr.value.appendChild(subtreeTitle);
+		
+		//if we need to change the extra column name, do that before initializing child elements.
+		if(root.extraColumn != null){
+			extraColumnName = root.extraColumn;
+		}
+
+		//fill out this element with the child elements
+		for(const datum of root.elements) {
+			initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
+		}
+
+		//if we had any leaf nodes, append their container to this element before we finish.
+		if(leafContainerPtr.value != null){
+			subtreeRoot.appendChild(leafContainerPtr.value);
+			leafContainerPtr.value = null;
+		}
+			//finally, append the fully created element to parent.
+		parentElement.appendChild(subtreeRoot);
 	}
 }
 
@@ -204,6 +226,10 @@ function checkboxClicked(event){
 
 // when user clicks on the row, not the checkbox
 function rowClicked(event){
+	if(event.target.nodeName == "A"){
+		//if user clicks link, don't treat that as checking off the element.
+		return;
+	}
 	const checkbox = Array.from(this.children).find(x=>x.tagName=="INPUT");
 	if(checkbox.type == "number"){
 		checkbox.focus();

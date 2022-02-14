@@ -145,11 +145,6 @@ td{
 	padding: 0.5em;
 }
 
-.category{
-	/*break-inside: avoid; this is really messy on chrome... ugh.*/ 
-	break-after: always;
-}
-
 .categoryTitle{
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
@@ -161,6 +156,12 @@ td{
 	padding-top: 0.2em;
 	padding-left:1em;
 	font-size:1.1em;
+}
+
+.itemContainer{
+	/*This contains a list of individual items*/
+	break-inside: avoid;
+	break-after: always;
 }
 
 .item{
