@@ -55,9 +55,9 @@ const classes = [
 	new JsonClass("nirnroot",true, true),
 	new JsonClass("location",true, true),
 	new JsonClass("save",true),
-        new JsonClass("locationPrediscovered",false),
-        new JsonClass("race", true),
-        new JsonClass("birthsign", true)
+	new JsonClass("locationPrediscovered",false),
+	new JsonClass("race", false),
+	new JsonClass("birthsign", false)
 ];
 
 /**
