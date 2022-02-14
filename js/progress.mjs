@@ -237,6 +237,9 @@ function sumCompletionSingleCell(cell){
 	if(cell.ref != null){
 		cellToUse = findCell(cell.ref);
 	}
+	if(cellToUse == undefined){
+		debugger;
+	}
 	
 	if(cellToUse.type == "number"){
 		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];

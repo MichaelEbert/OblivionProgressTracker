@@ -45,6 +45,7 @@ function JsonClass(name,containsUserProgress = false, easyCompress = false, comp
 
 const classes = [
 	// name, containsUserProgress, isStandard, completionWeight
+	// containsUserProgress means that it will show in the main checklist page (and save in userdata, sync with server, etc.)
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
@@ -56,6 +57,7 @@ const classes = [
 	new JsonClass("location",true, true),
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
+	//used in class reset calculator only
 	new JsonClass("race", false),
 	new JsonClass("birthsign", false)
 ];
