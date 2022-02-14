@@ -45,6 +45,7 @@ function JsonClass(name,containsUserProgress = false, easyCompress = false, comp
 
 const classes = [
 	// name, containsUserProgress, isStandard, completionWeight
+	// containsUserProgress means that it will show in the main checklist page (and save in userdata, sync with server, etc.)
 	new JsonClass("quest",true,true),
 	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
@@ -55,9 +56,10 @@ const classes = [
 	new JsonClass("nirnroot",true, true),
 	new JsonClass("location",true, true),
 	new JsonClass("save",true),
-        new JsonClass("locationPrediscovered",false),
-        new JsonClass("race", true),
-        new JsonClass("birthsign", true)
+	new JsonClass("locationPrediscovered",false),
+	//used in class reset calculator only
+	new JsonClass("race", false),
+	new JsonClass("birthsign", false)
 ];
 
 /**
@@ -292,6 +294,14 @@ function findCell(formId, classHint = null){
 	if(cell == null && classHint != null){
 		for(const klass of classesToSearch){
 			cell = findOnTree(jsondata[klass.name], x=>x.id == formId);
+		}
+	}
+	//hack for oblivion gates...
+	// we want them to find the location before the close.
+	if(classHint == null && cell?.hive.name =="misc"){
+		let maybeCell = findOnTree(jsondata.location, x=>x.formId == formId);
+		if(maybeCell != null){
+			cell = maybeCell;
 		}
 	}
 	return cell;

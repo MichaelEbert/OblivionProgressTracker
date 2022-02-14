@@ -1,10 +1,6 @@
 {"version":4,"name":"Fame","classname":"fame","extraColumn":"max","weight":5,"elements":[
 	{"name":"Oblivion Gates","elements":[
 		{"ref":"0x00028C72","name":"Kvatch Gate","max":1}
-		,{"ref":"0xFFFFFF01","type":"number","max":12}
-		,{"ref":"0xFFFFFF02","type":"number","max":10}
-		,{"ref":"0xFFFFFF03","type":"number","max":40}
-		,{"ref":"0xFFFFFF04","max":1}
 	]},
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[

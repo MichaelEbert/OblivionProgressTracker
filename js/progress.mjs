@@ -70,6 +70,9 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				valueAsCorrectType = newValue;
 				break;
 			case "undefined":
+				//save data doesn't exist for this element, we should delete it.
+				valueAsCorrectType = undefined;
+				break;
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
@@ -91,7 +94,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				}
 				break;
 			case "undefined":
-				valueAsCorrectType = false;
+				valueAsCorrectType = undefined;
 				break;
 			default:
 				debugger;
@@ -118,7 +121,15 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			return false;
 		}
 		else{
-			savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
+			if(valueAsCorrectType === undefined){
+				if(savedata[cell.hive.classname][cell.id] !== undefined){
+					//delete this element
+					delete savedata[cell.hive.classname][cell.id];
+				}
+			}
+			else{
+				savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
+			}
 			//do post-update stuff here.
 			if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
 				for(const fn of cell.onUpdate){
@@ -225,6 +236,9 @@ function sumCompletionSingleCell(cell){
 	let cellToUse = cell;
 	if(cell.ref != null){
 		cellToUse = findCell(cell.ref);
+	}
+	if(cellToUse == undefined){
+		debugger;
 	}
 	
 	if(cellToUse.type == "number"){
