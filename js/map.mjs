@@ -336,7 +336,7 @@ function initListeners(){
     let isDown = false;
     let doubleClickStartTime = 0;
     let doubleClickMouseDownLoc = new Point(null,null);
-    viewport.addEventListener("mousedown", function(event){
+    viewport.addEventListener("pointerdown", function(event){
         //check double click stuff
         if(Date.now() - clickStartTime < DOUBLE_CLICK_LIMIT_MS){
             doubleClickMouseDownLoc = mouseDownLoc;
@@ -347,7 +347,7 @@ function initListeners(){
         clickStartTime = Date.now();
         isDown = true;
     });
-    viewport.addEventListener("mousemove",function(event){
+    viewport.addEventListener("pointermove",function(event){
         //if mouse is down, we're dragging. probably.
         // if user moves mouse while clicking, map will drag slightly. oh well.
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
@@ -358,7 +358,7 @@ function initListeners(){
         // TODO: only redraw if we dragged or move on to or off of an icon?
         drawFrame();
     });
-    viewport.addEventListener("mouseup", function(event){
+    viewport.addEventListener("pointerup", function(event){
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         isDown = false;
         //interpret double-clicks first.

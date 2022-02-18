@@ -210,6 +210,7 @@ input[type="number"]{
 	top: 0.5em;
 	left: 0;
 	box-sizing:border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
+	touch-action: none;/*we want touch to scroll, not select or anything.*/
 }
 
 .mapButtonBar{
