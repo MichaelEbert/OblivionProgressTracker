@@ -43,6 +43,9 @@ Point.prototype.add = function(object){
  * @returns {Point} new point
  */
 Point.prototype.subtract = function(object){
+    if(object == null){
+        debugger;
+    }
     if(typeof(object) == "number"){
         let asNum = parseFloat(object);
         return new Point(this.x - asNum, this.y - asNum);
@@ -57,16 +60,28 @@ Point.prototype.subtract = function(object){
  * @param {number} number number to multiply by
  * @returns {Point} new point
  */
-Point.prototype.multiply = function(number){
-    let asNum = parseFloat(number);
-    return new Point(this.x * asNum, this.y * asNum);
+Point.prototype.multiply = function(object){
+    if(typeof(object) == "number"){
+        let asNum = parseFloat(object);
+        return new Point(this.x * asNum, this.y * asNum);
+    }
+    else{
+        //should this typecheck for point? IDK i'm not used to js development
+        return new Point(this.x * object.x, this.y * object.y);
+    }
 }
 /**
  * divide this point by a scalar.
  * @param {number} number number to multiply by
  * @returns {Point} new point
  */
-Point.prototype.divide = function(number){
-    let asNum = parseFloat(number);
-    return new Point(this.x / asNum, this.y / asNum);
+Point.prototype.divide = function(object){
+    if(typeof(object) == "number"){
+        let asNum = parseFloat(object);
+        return new Point(this.x / asNum, this.y / asNum);
+    }
+    else{
+        //should this typecheck for point? IDK i'm not used to js development
+        return new Point(this.x / object.x, this.y / object.y);
+    }
 }

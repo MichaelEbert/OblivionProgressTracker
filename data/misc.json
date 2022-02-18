@@ -22,7 +22,7 @@
 			,{"name":"Oblivion Gate","formId":"0xFFFFFF61","notes":"Fixed"}
 			,{"name":"Oblivion Gate","formId":"0xFFFFFF62","notes":"Fixed"}
 		]}
-		,{"name":"40 Random Gates","elements":[
+		,{"name":"40 Random Gates","max":40,"elements":[
 			{"name":"Oblivion Gate","formId":"0xFFFFFF63","notes":"Random"}
 			,{"name":"Oblivion Gate","formId":"0xFFFFFF64","notes":"Random"}
 			,{"name":"Oblivion Gate","formId":"0xFFFFFF65","notes":"Random"}

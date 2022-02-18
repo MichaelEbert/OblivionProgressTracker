@@ -9,7 +9,8 @@ export {
     mapSpaceToWorldSpace, 
     mapSpaceToScreenSpace, 
     screenSpaceToMapSpace,
-    iconH, 
+    getImageScale,
+    ICON_NATIVE_HEIGHT, 
     iconSwitch, 
     icons, 
     getRandomGateCount,
@@ -62,8 +63,10 @@ let mapAdjust = {
  * Offset from map to screen coordinates.
  */
 let screenOriginInMapCoords = new Point(0,0);
-let _iconH = 20;
-function iconH(){return _iconH;};
+
+const ICON_NATIVE_HEIGHT = 20;
+let _image_scale = 20/48;
+function getImageScale(){return _image_scale;};
 let showTSP = false;
 
 let randomGateCount = 0;
@@ -191,7 +194,7 @@ function zoomToInitialLocation(){
         let maybeY = windowParams.get("y");
         if(maybeX != null && maybeY != null){
             coords = new Point(parseInt(maybeX), parseInt(maybeY));
-            overlay.poi = new MapPOI("POI", -15,-36,coords);
+            overlay.poi = new MapPOI("POI", 0.5, 1.0,coords);
         }
         centerMap(worldSpaceToMapSpace(coords));
     }
@@ -285,8 +288,6 @@ async function initImgs(){
     
         iconsToInit.forEach(function(i){
             icons[i] = document.createElement("IMG");
-            icons[i].width = 48;
-            icons[i].height = 48;
             icons[i].src = "images/Icon_" + i + ".png";
             }
         )
@@ -428,14 +429,14 @@ function updateZoom(deltaZ, zoomPoint){
     }
 
     //adjust icon size
-    var m_iconH = ICON_NATIVE_HEIGHT / zoomLevel;
-    if(zoomLevel > 1.75)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 2;
-    else if(zoomLevel > 1.5)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.5;
-    else if(zoomLevel > 1.25)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.25;
-    else if(zoomLevel > 0.21)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel ;
+    var image_scale = 1 / zoomLevel;
+    if(zoomLevel > 1.75)image_scale = 1 / zoomLevel * 2;
+    else if(zoomLevel > 1.5)image_scale = 1 / zoomLevel * 1.5;
+    else if(zoomLevel > 1.25)image_scale = 1 / zoomLevel * 1.25;
+    else if(zoomLevel > 0.21)image_scale = 1 / zoomLevel ;
     //for super zoomed in, shrink the icons again, as user probably wants precision.
-    else m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 0.5;
-    _iconH = m_iconH;
+    else image_scale = 1 / zoomLevel * 0.5;
+    _image_scale = 20/48 * image_scale;
 
     //make map zoom in to zoomPoint.
     //1: calculate current zoomPoint in map coords
