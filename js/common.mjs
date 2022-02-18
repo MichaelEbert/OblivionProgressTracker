@@ -322,6 +322,7 @@ function createIndirectUpdater(indirectCell){
         if(window.debug){
             console.log("indirect update!");
         }
-		window.updateChecklistProgress(null, newValue, null, indirectCell);
+        //indirect values aren't saved, so we can skip saving them.
+		window.updateChecklistProgress(null, newValue, null, indirectCell, true);
 	}
 }
