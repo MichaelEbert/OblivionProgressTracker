@@ -54,7 +54,6 @@ function initMulti(root, parentElement, depth, extraColumnName){
 		debugger;
 		console.warning("something failed during init. orphan leaf container left over.");
 	}
-
 }
 /**
  * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
@@ -68,7 +67,7 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 		console.log(parentElement);
 		debugger;
 	}
-
+	
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
 		let maybeElement = initSingleCell(root, extraColumnName, CELL_FORMAT_CHECKLIST);
