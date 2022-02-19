@@ -1,6 +1,6 @@
 "use strict"
 
-export { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS };
+export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS };
 
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
@@ -8,6 +8,7 @@ import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
 import { TSPLocation } from "./tspPath.mjs";
 import { TSPPath } from "./tspPath.mjs";
 
+const OVERLAY_LAYER_NONE = 0x0;
 const OVERLAY_LAYER_LOCATIONS = 0x1;
 const OVERLAY_LAYER_NIRNROOTS = 0x2;
 
@@ -22,7 +23,9 @@ function Overlay(){
     this.tsp_nirnroots = [];
     this.lastZoomLevel = undefined;
     this.currentLocation = null;
-    this.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
+    this.activeLayers = OVERLAY_LAYER_NONE;
+    this.activeTsp = OVERLAY_LAYER_NONE;
+    this.setActiveLayers(OVERLAY_LAYER_LOCATIONS);
 
     //the following funcitons need a captured this variable
     let ovr = this;
@@ -74,36 +77,38 @@ function Overlay(){
     this.tsp_nirnroots = new TSPPath(nirnTspArr);
 }
 
+Overlay.prototype.recalculateBoundingBox = function(){
+    for(const locIcon of this.locations){
+        locIcon.recalculateBoundingBox();
+    }
+    for(const icon of this.nirnroots){
+        icon.recalculateBoundingBox();
+    }
+    if(this.poi != null){
+        this.poi.recalculateBoundingBox();
+    }
+    this.tsp_locations.recalculate();
+    this.tsp_nirnroots.recalculate();
+}
+
 var hloc = null;
 /**
  * Draw icons on the map
  */
-Overlay.prototype.draw = function(ctx, zoomLevel, showTSP, mouseLoc){
+Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     if(zoomLevel != this.lastZoomLevel){
         this.lastZoomLevel = zoomLevel;
-        for(const locIcon of this.locations){
-            locIcon.recalculateBoundingBox();
-        }
-        for(const icon of this.nirnroots){
-            icon.recalculateBoundingBox();
-        }
-        if(this.poi != null){
-            this.poi.recalculateBoundingBox();
-        }
-        this.tsp_locations.recalculate();
-        this.tsp_nirnroots.recalculate();
+        this.recalculateBoundingBox();
     }
 
     if(!hloc?.contains(mouseLoc)){
         hloc = null;
     }
-    if(this.showLocations){
-        if(showTSP && !this.showNirnroots){
-            //only draw this if we're not drawing nirnroot TSP.
-            //because 2 TSP at the same time is ususable.
-            this.tsp_locations.draw(ctx);
-        }
-        
+
+    if(this.activeTsp & OVERLAY_LAYER_LOCATIONS){
+        this.tsp_locations.draw(ctx);
+    }
+    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const locIcon of this.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
             locIcon.draw(ctx, mouseLoc, this.currentLocation);
@@ -112,11 +117,12 @@ Overlay.prototype.draw = function(ctx, zoomLevel, showTSP, mouseLoc){
             }
         }
     }
-    if(this.showNirnroots){
-        if(showTSP){
-            this.tsp_nirnroots.draw(ctx);
-        }
 
+    if(this.activeTsp & OVERLAY_LAYER_NIRNROOTS){
+        this.tsp_nirnroots.draw(ctx);
+    }
+
+    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
         for(const nirnIcon of this.nirnroots){
             nirnIcon.draw(ctx, mouseLoc, this.currentLocation);
             if(hloc == null && nirnIcon.contains(mouseLoc)){
@@ -141,7 +147,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, showTSP, mouseLoc){
 
 Overlay.prototype.click = function(clickLoc){
     const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
-    if(this.showLocations){
+    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const icon of this.locations){
             if(icon.contains(clickLoc)){
                 if(window.debug){
@@ -158,7 +164,7 @@ Overlay.prototype.click = function(clickLoc){
             }
         }
     }
-    if(this.showNirnroots){
+    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
         for(const icon of this.nirnroots){
             if(icon.contains(clickLoc)){
                 if(window.debug){
@@ -185,7 +191,7 @@ Overlay.prototype.click = function(clickLoc){
  */
 Overlay.prototype.doubleClick = function(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
-    if(this.showLocations){
+    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const icon of this.locations){
             if(icon.contains(clickLoc)){
                 let activated = icon.onClick(clickLoc);
@@ -195,7 +201,7 @@ Overlay.prototype.doubleClick = function(clickLoc){
             }
         }
     }
-    if(this.showNirnroots){
+    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
         for(const icon of this.nirnroots){
             if(icon.contains(clickLoc)){
                 let activated = icon.onClick(clickLoc);
@@ -208,25 +214,20 @@ Overlay.prototype.doubleClick = function(clickLoc){
     return false;
 }
 
-Overlay.prototype.setActiveLayer = function(layer){
-    if(layer == OVERLAY_LAYER_LOCATIONS){
-        this.showNirnroots = false;
-        this.showLocations = true;
-    }
-    else if(layer == OVERLAY_LAYER_NIRNROOTS){
-        this.showNirnroots = true;
-        if(window.settings.mapShowLocationsOnNirnroot){
-            this.showLocations = true;
-        }
-        else{
-            this.showLocations = false;
-        }
-    }
-    else{
-        this.showNirnroots = false;
-        this.showLocations = false;
-        if(window.debug){
-            console.log("set active layer to none.... why did you do that?");
-        }
+Overlay.prototype.setActiveLayers = function(layers){
+    this.activeLayers = layers;
+}
+
+Overlay.prototype.setActiveTsp = function(tsp){
+    switch(tsp){
+        case OVERLAY_LAYER_NONE:
+        case OVERLAY_LAYER_LOCATIONS:
+        case OVERLAY_LAYER_NIRNROOTS:
+            this.activeTsp = tsp;
+            break;
+        default:
+            console.error("unknown TSP selected:" + tsp);
+            this.activeTsp = OVERLAY_LAYER_NONE;
+            break;
     }
 }

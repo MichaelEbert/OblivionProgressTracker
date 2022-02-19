@@ -67,7 +67,6 @@ let screenOriginInMapCoords = new Point(0,0);
 const ICON_NATIVE_HEIGHT = 20;
 let _image_scale = 20/48;
 function getImageScale(){return _image_scale;};
-let showTSP = false;
 
 let randomGateCount = 0;
 function getRandomGateCount(){
@@ -152,13 +151,16 @@ async function initMap(){
     zoomToInitialLocation();
 
     await images;
+    //previously, we may have called drawFrame() with a zoom of 1.
+    //so force recalculation of bounding boxes after images have loaded.
+    overlay.recalculateBoundingBox();
     drawFrame();
     console.log("map init'd");
 }
 
 function drawFrame(){
     drawBaseMap();
-    overlay.draw(ctx, zoomLevel, showTSP, lastMouseLoc);
+    overlay.draw(ctx, zoomLevel, lastMouseLoc);
 }
 
 /**
@@ -390,30 +392,45 @@ function initListeners(){
         
         drawFrame();
     };
-    document.getElementById("button_Location").addEventListener("click", function(){
-        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
-        drawFrame();
-    });
-    document.getElementById("button_Nirnroot").addEventListener("click", function(){
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-        drawFrame();
-    });
 
-    document.getElementById("button_ToggleTSP").addEventListener("change", function(event){
-        showTSP = event.target.checked;
+
+    const button_location = document.getElementById("button_Location");
+    const button_nirnroot = document.getElementById("button_Nirnroot");
+    const button_wayshrine = document.getElementById("button_Wayshrine");
+    const button_tspNone = document.getElementById("button_tspNone");
+    const button_tspLocation = document.getElementById("button_tspLocation");
+    const button_tspNirnroot = document.getElementById("button_tspNirnroot");
+    //create display settings function to keep all these captures.
+    var displaySettingsFunc = function(){
+        let activeLayers = 0;
+        let activeTsp = 0;
+        if(button_location.checked){
+            activeLayers |= OVERLAY_LAYER_LOCATIONS;
+        }
+        if(button_nirnroot.checked){
+            activeLayers |= OVERLAY_LAYER_NIRNROOTS;
+        }
+        if(button_tspNone.checked){
+            activeTsp = 0;
+        }
+        if(button_tspLocation.checked){
+            activeTsp = OVERLAY_LAYER_LOCATIONS;
+        }
+        if(button_tspNirnroot.checked){
+            activeTsp = OVERLAY_LAYER_NIRNROOTS;
+        }
+        overlay.setActiveLayers(activeLayers);
+        overlay.setActiveTsp(activeTsp);
         drawFrame();
-    });
-
-    if(document.getElementById("button_Nirnroot").checked){
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-    }
-    else{
-        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
     }
 
-    if(document.getElementById("button_ToggleTSP").checked){
-        showTSP = true;
-    }
+    button_location.addEventListener("change", displaySettingsFunc);
+    button_nirnroot.addEventListener("change", displaySettingsFunc);
+    button_wayshrine.addEventListener("change", displaySettingsFunc);
+    button_tspNone.addEventListener("change", displaySettingsFunc);
+    button_tspLocation.addEventListener("change", displaySettingsFunc);
+    button_tspNirnroot.addEventListener("change", displaySettingsFunc);
+    displaySettingsFunc();
 }
 
 function updateZoom(deltaZ, zoomPoint){
