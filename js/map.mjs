@@ -210,7 +210,7 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
+        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS);
         overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
     }
     else{
@@ -218,8 +218,6 @@ function zoomToFormId(formid){
     }
     centerMap(worldSpaceToMapSpace(coords));
 }
-
-
 
 
 /*********************************

@@ -218,6 +218,10 @@ Overlay.prototype.setActiveLayers = function(layers){
     this.activeLayers = layers;
 }
 
+Overlay.prototype.addActiveLayer = function(newLayer){
+    this.activeLayers |= newLayer;
+}
+
 Overlay.prototype.setActiveTsp = function(tsp){
     switch(tsp){
         case OVERLAY_LAYER_NONE:

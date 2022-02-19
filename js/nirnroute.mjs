@@ -28,7 +28,8 @@ function fallbackIngameImage(eventArgs){
 
 async function init(){
     document.getElementById("mapContainer").style.width = window.settings.iframeWidth;
-    document.getElementById("button_ToggleTSP").checked = true;
+    document.getElementById("button_tspNirnroot").checked = true;
+    document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
     await map.initMap();
