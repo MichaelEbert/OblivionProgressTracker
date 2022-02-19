@@ -14,17 +14,17 @@ export{
 window.savedata = null;
 window.settings = null;
 
-const version = 9;
+const version = 10;
 
 function saveCookie(name,value){
-	//save for 10 years
-	var expiry = new Date()
-	expiry.setDate(expiry.getDate()+365*10);
-	document.cookie = name+"="+JSON.stringify(value)+"; expires="+expiry.toUTCString()+"; SameSite = Lax";
-
+	window.localStorage.setItem(name, JSON.stringify(value));
 }
 
 function loadCookie(name){
+	return JSON.parse(window.localStorage.getItem(name));
+}
+
+function loadCookieOld(name){
 	try{
 		let thisCookie = document.cookie
 		.split('; ')
@@ -36,6 +36,12 @@ function loadCookie(name){
 	catch{
 		return null;
 	}
+}
+
+window.migrate = function(){
+	saveCookie("settings",loadCookieOld("settings"));
+	saveCookie("progress",loadCookieOld("progress"));
+	console.log("migrated.");
 }
 
 /**

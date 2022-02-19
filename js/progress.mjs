@@ -46,8 +46,9 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  * @param {*} value new value
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
+ * @param {boolean} skipSave optional. Should we skip saving this value. Useful for loading from file.
  */
-function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, force = false){
+function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, skipSave = false){
 	let cell = null;
 	if(cellHint != null)
 	{
@@ -110,17 +111,17 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				fn(cell, valueAsCorrectType);
 			}
 		}
-		saveProgressToCookie();
 		return true;
 	}
 	else{
-		//now we get the save data for this.
-		let oldval = savedata[cell.hive.classname][cell.id];
-		if(!force && valueAsCorrectType == oldval){
-			//do nothing.
-			return false;
-		}
-		else{
+		if(!skipSave){
+			//now we get the save data for this.
+			let oldval = savedata[cell.hive.classname][cell.id];
+			if(valueAsCorrectType == oldval){
+				//do nothing.
+				return false;
+			}
+
 			if(valueAsCorrectType === undefined){
 				if(savedata[cell.hive.classname][cell.id] !== undefined){
 					//delete this element
@@ -130,15 +131,18 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			else{
 				savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
 			}
-			//do post-update stuff here.
-			if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
-				for(const fn of cell.onUpdate){
-					fn(cell, valueAsCorrectType);
-				}
-			}
-			saveProgressToCookie();
-			return true;
 		}
+		
+		//do post-update stuff here.
+		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+			for(const fn of cell.onUpdate){
+				fn(cell, valueAsCorrectType);
+			}
+		}
+		if(!skipSave){
+			saveProgressToCookie();
+		}
+		return true;
 	}
 }
 

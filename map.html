@@ -70,10 +70,13 @@
 </div>
 <div class="mapContainer" id="mapContainer">
 	<div class="mapButtonBar">
-		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered."><label>Locations</label>
-		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/><label>Nirnroots</label>
-		<span>&nbsp;&nbsp;&nbsp;</span>
-		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
+		<input type="checkbox" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered."><label>Locations</label>
+		<input type="checkbox" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/><label>Nirnroots</label>
+		<input type="checkbox" name="icon_selection" id="button_Wayshrine" title="Shows where all Wayshrines are in the overworld."/><label>Wayshrines (TODO)</label>
+		<span>&nbsp;|&nbsp;&nbsp;</span>
+		<input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location">No TSP</input>
+		<input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location">Location TSP</input>
+		<input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot">Nirnroot TSP</input>
 		<span>&nbsp;&nbsp;&nbsp;</span>
 		<button id="helpButton">Help!</button>
 		<span>&nbsp;&nbsp;&nbsp;</span>

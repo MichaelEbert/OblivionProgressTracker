@@ -139,6 +139,11 @@ function adjustFormatting(cell, defaultFormatting){
     return defaultFormatting
 }
 
+//optimization: cache the last cell, and clone if possible.
+let lastCell_node = null;
+let lastCell_format = null;
+let lastCell_classname = null;
+
 /**
  * 
  * @param cell 
@@ -157,6 +162,17 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     //constants used for the rest of this function
     let refCell;
     let usableId;
+    
+    //end html element
+    var rowhtml;
+
+    //are we copying from prev element?
+    let COPYING = false;
+
+    if(format == lastCell_format && classname == lastCell_classname){
+        rowhtml = lastCell_node;//we don't need to clone here because we clone when setting lastCell_node.
+        COPYING = true;
+    }
 
     if(cell.ref != null){
         refCell = findCell(cell.ref);
@@ -175,20 +191,26 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         return;
     }
     
-    var rowhtml;
-    if(format & CELL_FORMAT_USE_SPAN){
-        rowhtml = document.createElement("SPAN");
+    if(!COPYING){
+        if(format & CELL_FORMAT_USE_SPAN){
+            rowhtml = document.createElement("SPAN");
+        }
+        else{
+            rowhtml = document.createElement("DIV");
+        }
+        rowhtml.classList.add(classname);
+        rowhtml.classList.add("item");
     }
-    else{
-        rowhtml = document.createElement("DIV");
-    }
-	rowhtml.classList.add(classname);
-    rowhtml.classList.add("item");
     rowhtml.setAttribute("clid",usableId);
 
     //name
-	var rName = document.createElement("span");
-    rName.classList.add(classname+"Name");
+    if(!COPYING){
+        var rName = document.createElement("span");
+        rName.classList.add(classname+"Name");
+    }
+    else{
+        var rName = rowhtml.children[0];
+    }
 
     let usableName = cell.name ?? refCell?.name ?? classname + usableId;
     if(format & CELL_FORMAT_NAMELINK_ENABLE){
@@ -197,7 +219,12 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             if(format & CELL_FORMAT_PUSH_REFERENCES){
                 linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
             }
-            rName.appendChild(linkElement);
+            if(COPYING){
+                rName.replaceChild(linkElement, rName.children[0]);
+            }
+            else{
+                rName.appendChild(linkElement);
+            }
         }
     }
     else{
@@ -208,36 +235,48 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         rName.innerText = capitalClassName + usableName;
     }
 
-    rowhtml.appendChild(rName);
+    if(!COPYING){
+        rowhtml.appendChild(rName);
+    }
 
     //checkbox
     var rcheck = null;
     if(format & CELL_FORMAT_SHOW_CHECKBOX){
-        rcheck = document.createElement("input")
+        if(!COPYING){
+            rcheck = document.createElement("input");
+        }
+        else{
+            rcheck = rowhtml.children[1];
+        }
         let usableCell = cell;
         if(format & CELL_FORMAT_INDIRECT){
             usableCell = refCell;
         }
         if(usableCell.type){
-            rcheck.type= usableCell.type;
-            rcheck.addEventListener('change',checkboxClicked);
-            rcheck.size=4;
-            if(usableCell.max){
-                rcheck.max = usableCell.max;
+            if(!COPYING){
+                rcheck.type= usableCell.type;
+                rcheck.size=4;
+                if(usableCell.max){
+                    rcheck.max = usableCell.max;
+                }
             }
+            rcheck.addEventListener('change',checkboxClicked);
         }
         else{
-            rcheck.type="checkbox";
+            if(!COPYING){
+                rcheck.type="checkbox";
+            }
             rcheck.addEventListener('click',checkboxClicked);
         }
-        
-        rcheck.classList.add(classname+"Check");
-        rcheck.classList.add("check"); 
+        if(!COPYING){
+            rcheck.classList.add(classname+"Check");
+            rcheck.classList.add("check"); 
 
-        if(format & CELL_FORMAT_DISABLE_CHECKBOX){
-            rcheck.disabled = true;
+            if(format & CELL_FORMAT_DISABLE_CHECKBOX){
+                rcheck.disabled = true;
+            }
+            rowhtml.appendChild(rcheck);
         }
-        rowhtml.appendChild(rcheck);
     }
 
     // update data tree
@@ -270,7 +309,13 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         });
     }
 
-    miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId);
+    //do this before miscChecklistStuff because it's all ID-specific, so it would have to be rewritten anyways.
+    lastCell_node = rowhtml.cloneNode(true);
+    lastCell_classname = classname;
+    lastCell_format = format;
+
+    miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
+
     return rowhtml;
 }
 
@@ -283,7 +328,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
  * @param rcheck 
  * @param classname 
  */
-function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId){
+function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING){
     //misc stuff
     if(format & CELL_FORMAT_SHOW_NOTES){
         if(cell.notes){
@@ -322,6 +367,34 @@ function createIndirectUpdater(indirectCell){
         if(window.debug){
             console.log("indirect update!");
         }
-		window.updateChecklistProgress(null, newValue, null, indirectCell);
+        //indirect values aren't saved, so we can skip saving them.
+		window.updateChecklistProgress(null, newValue, null, indirectCell, true);
 	}
+}
+
+/**
+ * Part of code
+ * @param classname 
+ * @param usableId 
+ * @param format 
+ * @param COPYING 
+ * @param in_rowhtml 
+ */
+function createInitialElement(classname, usableId, format, COPYING, in_rowhtml){
+    let rowhtml;
+    if(COPYING){
+        rowhtml = in_rowhtml;
+    }
+    else{
+        if(format & CELL_FORMAT_USE_SPAN){
+            rowhtml = document.createElement("SPAN");
+        }
+        else{
+            rowhtml = document.createElement("DIV");
+        }
+        rowhtml.classList.add(classname);
+        rowhtml.classList.add("item");
+    }
+    rowhtml.setAttribute("clid",usableId);
+    return rowhtml;
 }

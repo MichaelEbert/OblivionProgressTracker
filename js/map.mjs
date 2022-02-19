@@ -9,7 +9,8 @@ export {
     mapSpaceToWorldSpace, 
     mapSpaceToScreenSpace, 
     screenSpaceToMapSpace,
-    iconH, 
+    getImageScale,
+    ICON_NATIVE_HEIGHT, 
     iconSwitch, 
     icons, 
     getRandomGateCount,
@@ -62,9 +63,10 @@ let mapAdjust = {
  * Offset from map to screen coordinates.
  */
 let screenOriginInMapCoords = new Point(0,0);
-let _iconH = 20;
-function iconH(){return _iconH;};
-let showTSP = false;
+
+const ICON_NATIVE_HEIGHT = 20;
+let _image_scale = 20/48;
+function getImageScale(){return _image_scale;};
 
 let randomGateCount = 0;
 function getRandomGateCount(){
@@ -149,13 +151,16 @@ async function initMap(){
     zoomToInitialLocation();
 
     await images;
+    //previously, we may have called drawFrame() with a zoom of 1.
+    //so force recalculation of bounding boxes after images have loaded.
+    overlay.recalculateBoundingBox();
     drawFrame();
     console.log("map init'd");
 }
 
 function drawFrame(){
     drawBaseMap();
-    overlay.draw(ctx, zoomLevel, showTSP, lastMouseLoc);
+    overlay.draw(ctx, zoomLevel, lastMouseLoc);
 }
 
 /**
@@ -191,7 +196,7 @@ function zoomToInitialLocation(){
         let maybeY = windowParams.get("y");
         if(maybeX != null && maybeY != null){
             coords = new Point(parseInt(maybeX), parseInt(maybeY));
-            overlay.poi = new MapPOI("POI", -15,-36,coords);
+            overlay.poi = new MapPOI("POI", 0.5, 1.0,coords);
         }
         centerMap(worldSpaceToMapSpace(coords));
     }
@@ -205,7 +210,7 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
+        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS);
         overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
     }
     else{
@@ -213,8 +218,6 @@ function zoomToFormId(formid){
     }
     centerMap(worldSpaceToMapSpace(coords));
 }
-
-
 
 
 /*********************************
@@ -285,8 +288,6 @@ async function initImgs(){
     
         iconsToInit.forEach(function(i){
             icons[i] = document.createElement("IMG");
-            icons[i].width = 48;
-            icons[i].height = 48;
             icons[i].src = "images/Icon_" + i + ".png";
             }
         )
@@ -335,7 +336,7 @@ function initListeners(){
     let isDown = false;
     let doubleClickStartTime = 0;
     let doubleClickMouseDownLoc = new Point(null,null);
-    viewport.addEventListener("mousedown", function(event){
+    viewport.addEventListener("pointerdown", function(event){
         //check double click stuff
         if(Date.now() - clickStartTime < DOUBLE_CLICK_LIMIT_MS){
             doubleClickMouseDownLoc = mouseDownLoc;
@@ -346,7 +347,7 @@ function initListeners(){
         clickStartTime = Date.now();
         isDown = true;
     });
-    viewport.addEventListener("mousemove",function(event){
+    viewport.addEventListener("pointermove",function(event){
         //if mouse is down, we're dragging. probably.
         // if user moves mouse while clicking, map will drag slightly. oh well.
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
@@ -357,7 +358,7 @@ function initListeners(){
         // TODO: only redraw if we dragged or move on to or off of an icon?
         drawFrame();
     });
-    viewport.addEventListener("mouseup", function(event){
+    viewport.addEventListener("pointerup", function(event){
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         isDown = false;
         //interpret double-clicks first.
@@ -389,30 +390,45 @@ function initListeners(){
         
         drawFrame();
     };
-    document.getElementById("button_Location").addEventListener("click", function(){
-        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
-        drawFrame();
-    });
-    document.getElementById("button_Nirnroot").addEventListener("click", function(){
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-        drawFrame();
-    });
 
-    document.getElementById("button_ToggleTSP").addEventListener("change", function(event){
-        showTSP = event.target.checked;
+
+    const button_location = document.getElementById("button_Location");
+    const button_nirnroot = document.getElementById("button_Nirnroot");
+    const button_wayshrine = document.getElementById("button_Wayshrine");
+    const button_tspNone = document.getElementById("button_tspNone");
+    const button_tspLocation = document.getElementById("button_tspLocation");
+    const button_tspNirnroot = document.getElementById("button_tspNirnroot");
+    //create display settings function to keep all these captures.
+    var displaySettingsFunc = function(){
+        let activeLayers = 0;
+        let activeTsp = 0;
+        if(button_location.checked){
+            activeLayers |= OVERLAY_LAYER_LOCATIONS;
+        }
+        if(button_nirnroot.checked){
+            activeLayers |= OVERLAY_LAYER_NIRNROOTS;
+        }
+        if(button_tspNone.checked){
+            activeTsp = 0;
+        }
+        if(button_tspLocation.checked){
+            activeTsp = OVERLAY_LAYER_LOCATIONS;
+        }
+        if(button_tspNirnroot.checked){
+            activeTsp = OVERLAY_LAYER_NIRNROOTS;
+        }
+        overlay.setActiveLayers(activeLayers);
+        overlay.setActiveTsp(activeTsp);
         drawFrame();
-    });
-
-    if(document.getElementById("button_Nirnroot").checked){
-        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-    }
-    else{
-        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS);
     }
 
-    if(document.getElementById("button_ToggleTSP").checked){
-        showTSP = true;
-    }
+    button_location.addEventListener("change", displaySettingsFunc);
+    button_nirnroot.addEventListener("change", displaySettingsFunc);
+    button_wayshrine.addEventListener("change", displaySettingsFunc);
+    button_tspNone.addEventListener("change", displaySettingsFunc);
+    button_tspLocation.addEventListener("change", displaySettingsFunc);
+    button_tspNirnroot.addEventListener("change", displaySettingsFunc);
+    displaySettingsFunc();
 }
 
 function updateZoom(deltaZ, zoomPoint){
@@ -428,14 +444,14 @@ function updateZoom(deltaZ, zoomPoint){
     }
 
     //adjust icon size
-    var m_iconH = ICON_NATIVE_HEIGHT / zoomLevel;
-    if(zoomLevel > 1.75)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 2;
-    else if(zoomLevel > 1.5)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.5;
-    else if(zoomLevel > 1.25)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 1.25;
-    else if(zoomLevel > 0.21)m_iconH = ICON_NATIVE_HEIGHT / zoomLevel ;
+    var image_scale = 1 / zoomLevel;
+    if(zoomLevel > 1.75)image_scale = 1 / zoomLevel * 2;
+    else if(zoomLevel > 1.5)image_scale = 1 / zoomLevel * 1.5;
+    else if(zoomLevel > 1.25)image_scale = 1 / zoomLevel * 1.25;
+    else if(zoomLevel > 0.21)image_scale = 1 / zoomLevel ;
     //for super zoomed in, shrink the icons again, as user probably wants precision.
-    else m_iconH = ICON_NATIVE_HEIGHT / zoomLevel * 0.5;
-    _iconH = m_iconH;
+    else image_scale = 1 / zoomLevel * 0.5;
+    _image_scale = 20/48 * image_scale;
 
     //make map zoom in to zoomPoint.
     //1: calculate current zoomPoint in map coords

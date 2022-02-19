@@ -73,7 +73,7 @@
 <div class="sidebar" id="sidebar">
 <!-- sidebar contains images n navigation n stuff.-->
 <h1 id="nirnName">Nirnroot Title</h1>
-<button id="prevButton">Prev</button><button id="nextButton">Next</button>
+<button id="prevButton">Prev</button><button id="nextButton">Next</button><span id="instructions"></span>
 <h2>Far image</h2>
 <img src="" id="farImage" alt="far image">
 <h2>Close image</h2>
@@ -82,12 +82,13 @@
 <div id="mapColumn">
 <div class="mapContainer resizableContainer" id="mapContainer">
 	<div class="mapButtonBar">
-		<input type="radio" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</input> 
-		<input type="radio" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld.">Nirnroots</input>
-		<span>&nbsp;&nbsp;&nbsp;</span>
-		<input type="checkbox" id="button_ToggleTSP" title="The Traveling Salesman Path(TSP) is the fastest way to visit each location/nirnroot">Show Traveling Salesman Path</input>
-		<span>&nbsp;&nbsp;&nbsp;</span>
-		<button onclick="showHelp()">Help!</button>
+		<input type="checkbox" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered."><label>Locations</label>
+		<input type="checkbox" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/><label>Nirnroots</label>
+		<input type="checkbox" name="icon_selection" id="button_Wayshrine" title="Shows where all Wayshrines are in the overworld."/><label>Wayshrines (TODO)</label>
+		<span>&nbsp;|&nbsp;&nbsp;</span>
+		<input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location">No TSP</input>
+		<input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location">Location TSP</input>
+		<input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot">Nirnroot TSP</input>
 		<span>&nbsp;&nbsp;&nbsp;</span>
 		<span>Random gates found: 
 			<span id="randomGateCount">##</span> 
@@ -121,21 +122,6 @@
 			nirn.init();
 		});
 	}).call(window);
-</script>
-<script>
-	//I divided these like so for easier editing. 
-		//So long as it's all stuffed in alert(), it doesn't matter to me how we store it.
-	let welcome = "Welcome to the map!\n\n";
-	let clickIcon = "Double-click on an icon when it's been discovered.\n\n";
-	let tspExplanation = "The Traveling Salesman Path is a calculated fastest route between each icon, it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.\n\n";
-	
-	//this isn't implemented yet, but should be noted so people aren't surprised when it happens during their run.
-	let randomGateNote = "You need to only discover 40 random oblivion gates. Once you discover 40, the map will automatically check off the remaining random gate locations on the map, but not on the checklist."
-	
-	let helpText = welcome + clickIcon + tspExplanation + randomGateNote;
-	function showHelp(){
-		alert(helpText);
-	}
 </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ function init(){
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
+		console.log("should be loaded now!!");
 		for(const klass of progressClasses){
 			const hive = jsondata[klass.name];
 			initMulti(hive, base,0);
@@ -53,7 +54,6 @@ function initMulti(root, parentElement, depth, extraColumnName){
 		debugger;
 		console.warning("something failed during init. orphan leaf container left over.");
 	}
-
 }
 /**
  * can't use runOnTree because we need to do additional stuff per-list, like subtree name.
@@ -67,7 +67,7 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 		console.log(parentElement);
 		debugger;
 	}
-
+	
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
 		let maybeElement = initSingleCell(root, extraColumnName, CELL_FORMAT_CHECKLIST);
@@ -135,7 +135,7 @@ function recalculateProgressAndUpdateProgressUI(){
 	//round progress to 2 decimal places
 	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerHTML = progress.toString();
+		element.innerText = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}

@@ -28,7 +28,8 @@ function fallbackIngameImage(eventArgs){
 
 async function init(){
     document.getElementById("mapContainer").style.width = window.settings.iframeWidth;
-    document.getElementById("button_ToggleTSP").checked = true;
+    document.getElementById("button_tspNirnroot").checked = true;
+    document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
     await map.initMap();
@@ -75,7 +76,23 @@ function activateNirnroot(nirnFormId){
     if(window.debug){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspID);
     }
-    document.getElementById("nirnName").innerText = "Nirnroot "+thisNirnroot.cell.tspID+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
+
+    const nameElement = document.getElementById("nirnName");
+    nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspID+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
+    if(thisNirnroot.cell.trivia != null){
+        nameElement.title = thisNirnroot.cell.trivia
+    }
+    else{
+        nameElement.title = "";
+    }
+    const instructionsElement = document.getElementById("instructions");
+    if(thisNirnroot.cell.notes != null){
+        instructionsElement.innerText = thisNirnroot.cell.notes;
+    }
+    else{
+        instructionsElement.innerText = "";
+    }
+    
     map.zoomToFormId(nirnFormId);
     map.draw();
 }

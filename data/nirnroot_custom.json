@@ -1,5 +1,5 @@
 [
-    { "id": 0,"formId":"0x0006DEBA","tspID":0},
+    { "id": 0,"formId":"0x0006DEBA","tspID":0, "trivia":"This Nirnroot used to be the drum major of the Tamrielian National Band", "notes":"On an island"},
     { "id": 1,"formId":"0x0006F136","tspID":1},
     { "id": 2,"formId":"0x0006F131","tspID":262},
     { "id": 3,"formId":"0x0006DEC1","tspID":261},
