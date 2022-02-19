@@ -135,7 +135,7 @@ function recalculateProgressAndUpdateProgressUI(){
 	//round progress to 2 decimal places
 	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerHTML = progress.toString();
+		element.innerText = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
