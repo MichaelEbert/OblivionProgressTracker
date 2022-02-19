@@ -9,6 +9,7 @@ function init(){
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
+		console.log("should be loaded now!!");
 		for(const klass of progressClasses){
 			const hive = jsondata[klass.name];
 			initMulti(hive, base,0);
