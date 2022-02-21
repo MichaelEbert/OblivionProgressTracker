@@ -119,20 +119,26 @@ function compressSaveData(saveDataObject){
 function decompressSaveData(compressedSaveData){
 	//expand cookie data back to nice, usable form.
 	var decompressedSaveData = {};
-	for(const propname in compressedSaveData){
-		const matchingClass = classes.find(x=>x.name == propname);
-		if(matchingClass != null && matchingClass.standard) {
-			decompressedSaveData[propname] = {};
-			let elements = compressedSaveData[propname];
-			for(let i = 0; i < elements.length; i++){
-				if(elements[i] != null){
-					decompressedSaveData[propname][i] = (elements[i] == 1);
+	if(compressedSaveData.version < 11 || compressedSaveData.compressed == true)
+	{
+		for(const propname in compressedSaveData){
+			const matchingClass = classes.find(x=>x.name == propname);
+			if(matchingClass != null && matchingClass.standard) {
+				decompressedSaveData[propname] = {};
+				let elements = compressedSaveData[propname];
+				for(let i = 0; i < elements.length; i++){
+					if(elements[i] != null){
+						decompressedSaveData[propname][i] = (elements[i] == 1);
+					}
 				}
 			}
+			else{
+				decompressedSaveData[propname] = compressedSaveData[propname];
+			}
 		}
-		else{
-			decompressedSaveData[propname] = compressedSaveData[propname];
-		}
+	}
+	else{
+		decompressedSaveData = compressedSaveData;
 	}
 	return decompressedSaveData;
 }
