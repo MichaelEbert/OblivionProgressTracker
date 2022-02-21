@@ -7,7 +7,8 @@ export{
 	decompressSaveData,
 	saveProgressToCookie,
 	loadSettingsFromCookie,
-    loadProgressFromCookie,
+	loadProgressFromCookie,
+	resetProgress
 }
 
 

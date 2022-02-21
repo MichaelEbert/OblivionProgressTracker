@@ -98,14 +98,18 @@
 	<input type="text" id="serverUrl" size="60" class="autoTextSetting"/>Share server path <br/>
 	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
 	<input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change<br/>
+	<button id="copyShareKeyButton">Copy share key to clipboard</button><br/>
 	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
+	<input type="checkbox" id="spectateAutoRefresh" class="autosetting"/><label>Auto refresh when spectating(TODO)</label><br/>
+	<input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/><label>Auto refresh time (seconds)(TODO)</label><br/>
+
 </div>
 <div class="section">
 <div class="sectionTitle">Import/Export</div>
 	<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 	<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
 </div>
-<p style="font-size: x-small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
+<p style="font-size: small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'

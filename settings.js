@@ -58,6 +58,11 @@ function init(){
     if(settings.remoteShareCode){
         document.getElementById("remoteShareCode").value = settings.remoteShareCode;
     }
+    document.getElementById("copyShareKeyButton")?.addEventListener('click',copyShareKeyToClipboard);
+}
+
+function copyShareKeyToClipboard(){
+    navigator.clipboard.writeText(settings.shareKey);
 }
 
 
@@ -92,7 +97,7 @@ function importProgress(eventargs){
 	var filedata = document.getElementById("fileinput").files[0].text();
 	filedata.then(x => {
 		savedata = JSON.parse(x);
-		saveProgress();
+		saveProgressToCookie();
 		alert("progress imported");
 	});
 }
