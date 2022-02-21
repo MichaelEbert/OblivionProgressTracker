@@ -92,7 +92,7 @@ function importProgress(eventargs){
 	var filedata = document.getElementById("fileinput").files[0].text();
 	filedata.then(x => {
 		savedata = JSON.parse(x);
-		saveProgress();
+		saveProgressToCookie();
 		alert("progress imported");
 	});
 }
