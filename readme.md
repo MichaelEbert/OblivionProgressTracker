@@ -42,6 +42,8 @@ Common to all nodes. All are optional.
 - "max": Important for progress calculation. for type:number elements, determines the max value. for tree elements, any subtotal above this amount will be ignored. for "ref" cells, scales completion of reference cell to this much.
 - "ref": get the value for this cell from a different cell with the target formId.
 - "gateCloseLink": for gates, the id of the cell that covers the closing of this gate.
+- "stages": for quests, stages that complete the quest. (Required for save reading)
+- "globalIndex": for wayshrines, global index in save file. (Required for save reading)
 
 
 # Adding Screenshots

@@ -110,15 +110,15 @@
 		]}
 	]}
 	,{"name":"Pilgrim's Grace","weight":0,"elements":[
-		{"formId":"0xFFFFFFD0","name":"Akatosh"}
-		,{"formId":"0xFFFFFFD1","name":"Arkay"}
-		,{"formId":"0xFFFFFFD2","name":"Dibella"}
-		,{"formId":"0xFFFFFFD3","name":"Julianos"}
-		,{"formId":"0xFFFFFFD4","name":"Kynareth"}
-		,{"formId":"0xFFFFFFD5","name":"Mara"}
-		,{"formId":"0xFFFFFFD6","name":"Stendarr"}
-		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)"}
-		,{"formId":"0xFFFFFFD8","name":"Zenithar"}
+		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51}
+		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49}
+		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50}
+		,{"formId":"0xFFFFFFD3","name":"Julianos","globalIndex":55}
+		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54}
+		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47}
+		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48}
+		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52}
+		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53}
 	]}
 	,{"name":"Houses","weight":1,"elements":[
 		{"formId":"0x0003636F","name":"Benirus Manor"}
@@ -155,6 +155,16 @@
 		,{"ref":"0x000146AC","name":"Sanguine"}
 		,{"ref":"0x000146AD","name":"Sheogorath"}
 		,{"ref":"0x000146AE","name":"Vaermina"}
+	]}
+	,{"name":"Greater Powers","weight":1,"elements":[
+		{"formId":"0x0006B69E","name":"Jone's Shadow"}
+		,{"formId":"0x0006B69D","name":"Gates of Aetherius"}
+		,{"formId":"0x0006B69F","name":"Jode's Blood"}
+		,{"formId":"0x0006B6A0","name":"Sithian Web"}
+		,{"formId":"0x0006B6A1","name":"Skein of Magnus"}
+		,{"formId":"0x0006B6A2","name":"Shield of Shezarr"}
+		,{"formId":"0x0006B6A3","name":"Dragon Dream"}
+		,{"formId":"0x00014D23","name":"Pilgrim's Grace"}
 	]}
 ]}
 

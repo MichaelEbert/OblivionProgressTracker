@@ -58,6 +58,11 @@ function init(){
     if(settings.remoteShareCode){
         document.getElementById("remoteShareCode").value = settings.remoteShareCode;
     }
+    document.getElementById("copyShareKeyButton")?.addEventListener('click',copyShareKeyToClipboard);
+}
+
+function copyShareKeyToClipboard(){
+    navigator.clipboard.writeText(settings.shareKey);
 }
 
 
