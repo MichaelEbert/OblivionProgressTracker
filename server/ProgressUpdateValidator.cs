@@ -31,7 +31,7 @@ namespace ShareApi
                 validationFailedReason = ValidationFailedReason.SAVE_DATA_EMPTY;
                 return false;
             }
-            if(update.SaveData.Length > 4096)
+            if(update.SaveData.Length > 40960)
             {
                 validationFailedReason = ValidationFailedReason.DATA_TOO_LONG; //not a valid cookie
                 return false;

@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShareApi
 {
+    public class Error
+    {
+        public string ErrorMessage { get; set; } = "";
+    }
     [ApiController]
     [Route("share")]
     public class ProgressUpdateHandler : ControllerBase
@@ -24,7 +28,8 @@ namespace ShareApi
             }
             else
             {
-                return BadRequest(reason.ToString());
+                ModelState.AddModelError("error", reason.ToString());
+                return BadRequest(ModelState);
             }
         }
     }
