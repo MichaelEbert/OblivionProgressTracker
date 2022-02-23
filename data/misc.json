@@ -1,111 +1,111 @@
 {"version":4,"name":"Misc","classname":"misc","elements":[
     {"name":"Closed Oblivion Gates","weight":5,"elements":[
 		{"name":"Main Quest Pt. 1","elements":[
-			{"name":"Oblivion Gate - Kvatch","formId":"0xFFFFFF52","notes":"Fixed"}
+			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed"}
 		]}
 		,{"name":"17 Fixed Gates","elements":[
-			{"name":"Oblivion Gate - Anvil","formId":"0xFFFFFF50","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Chorrol","formId":"0xFFFFFF53","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Skingrad","formId":"0xFFFFFF54","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Bravil","formId":"0xFFFFFF55","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Leyawiin","formId":"0xFFFFFF56","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Cheydinhal","formId":"0xFFFFFF57","notes":"Fixed, No_Reroll"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF58","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF59","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5A","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5B","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5C","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5D","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5E","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF5F","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF60","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF61","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF62","notes":"Fixed"}
+			{"name":"Oblivion Gate - Anvil","formId":"0x00026EBF","notes":"Fixed, Two_Fame, No_Reroll"}
+			,{"name":"Oblivion Gate - Chorrol","formId":"0x000270F7","notes":"Fixed, Two_Fame, No_Reroll"}
+			,{"name":"Oblivion Gate - Skingrad","formId":"0x000270F8","notes":"Fixed, Two_Fame, No_Reroll"}
+			,{"name":"Oblivion Gate - Bravil","formId":"0x00026EBE","notes":"Fixed, Two_Fame, No_Reroll"}
+			,{"name":"Oblivion Gate - Leyawiin","formId":"0x00026F13","notes":"Fixed, Two_Fame, No_Reroll"}
+			,{"name":"Oblivion Gate - Cheydinhal","formId":"0x00026F12","notes":"Fixed, No_Reroll"}
+			,{"name":"Oblivion Gate","formId":"0x0005403E","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x0018B245","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x000615E2","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x00188824","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x000572EE","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x00188742","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x0018ADFF","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x000623B6","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x0018AE1C","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x0018A833","notes":"Fixed"}
+			,{"name":"Oblivion Gate","formId":"0x0018D324","notes":"Fixed"}
 		]}
 		,{"name":"40 Random Gates","max":40,"elements":[
-			{"name":"Oblivion Gate","formId":"0xFFFFFF63","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF64","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF65","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF66","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF67","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF68","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF69","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6A","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6B","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF6F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF70","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF71","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF72","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF73","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF74","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF75","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF76","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF77","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF78","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF79","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7A","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7B","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF7F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF80","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF81","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF82","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF83","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF84","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF85","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF86","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF87","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF88","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF89","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8A","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8B","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF8F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF90","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF91","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF92","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF93","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF94","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF95","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF96","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF97","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF98","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF99","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9A","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9B","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFF9F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA0","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA1","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA2","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA3","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA4","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA5","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA7","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA8","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFA9","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAA","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAB","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAC","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAD","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAE","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFAF","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFB0","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFB1","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0xFFFFFFB2","notes":"Random"}
+			{"name":"Oblivion Gate","formId":"0x0018B249","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B248","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B24A","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B243","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B244","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B247","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B246","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615E3","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000613FA","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615E1","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615E4","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00062541","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615EC","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615EB","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0006253F","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0005A376","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615EA","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0005A68E","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00057388","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0006253C","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0006253D","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000615E8","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00064416","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00057038","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00055D87","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000836D3","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000517B5","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C6","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000643DC","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB72","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00051262","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018BD37","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C5","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C6","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000521A8","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018884F","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0006440E","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB6B","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0005160D","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C7","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB6D","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C3","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623BA","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623BC","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623B8","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623BE","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB70","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623C0","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000608A8","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B740","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000623C2","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D1C6","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C4","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000643F2","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B742","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D322","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000608BD","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B73C","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000614CE","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D172","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000645CE","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018B73E","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D320","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D1B4","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D18D","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x00061699","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D328","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000608D5","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000608EB","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D19F","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D326","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000616AB","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x0018D329","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000645D6","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000616D1","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000614CD","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000645A3","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000616BF","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000616E6","notes":"Random"}
+			,{"name":"Oblivion Gate","formId":"0x000616FF","notes":"Random"}
 		]}
 		,{"name":"Main Quest Pt. 2","elements":[
-			{"name":"Oblivion Gate - Bruma","formId":"0xFFFFFF51","notes":"Fixed"}
+			{"name":"Oblivion Gate - Bruma","formId":"0x00026EBA","notes":"Fixed"}
 			,{"ref":"0x0001E730","name":"Great Gate"}
 		]}
 	]}

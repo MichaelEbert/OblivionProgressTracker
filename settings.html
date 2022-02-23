@@ -100,8 +100,8 @@
 	<input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change<br/>
 	<button id="copyShareKeyButton">Copy share key to clipboard</button><br/>
 	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
-	<input type="checkbox" id="spectateAutoRefresh" class="autosetting"/><label>Auto refresh when spectating(TODO)</label><br/>
-	<input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/><label>Auto refresh time (seconds)(TODO)</label><br/>
+	<input type="checkbox" id="spectateAutoRefresh" class="autosetting"/><label>Auto refresh when spectating</label><br/>
+	<input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/><label>Auto refresh time (seconds)</label><br/>
 
 </div>
 <div class="section">
@@ -116,7 +116,7 @@
 	import * as userdata from './js/userdata.mjs'
 	exportNamespace(userdata);
 	(function(){
-		if(window.loadCookie("debug") == true){
+		if(loadCookie("debug") == true){
 			window.debug = true;
 		}
 		init();

@@ -162,12 +162,27 @@ function stopSpectating(){
 	}
 }
 
+//autoupdate listener.
+var autoUpdateListener = null;
+var autoUpdateIntervalId = null;
 /**
  * Update data from spectating, or stop spectating if remote code is now blank.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
- * @param {boolean} updateGlobalSaveData Should we decompress spectating data and store it in the global savedata variable?
+ * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
+	if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
+		if(window.debug){
+			console.log("Attaching auto update listener");
+		}
+		autoUpdateListener = ()=>{
+			startSpectating(false, true);
+		}
+		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
+	}
+	if(window.debug){
+		console.log("spectating update");
+	}
 	let code = settings.remoteShareCode;
 	if(code == null || code == ""){
 		stopSpectating();
@@ -192,7 +207,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				saveCookie("progress",dl);
 				if(updateGlobalSaveData){
 					savedata = decompressSaveData(dl);
-					upgradeSaveData();
+					upgradeSaveData(notifyOnUpdate);
 
 				}
 				if(notifyOnUpdate){

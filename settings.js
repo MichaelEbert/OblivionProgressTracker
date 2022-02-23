@@ -37,9 +37,7 @@ function initAutoSettings(){
 function init(){
     loadProgressFromCookie();
     
-    
     initAutoSettings();
-    
     
     //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);

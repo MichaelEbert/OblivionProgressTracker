@@ -35,6 +35,9 @@ function init(){
 				document.getElementById("topbar").appendChild(spectateBanner);
 	
 			}
+			if(settings.spectateAutoRefresh == true){
+				startSpectating(false, true);
+			}
 		}
 	});
 }

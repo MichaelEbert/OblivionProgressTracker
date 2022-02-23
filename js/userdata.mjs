@@ -15,7 +15,7 @@ export{
 window.savedata = null;
 window.settings = null;
 
-const version = 10;
+const version = 11;
 
 function saveCookie(name,value){
 	window.localStorage.setItem(name, JSON.stringify(value));
@@ -48,7 +48,7 @@ window.migrate = function(){
 /**
  * Attempt to upgrade the save data stored in `savedata` to the most recent version.
  */
-function upgradeSaveData(){
+function upgradeSaveData(shouldConfirm){
 	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
 	if(!(savedata.version >= 5)){
 		//tell user we can't upgrade.
@@ -60,8 +60,13 @@ function upgradeSaveData(){
 	else{
 		var shouldAttemptUpgrade = false;
 		if(savedata.version < version){
-			//ask if user wants to attempt upgrade
-			shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
+			if(shouldConfirm){
+				//ask if user wants to attempt upgrade
+				shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
+			}
+			else{
+				shouldAttemptUpgrade = true;
+			}
 		}
 		if(shouldAttemptUpgrade){
 			switch(savedata.version){
@@ -79,8 +84,9 @@ function upgradeSaveData(){
 					resetProgressForHive(jsondata.nirnroot);
 					resetProgressForHive(jsondata.location);
 				case 9:
+				case 10:
+					//in 11, we just introduced the "compressed" variable.
 					savedata.version = version;
-					//current version, we're done.
 					break;
 				default:
 					alert("error while upgrading");
@@ -113,6 +119,7 @@ function compressSaveData(saveDataObject){
 			compressed[propname] = savedata[propname];
 		}
 	}
+	compressed.compressed = true;
 	return compressed;
 }
 
