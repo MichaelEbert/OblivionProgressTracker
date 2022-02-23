@@ -15,7 +15,7 @@ export{
 window.savedata = null;
 window.settings = null;
 
-const version = 10;
+const version = 11;
 
 function saveCookie(name,value){
 	window.localStorage.setItem(name, JSON.stringify(value));
@@ -84,8 +84,9 @@ function upgradeSaveData(shouldConfirm){
 					resetProgressForHive(jsondata.nirnroot);
 					resetProgressForHive(jsondata.location);
 				case 9:
+				case 10:
+					//in 11, we just introduced the "compressed" variable.
 					savedata.version = version;
-					//current version, we're done.
 					break;
 				default:
 					alert("error while upgrading");
@@ -118,6 +119,7 @@ function compressSaveData(saveDataObject){
 			compressed[propname] = savedata[propname];
 		}
 	}
+	compressed.compressed = true;
 	return compressed;
 }
 
