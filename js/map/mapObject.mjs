@@ -207,6 +207,10 @@ MapLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
         //start with array with single element
         let linesToRender = [this.cell.name];
 
+        if(window.settings.mapShowFormId == true){
+            linesToRender.push("formId " + this.cell.formId.toString());
+        }
+
         if(this.cell.notes){
             this.cell.notes.split(", ").forEach(note => {
                 linesToRender.push(note);
