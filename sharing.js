@@ -178,7 +178,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		autoUpdateListener = ()=>{
 			startSpectating(false, true);
 		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 10000));
+		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
 	}
 	if(window.debug){
 		console.log("spectating update");
