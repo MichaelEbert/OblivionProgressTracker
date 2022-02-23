@@ -289,6 +289,11 @@ async function initImgs(){
         iconsToInit.forEach(function(i){
             icons[i] = document.createElement("IMG");
             icons[i].src = "images/Icon_" + i + ".png";
+            if(i != "POI"){
+                //bad hack
+                icons[i].width = 48;
+                icons[i].height = 48;
+            }
             }
         )
 

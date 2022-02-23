@@ -44,7 +44,8 @@ async function init(){
     if(window.debug){
         console.log("activating first nirnroot");
     }
-    activateNirnroot(findOnTree(jsondata.nirnroot, (x=>x.tspId == 0)).formId);
+    let firstNirn = window.findOnTree(jsondata.nirnroot, (x=>x.tspId == 0));
+    activateNirnroot(firstNirn.formId);
 }
 
 function activateNirnroot(nirnFormId){
