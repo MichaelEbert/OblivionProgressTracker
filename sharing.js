@@ -165,6 +165,7 @@ function stopSpectating(){
 //autoupdate listener.
 var autoUpdateListener = null;
 var autoUpdateIntervalId = null;
+
 /**
  * Update data from spectating, or stop spectating if remote code is now blank.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
@@ -204,6 +205,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				let dlTime = new Date();
 				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 				saveCookie("settings",settings);
+
 				saveCookie("progress",dl);
 				if(updateGlobalSaveData){
 					savedata = decompressSaveData(dl);

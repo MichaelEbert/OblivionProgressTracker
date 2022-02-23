@@ -21,10 +21,10 @@
 		,{"name":"Imperial Dragon Armor","formId":"0x000ADE3F","stages":[30]}
 	]}
 	,{"name":"Journal-Filled","elements":[
-		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Do this quest once before you finish the Thieves Guild. You can never finish this quest, but you need to get it in your journal for true 100%."}
-		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Do this quest once before you finish the Fighters Guild. You can never finish this quest, but you need to get it in your journal for true 100%."}
-		,{"name":"The Arena","formId":"0x000E0C91","notes":"Can't technically be completed, but do the quest until becoming the Arena Grand Champion."}
-		,{"name":"Whispers of Death","formId":"0x00030064","notes":"Cannot be completed, can only be done over and over again. You must at least get this quest in your journal for 100%"}
+		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Do this quest once before you finish the Thieves Guild. You can never finish this quest, but you need to get it in your journal for true 100%.","stages":[10,20,30,40]}
+		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Do this quest once before you finish the Fighters Guild. You can never finish this quest, but you need to get it in your journal for true 100%.","stages":[60]}
+		,{"name":"The Arena","formId":"0x000E0C91","notes":"Can't technically be completed, but do the quest until becoming the Arena Grand Champion.","stages":[100]}
+		,{"name":"Whispers of Death","formId":"0x00030064","notes":"Cannot be completed, can only be done over and over again. You must at least get this quest in your journal for 100%","stages":[10]}
 	]}
 	,{"name":"Dark Brotherhood","elements":[
 			{"name":"Initiation Quests","elements":[
