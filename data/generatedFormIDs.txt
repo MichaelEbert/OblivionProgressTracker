@@ -3,7 +3,6 @@ So here are my generated formIDs for those elements:
 skills:
 0xFFFF FFE0 - 0xFFFF FFFF skills (32)
 0xFFFF FFD0 - 0xFFFF FFDF pilgrims grace (16)
-0xFFFF FF50 - 0xFFFF FFCF gate closures (128)
 
 0xFFFF FF00 - 0xFFFF FF1F misc/temp stuff
 
