@@ -311,7 +311,7 @@ function initSkills(){
     //populate 'major skill' checkboxes
     runOnTree(jsondata.skill, initSingleSkill);
     //children[1] is the label, so we can sort on that
-    skillCheckboxContainers.sort((a,b)=>a.children[1].innerText > b.children[1].innerText);
+    skillCheckboxContainers.sort((a,b)=>{if(a.children[1].innerText > b.children[1].innerText){return 1;}if(a.children[1].innerText < b.children[1].innerText){return -1};return 0});
 
     let majorSkillsCheckboxesElement = document.getElementById("majorSkillsCheckboxes");
     for(var container of skillCheckboxContainers){
@@ -323,7 +323,7 @@ function initSkills(){
 
     //first sort by governing attrib, then by specialization
     //skillTableRows.sort((a,b)=>a.children[0].innerText > b.children[0].innerText);
-    skillTableRows.sort((a,b)=>a.id > b.id);
+    skillTableRows.sort((a,b)=>{if(a.id > b.id){return 1;}if(a.id < b.id){return -1};return 0});
     //TODO: uncomment after we add specialization
     //skillTableRows.sort((a,b)=>a.children[1].innerText > b.children[1].innerText);
 
