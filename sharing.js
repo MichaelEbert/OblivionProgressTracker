@@ -231,7 +231,8 @@ function setRemoteUrl(event){
 		settings.remoteShareCode = event.target.value;
 		saveCookie("settings",settings);
 		startSpectating()
-			.catch(()=>alert("invalid url"));
+			.catch((e)=>
+			alert("invalid url: "+e));
 	}
 }
 

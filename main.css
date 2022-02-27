@@ -134,6 +134,7 @@ td{
 .h2,.sectionTitle{
 	font-size: 2.2em;
 	font-weight: bold;
+	/*break-after:avoid;*/
 }
 
 .section{
@@ -148,6 +149,7 @@ td{
 .categoryTitle{
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
+	/*break-after:avoid;*/
 }
 
 .subcategoryTitle{
@@ -159,14 +161,13 @@ td{
 }
 
 .itemContainer{
-	/*This contains a list of individual items*/
 	break-inside: avoid;
-	break-after: always;
 }
 
 .item{
 	padding:0.1em;
 	margin:0.2em;
+	break-inside: avoid;
 }
 
 .item:hover{
