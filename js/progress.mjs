@@ -1,5 +1,7 @@
 "use strict"
-//progress percentage stuff
+//=========================
+//Progress percentage updates and helper functions
+//=========================
 
 export{
 	updateChecklistProgressFromInputElement,
@@ -9,10 +11,6 @@ export{
 }
 
 import {saveProgressToCookie} from './userdata.mjs';
-
-//=========================
-//Progress percentage updates and helper functions
-//=========================
 
 /**
  * Update save progress for the specified element.
@@ -103,6 +101,12 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				return;
 		}
 	}
+	//mark cached value as invalid
+	let cellObj = cell;
+	while(cellObj != null){
+		cellObj.cache = null;
+		cellObj = cellObj.parent;
+	}
 
 	if(cell.id == null){
 		//we don't need to save this
@@ -152,15 +156,15 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
  */
 function recalculateProgress(){
 	//we could probably cache the hives that aren't modified
-	var percentCompleteSoFar = 0.0;
+	var totalCompleteSoFar = 0.0;
 	for(const klass of progressClasses) {
 		const hive = jsondata[klass.name];
-		percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
+		totalCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
 	}
 	
-	//we can turn percentCompleteSoFar into an act11l percent here, instead of dividing by total in each segment, since
+	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
-	percentCompleteSoFar = percentCompleteSoFar / totalweight;
+	let percentCompleteSoFar = totalCompleteSoFar / totalweight;
 	return percentCompleteSoFar;
 }
 
@@ -204,9 +208,13 @@ function getSubtotalCompletion(subtotalJsonNode){
  * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
  */
 function sumCompletionItems(jsonNode){
+	if(jsonNode.cache != null){
+		return jsonNode.cache;
+	}
+	let result = null;
 	//can't use runOnTree because we get 2 inner results and we cant add that in 1 step
 	if(jsonNode.elements == null){
-		return sumCompletionSingleCell(jsonNode);
+		result = sumCompletionSingleCell(jsonNode);
 	}
 	else{
 		var completed = 0;
@@ -218,10 +226,14 @@ function sumCompletionItems(jsonNode){
 		}
 		if(jsonNode.max != null){
 			let max = parseInt(jsonNode.max);
-			return [Math.min(max, completed), Math.min(max,total)];
+			result = [Math.min(max, completed), Math.min(max,total)];
 		}
-		return [completed,total];
+		else{
+			result = [completed,total];
+		}
 	}
+	jsonNode.cache = result;
+	return result;
 }
 
 /**
@@ -237,18 +249,22 @@ function sumCompletionSingleCell(cell){
 		console.error(cell);
 		return [0,0];
 	}
-	let cellToUse = cell;
 	if(cell.ref != null){
-		cellToUse = findCell(cell.ref);
+		let actualCell = findCell(cell.ref);
+		if(actualCell == null){
+			console.warn("cell ref points to invalid node "+cell.ref);
+			return [0,0];
+		}
+		return sumCompletionItems(actualCell);
 	}
-	if(cellToUse == undefined){
+	if(cell == undefined){
 		debugger;
 	}
 	
-	if(cellToUse.type == "number"){
-		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];
-		if(cellToUse.max != null){
-			totalElements = cellToUse.max;
+	if(cell.type == "number"){
+		completedElements = savedata[cell.hive.classname][cell.id];
+		if(cell.max != null){
+			totalElements = cell.max;
 		}
 		else{
 			totalElements = Math.max(1,completedElements);
@@ -258,16 +274,16 @@ function sumCompletionSingleCell(cell){
 		//we're a checkbox
 		totalElements = 1;
 
-		if(savedata[cellToUse.hive.classname][cellToUse.id]){
+		if(savedata[cell.hive.classname][cell.id]){
 			completedElements = 1;
 		}
 		else{
 			completedElements = 0;
 		}
 
-		if(cellToUse.max != null){
-			totalElements *= parseFloat(cellToUse.max);
-			completedElements *= parseFloat(cellToUse.max);
+		if(cell.max != null){
+			totalElements *= parseFloat(cell.max);
+			completedElements *= parseFloat(cell.max);
 		}
 	}
 	if(completedElements == undefined || totalElements == undefined){

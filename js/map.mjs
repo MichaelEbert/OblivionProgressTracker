@@ -72,6 +72,20 @@ let randomGateCount = 0;
 function getRandomGateCount(){
     return randomGateCount;
 }
+
+let overlay;
+function getOverlay(){
+    return overlay;
+}
+
+/**
+ * Last position of the mouse. used for rendering mouseover stuff.
+ */
+var lastMouseLoc = new Point(0,0);
+
+let img_Map;
+let icons = {};
+
 function updateRandomGateCount(Found){
     if(Found){
         randomGateCount++;
@@ -90,8 +104,8 @@ function updateRandomGateCount(Found){
     }
 }
 function initRandomGateCount(){
-    //Init randomGateCount. 
-    let root = window.findOnTree(window.jsondata.location, x=>x.name == "Random Gates", y=>y.name == "Random Gates" || y.elements == null)
+    //Init randomGateCount. FFFF`FFC1 is random gates discovered
+    let root = window.findCell("0xFFFFFFC1", jsondata.location);
     let completed = sumCompletionItems(root);
     randomGateCount = completed[0];
 
@@ -103,20 +117,6 @@ function initRandomGateCount(){
         document.getElementById("randomGateCount").innerText = randomGateCount;
     }
 }
-
-//image objects
-let overlay;
-function getOverlay(){
-    return overlay;
-}
-
-/**
- * Last position of the mouse. used for rendering mouseover stuff.
- */
-var lastMouseLoc = new Point(0,0);
-
-let img_Map;
-let icons = {};
 
 async function initMap(){
     //load map cord data
