@@ -24,7 +24,7 @@ TSPLocation.prototype.recalculate = function(){
  */
 function TSPPath(location_array){
     this.locations = [...location_array];
-    this.locations.sort((a,b)=>a.id > b.id);
+    this.locations.sort((a,b)=>{if(a.id > b.id){return 1;}if(a.id < b.id){return -1};return 0});
     this.recalculate();
 }
 
@@ -47,6 +47,7 @@ TSPPath.prototype.recalculate = function(){
 
 /**draws the Traveling salesman path*/
 TSPPath.prototype.draw = function(ctx){
+    ctx.lineCap = "round";
     //draw from prev point to current point
     for(let i = 1; i < this.locations.length; i++){
         let point = mapSpaceToScreenSpace(new Point(this.locations[i]));

@@ -17,8 +17,9 @@ window.settings = null;
 
 const version = 11;
 
-function saveCookie(name,value){
-	window.localStorage.setItem(name, JSON.stringify(value));
+function saveCookie(name,valu){
+	var stringValue = JSON.stringify(valu);
+	window.localStorage.setItem(name, stringValue);
 }
 
 function loadCookie(name){

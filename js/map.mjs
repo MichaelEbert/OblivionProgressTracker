@@ -289,6 +289,11 @@ async function initImgs(){
         iconsToInit.forEach(function(i){
             icons[i] = document.createElement("IMG");
             icons[i].src = "images/Icon_" + i + ".png";
+            if(i != "POI"){
+                //bad hack
+                icons[i].width = 48;
+                icons[i].height = 48;
+            }
             }
         )
 
@@ -346,6 +351,9 @@ function initListeners(){
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         clickStartTime = Date.now();
         isDown = true;
+        if(window.debugPointing){
+            console.log("mousedown @ "+event.offsetX + ","+event.offsetY);
+        }
     });
     viewport.addEventListener("pointermove",function(event){
         //if mouse is down, we're dragging. probably.
@@ -353,6 +361,9 @@ function initListeners(){
         lastMouseLoc = new Point(event.offsetX, event.offsetY);
         if(isDown){
             moveMap({x:event.movementX, y:event.movementY});
+            if(window.debugPointing){
+                console.log("mousemove @ "+event.movementX + ","+event.movementY);
+            }
         }
         // regardless of whether we are down or not, we need to redraw the scene?
         // TODO: only redraw if we dragged or move on to or off of an icon?
@@ -374,6 +385,9 @@ function initListeners(){
                 Date.now() - clickStartTime < CLICK_LIMIT_DOWN_MS){
                     onMouseClick(lastMouseLoc);
             }
+        }
+        if(window.debugPointing){
+            console.log("mouseup @ "+event.offsetX + ","+event.offsetY);
         }
     });
     viewport.onmouseout = function(){isDown = false;};

@@ -75,33 +75,34 @@
 	<div class="category">
 		<div class="categoryTitle">General</div>
 		<!--When you add a setting here, also add it in userdata.mjs so it will be populated for new users.-->
-		<input type="checkbox" id="minipageCheck" class="autosetting"/> Link books to local page (uncheck for direct UESP links)<br/>
-		<select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
+		<label><input type="checkbox" id="minipageCheck" class="autosetting"/> Link books to local page (uncheck for direct UESP links)</label><br/>
+		<label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
 			<option value="auto">Auto</option>
 			<option value="on">Always on</option>
 			<option value="off">Always off</option>
-		</select> enable opening links in-page on right side of screen<br/>
-		<input type="number" id="iframeMinWidth" class="autoTextSetting"/>Minimum page width to show second column (for auto)<br/>
-		<input type="text" id="iframeWidth" class="autoTextSetting"/>Width of second column (when shown)<br/>
+		</select> enable opening links in-page on right side of screen</label><br/>
+		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/>Minimum page width to show second column (for auto)</label><br/>
+		<label><input type="text" id="iframeWidth" class="autoTextSetting"/>Width of second column (when shown)</label><br/>
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Map Settings</div>
-		<input type="checkbox" id="mapShowPrediscovered" class="autosetting"><label>Show prediscovered locations</label><br/>
-		<input type="checkbox" id="mapShowDistanceCheck" class="autosetting"><label>Show distance between locations</label><br/>
-		<input type="checkbox" id="mapShowLocationsOnNirnroot" class="autosetting"><label>Show fast travel locations on nirnroot map</label><br/>
+		<label><input name="aaa" type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label><br/>
+		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label><br/>
+		<label><input type="checkbox" id="mapShowLocationsOnNirnroot" class="autosetting">Show fast travel locations on nirnroot map</label><br/>
+		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label><br/>
 	</div>
 	
 </div>
 
 <div class="section">
 <div class="sectionTitle">Sharing</div>
-	<input type="text" id="serverUrl" size="60" class="autoTextSetting"/>Share server path <br/>
+	<label><input type="text" id="serverUrl" size="60" class="autoTextSetting"/>Share server path </label><br/>
 	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
-	<input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change<br/>
+	<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change</label><br/>
 	<button id="copyShareKeyButton">Copy share key to clipboard</button><br/>
 	Spectate other:<input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><br/>
-	<input type="checkbox" id="spectateAutoRefresh" class="autosetting"/><label>Auto refresh when spectating</label><br/>
-	<input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/><label>Auto refresh time (seconds)</label><br/>
+	<label><input type="checkbox" id="spectateAutoRefresh" class="autosetting"/>Auto refresh when spectating</label><br/>
+	<label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto refresh time (seconds)</label><br/>
 
 </div>
 <div class="section">

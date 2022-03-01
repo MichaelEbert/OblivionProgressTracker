@@ -41,8 +41,8 @@ function Overlay(){
         }
         ovr.locations.push(newIcon);
         
-        if(loc.tspID != null){
-            locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspID));
+        if(loc.tspId != null){
+            locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
         }
     });
 
@@ -56,8 +56,8 @@ function Overlay(){
         }
         ovr.locations.push(newIcon);
         
-        if(loc.tspID != null){
-            locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspID));
+        if(loc.tspId != null){
+            locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
         }
     });
 
@@ -66,8 +66,8 @@ function Overlay(){
             let newIcon = new MapLocation(nirn)
             ovr.nirnroots.push(newIcon);
 
-            if(nirn.tspID != null){
-                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspID));
+            if(nirn.tspId != null){
+                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId));
             }
         }
     });

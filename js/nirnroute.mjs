@@ -44,7 +44,13 @@ async function init(){
     if(window.debug){
         console.log("activating first nirnroot");
     }
-    activateNirnroot(findOnTree(jsondata.nirnroot, (x=>x.tspID == 0)).formId);
+    let targetNirnroot = 0;
+    let windowParams = new URLSearchParams(window.location.search);
+    if(windowParams.get("id") != null){
+        targetNirnroot = parseInt(windowParams.get("id"));
+    }
+    let firstNirn = window.findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+    activateNirnroot(firstNirn.formId);
 }
 
 function activateNirnroot(nirnFormId){
@@ -71,14 +77,14 @@ function activateNirnroot(nirnFormId){
     }
     
     if(window.debug){
-        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisNirnroot.cell.tspID);
+        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisNirnroot.cell.tspId);
     }
     if(window.debug){
-        console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspID);
+        console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
 
     const nameElement = document.getElementById("nirnName");
-    nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspID+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
+    nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
     if(thisNirnroot.cell.trivia != null){
         nameElement.title = thisNirnroot.cell.trivia
     }
@@ -98,20 +104,20 @@ function activateNirnroot(nirnFormId){
 }
 
 function findNextNirnroot(thisNirnroot){
-    let thisTspId = parseInt(thisNirnroot.cell.tspID);
-    let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspID == thisTspId+1));
+    let thisTspId = parseInt(thisNirnroot.cell.tspId);
+    let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == thisTspId+1));
     if(nextNirnrootCell == null){
-        nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspID == 0));
+        nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == 0));
     }
     let nextOne = map.getOverlay().nirnroots.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return nextOne;
 }
 
 function findPrevNirnroot(thisNirnroot){
-    let thisTspId = parseInt(thisNirnroot.cell.tspID);
-    let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspID == thisTspId-1));
+    let thisTspId = parseInt(thisNirnroot.cell.tspId);
+    let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == thisTspId-1));
     if(nextNirnrootCell == null){
-        nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspID == 0));
+        nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == 0));
     }
     let prevOne = map.getOverlay().nirnroots.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return prevOne;
