@@ -1,18 +1,16 @@
 "use strict"
-//progress percentage stuff
+//=========================
+//Progress percentage updates and helper functions
+//=========================
 
 export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems,
+	sumCompletionItems
 }
 
 import {saveProgressToCookie} from './userdata.mjs';
-
-//=========================
-//Progress percentage updates and helper functions
-//=========================
 
 /**
  * Update save progress for the specified element.
@@ -103,6 +101,12 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				return;
 		}
 	}
+	//mark cached value as invalid
+	let cellObj = cell;
+	while(cellObj != null){
+		cellObj.cache = null;
+		cellObj = cellObj.parent;
+	}
 
 	if(cell.id == null){
 		//we don't need to save this
@@ -151,16 +155,46 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
  * @returns {Number} progress
  */
 function recalculateProgress(){
-	//we could probably cache the hives that aren't modified
-	var percentCompleteSoFar = 0.0;
-	for(const klass of progressClasses) {
-		const hive = jsondata[klass.name];
-		percentCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
+	//we have to recalculate hives that are updated because of refs to other hives.
+	var calculator = new ProgressCalculator();
+	return calculator.calculateProgress(progressClasses, jsondata);
+}
+
+function sumCompletionItems(cell){
+	var calculator = new ProgressCalculator();
+	return calculator.sumCompletionItems(cell);
+}
+
+//this is an object because we need the hivesToCalculate in child functions.
+function ProgressCalculator(){
+	this.hivesToCalculate = [];
+}
+
+ProgressCalculator.prototype.calculateProgress = function(progressClasses, jsondata){
+	this.hivesToCalculate = progressClasses.map(x=>jsondata[x.name]);
+	this.hiveResults = new Map();
+	var MAX_HIVES = 16;//prevent endless recursion
+	let i = 0;
+	for(i = 0; (i < this.hivesToCalculate.length && i < MAX_HIVES); i+=1){
+		const thisHive = this.hivesToCalculate[i];
+		//have to encapsulate the getSubtotalCompletion call in a lambda to capture `this`
+		this.hiveResults.set(thisHive, runOnTree(thisHive, (x=>this.getSubtotalCompletion(x)), 0, node=>node.weight != null, true));
 	}
-	
-	//we can turn percentCompleteSoFar into an act11l percent here, instead of dividing by total in each segment, since
+	if(i == MAX_HIVES){
+		console.warn("Progress calculation infinite loop: reached MAX_HIVES");
+	}
+
+	//sum the final results
+	var totalCompleteSoFar = 0.0;
+	for(const value of this.hiveResults.values()){
+		totalCompleteSoFar += value;
+	}
+	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
-	percentCompleteSoFar = percentCompleteSoFar / totalweight;
+	let percentCompleteSoFar = totalCompleteSoFar / totalweight;
+	if(window.debug){
+		console.log("Progress: %f items complete out of %f.", totalCompleteSoFar, totalweight);
+	}
 	return percentCompleteSoFar;
 }
 
@@ -169,7 +203,7 @@ function recalculateProgress(){
  * @param {Object} subtotalJsonNode node with a subtotal
  * @returns {Number} weighted completion percentage
  */
-function getSubtotalCompletion(subtotalJsonNode){
+ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 	const weight = subtotalJsonNode.weight;
 	//optimization so we're not looking for progress in nodes that don't have it (eg saves)
 	if(weight == 0){
@@ -200,28 +234,44 @@ function getSubtotalCompletion(subtotalJsonNode){
 
 /**
  * Recursively sum completion items for all cells in this tree.
- * @param {object} jsonNode tree root
+ * @param {object} cell tree root
  * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
  */
-function sumCompletionItems(jsonNode){
+ProgressCalculator.prototype.sumCompletionItems = function(cell){
+	if(cell.cache != null){
+		return cell.cache;
+	}
+	let result = null;
 	//can't use runOnTree because we get 2 inner results and we cant add that in 1 step
-	if(jsonNode.elements == null){
-		return sumCompletionSingleCell(jsonNode);
+	if(cell.elements == null){
+		result = sumCompletionSingleCell(cell);
 	}
 	else{
 		var completed = 0;
 		var total = 0;
-		for(const element of jsonNode.elements){
+		for(const element of cell.elements){
 			let innerResult = sumCompletionItems(element);
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
-		if(jsonNode.max != null){
-			let max = parseInt(jsonNode.max);
-			return [Math.min(max, completed), Math.min(max,total)];
+		if(cell.max != null){
+			let max = parseInt(cell.max);
+			result = [Math.min(max, completed), Math.min(max,total)];
 		}
-		return [completed,total];
+		else{
+			result = [completed,total];
+		}
+		//we only recalculate the value of intermediate nodes here, so run all their onUpdate() stuff here.
+		if(cell.onUpdate != null && cell.onUpdate.length > 0){
+			for(const fn of cell.onUpdate){
+				fn(cell, completed, total);
+			}
+			//this whole thing is a class because of THIS FUCKER
+			this.hivesToCalculate.push(cell.hive);
+		}
 	}
+	cell.cache = result;
+	return result;
 }
 
 /**
@@ -237,18 +287,22 @@ function sumCompletionSingleCell(cell){
 		console.error(cell);
 		return [0,0];
 	}
-	let cellToUse = cell;
 	if(cell.ref != null){
-		cellToUse = findCell(cell.ref);
+		let actualCell = findCell(cell.ref);
+		if(actualCell == null){
+			console.warn("cell ref points to invalid node "+cell.ref);
+			return [0,0];
+		}
+		return sumCompletionItems(actualCell);
 	}
-	if(cellToUse == undefined){
+	if(cell == undefined){
 		debugger;
 	}
 	
-	if(cellToUse.type == "number"){
-		completedElements = savedata[cellToUse.hive.classname][cellToUse.id];
-		if(cellToUse.max != null){
-			totalElements = cellToUse.max;
+	if(cell.type == "number"){
+		completedElements = savedata[cell.hive.classname][cell.id];
+		if(cell.max != null){
+			totalElements = cell.max;
 		}
 		else{
 			totalElements = Math.max(1,completedElements);
@@ -258,16 +312,11 @@ function sumCompletionSingleCell(cell){
 		//we're a checkbox
 		totalElements = 1;
 
-		if(savedata[cellToUse.hive.classname][cellToUse.id]){
+		if(savedata[cell.hive.classname][cell.id]){
 			completedElements = 1;
 		}
 		else{
 			completedElements = 0;
-		}
-
-		if(cellToUse.max != null){
-			totalElements *= parseFloat(cellToUse.max);
-			completedElements *= parseFloat(cellToUse.max);
 		}
 	}
 	if(completedElements == undefined || totalElements == undefined){
@@ -277,8 +326,8 @@ function sumCompletionSingleCell(cell){
 	}
 
 	let multiplier = 1.0;
-	if(cell.ref != null && cell.max != null){
-		multiplier = cell.max / totalElements;
+	if(cell.scale != null){
+		multiplier = parseFloat(cell.scale);
 	}
 
 	if(isNaN(completedElements) || isNaN(totalElements) || isNaN(multiplier)){

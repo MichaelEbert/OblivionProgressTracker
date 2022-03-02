@@ -4,12 +4,11 @@
 To run locally:
 1. Install python3
 2. Download files + unzip
-3. in root directory (the one with index.html), run python ./server.py 9000
-4. in web browser, go to localhost:9000 to view
+3. in root directory (the one with index.html), run python ./server.py
+4. in web browser, go to localhost:8080 to view
 
 # Contributing
 The codebase is simple js+html
-
 
 ## Adding interactive elements to speedrun page:
 Major one is \<span class="npc">foo\</span>.
@@ -37,9 +36,10 @@ Common to all nodes. All are optional.
 - "id": must be a number. Number to save progress of this node to. Preferably sequential, but not required. if its too large (>1000), the save might become too large and cookies might break. if ID is not included, the element will not be saved.
 - "formId": formId of this element. Sometimes it is baseID, sometimes refID. Used as primary key so it'll be the same for other websites.
 - "link": overrides the default UESP link with a different one.
-- "notes": will show a warning symbol next to the item with mouseover text.
+- "notes": will show a warning symbol next to the item with mouseover text. If the item is shown on the map, the notes will be displayed under the item's name.
 - "type": change the HTML input type from checkbox to something else. E.g. "type":"number" for save numbers or number of places discovered.
-- "max": Important for progress calculation. for type:number elements, determines the max value. for tree elements, any subtotal above this amount will be ignored. for "ref" cells, scales completion of reference cell to this much.
+- "max": Important for progress calculation. for type:number elements, determines the max value. for tree elements, any subtotal above this amount will be ignored.
+- "scale": Important for progress calculation. Multiply the inputted value by this factor.
 - "ref": get the value for this cell from a different cell with the target formId.
 - "gateCloseLink": for gates, the id of the cell that covers the closing of this gate.
 - "stages": for quests, stages that complete the quest. (Required for save reading)
@@ -47,7 +47,7 @@ Common to all nodes. All are optional.
 
 
 # Adding Screenshots
-Screenshots should be taken from the maximum distance at which you can interact with the object. They must be saved as webp and be <= 200 KiB. (a quality setting of 80-90 is about 200 kib if you don't want to fiddle with each image)
+Screenshots should be taken from the maximum distance at which you can interact with the object. They must be saved as webp and be <= 200 KiB. (a quality setting of 80-90 is about 200 kib if you don't want to fiddle with each image). Indoor photos should be taken with the `tlb` (`togglelitebrite`) command active, so they are bright and can be seen on a light webpage.
 
 # License
 This program is free software: you can redistribute it and/or modify

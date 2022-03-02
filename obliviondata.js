@@ -180,6 +180,7 @@ async function mergeData(hive, basedir="."){
 			}
 		}//there may not be any other data, so just continue in that case.
 	}
+	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
 	addParentLinks(hive, null);
 	return hive;
@@ -229,8 +230,8 @@ function elementsUndefinedOrNull(node){
  * @param {(x:object)=>boolean} findfunc function that returns 'true' if element matches.
  * @param {(x:object)=>boolean} isLeafFunc function to determine if this element is a leaf node and should be searched.
  */
-function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
-	if(isLeafFunc(root) && findfunc(root)){
+function findOnTree(root,findfunc){
+	if(findfunc(root)){
 		return root;
 	}
 
@@ -239,7 +240,7 @@ function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
 	}
 	
 	for(const e of root.elements){
-		const mayberesult = findOnTree(e, findfunc, isLeafFunc);
+		const mayberesult = findOnTree(e, findfunc);
 		if(!(mayberesult == null)){
 			return mayberesult;
 		}
@@ -253,15 +254,15 @@ function findOnTree(root,findfunc,isLeafFunc=elementsUndefinedOrNull){
  * @param {*} startVal starting value of result
  * @param {(x:object)=>boolean} isLeafFunc function to determine if leaf. default is elements prop null or undefined.
  */
-function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull){
+function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull, skipLeafs = false){
 	var newval = startVal;
 	if(isLeafFunc(rootNode)){
 		newval += runFunc(rootNode);
-	}
-	else{
-		if(rootNode.elements == null){
-			debugger;
+		if(skipLeafs){
+			return newval;
 		}
+	}
+	if(rootNode.elements != null){
 		for(const node of rootNode.elements){
 			newval = runOnTree(node,runFunc,newval,isLeafFunc);
 		}

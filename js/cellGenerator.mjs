@@ -253,7 +253,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             usableCell = refCell;
         }
         if(usableCell.type){
-            if(!COPYING){
+            if(!COPYING || rcheck.type != usableCell.type){
                 rcheck.type= usableCell.type;
                 rcheck.size=4;
                 if(usableCell.max){
@@ -263,7 +263,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             rcheck.addEventListener('change',checkboxClicked);
         }
         else{
-            if(!COPYING){
+            if(!COPYING || rcheck.type != "checkbox"){
                 rcheck.type="checkbox";
             }
             rcheck.addEventListener('click',checkboxClicked);
@@ -284,30 +284,33 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         //check so that we don't link the cells multiple times.
         if(!cell.refInitialized){
             if(cell.type != refCell.type && window.debug){
-                console.error("indirect cell error: indirect cell has different type than referenced cell %s", refCell.name);
+                console.warn("indirect cell error: indirect cell has different type than referenced cell %s. This will cause weird formatting issues.", refCell.name);
             }
-            refCell.onUpdate.push(createIndirectUpdater(cell));
+            if(refCell.onUpdate == null){
+                refCell.onUpdate = [createIndirectUpdater(cell)];
+            }
+            else{
+                refCell.onUpdate.push(createIndirectUpdater(cell));
+            }
             cell.refInitialized = true;
         }
     }
 
     //update the UI on progress update
-    if(cell.onUpdate != null){
-        cell.onUpdate.push(function(cell, newValue){
-            if(cell.type == "number"){
-                rcheck.value = newValue;
+    cell.onUpdate.push(function(cell, newValue){
+        if(cell.type == "number"){
+            rcheck.value = newValue;
+        }
+        else{
+            rcheck.checked = newValue;
+            if(newValue){
+                rowhtml.classList.add("checked");
             }
             else{
-                rcheck.checked = newValue;
-                if(newValue){
-                    rowhtml.classList.add("checked");
-                }
-                else{
-                    rowhtml.classList.remove("checked");
-                }
+                rowhtml.classList.remove("checked");
             }
-        });
-    }
+        }
+    });
 
     //do this before miscChecklistStuff because it's all ID-specific, so it would have to be rewritten anyways.
     lastCell_node = rowhtml.cloneNode(true);

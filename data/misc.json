@@ -1,5 +1,5 @@
 {"version":4,"name":"Misc","classname":"misc","elements":[
-    {"name":"Closed Oblivion Gates","weight":5,"elements":[
+    {"name":"Closed Oblivion Gates","weight":5,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed"}
 		]}
