@@ -77,7 +77,8 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
 	var promises = [];
 	for(var klass of classes){
 		if(classFilter(klass)){
-			promises.push(generatePromiseFunc(basedir,klass));
+			//be sure to *execute* the function, not just generate it
+			promises.push(generatePromiseFunc(basedir,klass)());
 		}
 	}
 	return Promise.allSettled(promises).then(()=>computeTotalWeight());
@@ -91,13 +92,24 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
  * @returns {Promise<void>} promise that does the needful
  */
 function generatePromiseFunc(basedir, klass){
-	return fetch(basedir+"/data/"+klass.name+".json")
-			.then(resp=>resp.json())
-			.then(hive=>mergeData(hive,basedir))
-			.then(hive=>{
-				jsondata[klass.name] = hive;
-			})
-			.catch(err =>console.log(err));
+	return async function()
+	{
+		let baseFile = fetch(basedir+"/data/"+klass.name+".json")
+			.then(resp=>resp.json());
+		let customFile = fetch(basedir+"/data/"+klass.name+"_custom.json")
+			.then(resp=>
+				{
+					if(resp.status == 404){
+						return null;
+					}
+					return resp.json();
+				});
+		let hive = await mergeData(baseFile, customFile);
+		if(window.debugAsync){
+			console.log("setting jsondata for "+hive.classname);
+		}
+		jsondata[klass.name] = hive;
+	};
 }
 
 /**
@@ -106,7 +118,7 @@ function generatePromiseFunc(basedir, klass){
  */
 function mergeCell(mapping){
 	return (cell =>{
-		let maybeMapping = mapping.find(x=>x.formId == cell.formId);
+		let maybeMapping = mapping.find(x=>x.formId === cell.formId);
 		if(maybeMapping != null){
 			for(const propname in maybeMapping){
 				cell[propname] = maybeMapping[propname]
@@ -148,8 +160,9 @@ function addParentLinks(node, parent){
  * @param {Object} hive base hive data
  * @param {string} basedir base dir to get files from
  */
-async function mergeData(hive, basedir="."){
-	if(window.debug){
+async function mergeData(hivePromise, customdataPromise){
+	let hive = await hivePromise;
+	if(window.debugAsync){
 		console.log("merging "+hive.name+" with version "+hive.version);
 	}
 
@@ -159,22 +172,14 @@ async function mergeData(hive, basedir="."){
 	if(hive.version >= 3){
 		//jsonTree is by formId. load IDs.
 		try{
-			const mapFilename = hive.classname.toLowerCase()+"_custom.json";
-			const mapJson = await fetch(basedir+"/data/"+mapFilename).then(resp=>{
-				if(resp.status == 404){
-					return null;
-				}
-				return resp.json();
-			});
-
-			if(mapJson != null){
-				runOnTree(hive, mergeCell(mapJson));
+			const customData = await customdataPromise;
+			if(customData != null){
+				runOnTree(hive, mergeCell(customData));
 			}
-			
 			console.log("merged "+hive.classname);
 		}
 		catch(ex){
-			if(window.debug){
+			if(window.debugAsync){
 				console.error("error when merging custom data for "+hive.classname);
 				console.error(ex);
 			}
@@ -196,6 +201,9 @@ function computeTotalWeight(){
 			const hive = jsondata[klass.name];
 			if(hive == null){
 				// class data not loaded
+				if(window.debugAsync){
+					console.log(klass.name + "is not loaded!");
+				}
 				continue;
 			}
 			if(hive.version >= 2){

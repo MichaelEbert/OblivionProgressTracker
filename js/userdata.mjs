@@ -262,7 +262,7 @@ function resetProgressForHive(hive){
 		}
 		else{
 			savedata[classname][cell.id] = false;
-		}}),0);
+		}}));
 }
 
 /**

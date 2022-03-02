@@ -115,6 +115,9 @@
 	if(loadCookie("debug") == true){
 		window.debug = true;
 	}
+	if(loadCookie("debugAsync") == true){
+		window.debugAsync = true;
+	}
 
 	(function(){
 		loadJsonData().then(()=>{
