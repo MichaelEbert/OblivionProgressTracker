@@ -7,7 +7,7 @@ export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems,
+	sumCompletionItems
 }
 
 import {saveProgressToCookie} from './userdata.mjs';
@@ -155,16 +155,46 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
  * @returns {Number} progress
  */
 function recalculateProgress(){
-	//we could probably cache the hives that aren't modified
-	var totalCompleteSoFar = 0.0;
-	for(const klass of progressClasses) {
-		const hive = jsondata[klass.name];
-		totalCompleteSoFar += runOnTree(hive, node=>getSubtotalCompletion(node,klass.name), 0, node=>node.weight != null);
+	//we have to recalculate hives that are updated because of refs to other hives.
+	var calculator = new ProgressCalculator();
+	return calculator.calculateProgress(progressClasses, jsondata);
+}
+
+function sumCompletionItems(cell){
+	var calculator = new ProgressCalculator();
+	return calculator.sumCompletionItems(cell);
+}
+
+//this is an object because we need the hivesToCalculate in child functions.
+function ProgressCalculator(){
+	this.hivesToCalculate = [];
+}
+
+ProgressCalculator.prototype.calculateProgress = function(progressClasses, jsondata){
+	this.hivesToCalculate = progressClasses.map(x=>jsondata[x.name]);
+	this.hiveResults = new Map();
+	var MAX_HIVES = 16;//prevent endless recursion
+	let i = 0;
+	for(i = 0; (i < this.hivesToCalculate.length && i < MAX_HIVES); i+=1){
+		const thisHive = this.hivesToCalculate[i];
+		//have to encapsulate the getSubtotalCompletion call in a lambda to capture `this`
+		this.hiveResults.set(thisHive, runOnTree(thisHive, (x=>this.getSubtotalCompletion(x)), 0, node=>node.weight != null, true));
 	}
-	
+	if(i == MAX_HIVES){
+		console.warn("Progress calculation infinite loop: reached MAX_HIVES");
+	}
+
+	//sum the final results
+	var totalCompleteSoFar = 0.0;
+	for(const value of this.hiveResults.values()){
+		totalCompleteSoFar += value;
+	}
 	//we can turn percentCompleteSoFar into an actual percent here, instead of dividing by total in each segment, since
 	// (a / total + b/total + c/total + ...) == (a+b+c+..)/total
 	let percentCompleteSoFar = totalCompleteSoFar / totalweight;
+	if(window.debug){
+		console.log("Progress: %f items complete out of %f.", totalCompleteSoFar, totalweight);
+	}
 	return percentCompleteSoFar;
 }
 
@@ -173,7 +203,7 @@ function recalculateProgress(){
  * @param {Object} subtotalJsonNode node with a subtotal
  * @returns {Number} weighted completion percentage
  */
-function getSubtotalCompletion(subtotalJsonNode){
+ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 	const weight = subtotalJsonNode.weight;
 	//optimization so we're not looking for progress in nodes that don't have it (eg saves)
 	if(weight == 0){
@@ -207,7 +237,7 @@ function getSubtotalCompletion(subtotalJsonNode){
  * @param {object} cell tree root
  * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
  */
-function sumCompletionItems(cell){
+ProgressCalculator.prototype.sumCompletionItems = function(cell){
 	if(cell.cache != null){
 		return cell.cache;
 	}
@@ -236,6 +266,8 @@ function sumCompletionItems(cell){
 			for(const fn of cell.onUpdate){
 				fn(cell, completed, total);
 			}
+			//this whole thing is a class because of THIS FUCKER
+			this.hivesToCalculate.push(cell.hive);
 		}
 	}
 	cell.cache = result;

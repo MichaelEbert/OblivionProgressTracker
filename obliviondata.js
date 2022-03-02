@@ -254,15 +254,15 @@ function findOnTree(root,findfunc){
  * @param {*} startVal starting value of result
  * @param {(x:object)=>boolean} isLeafFunc function to determine if leaf. default is elements prop null or undefined.
  */
-function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull){
+function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull, skipLeafs = false){
 	var newval = startVal;
 	if(isLeafFunc(rootNode)){
 		newval += runFunc(rootNode);
-	}
-	else{
-		if(rootNode.elements == null){
-			debugger;
+		if(skipLeafs){
+			return newval;
 		}
+	}
+	if(rootNode.elements != null){
 		for(const node of rootNode.elements){
 			newval = runOnTree(node,runFunc,newval,isLeafFunc);
 		}
