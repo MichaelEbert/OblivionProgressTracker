@@ -139,7 +139,7 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
 		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
 	]}
-	,{"name":"Artifacts","weight":1,"elements":[
+	,{"name":"Artifacts","weight":1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
 		{"ref":"0x000146A2","name":"Azura"}
 		,{"ref":"0x000146A3","name":"Boethia"}
 		,{"ref":"0x000146A4","name":"Clavicus Vile"}

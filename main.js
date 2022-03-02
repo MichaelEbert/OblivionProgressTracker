@@ -108,6 +108,12 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 		const subtreeTitle = document.createElement("div");
 		subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
 		subtreeTitle.innerText = root.name;
+		if(root.notes != null){
+			const subtreeNotes = document.createElement("SPAN");
+			subtreeNotes.title = root.notes;
+			subtreeNotes.innerText = "⚠";
+			subtreeTitle.appendChild(subtreeNotes);
+		}
 		leafContainerPtr.value.appendChild(subtreeTitle);
 		
 		//if we need to change the extra column name, do that before initializing child elements.
