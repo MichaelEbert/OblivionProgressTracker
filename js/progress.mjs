@@ -204,35 +204,41 @@ function getSubtotalCompletion(subtotalJsonNode){
 
 /**
  * Recursively sum completion items for all cells in this tree.
- * @param {object} jsonNode tree root
+ * @param {object} cell tree root
  * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
  */
-function sumCompletionItems(jsonNode){
-	if(jsonNode.cache != null){
-		return jsonNode.cache;
+function sumCompletionItems(cell){
+	if(cell.cache != null){
+		return cell.cache;
 	}
 	let result = null;
 	//can't use runOnTree because we get 2 inner results and we cant add that in 1 step
-	if(jsonNode.elements == null){
-		result = sumCompletionSingleCell(jsonNode);
+	if(cell.elements == null){
+		result = sumCompletionSingleCell(cell);
 	}
 	else{
 		var completed = 0;
 		var total = 0;
-		for(const element of jsonNode.elements){
+		for(const element of cell.elements){
 			let innerResult = sumCompletionItems(element);
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
-		if(jsonNode.max != null){
-			let max = parseInt(jsonNode.max);
+		if(cell.max != null){
+			let max = parseInt(cell.max);
 			result = [Math.min(max, completed), Math.min(max,total)];
 		}
 		else{
 			result = [completed,total];
 		}
+		//we only recalculate the value of intermediate nodes here, so run all their onUpdate() stuff here.
+		if(cell.onUpdate != null && cell.onUpdate.length > 0){
+			for(const fn of cell.onUpdate){
+				fn(cell, completed, total);
+			}
+		}
 	}
-	jsonNode.cache = result;
+	cell.cache = result;
 	return result;
 }
 
@@ -280,11 +286,6 @@ function sumCompletionSingleCell(cell){
 		else{
 			completedElements = 0;
 		}
-
-		if(cell.max != null){
-			totalElements *= parseFloat(cell.max);
-			completedElements *= parseFloat(cell.max);
-		}
 	}
 	if(completedElements == undefined || totalElements == undefined){
 		console.error("element completion is undefined. Skipping.");
@@ -293,8 +294,8 @@ function sumCompletionSingleCell(cell){
 	}
 
 	let multiplier = 1.0;
-	if(cell.ref != null && cell.max != null){
-		multiplier = cell.max / totalElements;
+	if(cell.scale != null){
+		multiplier = parseFloat(cell.scale);
 	}
 
 	if(isNaN(completedElements) || isNaN(totalElements) || isNaN(multiplier)){
