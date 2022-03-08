@@ -111,7 +111,8 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 		if(root.notes != null){
 			const subtreeNotes = document.createElement("SPAN");
 			subtreeNotes.title = root.notes;
-			subtreeNotes.innerText = "⚠";
+			//there's an extra space here, only for titles, because it looks better.
+			subtreeNotes.innerText = " ⚠";
 			subtreeTitle.appendChild(subtreeNotes);
 		}
 		leafContainerPtr.value.appendChild(subtreeTitle);

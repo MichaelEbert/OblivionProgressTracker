@@ -1,4 +1,4 @@
-{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":5,"elements":[
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":5,"notes":"Automatically checked off when the corresponding tasks are completed","elements":[
 	{"ref":"0xFFFFFFC0","type":"number","extraColumn":"max","max":40},
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
