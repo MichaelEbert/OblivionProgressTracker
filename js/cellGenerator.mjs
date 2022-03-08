@@ -300,6 +300,13 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         }
     }
 
+    if(cell.onUpdate == null){
+        cell.onUpdate = [];
+        if(window.debug){
+            console.warn("Cell has no onUpdate during cell generation: ");
+            console.warn(cell);
+        }
+    }
     //update the UI on progress update
     cell.onUpdate.push(function(cell, newValue){
         if(cell.type == "number"){
