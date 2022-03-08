@@ -105,7 +105,7 @@ function updateRandomGateCount(Found){
 }
 function initRandomGateCount(){
     //Init randomGateCount. FFFF`FFC1 is random gates discovered
-    let root = window.findCell("0xFFFFFFC1", jsondata.location);
+    let root = window.findCell("0xFFFFFFC1", "location");
     let completed = sumCompletionItems(root);
     randomGateCount = completed[0];
 
@@ -189,6 +189,9 @@ function zoomToInitialLocation(){
     if(maybeFormId != null){
         //focus on formId
         zoomToFormId(maybeFormId);
+        if(window.debug){
+            console.log("zooming to formid "+maybeFormId);
+        }
     }
     else 
     {

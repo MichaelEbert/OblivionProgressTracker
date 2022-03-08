@@ -1,5 +1,11 @@
-{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":5,"elements":[
-	{"ref":"0xFFFFFFC0","type":"number","extraColumn":"max","max":40},
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":5,"notes":"Automatically checked off when the corresponding tasks are completed","elements":[
+	{"name":"Oblivion Gates Closed","extraColumn":"displayTotal","elements":[
+		{"ref":"0x0001E8A3", "displayTotal":1}
+		,{"ref":"0xFFFFFFC3","name":"Fixed Gates (1 Fame)","type":"number", "displayTotal":12}
+		,{"ref":"0xFFFFFFC2","name":"Fixed Gates (2 Fame)","type":"number","scale":2, "displayTotal":5}
+		,{"ref":"0xFFFFFFC4","name":"Random Gates","type":"number","displayTotal":40}
+		,{"ref":"0x00026EBA","displayTotal":1}
+	]},
 	{"name":"Quests","elements":[
 		{"name":"Main Quest","elements":[
 			{"ref":"0x0001E724","scale":1}

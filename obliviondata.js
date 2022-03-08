@@ -106,7 +106,7 @@ function generatePromiseFunc(basedir, klass){
 				});
 		let hive = await mergeData(baseFile, customFile);
 		if(window.debugAsync){
-			console.log("setting jsondata for "+hive.classname);
+			console.log("setting "+hive.classname+" jsondata");
 		}
 		jsondata[klass.name] = hive;
 	};
@@ -165,6 +165,7 @@ async function mergeData(hivePromise, customdataPromise){
 	if(window.debugAsync){
 		console.log("merging "+hive.name+" with version "+hive.version);
 	}
+	
 
 	if(hive.version <= 3){
 		hive.classname = hive.name;
@@ -281,7 +282,7 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 /**
  * Find the cell with the given formID.
  * @param {} formId 
- * @param {*} classHint optional class hint.
+ * @param {*} classHint optional class name to search.
  */
 function findCell(formId, classHint = null){
 	let classesToSearch;

@@ -4,25 +4,29 @@
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed"}
 		]}
 		,{"name":"17 Fixed Gates","elements":[
-			{"name":"Oblivion Gate - Anvil","formId":"0x00026EBF","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Chorrol","formId":"0x000270F7","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Skingrad","formId":"0x000270F8","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Bravil","formId":"0x00026EBE","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Leyawiin","formId":"0x00026F13","notes":"Fixed, Two_Fame, No_Reroll"}
-			,{"name":"Oblivion Gate - Cheydinhal","formId":"0x00026F12","notes":"Fixed, No_Reroll"}
-			,{"name":"Oblivion Gate","formId":"0x0005403E","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x0018B245","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x000615E2","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x00188824","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x000572EE","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x00188742","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x0018ADFF","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x000623B6","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x0018AE1C","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x0018A833","notes":"Fixed"}
-			,{"name":"Oblivion Gate","formId":"0x0018D324","notes":"Fixed"}
+			{"formId":"0xFFFFFFC2","type":"number","elements":[
+				{"name":"Oblivion Gate - Anvil","formId":"0x00026EBF","notes":"Fixed, Two_Fame, No_Reroll"}
+				,{"name":"Oblivion Gate - Chorrol","formId":"0x000270F7","notes":"Fixed, Two_Fame, No_Reroll"}
+				,{"name":"Oblivion Gate - Skingrad","formId":"0x000270F8","notes":"Fixed, Two_Fame, No_Reroll"}
+				,{"name":"Oblivion Gate - Bravil","formId":"0x00026EBE","notes":"Fixed, Two_Fame, No_Reroll"}
+				,{"name":"Oblivion Gate - Leyawiin","formId":"0x00026F13","notes":"Fixed, Two_Fame, No_Reroll"}
+			]}
+			,{"formId":"0xFFFFFFC3","type":"number","elements":[
+				{"name":"Oblivion Gate - Cheydinhal","formId":"0x00026F12","notes":"Fixed, No_Reroll"}
+				,{"name":"Oblivion Gate","formId":"0x0005403E","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x0018B245","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x000615E2","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x00188824","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x000572EE","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x00188742","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x0018ADFF","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x000623B6","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x0018AE1C","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x0018A833","notes":"Fixed"}
+				,{"name":"Oblivion Gate","formId":"0x0018D324","notes":"Fixed"}
+			]}
 		]}
-		,{"name":"40 Random Gates","max":40,"elements":[
+		,{"name":"40 Random Gates","formId":"0xFFFFFFC4","type":"number","max":40,"elements":[
 			{"name":"Oblivion Gate","formId":"0x0018B249","notes":"Random"}
 			,{"name":"Oblivion Gate","formId":"0x0018B248","notes":"Random"}
 			,{"name":"Oblivion Gate","formId":"0x0018B24A","notes":"Random"}
@@ -139,7 +143,7 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
 		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
 	]}
-	,{"name":"Artifacts","weight":1,"elements":[
+	,{"name":"Artifacts","weight":1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
 		{"ref":"0x000146A2","name":"Azura"}
 		,{"ref":"0x000146A3","name":"Boethia"}
 		,{"ref":"0x000146A4","name":"Clavicus Vile"}
