@@ -86,54 +86,66 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 		}
 	}
 	else{
-		// not a leaf node, so create a subtree, with a title n stuff.
-		//We're starting a new subtree, so append the parent's leaves to it, if necessary.
-		if(leafContainerPtr.value != null){
-			parentElement.appendChild(leafContainerPtr.value);
-			leafContainerPtr.value = null;
-		}
-		leafContainerPtr.value = createLeafContainer();
-		let subtreeName;
-		//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
-		if(root.classname != null){
-			subtreeName = root.classname.replaceAll(" ","_");
+		if(root.classname == null && root.name == null){
+			//skip this level.
+			for(const datum of root.elements) {
+				initMultiInternal(datum, parentElement, depth, extraColumnName, leafContainerPtr);
+			}
 		}
 		else{
-			subtreeName = root.name.replaceAll(" ", "_");
-		}
-		const subtreeRoot = document.createElement("div");
-		subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
-		subtreeRoot.id = parentElement.id + "_" + subtreeName;
-		
-		const subtreeTitle = document.createElement("div");
-		subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
-		subtreeTitle.innerText = root.name;
-		if(root.notes != null){
-			const subtreeNotes = document.createElement("SPAN");
-			subtreeNotes.title = root.notes;
-			//there's an extra space here, only for titles, because it looks better.
-			subtreeNotes.innerText = " ⚠";
-			subtreeTitle.appendChild(subtreeNotes);
-		}
-		leafContainerPtr.value.appendChild(subtreeTitle);
-		
-		//if we need to change the extra column name, do that before initializing child elements.
-		if(root.extraColumn != null){
-			extraColumnName = root.extraColumn;
-		}
+			// not a leaf node, so create a subtree, with a title n stuff.
+			//We're starting a new subtree, so append the parent's leaves to it, if necessary.
+			if(leafContainerPtr.value != null){
+				parentElement.appendChild(leafContainerPtr.value);
+				leafContainerPtr.value = null;
+			}
+			leafContainerPtr.value = createLeafContainer();
+			let subtreeName;
+			//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+			if(root.classname != null){
+				subtreeName = root.classname.replaceAll(" ","_");
+			}
+			else if (root.name != null){
+				subtreeName = root.name.replaceAll(" ", "_");
+			}
+			else{
+				//no name for intermediate cell. Skip in heirarchy.
+				debugger;
+			}
+			const subtreeRoot = document.createElement("div");
+			subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
+			subtreeRoot.id = parentElement.id + "_" + subtreeName;
+			
+			const subtreeTitle = document.createElement("div");
+			subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
+			subtreeTitle.innerText = root.name;
+			if(root.notes != null){
+				const subtreeNotes = document.createElement("SPAN");
+				subtreeNotes.title = root.notes;
+				//there's an extra space here, only for titles, because it looks better.
+				subtreeNotes.innerText = " ⚠";
+				subtreeTitle.appendChild(subtreeNotes);
+			}
+			leafContainerPtr.value.appendChild(subtreeTitle);
+			
+			//if we need to change the extra column name, do that before initializing child elements.
+			if(root.extraColumn != null){
+				extraColumnName = root.extraColumn;
+			}
 
-		//fill out this element with the child elements
-		for(const datum of root.elements) {
-			initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
-		}
+			//fill out this element with the child elements
+			for(const datum of root.elements) {
+				initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
+			}
 
-		//if we had any leaf nodes, append their container to this element before we finish.
-		if(leafContainerPtr.value != null){
-			subtreeRoot.appendChild(leafContainerPtr.value);
-			leafContainerPtr.value = null;
+			//if we had any leaf nodes, append their container to this element before we finish.
+			if(leafContainerPtr.value != null){
+				subtreeRoot.appendChild(leafContainerPtr.value);
+				leafContainerPtr.value = null;
+			}
+				//finally, append the fully created element to parent.
+			parentElement.appendChild(subtreeRoot);
 		}
-			//finally, append the fully created element to parent.
-		parentElement.appendChild(subtreeRoot);
 	}
 }
 

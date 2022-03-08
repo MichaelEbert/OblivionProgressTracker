@@ -209,7 +209,7 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 	if(weight == 0){
 		return 0;
 	}
-	const [items,total] = sumCompletionItems(subtotalJsonNode);
+	const [items,total] = this.sumCompletionItems(subtotalJsonNode);
 	
 	//try to find subtotals
 	//this may fail if we have multiple score nodes from different hives with the same name.
@@ -244,13 +244,13 @@ ProgressCalculator.prototype.sumCompletionItems = function(cell){
 	let result = null;
 	//can't use runOnTree because we get 2 inner results and we cant add that in 1 step
 	if(cell.elements == null){
-		result = sumCompletionSingleCell(cell);
+		result = this.sumCompletionSingleCell(cell);
 	}
 	else{
 		var completed = 0;
 		var total = 0;
 		for(const element of cell.elements){
-			let innerResult = sumCompletionItems(element);
+			let innerResult = this.sumCompletionItems(element);
 			completed += innerResult[0];
 			total += innerResult[1];
 		}
@@ -279,7 +279,7 @@ ProgressCalculator.prototype.sumCompletionItems = function(cell){
  * @param {Object} cell cell to check completion on
  * @returns {[Number,Number]} an array of [completed items, total items] for this cell.
  */
-function sumCompletionSingleCell(cell){
+ProgressCalculator.prototype.sumCompletionSingleCell = function(cell){
 	var totalElements;
 	var completedElements;
 	if(cell?.hive?.name == null){
@@ -293,37 +293,42 @@ function sumCompletionSingleCell(cell){
 			console.warn("cell ref points to invalid node "+cell.ref);
 			return [0,0];
 		}
-		return sumCompletionItems(actualCell);
-	}
-	if(cell == undefined){
-		debugger;
-	}
-	
-	if(cell.type == "number"){
-		completedElements = savedata[cell.hive.classname][cell.id];
-		if(cell.max != null){
-			totalElements = cell.max;
-		}
-		else{
-			totalElements = Math.max(1,completedElements);
-		}
+		let x = this.sumCompletionItems(actualCell);
+		completedElements = x[0];
+		totalElements = x[1];
 	}
 	else{
-		//we're a checkbox
-		totalElements = 1;
-
-		if(savedata[cell.hive.classname][cell.id]){
-			completedElements = 1;
+		if(cell == undefined){
+			debugger;
+		}
+		
+		if(cell.type == "number"){
+			completedElements = savedata[cell.hive.classname][cell.id];
+			if(cell.max != null){
+				totalElements = cell.max;
+			}
+			else{
+				totalElements = Math.max(1,completedElements);
+			}
 		}
 		else{
-			completedElements = 0;
+			//we're a checkbox
+			totalElements = 1;
+
+			if(savedata[cell.hive.classname][cell.id]){
+				completedElements = 1;
+			}
+			else{
+				completedElements = 0;
+			}
+		}
+		if(completedElements == undefined || totalElements == undefined){
+			console.error("element completion is undefined. Skipping.");
+			console.error(cell);
+			return [0,0];
 		}
 	}
-	if(completedElements == undefined || totalElements == undefined){
-		console.error("element completion is undefined. Skipping.");
-		console.error(cell);
-		return [0,0];
-	}
+	//do this part for both ref and direct cells.
 
 	let multiplier = 1.0;
 	if(cell.scale != null){

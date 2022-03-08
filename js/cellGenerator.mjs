@@ -1,5 +1,9 @@
 "use strict"
+
+import { updateChecklistProgress } from "./progress.mjs";
+
 //common layout functions used by both main.js and guide.js
+
 
 export {
     createLinkElement, 
@@ -371,7 +375,7 @@ function createIndirectUpdater(indirectCell){
             console.log("indirect update!");
         }
         //indirect values aren't saved, so we can skip saving them.
-		window.updateChecklistProgress(null, newValue, null, indirectCell, true);
+		updateChecklistProgress(null, newValue, null, indirectCell, true);
 	}
 }
 
