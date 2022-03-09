@@ -165,7 +165,7 @@ async function mergeData(hivePromise, customdataPromise){
 	if(window.debugAsync){
 		console.log("merging "+hive.name+" with version "+hive.version);
 	}
-	
+
 
 	if(hive.version <= 3){
 		hive.classname = hive.name;
@@ -304,14 +304,6 @@ function findCell(formId, classHint = null){
 	if(cell == null && classHint != null){
 		for(const klass of classesToSearch){
 			cell = findOnTree(jsondata[klass.name], x=>x.id == formId);
-		}
-	}
-	//hack for oblivion gates...
-	// we want them to find the location before the close.
-	if(classHint == null && cell?.hive.name =="misc"){
-		let maybeCell = findOnTree(jsondata.location, x=>x.formId == formId);
-		if(maybeCell != null){
-			cell = maybeCell;
 		}
 	}
 	return cell;

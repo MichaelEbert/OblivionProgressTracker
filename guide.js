@@ -86,7 +86,7 @@ function replaceElements(){
 					elementName = elementName.trim();
 
 					var maybeCell = findOnTree(jsondata[elementType], x=>x.name?.toLowerCase() == elementName.toLowerCase());
-					if(maybeCell != null){
+					if(maybeCell != null && (maybeCell.id != null || maybeCell.formId != null)){
 						elementid = maybeCell.id;
 						cell = maybeCell;
 						found = true;
