@@ -1,4 +1,4 @@
-# Proof of concept interactive website for Oblivion 100% speedrun
+# Interactive Progress Tracker for Oblivion 100% Speedrun
 
 # Installation
 To run locally:
@@ -14,7 +14,7 @@ The codebase is simple js+html
 Major one is \<span class="npc">foo\</span>.
 This will replace foo with a link to the npc with the name "foo".
 If that doesn't work, you can specify a clid parameter with the NPC's formID.
-For example, the book [Thief] would be class="book" clid="0x000243CA".
+For example, the book [Thief] would be \<span class="book" clid="0x000243CA">Thief\</span>.
 
 # JSON file format
 JSON data is in a tree structure.
