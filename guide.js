@@ -322,8 +322,8 @@ function onWindowResize(event){
 
 function checkIframeSize(event){
 	windowResizeId = null;
-	if(settings.iframeCheck == "on" || 
-	(settings.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){
+	if(settings?.iframeCheck == "on" || 
+	(settings?.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){
 		updateIframe(true);
 	}
 	else{
