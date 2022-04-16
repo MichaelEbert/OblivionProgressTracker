@@ -47,7 +47,7 @@ function init(){
         sharecode.value = ""; 
         setRemoteUrl({target:sharecode});
         });
-    document.addEventListener("progressUpload",updateShareUrl);
+    document.addEventListener("progressShared",updateShareUrl);
 
     if(settings.myShareCode){
         updateShareUrl();

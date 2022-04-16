@@ -137,7 +137,7 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Uploaded");
+			alert("Progress Shared");
 		}
 	});
 }
