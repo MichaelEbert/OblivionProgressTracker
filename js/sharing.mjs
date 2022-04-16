@@ -1,6 +1,7 @@
 // ==============
 // sharing stuff
 // ==============
+export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.

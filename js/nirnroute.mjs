@@ -5,6 +5,7 @@ export{
 }
 
 import * as map from './map.mjs'
+import { jsondata, findOnTree } from './obliviondata.mjs';
 
 // ok first, lets just do a dual page of map and images.
 var prevNirnroot;
@@ -45,7 +46,7 @@ async function init(){
     if(windowParams.get("tspId") != null){
         targetNirnroot = parseInt(windowParams.get("tspId"));
     }
-    let firstNirn = window.findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+    let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
     activateNirnroot(firstNirn.formId);
 }
 

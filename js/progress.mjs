@@ -10,6 +10,7 @@ export{
 	sumCompletionItems
 }
 
+import { totalweight, jsondata, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
 
 /**

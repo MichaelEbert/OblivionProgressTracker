@@ -119,11 +119,9 @@
 	import * as userdata from './js/userdata.mjs'
 	import * as map from './js/map.mjs';
 	import * as point from './js/map/point.mjs';
-	exportNamespace(map);
-	exportNamespace(point);
-	exportNamespace(userdata);
+	import * as obliviondata from './js/obliviondata.mjs';
 	
-	if(loadCookie("debug") == true){
+	if(userdata.loadCookie("debug") == true){
 		window.debug = true;
 	}
 	document.getElementById("helpButton").addEventListener('click',function (){
@@ -158,9 +156,9 @@
 		}
 		
 
-		loadJsonData().then(()=>{
-			loadProgressFromCookie();
-			initMap();
+		obliviondata.loadJsonData().then(()=>{
+			userdata.loadProgressFromCookie();
+			map.initMap();
 			//need to add events to redraw immediately upon change
 			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});

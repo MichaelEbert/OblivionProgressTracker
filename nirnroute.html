@@ -104,24 +104,21 @@
 	//exportNamespace appends everything to window, so it can be called like normal js code.
 	import exportNamespace from './js/module-shim.mjs'
 	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
 	import * as map from './js/map.mjs';
 	import * as point from './js/map/point.mjs';
 	import * as nirn from './js/nirnroute.mjs';
-	exportNamespace(map);
-	exportNamespace(point);
-	exportNamespace(userdata);
-	exportNamespace(nirn);
 	
-	if(loadCookie("debug") == true){
+	if(userdata.loadCookie("debug") == true){
 		window.debug = true;
 	}
-	if(loadCookie("debugAsync") == true){
+	if(userdata.loadCookie("debugAsync") == true){
 		window.debugAsync = true;
 	}
 
 	(function(){
-		loadJsonData().then(()=>{
-			loadProgressFromCookie();
+		obliviondata.loadJsonData().then(()=>{
+			userdata.loadProgressFromCookie();
 			nirn.init();
 		});
 	}).call(window);
