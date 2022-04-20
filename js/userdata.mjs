@@ -2,6 +2,7 @@ import { jsondata } from "./obliviondata.mjs";
 import { classes } from "./obliviondata.mjs";
 import { runOnTree } from "./obliviondata.mjs";
 import { progressClasses } from "./obliviondata.mjs";
+import { initShareSettings } from "./sharing.mjs";
 
 //functions that save and load user progess and settings.
 export{
@@ -20,7 +21,8 @@ export{
 window.savedata = null;
 window.settings = null;
 
-const version = 11;
+const SAVEDATA_VERSION = 11;
+const SETTINGS_VERSION = 2;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
@@ -65,7 +67,7 @@ function upgradeSaveData(shouldConfirm){
 	}
 	else{
 		var shouldAttemptUpgrade = false;
-		if(savedata.version < version){
+		if(savedata.version < SAVEDATA_VERSION){
 			if(shouldConfirm){
 				//ask if user wants to attempt upgrade
 				shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
@@ -92,7 +94,7 @@ function upgradeSaveData(shouldConfirm){
 				case 9:
 				case 10:
 					//in 11, we just introduced the "compressed" variable.
-					savedata.version = version;
+					savedata.version = SAVEDATA_VERSION;
 					break;
 				default:
 					alert("error while upgrading");
@@ -173,10 +175,10 @@ function loadSettingsFromCookie(){
 }
 
 /**
- * Initialize object property.
+ * Initialize object property to defaultvalue if it currently does not exist.
  * @param {} object 
- * @param {*} propname 
- * @param {*} defaultValue 
+ * @param {*} propname name of property to initialize
+ * @param {*} defaultValue value to set property to (if it doesn't exist yet)
  */
 function initProperty(object, propname, defaultValue){
 	if(object[propname] == null){
@@ -196,21 +198,30 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	switch(settings.version){
-		case null:
-		case undefined:
-			settings.version = 1;
-			if(settings.iframeCheck != null){
-				settings.iframeCheck = "auto";
-			}
-			changed = true;
-		default:
-			//uhh
-			break;
+	if(settings.version !== SETTINGS_VERSION)
+	{
+		switch(settings.version){
+			case null:
+			case undefined:
+				settings.version = 1;
+				if(settings.iframeCheck != null){
+					settings.iframeCheck = "auto";
+				}
+				changed = true;
+			case 1:
+				//1 to 2: set auto refresh and auto refresh time.
+				changed |= initProperty(settings, "spectateAutoRefresh", true);
+				changed |= initProperty(settings, "spectateAutoRefreshInterval", 30);
+			default:
+				//uhh
+				break;
+		}
+		settings.version = SETTINGS_VERSION;
+		changed = true;
 	}
 
 	//default values
-
+	
 	changed |= initProperty(settings, "minipageCheck",true);
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	changed |= initProperty(settings, "iframeMinWidth", 600);
@@ -218,10 +229,8 @@ function initSettings(){
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
 	
-	//TODO: fix my shit encapsulation. until then...
-	if(typeof(initShareSettings) != "undefined"){
-		initShareSettings();
-	}
+	//TODO: fix my shit encapsulation.
+	initShareSettings();
 
 	if(changed){
 		saveCookie("settings",settings);
@@ -237,7 +246,7 @@ function loadProgressFromCookie(){
 	
 	if(compressed){
 		savedata = decompressSaveData(compressed);
-		if(savedata.version != version){
+		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();
 		}
 		document.dispatchEvent(new Event("progressLoad"));
@@ -281,7 +290,7 @@ function resetProgress(shouldConfirm=false){
 	}
 	if(execute){
 		savedata = new Object();
-		savedata.version = version;
+		savedata.version = SAVEDATA_VERSION;
 		
 		for(const klass of progressClasses){
 			resetProgressForHive(jsondata[klass.name]);
