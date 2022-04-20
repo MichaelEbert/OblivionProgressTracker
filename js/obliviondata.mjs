@@ -3,6 +3,8 @@
 // and guide-specific things, like UESP links and notes.
 // This file also contains utility functions for navigating through this data.
 
+export {totalweight, jsondata, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
+
 var jsondata = {quest:null,book:null,skill:null,store:null}
 
 /**

@@ -1,3 +1,8 @@
+import { jsondata } from "./obliviondata.mjs";
+import { classes } from "./obliviondata.mjs";
+import { runOnTree } from "./obliviondata.mjs";
+import { progressClasses } from "./obliviondata.mjs";
+
 //functions that save and load user progess and settings.
 export{
 	saveCookie,

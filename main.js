@@ -4,14 +4,14 @@
 //===========================
 function init(){
 	document.addEventListener("progressLoad",updateUIFromSaveData);
-	loadJsonData().then(()=>{
-		loadSettingsFromCookie();
+	obliviondata.loadJsonData().then(()=>{
+		userdata.loadSettingsFromCookie();
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
 		console.log("should be loaded now!!");
-		for(const klass of progressClasses){
-			const hive = jsondata[klass.name];
+		for(const klass of obliviondata.progressClasses){
+			const hive = obliviondata.jsondata[klass.name];
 			initMulti(hive, base,0);
 		}
 		//BAD HACK for chrome (and other standards compliant browsers lol)
@@ -19,8 +19,8 @@ function init(){
 		document.getElementById("main_nirnroot").children[0].style = "break-inside:unset";
 		document.getElementById("main_misc_Closed_Oblivion_Gates_40_Random_Gates").children[0].style = "break-inside:unset";
 	}).then(()=>{
-		if(loadProgressFromCookie() == false){
-			resetProgress();
+		if(userdata.loadProgressFromCookie() == false){
+			userdata.resetProgress();
 		}
 		if(settings.remoteShareCode){
 			if(!document.getElementById("spectateBanner")){
@@ -77,7 +77,7 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 	
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
-		let maybeElement = initSingleCell(root, extraColumnName, CELL_FORMAT_CHECKLIST);
+		let maybeElement = common.initSingleCell(root, extraColumnName, common.CELL_FORMAT_CHECKLIST);
 		if(maybeElement != null){
 			if(leafContainerPtr.value == null){
 				leafContainerPtr.value = createLeafContainer();
@@ -157,7 +157,7 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
  * Recalculate the total progress, and update UI elements.
  */
 function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = recalculateProgress();
+	let percentCompleteSoFar = window.progress.recalculateProgress();
 	//round progress to 2 decimal places
 	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
@@ -194,7 +194,7 @@ function updateHtmlElementFromSaveData(cell){
 				debugger;
 			}
 			newval = savedata[classname][cell.id];
-			updateChecklistProgress(null, newval, null, cell, true);
+			progress.updateChecklistProgress(null, newval, null, cell, true);
 		}
 	}
 }
@@ -204,9 +204,9 @@ function updateHtmlElementFromSaveData(cell){
  * This function does that.
  */
 function updateUIFromSaveData(){
-	for(const klass of progressClasses){
-		const hive = jsondata[klass.name];
-		runOnTree(hive, updateHtmlElementFromSaveData);
+	for(const klass of obliviondata.progressClasses){
+		const hive = obliviondata.jsondata[klass.name];
+		obliviondata.runOnTree(hive, updateHtmlElementFromSaveData);
 	}
 
 	recalculateProgressAndUpdateProgressUI();
@@ -228,18 +228,18 @@ function setParentChecked(checkbox){
  */
 function userInputData(htmlRowId, checkboxElement){
 	//extract what it is from the parent id so we can update progress
-	for(const klass of progressClasses) {
+	for(const klass of obliviondata.progressClasses) {
 		if(htmlRowId.startsWith(klass.name)){
 			let rowid = htmlRowId.substring(klass.name.length);
-			updateChecklistProgressFromInputElement(rowid, checkboxElement, klass.name);
+			progress.updateChecklistProgressFromInputElement(rowid, checkboxElement, klass.name);
 			break;
 		}
 	}
 	
 	recalculateProgressAndUpdateProgressUI();
-	saveProgressToCookie();
+	window.userdata.saveProgressToCookie();
 	if(settings.autoUploadCheck){
-		uploadCurrentSave();
+		window.sharing.uploadCurrentSave();
 	}
 }
 

@@ -4,9 +4,7 @@
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<script src="./js/module-shim.mjs" type="module"></script>
-	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
-	<script src="sharing.js"></script>
 	<script src="main.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Interactive Oblivion Checklist</title>
@@ -93,20 +91,25 @@
 </div>
 
 </article>
-<button id="resetbutton" onclick="resetProgress(true)">Reset progress</button>
+<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
 	import * as common from './js/cellGenerator.mjs';
 	import * as progress from './js/progress.mjs'
 	import * as userdata from './js/userdata.mjs'
-	exportNamespace(common);
-	exportNamespace(progress);
-	exportNamespace(userdata);
+	import * as sharing from './js/sharing.mjs'
+	window.common = common;
+	window.progress = progress;
+	window.userdata = userdata;
+	window.obliviondata = obliviondata;
+	window.sharing = sharing;
+	console.log("AAAA");
 	(function(){
-		if(window.loadCookie("debug") == true){
+		if(window.userdata.loadCookie("debug") == true){
 			window.debug = true;
 		}
-		if(loadCookie("debugAsync") == true){
+		if(window.userdata.loadCookie("debugAsync") == true){
 		window.debugAsync = true;
 	}
 		init();

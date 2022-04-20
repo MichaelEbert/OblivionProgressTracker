@@ -1,6 +1,7 @@
 // ==============
 // sharing stuff
 // ==============
+export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -136,7 +137,7 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Uploaded");
+			alert("Progress Shared");
 		}
 	});
 }

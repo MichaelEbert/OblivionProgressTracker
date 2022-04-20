@@ -28,6 +28,7 @@ import {Point} from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progress.mjs";
 import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
+import { findCell } from "./obliviondata.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -105,7 +106,7 @@ function updateRandomGateCount(Found){
 }
 function initRandomGateCount(){
     //Init randomGateCount. FFFF`FFC1 is random gates discovered
-    let root = window.findCell("0xFFFFFFC1", "location");
+    let root = findCell("0xFFFFFFC1", "location");
     let completed = sumCompletionItems(root);
     randomGateCount = completed[0];
 
