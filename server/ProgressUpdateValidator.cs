@@ -18,6 +18,12 @@ namespace ShareApi
 
     public class ProgressUpdateValidator
     {
+        /// <summary>
+        /// Validate an incoming progress update struct.
+        /// </summary>
+        /// <param name="update"></param>
+        /// <param name="validationFailedReason"></param>
+        /// <returns>false if validation failed. True if sucess.</returns>
         public static bool Validate([NotNullWhen(true)] ProgressUpdate? update, out ValidationFailedReason validationFailedReason)
         {
             if (update == null)
@@ -51,7 +57,7 @@ namespace ShareApi
             if(update.Key == null || update.Key.Length != 64)
             {
                 validationFailedReason = ValidationFailedReason.BAD_KEY_LENGTH;
-                return true;
+                return false;
             }
 
             validationFailedReason = ValidationFailedReason.NONE;

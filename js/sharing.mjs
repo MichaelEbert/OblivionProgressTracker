@@ -1,11 +1,15 @@
 // ==============
 // sharing stuff
+
+import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+
 // ==============
 export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
  * if not, set them to sensible defaults.
+ * todo: move this to userdata?
  */
 function initShareSettings(){
 	let changed = false;
