@@ -24,7 +24,7 @@ function init(){
 				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
 				spectateBanner.addEventListener("click", function(){
 					spectateBanner.innerText = "Reloading...";
-					startSpectating(false, true).then(()=>{
+					sharing.startSpectating(false, true).then(()=>{
 						spectateBanner.innerText = "Spectating ⟳";
 						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
 					});

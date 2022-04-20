@@ -148,9 +148,14 @@ Restoration</li>
 	import * as common from './js/cellGenerator.mjs';
 	import * as progress from './js/progress.mjs'
 	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs';
 	exportNamespace(common);
 	exportNamespace(progress);
 	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
+	window.sharing = sharing;
 	(function(){
 		if(loadCookie("debug") == true){
 			window.debug = true;
