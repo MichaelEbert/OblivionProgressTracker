@@ -378,9 +378,6 @@ function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, clas
  */
 function createIndirectUpdater(indirectCell){
 	return function(_, newValue){
-        if(window.debug){
-            console.log("indirect update!");
-        }
         //indirect values aren't saved, so we can skip saving them.
 		updateChecklistProgress(null, newValue, null, indirectCell, true);
 	}
