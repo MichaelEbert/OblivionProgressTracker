@@ -5,10 +5,7 @@ export{
 }
 
 import * as map from './map.mjs'
-
-function zoomToNirnroute(nirnFormId){
-
-}
+import { jsondata, findOnTree } from './obliviondata.mjs';
 
 // ok first, lets just do a dual page of map and images.
 var prevNirnroot;
@@ -46,10 +43,10 @@ async function init(){
     }
     let targetNirnroot = 0;
     let windowParams = new URLSearchParams(window.location.search);
-    if(windowParams.get("id") != null){
-        targetNirnroot = parseInt(windowParams.get("id"));
+    if(windowParams.get("tspId") != null){
+        targetNirnroot = parseInt(windowParams.get("tspId"));
     }
-    let firstNirn = window.findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+    let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
     activateNirnroot(firstNirn.formId);
 }
 
@@ -57,8 +54,11 @@ function activateNirnroot(nirnFormId){
     loadImageTries = 0;
     document.getElementById("farImage").src="./data/minipages/nirnroot/"+nirnFormId+"_a.webp";
     document.getElementById("closeImage").src="./data/minipages/nirnroot/"+nirnFormId+"_b.webp";
-
-    if(nirnFormId == nextNirnroot?.cell?.formId){
+    if(nirnFormId == thisNirnroot?.cell?.formId){
+        // bug case for trying to go backwards past 0. don't feel like fixing that so
+        // we just do nothing in this case.
+    }
+    else if(nirnFormId == nextNirnroot?.cell?.formId){
         // we're going to next, so only need to get the final one.
         prevNirnroot = thisNirnroot;
         thisNirnroot = nextNirnroot;

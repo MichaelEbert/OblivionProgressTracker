@@ -5,8 +5,8 @@ export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIR
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
-import { TSPLocation } from "./tspPath.mjs";
-import { TSPPath } from "./tspPath.mjs";
+import { TSPLocation, TSPPath } from "./tspPath.mjs";
+import { runOnTree, jsondata } from "../obliviondata.mjs";
 
 const OVERLAY_LAYER_NONE = 0x0;
 const OVERLAY_LAYER_LOCATIONS = 0x1;

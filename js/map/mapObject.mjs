@@ -9,6 +9,8 @@ export {
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, getImageScale, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
 import {updateChecklistProgress} from "../progress.mjs"
+import {iconSwitch} from "../map.mjs"
+import { findCell } from "../obliviondata.mjs"
 
 //need canvas for compositing
 const imageBuffer = document.createElement("canvas");
@@ -402,7 +404,7 @@ GateLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
         this.icon.enabled = true;
     }
 
-    let gateCloseCell = window.findCell(this.cell.gateCloseLink);
+    let gateCloseCell = findCell(this.cell.gateCloseLink);
     if(gateCloseCell != null && window.savedata[gateCloseCell.hive.classname][gateCloseCell.id]){
         this.icon.closed = true;
     }
@@ -418,7 +420,7 @@ GateLocation.prototype.onClick = function(clickPos){
             console.log(this.cell.name + " clicked (formId "+this.cell.formId+")");
         }
         const isDiscovered = window.savedata[this.cell.hive.classname][this.cell.id];
-        let gateCloseCell = window.findCell(this.cell.gateCloseLink);
+        let gateCloseCell = findCell(this.cell.gateCloseLink);
         const isClosed = window.savedata[gateCloseCell.hive.classname][gateCloseCell.id];
         if(!isDiscovered){
             updateChecklistProgress(null, true, null, this.cell);

@@ -1,10 +1,15 @@
 // ==============
 // sharing stuff
+
+import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+
 // ==============
+export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
  * if not, set them to sensible defaults.
+ * todo: move this to userdata?
  */
 function initShareSettings(){
 	let changed = false;
@@ -136,7 +141,7 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Uploaded");
+			alert("Progress Shared");
 		}
 	});
 }

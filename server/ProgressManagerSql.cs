@@ -12,8 +12,8 @@ namespace ShareApi
     public class ProgressManagerSql: IDisposable {
         private const string urlInsertString = "INSERT INTO urls VALUES(@col1, @col2)";
         private const string urlSelectString = "SELECT url FROM urls WHERE userkey = @col1";
-        private const string saveInsertString = "INSERT INTO saves VALUES(@col1, @col2)";
-        private const string saveUpdateString = "UPDATE saves SET saveData = @col2 WHERE url = @col1";
+        private const string saveInsertString = "INSERT INTO saves VALUES(@col1, @col2, @accesstime)";
+        private const string saveUpdateString = "UPDATE saves SET saveData = @col2, accessed = @accesstime WHERE url = @col1";
         private const string saveSelectString = "SELECT saveData FROM saves WHERE url = @col1";
 
         private SqlConnection conn;
@@ -65,6 +65,8 @@ namespace ShareApi
             cmd.Parameters["@col1"].Value = url;
             cmd.Parameters.Add("@col2",SqlDbType.VarChar);
             cmd.Parameters["@col2"].Value = data;
+            cmd.Parameters.Add("@accesstime",SqlDbType.DateTime2);
+            cmd.Parameters["@accesstime"].Value = DateTime.UtcNow;
             try
             {
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -91,6 +93,8 @@ namespace ShareApi
             cmd.Parameters["@col1"].Value = url;
             cmd.Parameters.Add("@col2", SqlDbType.VarChar);
             cmd.Parameters["@col2"].Value = data;
+            cmd.Parameters.Add("@accesstime",SqlDbType.DateTime2);
+            cmd.Parameters["@accesstime"].Value = DateTime.UtcNow;
             try
             {
                 using (SqlDataReader reader = cmd.ExecuteReader())

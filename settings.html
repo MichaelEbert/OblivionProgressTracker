@@ -4,9 +4,7 @@
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
-	<script src="obliviondata.js"></script>
 	<script src="base64ArrayBuffer.js"></script>
-	<script src="sharing.js"></script>
 	<script src="settings.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
@@ -107,15 +105,20 @@
 </div>
 <div class="section">
 <div class="sectionTitle">Import/Export</div>
+	<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button><br/>
 	<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
-	<button id="importProgressButton" onclick="importProgress()">Import Progress from file</button> <input type="file" id="fileinput"/><br/>
+	<label>Import Progress from file: <input type="file" id="fileinput"/></label><br/>
 </div>
 <p style="font-size: small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
 	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs'
 	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
 	(function(){
 		if(loadCookie("debug") == true){
 			window.debug = true;
