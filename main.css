@@ -143,12 +143,14 @@ td{
 	margin-right: 1vw;
 	background-color: var(--lighter-color);
 	column-width: 18em;
+	column-rule: 1px black solid;
 	padding: 0.5em;
 }
 
 .categoryTitle{
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
+	text-align: center;
 	/*break-after:avoid;*/
 }
 
@@ -168,6 +170,7 @@ td{
 	padding:0.1em;
 	margin:0.2em;
 	break-inside: avoid;
+	border-bottom: 1px grey solid;
 }
 
 .item:hover{

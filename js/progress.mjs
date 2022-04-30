@@ -196,6 +196,10 @@ ProgressCalculator.prototype.calculateProgress = function(progressClasses, jsond
 	if(window.debug){
 		console.log("Progress: %f items complete out of %f.", totalCompleteSoFar, totalweight);
 	}
+
+	//this is so we can access our percentage on other pages that don't affect it.
+	localStorage.setItem("percentageDone", percentCompleteSoFar)
+
 	return percentCompleteSoFar;
 }
 

@@ -157,7 +157,14 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
  * Recalculate the total progress, and update UI elements.
  */
 function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = window.progress.recalculateProgress();
+	let percentCompleteSoFar = localStorage.getItem("percentageDone");
+	
+	try{
+		percentCompleteSoFar = window.progress.recalculateProgress();
+	} catch{
+		
+	}
+	
 	//round progress to 2 decimal places
 	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {

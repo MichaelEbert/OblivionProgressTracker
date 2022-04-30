@@ -174,9 +174,16 @@ function getNpcData(npcElement){
  * Recalculate the total progress, and update UI elements.
  */
 function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = recalculateProgress();
+	let percentCompleteSoFar = localStorage.getItem("percentageDone");
+	
+	try{
+		percentCompleteSoFar = window.progress.recalculateProgress();
+	} catch{
+		
+	}
+	
 	//round progress to 2 decimal places
-	var progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerText = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
