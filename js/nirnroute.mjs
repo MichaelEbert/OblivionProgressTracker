@@ -5,7 +5,7 @@ export{
 }
 
 import * as map from './map.mjs'
-import { jsondata, findOnTree } from './obliviondata.mjs';
+import { jsondata, findOnTree, findCell } from './obliviondata.mjs';
 import { saveCookie } from './userdata.mjs';
 
 // ok first, lets just do a dual page of map and images.
@@ -47,6 +47,10 @@ async function init(){
             }
         }
     });
+    
+    if(window.debug){
+        window.getNirnroots = getNirnroots;
+    }    
 
     await map.initMap();
     map.setZoomLevel(0.8);
@@ -121,6 +125,9 @@ function activateNirnroot(nirnFormId){
     else{
         instructionsElement.innerText = "";
     }
+
+    const nextToElement = document.getElementById("closeTo");
+    nextToElement.innerText = getFastTravelInstructions(thisNirnroot);
     
     map.zoomToFormId(nirnFormId);
     map.draw();
@@ -144,4 +151,52 @@ function findPrevNirnroot(thisNirnroot){
     }
     let prevOne = map.getOverlay().nirnroots.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return prevOne;
+}
+
+function getFastTravelInstructions(thisNirnroot){
+    if(thisNirnroot.cell.fastTravelId == null){
+        return "";
+    }
+    else{
+        const nearestPlace = findCell(thisNirnroot.cell.fastTravelId, "location");
+        const direction = getFastTravelDirection(thisNirnroot, nearestPlace);
+        return `Fast travel to ${nearestPlace.name} and head ${direction}`;
+    }
+}
+
+function getFastTravelDirection(thisNirnroot, nearestPlace){
+    const travelX = thisNirnroot.cell.x - nearestPlace.x;
+    const travelY = thisNirnroot.cell.y - nearestPlace.y;
+
+    const travelAngle = Math.atan2(travelY, travelX);
+    const π = Math.PI;
+    //2π / 8 segments = each segment is π/4, and divide on π/8.
+
+    if(travelAngle < (-7*π/8)){
+        return "West";
+    }
+    else if(travelAngle < (-5 * π / 8)) {
+        return "Southwest";
+    }
+    else if(travelAngle < (-3 * π / 8)) {
+        return "South";
+    }
+    else if(travelAngle < (-1 * π / 8)) {
+        return "Southeast";
+    }
+    else if(travelAngle < (1 * π / 8)) {
+        return "East";
+    }
+    else if(travelAngle < (3 * π / 8)) {
+        return "Northeast";
+    }
+    else if(travelAngle < (5 * π / 8)) {
+        return "North";
+    }
+    else if(travelAngle < (7 * π / 8)) {
+        return "Northwest";
+    }
+    else{
+        return "West";
+    }
 }
