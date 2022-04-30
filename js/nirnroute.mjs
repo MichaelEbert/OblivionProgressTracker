@@ -5,7 +5,8 @@ export{
 }
 
 import * as map from './map.mjs'
-import { jsondata, findOnTree } from './obliviondata.mjs';
+import { jsondata, findOnTree, findCell } from './obliviondata.mjs';
+import { saveCookie } from './userdata.mjs';
 
 // ok first, lets just do a dual page of map and images.
 var prevNirnroot;
@@ -24,11 +25,33 @@ function fallbackIngameImage(eventArgs){
 }
 
 async function init(){
-    document.getElementById("mapContainer").style.width = window.settings.iframeWidth;
     document.getElementById("button_tspNirnroot").checked = true;
     document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
+
+    const mapContainer = document.getElementById("mapContainer");
+    mapContainer.style.width = window.settings.iframeWidth;
+    mapContainer.addEventListener('mouseup',(event)=>{
+        console.log("mup");
+        //we need to convert px to vw.
+        let widthInPx = /(\d*)px/.exec(event.target.style.width);
+        if(widthInPx?.length > 1){
+            const newWidthPx = parseInt(widthInPx[1]);
+            const documentWidthPx = window.innerWidth;
+            let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
+            event.target.style.width = newWidthEm;
+            if(settings.iframeWidth != newWidthEm){
+                settings.iframeWidth = newWidthEm;
+                saveCookie("settings",settings);
+            }
+        }
+    });
+    
+    if(window.debug){
+        window.getNirnroots = getNirnroots;
+    }    
+
     await map.initMap();
     map.setZoomLevel(0.8);
 
@@ -52,8 +75,12 @@ async function init(){
 
 function activateNirnroot(nirnFormId){
     loadImageTries = 0;
-    document.getElementById("farImage").src="./data/minipages/nirnroot/"+nirnFormId+"_a.webp";
-    document.getElementById("closeImage").src="./data/minipages/nirnroot/"+nirnFormId+"_b.webp";
+    const farUrl = "./data/minipages/nirnroot/"+nirnFormId+"_a.webp";
+    const closeUrl = "./data/minipages/nirnroot/"+nirnFormId+"_b.webp";
+    document.getElementById("farImage").src=farUrl;
+    document.getElementById("farImageHyperlink").href = farUrl;
+    document.getElementById("closeImage").src=closeUrl;
+    document.getElementById("closeImageHyperlink").href=closeUrl;
     if(nirnFormId == thisNirnroot?.cell?.formId){
         // bug case for trying to go backwards past 0. don't feel like fixing that so
         // we just do nothing in this case.
@@ -98,6 +125,9 @@ function activateNirnroot(nirnFormId){
     else{
         instructionsElement.innerText = "";
     }
+
+    const nextToElement = document.getElementById("closeTo");
+    nextToElement.innerText = getFastTravelInstructions(thisNirnroot);
     
     map.zoomToFormId(nirnFormId);
     map.draw();
@@ -121,4 +151,52 @@ function findPrevNirnroot(thisNirnroot){
     }
     let prevOne = map.getOverlay().nirnroots.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return prevOne;
+}
+
+function getFastTravelInstructions(thisNirnroot){
+    if(thisNirnroot.cell.fastTravelId == null){
+        return "";
+    }
+    else{
+        const nearestPlace = findCell(thisNirnroot.cell.fastTravelId, "location");
+        const direction = getFastTravelDirection(thisNirnroot, nearestPlace);
+        return `Fast travel to ${nearestPlace.name} and head ${direction}`;
+    }
+}
+
+function getFastTravelDirection(thisNirnroot, nearestPlace){
+    const travelX = thisNirnroot.cell.x - nearestPlace.x;
+    const travelY = thisNirnroot.cell.y - nearestPlace.y;
+
+    const travelAngle = Math.atan2(travelY, travelX);
+    const π = Math.PI;
+    //2π / 8 segments = each segment is π/4, and divide on π/8.
+
+    if(travelAngle < (-7*π/8)){
+        return "West";
+    }
+    else if(travelAngle < (-5 * π / 8)) {
+        return "Southwest";
+    }
+    else if(travelAngle < (-3 * π / 8)) {
+        return "South";
+    }
+    else if(travelAngle < (-1 * π / 8)) {
+        return "Southeast";
+    }
+    else if(travelAngle < (1 * π / 8)) {
+        return "East";
+    }
+    else if(travelAngle < (3 * π / 8)) {
+        return "Northeast";
+    }
+    else if(travelAngle < (5 * π / 8)) {
+        return "North";
+    }
+    else if(travelAngle < (7 * π / 8)) {
+        return "Northwest";
+    }
+    else{
+        return "West";
+    }
 }

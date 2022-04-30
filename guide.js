@@ -24,7 +24,7 @@ function init(){
 				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
 				spectateBanner.addEventListener("click", function(){
 					spectateBanner.innerText = "Reloading...";
-					startSpectating(false, true).then(()=>{
+					sharing.startSpectating(false, true).then(()=>{
 						spectateBanner.innerText = "Spectating ⟳";
 						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
 					});
@@ -275,10 +275,19 @@ function updateIframe(visible){
 			
 			iframeContainer.appendChild(myframe);
 			iframeContainer.addEventListener('mouseup',(event)=>{
-				if(settings.iframeWidth != event.target.style.width){
-					settings.iframeWidth = event.target.style.width;
-					saveCookie("settings",settings);
+				//we need to convert px to vw.
+				let widthInPx = /(\d*)px/.exec(event.target.style.width);
+				if(widthInPx?.length > 1){
+					const newWidthPx = parseInt(widthInPx[1]);
+					const documentWidthPx = window.innerWidth;
+					let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
+					event.target.style.width = newWidthEm;
+					if(settings.iframeWidth != newWidthEm){
+						settings.iframeWidth = newWidthEm;
+						saveCookie("settings",settings);
+					}
 				}
+				
 			});
 			var sidebar = document.getElementById("sidebar");
 			if(sidebar != null){

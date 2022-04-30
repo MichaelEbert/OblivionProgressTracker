@@ -27,6 +27,7 @@ export {
 import {Point} from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progress.mjs";
+import { saveCookie } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 
@@ -87,6 +88,8 @@ var lastMouseLoc = new Point(0,0);
 let img_Map;
 let icons = {};
 
+const randomGateDisplay = document.getElementById("randomGateCount");
+
 function updateRandomGateCount(Found){
     if(Found){
         randomGateCount++;
@@ -96,26 +99,29 @@ function updateRandomGateCount(Found){
     }
 
     if(randomGateCount >= 40){
-        document.getElementById("randomGateCount").innerText = getRandomGateCount() + "✔";
-        document.getElementById("randomGateCount").style = "color:green";
+        randomGateDisplay.innerText = getRandomGateCount() + "✔";
+        randomGateDisplay.style = "color:green";
     }
     else{
-        document.getElementById("randomGateCount").innerText = getRandomGateCount();    
-        document.getElementById("randomGateCount").style = "color:black";
+        randomGateDisplay.innerText = getRandomGateCount();    
+        randomGateDisplay.style = "color:black";
     }
 }
+
 function initRandomGateCount(){
     //Init randomGateCount. FFFF`FFC1 is random gates discovered
     let root = findCell("0xFFFFFFC1", "location");
     let completed = sumCompletionItems(root);
     randomGateCount = completed[0];
-
-    if(randomGateCount >= 40){
-        document.getElementById("randomGateCount").innerText = randomGateCount + "✔";
-        document.getElementById("randomGateCount").style = "color:green";
-    }
-    else{
-        document.getElementById("randomGateCount").innerText = randomGateCount;
+    
+    if(randomGateDisplay != null){
+        if(randomGateCount >= 40){
+            randomGateDisplay.innerText = randomGateCount + "✔";
+            randomGateDisplay.style = "color:green";
+        }
+        else{
+            randomGateDisplay.innerText = randomGateCount;
+        }
     }
 }
 

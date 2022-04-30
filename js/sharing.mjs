@@ -2,6 +2,9 @@
 // sharing stuff
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+import { upgradeSaveData } from "./userdata.mjs";
+import { decompressSaveData } from "./userdata.mjs";
+import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
 export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};

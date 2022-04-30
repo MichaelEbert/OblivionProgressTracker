@@ -103,6 +103,11 @@ td{
 	overflow: hidden;
 }
 
+.resizableWidthContainer{
+	resize: horizontal;
+	overflow: hidden;
+}
+
 /*you can't resize iframes, so we use this to give it a nice resizable handle*/
 .sidebarContainer{
 	border: 1px solid black;
@@ -204,6 +209,17 @@ input[type="number"]{
 	text-decoration:underline;
 }
 
+/*
+the "padding" should really be margin.
+but because the map wants to be larger than the screen,
+we have to use weird shit like position fixed and padding
+to make it do the thing of "fill your container exactly but no more"
+
+because the html body will expand downwards as much as needed.
+and we don't want the map to expand down past screen.
+
+I feel like there should be a way to do this but I can't figure it out right now
+*/
 .mapContainer{
 	position: fixed;
 	display: flex;

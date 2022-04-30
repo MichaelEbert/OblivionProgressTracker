@@ -1,7 +1,11 @@
 .mapContainer{
 	position: sticky;
-	height:95vh;/*this is only initial height, client can resize if they want*/
+	height:95vh;
+	padding-top:0.5em; /*1 em leaves a huge gap at the top*/
 }
 img{
 	max-width:100%;
+}
+h1{
+	display: inline; /* we want to put nirns found next to title*/
 }
