@@ -69,28 +69,29 @@
 
 	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
 </div>
+<div class="contentContainer">
 <div class="mapContainer" id="mapContainer">
 	<div class="mapButtonBar">
 		<label><input type="checkbox" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</label>
 		<label><input type="checkbox" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/>Nirnroots</label>
 		<label><input type="checkbox" name="icon_selection" id="button_Wayshrine" title="Shows where all Wayshrines are in the overworld."/>Wayshrines (TODO)</label>
-		<span>&nbsp;|&nbsp;&nbsp;</span>
-		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
-		<span>&nbsp;&nbsp;&nbsp;</span>
+		<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+		<button id="showSettingsButton">Show Settings</button>
 		<button id="helpButton">Help!</button>
-		<span>&nbsp;&nbsp;&nbsp;</span>
+		<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 		<span>Random gates found: 
 			<span id="randomGateCount">##</span> 
 		</span>
 
-		<label><input type="checkbox" id="showHideMapSettingsCheck"/>Show Settings</label>
+		
 	</div>
 	<div id="mapSettingsContainer" style="display:none">
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label><br/>
-		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label><br/>
-		<label><input type="checkbox" id="mapShowLocationsOnNirnroot" class="autosetting">Show fast travel locations on nirnroot map</label><br/>
+		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
+		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
+		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
+		<br/>
+		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
 	</div>
 	<div id="help" style="display:none">
 		<h2>FAQ</h2>
@@ -112,6 +113,7 @@
 	</div>
 
 	<div id="wrapper_Map" class="mapWrapper"></div>
+</div>
 </div>
 <script type="module">
 	//normally, we can't call module code from non-module code.
@@ -138,24 +140,25 @@
 		}
 	});
 
+	var additionalSettingsShown = false;
 
-	(function(){
-		document.getElementById("showHideMapSettingsCheck").addEventListener('change', ()=>{
-			const mapSettingsContainer = document.getElementById("mapSettingsContainer");
-			if(document.getElementById("showHideMapSettingsCheck").checked){
-				mapSettingsContainer.style.display = "unset";
-			}
-			else{
-				mapSettingsContainer.style.display = "none";
-			}
-		});
-		if(document.getElementById("showHideMapSettingsCheck").checked){
+	window.showHideMapSettings = function(){
+		const mapSettingsContainer = document.getElementById("mapSettingsContainer");
+		const showHideButton = document.getElementById("showSettingsButton");
+		if(!additionalSettingsShown){
 			mapSettingsContainer.style.display = "unset";
+			showHideButton.innerText = "Hide Settings"
+			additionalSettingsShown = true;
 		}
 		else{
 			mapSettingsContainer.style.display = "none";
+			showHideButton.innerText = "Show Settings";
+			additionalSettingsShown = false;
 		}
-		
+	};
+
+	(function(){
+		document.getElementById("showSettingsButton").addEventListener('click', showHideMapSettings);
 
 		obliviondata.loadJsonData().then(()=>{
 			userdata.loadProgressFromCookie();
@@ -163,15 +166,6 @@
 			//need to add events to redraw immediately upon change
 			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
-			document.getElementById("mapShowLocationsOnNirnroot").addEventListener('change',()=>{
-				if(document.getElementById("button_Nirnroot").checked){
-					map.getOverlay().setActiveLayer(2);
-				}
-				else{
-					map.getOverlay().setActiveLayer(1);
-				}
-				map.draw();
-			});
 		});
 	}).call(window);
 

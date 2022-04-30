@@ -83,21 +83,22 @@
 <img src="" id="closeImage" alt="close image">
 </div>
 <div id="mapColumn">
-<div class="mapContainer resizableContainer" id="mapContainer">
-	<div class="mapButtonBar">
+<div class="mapContainer resizableWidthContainer" id="mapContainer">
+	<div id="mapSettingsContainer" style="display:none">
 		<input type="checkbox" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered."><label>Locations</label>
 		<input type="checkbox" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/><label>Nirnroots</label>
 		<input type="checkbox" name="icon_selection" id="button_Wayshrine" title="Shows where all Wayshrines are in the overworld."/><label>Wayshrines (TODO)</label>
-		<span>&nbsp;|&nbsp;&nbsp;</span>
-		<input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location">No TSP</input>
-		<input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location">Location TSP</input>
-		<input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot">Nirnroot TSP</input>
-		<span>&nbsp;&nbsp;&nbsp;</span>
-		<span>Random gates found: 
-			<span id="randomGateCount">##</span> 
-		</span>
+		<br/>
+		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
+		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
+		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
+		<br/>
+		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
 	</div>
-	<div id="wrapper_Map" class="mapWrapper"></div>
+	<div id="wrapper_Map" class="mapWrapper">
+		<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+	</div>
 </div>
 </div>
 
@@ -119,7 +120,25 @@
 		window.debugAsync = true;
 	}
 
+	var additionalSettingsShown = false;
+
+	window.showHideMapSettings = function(){
+		const mapSettingsContainer = document.getElementById("mapSettingsContainer");
+		const showHideButton = document.getElementById("showSettingsButton");
+		if(!additionalSettingsShown){
+			mapSettingsContainer.style.display = "unset";
+			showHideButton.innerText = "Hide Settings"
+			additionalSettingsShown = true;
+		}
+		else{
+			mapSettingsContainer.style.display = "none";
+			showHideButton.innerText = "Show Settings";
+			additionalSettingsShown = false;
+		}
+	};
+
 	(function(){
+		document.getElementById("showSettingsButton").addEventListener('click', showHideMapSettings);
 		obliviondata.loadJsonData().then(()=>{
 			userdata.loadProgressFromCookie();
 			nirn.init();
