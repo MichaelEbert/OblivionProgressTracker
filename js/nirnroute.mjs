@@ -6,6 +6,7 @@ export{
 
 import * as map from './map.mjs'
 import { jsondata, findOnTree } from './obliviondata.mjs';
+import { saveCookie } from './userdata.mjs';
 
 // ok first, lets just do a dual page of map and images.
 var prevNirnroot;
@@ -24,11 +25,29 @@ function fallbackIngameImage(eventArgs){
 }
 
 async function init(){
-    document.getElementById("mapContainer").style.width = window.settings.iframeWidth;
     document.getElementById("button_tspNirnroot").checked = true;
     document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
+
+    const mapContainer = document.getElementById("mapContainer");
+    mapContainer.style.width = window.settings.iframeWidth;
+    mapContainer.addEventListener('mouseup',(event)=>{
+        console.log("mup");
+        //we need to convert px to vw.
+        let widthInPx = /(\d*)px/.exec(event.target.style.width);
+        if(widthInPx?.length > 1){
+            const newWidthPx = parseInt(widthInPx[1]);
+            const documentWidthPx = window.innerWidth;
+            let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
+            event.target.style.width = newWidthEm;
+            if(settings.iframeWidth != newWidthEm){
+                settings.iframeWidth = newWidthEm;
+                saveCookie("settings",settings);
+            }
+        }
+    });
+
     await map.initMap();
     map.setZoomLevel(0.8);
 
