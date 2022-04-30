@@ -6,3 +6,6 @@
 img{
 	max-width:100%;
 }
+h1{
+	display: inline; /* we want to put nirns found next to title*/
+}
