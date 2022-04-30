@@ -71,8 +71,12 @@ async function init(){
 
 function activateNirnroot(nirnFormId){
     loadImageTries = 0;
-    document.getElementById("farImage").src="./data/minipages/nirnroot/"+nirnFormId+"_a.webp";
-    document.getElementById("closeImage").src="./data/minipages/nirnroot/"+nirnFormId+"_b.webp";
+    const farUrl = "./data/minipages/nirnroot/"+nirnFormId+"_a.webp";
+    const closeUrl = "./data/minipages/nirnroot/"+nirnFormId+"_b.webp";
+    document.getElementById("farImage").src=farUrl;
+    document.getElementById("farImageHyperlink").href = farUrl;
+    document.getElementById("closeImage").src=closeUrl;
+    document.getElementById("closeImageHyperlink").href=closeUrl;
     if(nirnFormId == thisNirnroot?.cell?.formId){
         // bug case for trying to go backwards past 0. don't feel like fixing that so
         // we just do nothing in this case.
