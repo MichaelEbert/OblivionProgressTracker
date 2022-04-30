@@ -66,9 +66,15 @@ async function init(){
     }
     let targetNirnroot = 0;
     let windowParams = new URLSearchParams(window.location.search);
-    if(windowParams.get("tspId") != null){
-        targetNirnroot = parseInt(windowParams.get("tspId"));
+    let maybeWindowParams = ["tspId","tsp","tspid"];
+    for(const maybeParam of maybeWindowParams)
+    {
+        if(windowParams.get(maybeParam) != null ){
+            targetNirnroot = parseInt(windowParams.get(maybeParam));
+            break;
+        }
     }
+    
     let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
     activateNirnroot(firstNirn.formId);
 }
