@@ -55,12 +55,31 @@ async function init(){
     await map.initMap();
     map.setZoomLevel(0.8);
 
-    document.getElementById("nextButton").addEventListener('click', (_evt)=>{
+    const nextButton = document.getElementById("nextButton");
+    const prevButton = document.getElementById("prevButton");
+    nextButton.addEventListener('click', (_evt)=>{
         activateNirnroot(nextNirnroot.cell.formId); 
     });
-    document.getElementById("prevButton").addEventListener('click', (_evt)=>{
+    document.body.addEventListener('keyup', (evt)=>{
+        if(evt.code === "ArrowRight"){
+            nextButton.click();
+        }
+        else if(evt.code === "ArrowLeft"){
+            prevButton.click();
+        }
+    });
+    prevButton.addEventListener('click', (_evt)=>{
         activateNirnroot(prevNirnroot.cell.formId); 
     });
+    document.getElementById("nirnIdField").addEventListener('change', (_evt)=>{
+        let targetNirnroot = parseInt(_evt.target.value);
+        if(targetNirnroot != null){
+            let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+            activateNirnroot(firstNirn.formId);
+        }
+    })
+
+
     if(window.debug){
         console.log("activating first nirnroot");
     }
@@ -115,6 +134,7 @@ function activateNirnroot(nirnFormId){
     if(window.debug){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
+
 
     const nameElement = document.getElementById("nirnName");
     nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
