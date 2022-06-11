@@ -1,6 +1,6 @@
 "use strict"
 
-import { updateChecklistProgress } from "./progress.mjs";
+import { updateChecklistProgress } from "./progressCalculation.mjs";
 import { findCell } from "./obliviondata.mjs"
 //common layout functions used by both main.js and guide.js
 

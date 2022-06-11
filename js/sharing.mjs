@@ -1,5 +1,5 @@
 // ==============
-// sharing stuff
+// Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
@@ -166,6 +166,7 @@ function stopSpectating(){
 	//check for function before loading because /share.html spectates, but immediately redirects
 	// instead of updating progress.
 	if(loadProgressFromCookie){
+		//loadProgressFromCookie emits a progressChanged event so we don't have to manually do it.
 		loadProgressFromCookie();
 	}
 }
@@ -175,7 +176,7 @@ var autoUpdateListener = null;
 var autoUpdateIntervalId = null;
 
 /**
- * Update data from spectating, or stop spectating if remote code is now blank.
+ * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressChanged" event when download is complete.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
@@ -223,7 +224,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				if(notifyOnUpdate){
 					alert("Downloaded");
 				}
-				document.dispatchEvent(new Event("progressLoad"));
+				document.dispatchEvent(new Event("progressChanged"));
 			}
 		});
 	}

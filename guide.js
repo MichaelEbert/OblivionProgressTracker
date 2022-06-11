@@ -183,7 +183,7 @@ function recalculateProgressAndUpdateProgressUI(){
 	}
 	
 	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	let progress = (percentCompleteSoFar * 100).toFixed(2);
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerText = progress.toString();
 		if(element.parentElement.className == "topbarSection"){
@@ -370,6 +370,12 @@ function getAllReferencesOnPage(cell){
 	return refs;
 }
 
+/**
+ * Return the document path of the specified html element.
+ * Used for the npc "referenced in" feature.
+ * @param {*} obj html element
+ * @returns {{anchor: string, path: string}} Link to section object is referenced in and absolute path to object.
+ */
 function getElementReferenceLocation(obj){
 	var parent = obj.parentElement;
 	var link = null;

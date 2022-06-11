@@ -238,7 +238,8 @@ function initSettings(){
 }
 
 /**
- * Load progress and settings.
+ * Load progress and settings. Dispatch a progressChanged event when progress is loaded.
+ * @returns {boolean} true if progress was been successfully loaded. False if new savedata was created.
  */
 function loadProgressFromCookie(){
 	loadSettingsFromCookie();	
@@ -249,7 +250,7 @@ function loadProgressFromCookie(){
 		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();
 		}
-		document.dispatchEvent(new Event("progressLoad"));
+		document.dispatchEvent(new Event("progressChanged"));
 		return true;
 	}
 	else{
@@ -280,7 +281,7 @@ function resetProgressForHive(hive){
 }
 
 /**
- * Generate a new, clean savedata object, and saves it to cookie.
+ * Generate a new, clean savedata object, and saves it to cookie. Dispatches a progressChanged event when save data is updated.
  * @param {boolean} shouldConfirm Should we confirm with the user or not
  */
 function resetProgress(shouldConfirm=false){
@@ -297,5 +298,5 @@ function resetProgress(shouldConfirm=false){
 		}
 	}
 	saveProgressToCookie();
-	document.dispatchEvent(new Event("progressLoad"));
+	document.dispatchEvent(new Event("progressChanged"));
 }

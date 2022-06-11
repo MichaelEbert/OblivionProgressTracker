@@ -8,7 +8,7 @@ export {
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, getImageScale, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
-import {updateChecklistProgress} from "../progress.mjs"
+import {updateChecklistProgress} from "../progressCalculation.mjs"
 import {iconSwitch} from "../map.mjs"
 import { findCell } from "../obliviondata.mjs"
 

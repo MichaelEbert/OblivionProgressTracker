@@ -26,7 +26,7 @@ export {
 
 import {Point} from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
-import { sumCompletionItems } from "./progress.mjs";
+import { sumCompletionItems } from "./progressCalculation.mjs";
 import { saveCookie } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
