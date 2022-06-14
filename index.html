@@ -4,6 +4,8 @@
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<script src="./js/module-shim.mjs" type="module"></script>
+	<script src="./external/oblivion-save-reader-v1.3/dist/bundle.savefile.js"></script>
+    <script src="./external/oblivion-save-reader-v1.3/dist/bundle.record.js"></script>
 	<script src="main.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Interactive Oblivion Checklist</title>
@@ -98,11 +100,13 @@
 	import * as progress from './js/progress.mjs'
 	import * as userdata from './js/userdata.mjs'
 	import * as sharing from './js/sharing.mjs'
+	import * as saveReader from './js/saveReader.mjs'
 	window.common = common;
 	window.progress = progress;
 	window.userdata = userdata;
 	window.obliviondata = obliviondata;
 	window.sharing = sharing;
+	window.saveReader = saveReader;
 	console.log("AAAA");
 	(function(){
 		if(window.userdata.loadCookie("debug") == true){

@@ -57,6 +57,15 @@ function init(){
         document.getElementById("remoteShareCode").value = settings.remoteShareCode;
     }
     document.getElementById("copyShareKeyButton")?.addEventListener('click',copyShareKeyToClipboard);
+
+    const ignoreEvent = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    // Handle drag+drop of files. Have to ignore dragenter/dragover for compatibility reasons.
+    document.body.addEventListener('dragenter', ignoreEvent);
+    document.body.addEventListener('dragover', ignoreEvent);
+    document.body.addEventListener('drop', saveReader.parseSave);
 }
 
 function copyShareKeyToClipboard(){

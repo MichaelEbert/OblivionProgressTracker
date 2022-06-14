@@ -5,7 +5,7 @@
 
 export {totalweight, jsondata, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
 
-var jsondata = {quest:null,book:null,skill:null,store:null}
+var jsondata = null
 
 /**
  * Total weight of all scored elements.
@@ -76,6 +76,7 @@ const progressClasses = classes.filter(c=>c.containsUserProgress);
  * @param {(x:JsonClass)=> boolean} classFilter only load classes that match this filter
  */
 function loadJsonData(basedir=".",classFilter=(x=>true)){
+	jsondata = {};
 	var promises = [];
 	for(var klass of classes){
 		if(classFilter(klass)){

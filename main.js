@@ -43,6 +43,14 @@ function init(){
 				sharing.startSpectating(false, true);
 			}
 		}
+		const ignoreEvent = (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+		};
+		// Handle drag+drop of files. Have to ignore dragenter/dragover for compatibility reasons.
+		document.body.addEventListener('dragenter', ignoreEvent);
+		document.body.addEventListener('dragover', ignoreEvent);
+		document.body.addEventListener('drop', saveReader.parseSave);
 	});
 }
 const classNamesForLevels = ["section","category","subcategory"];
