@@ -1,5 +1,6 @@
 import { jsondata } from "./obliviondata.mjs";
 import { classes } from "./obliviondata.mjs";
+import { loadJsonData } from "./obliviondata.mjs";
 import { runOnTree } from "./obliviondata.mjs";
 import { progressClasses } from "./obliviondata.mjs";
 import { initShareSettings } from "./sharing.mjs";
@@ -26,10 +27,18 @@ const SETTINGS_VERSION = 2;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
+	if(window.debugSaving)
+	{
+		console.log("saving "+name+" with value:"+stringValue);
+	}
 	window.localStorage.setItem(name, stringValue);
 }
 
 function loadCookie(name){
+	if(window.debugSaving)
+	{
+		console.log("loading "+name);
+	}
 	return JSON.parse(window.localStorage.getItem(name));
 }
 
@@ -284,6 +293,9 @@ function resetProgressForHive(hive){
  * @param {boolean} shouldConfirm Should we confirm with the user or not
  */
 function resetProgress(shouldConfirm=false){
+	if(jsondata == null){
+		loadJsonData('..');
+	}
 	var execute = true;
 	if(shouldConfirm){
 		execute = confirm("press OK to reset data");

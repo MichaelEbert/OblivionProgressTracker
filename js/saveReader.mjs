@@ -2,8 +2,8 @@
 
 export {parseSave}
 
-import { loadJsonData } from './obliviondata.mjs';
-import { jsondata, progressClasses, runOnTree, findCell } from './obliviondata.mjs'
+import { loadJsonData, jsondata, progressClasses, runOnTree, findCell } from './obliviondata.mjs'
+import { saveProgressToCookie } from './userdata.mjs';
 
 
 function UpdateQuest(savedata, saveFile)
@@ -30,7 +30,7 @@ function UpdateLocation(savedata, saveFile)
         var gateCloseLinkCell = null;
         if (cell.gateCloseLink != null)
         {
-            gateCloseLinkCell = findCell(jsondata, cell.gateCloseLink);
+            gateCloseLinkCell = findCell(cell.gateCloseLink);
         }
 
         var isSet = false;
@@ -44,7 +44,7 @@ function UpdateLocation(savedata, saveFile)
             // update gate closures at the same time
             if (gateCloseLinkCell != null) 
             {
-                let gateRecord = saveFile.records.find((e) => e.formId === gate.formId);
+                let gateRecord = saveFile.records.find((e) => e.formId === parseInt(gateCloseLinkCell.formId));
                 if (gateRecord && 
                     gateRecord.flags & 0x7000005 === 0x7000005 && 
                     gateRecord.subRecord && 
@@ -136,7 +136,7 @@ function UpdateHouse(savedata, saveFile)
         let record = saveFile.records.find((e) => e.formId === parseInt(cell.formId));
         if (record) {
             if (record.subRecord?.stageNum > 0) {
-                savedata.misc[cell.id] = false;
+                savedata.misc[cell.id] = true;
                 return;
             }
         }
@@ -151,7 +151,7 @@ function UpdateArena(savedata, saveFile)
         let record = saveFile.records.find((e) => e.formId === parseInt(cell.formId));
         if (record) {
             if (record.subRecord?.topicSaidOnce) {
-                savedata.fame[cell.id] = false;
+                savedata.fame[cell.id] = true;
                 return;
             }
         }
@@ -165,7 +165,7 @@ function UpdatePower(savedata, saveFile)
     {
         var record = saveFile.records.find((e) => e.formId===0x7);
         if (record) {
-            if (record.subRecord.spellIds.map(i=>saveFile.formIds[i]??i).includes(cell.formId)) {
+            if (record.subRecord.spellIds.map(i=>saveFile.formIds[i]??i).includes(parseInt(cell.formId))) {
                 savedata.misc[cell.id] = true;
                 return;
             }
@@ -297,6 +297,8 @@ function parseSave(e){
         }).then(createUserProgressFile).then((dataFromSave)=>{
             console.log(dataFromSave);
             window.savedata = dataFromSave;
+            saveProgressToCookie();
+            window.alert("Imported from save file");
         });
     }
 };
