@@ -298,7 +298,7 @@ function parseSave(e){
             console.log(dataFromSave);
             window.savedata = dataFromSave;
             saveProgressToCookie();
-            window.alert("Imported from save file");
+            window.alert("Imported from save file. Refresh to view.");
         });
     }
 };
