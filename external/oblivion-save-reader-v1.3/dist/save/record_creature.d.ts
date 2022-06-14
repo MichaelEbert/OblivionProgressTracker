@@ -1,0 +1,58 @@
+import Record from "./record";
+import { SaveBuffer } from "./util";
+export declare class RecordCreature {
+    flags?: number;
+    strength?: number;
+    intelligence?: number;
+    willpower?: number;
+    agility?: number;
+    speed?: number;
+    endurance?: number;
+    personality?: number;
+    luck?: number;
+    dataFlags?: number;
+    baseMagicka?: number;
+    baseFatigue?: number;
+    barterGold?: number;
+    level?: number;
+    calcMin?: number;
+    calcMax?: number;
+    factionsNum?: number;
+    factions: {
+        faction: number;
+        factionRank: number;
+    }[];
+    spellCount?: number;
+    spellIds: number[];
+    aiData: number[];
+    baseHealth?: number;
+    modCount?: number;
+    modifiers: {
+        valueIndex: number;
+        modValue: number;
+    }[];
+    fullName?: string;
+    armorer?: number;
+    athletics?: number;
+    blade?: number;
+    block?: number;
+    blunt?: number;
+    handToHand?: number;
+    heavyArmor?: number;
+    alchemy?: number;
+    alteration?: number;
+    conjuration?: number;
+    destruction?: number;
+    illusion?: number;
+    mysticism?: number;
+    restoration?: number;
+    acrobatics?: number;
+    lightArmor?: number;
+    marksman?: number;
+    mercantile?: number;
+    security?: number;
+    sneak?: number;
+    speechcraft?: number;
+    combatStyle?: number;
+    constructor(record: Record, buf: SaveBuffer);
+}

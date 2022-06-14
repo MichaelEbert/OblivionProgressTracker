@@ -4,7 +4,10 @@
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
+	<script src="./external/oblivion-save-reader-v1.3/dist/bundle.savefile.js"></script>
+    <script src="./external/oblivion-save-reader-v1.3/dist/bundle.record.js"></script>
 	<script src="./settings.js"></script>
+	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -118,12 +121,14 @@
 	import * as userdata from './js/userdata.mjs'
 	import * as obliviondata from './js/obliviondata.mjs'
 	import * as sharing from './js/sharing.mjs'
+	import * as saveReader from './js/saveReader.mjs'
 	exportNamespace(userdata);
 	exportNamespace(obliviondata);
 	exportNamespace(sharing);
 	window.userdata = userdata;
 	window.obliviondata = obliviondata;
 	window.sharing = sharing;
+	window.saveReader = saveReader;
 	(function(){
 		if(loadCookie("debug") == true){
 			window.debug = true;
