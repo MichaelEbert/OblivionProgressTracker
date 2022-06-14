@@ -25,7 +25,7 @@ Common to all nodes. All are optional.
 - "elements": list of child elements of this node.
 - "weight": weight of this tree in progress calculation.
 - "extraColumn": name of field to display as an extra column for this subtree.
-
+- "onUpdate": list of functions to call on update. Function signature is fn(thisCell, int^bool completedItems, int^null totalItems)
 ## Root node (aka "hive")
 ### Required parameters:
 - "version": version of the json data. Each new version has additional required fields or layout. current is 4, which this describes.
