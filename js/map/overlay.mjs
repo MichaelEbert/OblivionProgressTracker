@@ -5,8 +5,9 @@ export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIR
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
-import { TSPLocation, TSPPath } from "./tspPath.mjs";
+import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPath.mjs";
 import { runOnTree, jsondata } from "../obliviondata.mjs";
+import { findCell } from "../obliviondata.mjs";
 
 const OVERLAY_LAYER_NONE = 0x0;
 const OVERLAY_LAYER_LOCATIONS = 0x1;
@@ -67,7 +68,13 @@ function Overlay(){
             ovr.nirnroots.push(newIcon);
 
             if(nirn.tspId != null){
-                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId));
+                if(nirn.fastTravelId != null){
+                    let maybeFastTravelLoc = findCell(nirn.fastTravelId, "location");
+                    if(maybeFastTravelLoc != null){
+                        nirnTspArr.push(new TSPLocation(maybeFastTravelLoc.x, maybeFastTravelLoc.y, nirn.tspId - 0.1, TSP_STYLE_DASHED));
+                    }
+                }
+                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId, TSP_STYLE_SOLID));
             }
         }
     });
@@ -90,7 +97,9 @@ Overlay.prototype.recalculateBoundingBox = function(){
     this.tsp_locations.recalculate();
     this.tsp_nirnroots.recalculate();
 }
-
+/**
+ * location currently hovered over
+ */
 var hloc = null;
 /**
  * Draw icons on the map
@@ -111,7 +120,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const locIcon of this.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
-            locIcon.draw(ctx, mouseLoc, this.currentLocation);
+            locIcon.draw(ctx, null, this.currentLocation);
             if(hloc == null && locIcon.contains(mouseLoc)){
                 hloc = locIcon;
             }
@@ -124,7 +133,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
 
     if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
         for(const nirnIcon of this.nirnroots){
-            nirnIcon.draw(ctx, mouseLoc, this.currentLocation);
+            nirnIcon.draw(ctx, null, this.currentLocation);
             if(hloc == null && nirnIcon.contains(mouseLoc)){
                 hloc = nirnIcon;
             }
@@ -137,6 +146,10 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
 
     if(this.currentLocation != null){
         this.currentLocation.draw(ctx, null, this.currentLocation);
+        //unlike all the others, always default to hloc == currentLocation.
+        if(this.currentLocation.contains(mouseLoc)){
+            hloc = this.currentLocation;
+        }
     }
 
     //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
@@ -180,6 +193,12 @@ Overlay.prototype.click = function(clickLoc){
                 return true;
             }
         }
+    }
+    //allow deselecting element even if nothing else is enabled
+    if(this.currentLocation?.contains(clickLoc))
+    {
+        this.currentLocation = null;
+        return true;
     }
     return false;
 }

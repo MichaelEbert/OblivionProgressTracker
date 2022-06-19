@@ -1,14 +1,17 @@
 "use strict"
-export {TSPLocation, TSPPath}
+export {TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED}
 
 import { Point } from './point.mjs'
 import { worldSpaceToMapSpace, mapSpaceToScreenSpace } from '../map.mjs'
 
+const TSP_STYLE_SOLID = 0x0;
+const TSP_STYLE_DASHED = 0x1;
 
-function TSPLocation(worldX,worldY,tspId){
+function TSPLocation(worldX,worldY,tspId, lineStyle = TSP_STYLE_SOLID){
     this.worldX = worldX;
     this.worldY = worldY;
     this.id = tspId;
+    this.lineStyle = lineStyle;
     this.recalculate();
 }
 
@@ -20,7 +23,7 @@ TSPLocation.prototype.recalculate = function(){
 
 /**
  * Create a TSP path for drawing
- * @param {TSPLocation[]} location_array 
+ * @param {TSPLocation[]} location_array Locations to connect via TSP. Copied by value.
  */
 function TSPPath(location_array){
     this.locations = [...location_array];
@@ -56,8 +59,16 @@ TSPPath.prototype.draw = function(ctx){
         //TODO: add in custom color/line width selection.
         //TODO: add in secondary line outline to make line "pop" on map better.
         ctx.beginPath();
-        ctx.strokeStyle="#FF0000";
+        
         ctx.lineWidth = 5; 
+        if(this.locations[i].lineStyle == TSP_STYLE_DASHED){
+            ctx.setLineDash([8,12]);
+            ctx.strokeStyle = "#4040B0"
+        }
+        else{
+            ctx.setLineDash([]);
+            ctx.strokeStyle="#FF0000";
+        }
         ctx.moveTo(point.x, point.y);
         ctx.lineTo(prevPoint.x, prevPoint.y);
         ctx.stroke();
@@ -68,7 +79,14 @@ TSPPath.prototype.draw = function(ctx){
     let z = mapSpaceToScreenSpace(new Point(this.locations[this.locations.length - 1]));
     
     ctx.beginPath();
-    ctx.strokeStyle="#FF0000";
+    if(a.lineStyle == TSP_STYLE_DASHED){
+        ctx.setLineDash([8,12]);
+        ctx.strokeStyle = "#4040B0"
+    }
+    else{
+        ctx.setLineDash([]);
+        ctx.strokeStyle="#FF0000";
+    }
     ctx.lineWidth = 5;
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(z.x, z.y);
