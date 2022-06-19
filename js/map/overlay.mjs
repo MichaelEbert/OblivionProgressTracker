@@ -5,8 +5,9 @@ export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIR
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
-import { TSPLocation, TSPPath } from "./tspPath.mjs";
+import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPath.mjs";
 import { runOnTree, jsondata } from "../obliviondata.mjs";
+import { findCell } from "../obliviondata.mjs";
 
 const OVERLAY_LAYER_NONE = 0x0;
 const OVERLAY_LAYER_LOCATIONS = 0x1;
@@ -67,7 +68,13 @@ function Overlay(){
             ovr.nirnroots.push(newIcon);
 
             if(nirn.tspId != null){
-                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId));
+                if(nirn.fastTravelId != null){
+                    let maybeFastTravelLoc = findCell(nirn.fastTravelId, "location");
+                    if(maybeFastTravelLoc != null){
+                        nirnTspArr.push(new TSPLocation(maybeFastTravelLoc.x, maybeFastTravelLoc.y, nirn.tspId - 0.1, TSP_STYLE_DASHED));
+                    }
+                }
+                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId, TSP_STYLE_SOLID));
             }
         }
     });
