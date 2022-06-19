@@ -94,7 +94,7 @@ async function init(){
             let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
             activateNirnroot(firstNirn.formId);
         }
-    })
+    });
 
 
     if(window.debug){
@@ -144,20 +144,22 @@ function activateNirnroot(nirnFormId){
         prevNirnroot = findPrevNirnroot(thisNirnroot);
         nextNirnroot = findNextNirnroot(thisNirnroot);
     }
+    const thisTspId = thisNirnroot.cell.tspId;
     
     if(window.debug){
-        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisNirnroot.cell.tspId);
+        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisTspId);
     }
     if(window.debug){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
-
-    const newUrl = window.location.toString().split("?")[0] + "?tspId="+thisNirnroot.cell.tspId;
+    const newUrl = window.location.toString().split("?")[0] + "?tspId="+thisTspId;
     window.history.pushState(null, "", newUrl);
-    document.title = "Nirnroute — Nirnroot #"+thisNirnroot.cell.tspId;
+    document.title = "Nirnroute — Nirnroot #"+thisTspId;
+
+    document.getElementById("nirnIdField").value = thisTspId;
 
     const nameElement = document.getElementById("nirnName");
-    nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
+    nameElement.innerText = "Nirnroot "+thisTspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
     if(thisNirnroot.cell.trivia != null){
         nameElement.title = thisNirnroot.cell.trivia
     }
@@ -174,6 +176,7 @@ function activateNirnroot(nirnFormId){
 
     const nextToElement = document.getElementById("closeTo");
     nextToElement.innerText = getFastTravelInstructions(thisNirnroot);
+
     
     map.zoomToFormId(nirnFormId);
     map.draw();
