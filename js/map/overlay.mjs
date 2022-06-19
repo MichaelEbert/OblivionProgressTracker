@@ -158,7 +158,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     }
 }
 
-Overlay.prototype.click = function(clickLoc){
+Overlay.prototype.doubleClick = function(clickLoc){
     const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
     if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const icon of this.locations){
@@ -208,7 +208,7 @@ Overlay.prototype.click = function(clickLoc){
  * @param {Point} lastMouseLoc screen space coordinates of mouse click
  * @returns if click was handled (ie, something was clicked on)
  */
-Overlay.prototype.doubleClick = function(clickLoc){
+Overlay.prototype.click = function(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
     if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const icon of this.locations){
