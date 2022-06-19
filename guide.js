@@ -174,26 +174,27 @@ function getNpcData(npcElement){
  * Recalculate the total progress, and update UI elements.
  */
 function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = localStorage.getItem("percentageDone");
+	let percentCompleteSoFar;
 	
 	try{
 		percentCompleteSoFar = window.progress.recalculateProgress();
 	} catch{
-		
+		console.log("percentComplete got from localStorage");
+		percentCompleteSoFar = localStorage.getItem("percentageDone");
 	}
 	
-	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
-		}
-	});
+	// //round progress to 2 decimal places
+	// let progress = (percentCompleteSoFar * 100).toFixed(2);
+	// Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+	// 	element.innerText = progress.toString();
+	// 	if(element.parentElement.className == "topbarSection"){
+	// 		element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
+	// 	}
+	// });
 }
 
 /**
- * helper function for updateUIFromSaveData
+ * helper function for updateUIFromSaveData. Does not call recalculateProgress().
  * @param {} cell 
  */
 function updateHtmlElementFromSaveData(cell){
@@ -211,6 +212,7 @@ function updateHtmlElementFromSaveData(cell){
 			}
 			newval = savedata[classname][cell.id];
 			updateChecklistProgress(null, newval, null, cell, true);
+			//don't call recalculateProgress() because we do that in bulk in the calling function.
 		}
 	}
 }
@@ -370,6 +372,12 @@ function getAllReferencesOnPage(cell){
 	return refs;
 }
 
+/**
+ * Return the document path of the specified html element.
+ * Used for the npc "referenced in" feature.
+ * @param {*} obj html element
+ * @returns {{anchor: string, path: string}} Link to section object is referenced in and absolute path to object.
+ */
 function getElementReferenceLocation(obj){
 	var parent = obj.parentElement;
 	var link = null;

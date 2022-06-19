@@ -247,7 +247,8 @@ function initSettings(){
 }
 
 /**
- * Load progress and settings.
+ * Load progress and settings. Dispatch a progressLoad event when progress is loaded.
+ * @returns {boolean} true if progress was been successfully loaded. False if new savedata was created.
  */
 function loadProgressFromCookie(){
 	loadSettingsFromCookie();	
@@ -289,7 +290,7 @@ function resetProgressForHive(hive){
 }
 
 /**
- * Generate a new, clean savedata object, and saves it to cookie.
+ * Generate a new, clean savedata object, and saves it to cookie. Dispatches a progressLoad event when save data is updated.
  * @param {boolean} shouldConfirm Should we confirm with the user or not
  */
 function resetProgress(shouldConfirm=false){

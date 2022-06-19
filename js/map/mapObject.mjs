@@ -8,9 +8,10 @@ export {
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, getImageScale, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
-import {updateChecklistProgress} from "../progress.mjs"
+import {updateChecklistProgress} from "../progressCalculation.mjs"
 import {iconSwitch} from "../map.mjs"
 import { findCell } from "../obliviondata.mjs"
+import { recalculateProgress } from "../progressCalculation.mjs"
 
 //need canvas for compositing
 const imageBuffer = document.createElement("canvas");
@@ -308,7 +309,7 @@ MapLocation.prototype.onClick = function(clickPos){
     const classname = this.cell.hive.classname;
     let prevState = window.savedata[classname][this.cell.id];
     updateChecklistProgress(null, !prevState, null, this.cell);
-    
+    recalculateProgress();
     return true;
 }
 
@@ -442,7 +443,7 @@ GateLocation.prototype.onClick = function(clickPos){
                 }
             }
         }
-        
+        recalculateProgress();
         return true;
     }
     return false;

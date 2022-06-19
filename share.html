@@ -9,11 +9,13 @@
 <body>
     Downloading Save...
     <script type="module">
-	import exportNamespace from './js/module-shim.mjs'
 	import * as userdata from './js/userdata.mjs'
-	exportNamespace(userdata);
+    import * as sharing from './js/sharing.mjs'
+    window.sharing = sharing;
+    window.userdata = userdata;
+
 	(function(){
-		if(window.loadCookie("debug") == true){
+		if(userdata.loadCookie("debug") == true){
 			window.debug = true;
         }
         //load a very minimal set of scripts, just enough to download progress.
@@ -26,9 +28,8 @@
 
             settings.remoteShareCode = shareCode;
             userdata.saveCookie("settings",settings);
-            startSpectating(false,false)
-                .then(()=>window.location.href = "./index.html")
-                .catch(()=>alert("invalid url"));
+            sharing.startSpectating(false,false)
+                .then(()=>window.location.href = "./index.html");
         }
 	}).call(window);
         

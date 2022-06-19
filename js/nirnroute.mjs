@@ -25,6 +25,21 @@ function fallbackIngameImage(eventArgs){
 }
 
 async function init(){
+    //The 'popstate' is so when user clicks "back" to go to prev nirn, it reloads the page correctly
+    window.addEventListener('popstate', ()=>{
+        let windowParams = new URLSearchParams(window.location.search);
+        let maybeWindowParams = ["tspId","tsp","tspid"];
+        for(const maybeParam of maybeWindowParams)
+        {
+            if(windowParams.get(maybeParam) != null ){
+                targetNirnroot = parseInt(windowParams.get(maybeParam));
+                break;
+            }
+        }
+        
+        let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+        activateNirnroot(firstNirn.formId);
+    });
     document.getElementById("button_tspNirnroot").checked = true;
     document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
@@ -33,7 +48,9 @@ async function init(){
     const mapContainer = document.getElementById("mapContainer");
     mapContainer.style.width = window.settings.iframeWidth;
     mapContainer.addEventListener('mouseup',(event)=>{
-        console.log("mup");
+        if(window.debug){
+            console.log("mouseup");
+        }
         //we need to convert px to vw.
         let widthInPx = /(\d*)px/.exec(event.target.style.width);
         if(widthInPx?.length > 1){
@@ -55,20 +72,45 @@ async function init(){
     await map.initMap();
     map.setZoomLevel(0.8);
 
-    document.getElementById("nextButton").addEventListener('click', (_evt)=>{
+    const nextButton = document.getElementById("nextButton");
+    const prevButton = document.getElementById("prevButton");
+    nextButton.addEventListener('click', (_evt)=>{
         activateNirnroot(nextNirnroot.cell.formId); 
     });
-    document.getElementById("prevButton").addEventListener('click', (_evt)=>{
+    document.body.addEventListener('keyup', (evt)=>{
+        if(evt.code === "ArrowRight"){
+            nextButton.click();
+        }
+        else if(evt.code === "ArrowLeft"){
+            prevButton.click();
+        }
+    });
+    prevButton.addEventListener('click', (_evt)=>{
         activateNirnroot(prevNirnroot.cell.formId); 
     });
+    document.getElementById("nirnIdField").addEventListener('change', (_evt)=>{
+        let targetNirnroot = parseInt(_evt.target.value);
+        if(targetNirnroot != null){
+            let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+            activateNirnroot(firstNirn.formId);
+        }
+    });
+
+
     if(window.debug){
         console.log("activating first nirnroot");
     }
     let targetNirnroot = 0;
     let windowParams = new URLSearchParams(window.location.search);
-    if(windowParams.get("tspId") != null){
-        targetNirnroot = parseInt(windowParams.get("tspId"));
+    let maybeWindowParams = ["tspId","tsp","tspid"];
+    for(const maybeParam of maybeWindowParams)
+    {
+        if(windowParams.get(maybeParam) != null ){
+            targetNirnroot = parseInt(windowParams.get(maybeParam));
+            break;
+        }
     }
+    
     let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
     activateNirnroot(firstNirn.formId);
 }
@@ -102,16 +144,22 @@ function activateNirnroot(nirnFormId){
         prevNirnroot = findPrevNirnroot(thisNirnroot);
         nextNirnroot = findNextNirnroot(thisNirnroot);
     }
+    const thisTspId = thisNirnroot.cell.tspId;
     
     if(window.debug){
-        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisNirnroot.cell.tspId);
+        console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisTspId);
     }
     if(window.debug){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
+    const newUrl = window.location.toString().split("?")[0] + "?tspId="+thisTspId;
+    window.history.pushState(null, "", newUrl);
+    document.title = "Nirnroute — Nirnroot #"+thisTspId;
+
+    document.getElementById("nirnIdField").value = thisTspId;
 
     const nameElement = document.getElementById("nirnName");
-    nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
+    nameElement.innerText = "Nirnroot "+thisTspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
     if(thisNirnroot.cell.trivia != null){
         nameElement.title = thisNirnroot.cell.trivia
     }
@@ -128,6 +176,7 @@ function activateNirnroot(nirnFormId){
 
     const nextToElement = document.getElementById("closeTo");
     nextToElement.innerText = getFastTravelInstructions(thisNirnroot);
+
     
     map.zoomToFormId(nirnFormId);
     map.draw();
@@ -159,8 +208,14 @@ function getFastTravelInstructions(thisNirnroot){
     }
     else{
         const nearestPlace = findCell(thisNirnroot.cell.fastTravelId, "location");
-        const direction = getFastTravelDirection(thisNirnroot, nearestPlace);
-        return `Fast travel to ${nearestPlace.name} and head ${direction}`;
+        var direction;
+        if(nearestPlace == undefined){
+            direction = "undefined";
+        }
+        else{
+            direction = getFastTravelDirection(thisNirnroot, nearestPlace);
+        }
+        return `Fast travel to ${nearestPlace?.name} and head ${direction}`;
     }
 }
 

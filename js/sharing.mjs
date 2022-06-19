@@ -1,5 +1,5 @@
 // ==============
-// sharing stuff
+// Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
@@ -166,6 +166,7 @@ function stopSpectating(){
 	//check for function before loading because /share.html spectates, but immediately redirects
 	// instead of updating progress.
 	if(loadProgressFromCookie){
+		//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
 		loadProgressFromCookie();
 	}
 }
@@ -175,7 +176,7 @@ var autoUpdateListener = null;
 var autoUpdateIntervalId = null;
 
 /**
- * Update data from spectating, or stop spectating if remote code is now blank.
+ * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressLoad" event when download is complete.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
@@ -225,6 +226,17 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				}
 				document.dispatchEvent(new Event("progressLoad"));
 			}
+		}).catch((e)=>{
+			if(e.status == 400){
+				alert("Share code '"+settings.remoteShareCode+"' isn't in correct format. It should be 6 characters.");
+			}
+			if(e.status == 404){
+				alert("Share code '"+settings.remoteShareCode+"' doesn't exist. Did you mistype it?");
+			}
+			else{
+				alert("invalid url: "+e.responseURL+" retuned with status "+e.status);
+			}
+			stopSpectating();
 		});
 	}
 }
@@ -233,15 +245,12 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
  * Start (or stop) spectating by viewing a remote url.
  * @param {Event} event onchange update.
  */
-function setRemoteUrl(event){
-	{
-		initShareSettings();
-		settings.remoteShareCode = event.target.value;
-		saveCookie("settings",settings);
-		startSpectating()
-			.catch((e)=>
-			alert("invalid url: "+e));
-	}
+function setRemoteUrl(event)
+{
+	initShareSettings();
+	settings.remoteShareCode = event.target.value;
+	saveCookie("settings",settings);
+	startSpectating();
 }
 
 
