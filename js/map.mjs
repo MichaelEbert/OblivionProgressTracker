@@ -351,6 +351,12 @@ function initListeners(){
     let isDown = false;
     let doubleClickStartTime = 0;
     let doubleClickMouseDownLoc = new Point(null,null);
+    // prevent double click from highlighting
+    viewport.addEventListener("mousedown",function(event){
+        if(event.detail > 1){
+            event.preventDefault();
+        }
+    });
     viewport.addEventListener("pointerdown", function(event){
         //check double click stuff
         if(Date.now() - clickStartTime < DOUBLE_CLICK_LIMIT_MS){
