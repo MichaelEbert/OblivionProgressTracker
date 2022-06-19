@@ -54,6 +54,32 @@ img{
 	font-weight: bold;
 }
 
+/*needs the ol li so its more specific than the generic second-level list style 'li ol li'*/
+.dialogue li{
+	font-style: italic;
+	list-style-type: '↳ ';
+}
+
+.dialogue li:nth-child(n+2){
+	margin-left: 1em;
+}
+
+.dialogue li:nth-child(n+3){
+	margin-left: 2em;
+}
+
+.dialogue li:nth-child(n+4){
+	margin-left: 3em;
+}
+
+.dialogue li:nth-child(n+5){
+	margin-left: 4em;
+}
+
+.dialogue li:nth-child(n+6){
+	margin-left: 5em;
+}
+
 .item{
 	margin: 0em;
 	padding: 0em;
