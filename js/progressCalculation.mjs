@@ -14,12 +14,6 @@ import { totalweight, jsondata, findCell, runOnTree, progressClasses } from './o
 import {saveProgressToCookie} from './userdata.mjs';
 
 /**
- * Is progress dirty and has to be recalulated and disregard cache?
- */
-var progressIsDirty = false;
-
-var progressCalculator = new ProgressCalculator();
-/**
  * Update save progress for the specified element.
  * @param {*} formId formid of the cell to update save data for.
  * @param {Element} inputElement HTML input element with the new value 
@@ -108,79 +102,53 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				return;
 		}
 	}
+	//mark cached value as invalid
+	let cellObj = cell;
+	while(cellObj != null){
+		cellObj.cache = null;
+		cellObj = cellObj.parent;
+	}
 
-	// //mark cached value as invalid
-
-	// if(window.debug)
-	// {
-	// 	//check null stuff
-	// 	let cellObj = cell;
-	// 	while(cellObj != null){
-	// 		if(cellObj.cache != null){
-	// 			console.error("CellObj has non-null cache after update! this is a bug.");
-	// 			console.error(cellObj);
-	// 			break;
-	// 		}
-	// 		cellObj = cellObj.parent;
-	// 	}
-	// }
-
-	let valueChanged = false;
-
-	if(cell.id != null && !skipSave){
-		//now we get the save data for this.
-		let oldval = savedata[cell.hive.classname][cell.id];
-		if(valueAsCorrectType == oldval){
-			//same as old value. Do nothing.
-			valueChanged = false;
-		}
-		else if(valueAsCorrectType === undefined){
-			if(savedata[cell.hive.classname][cell.id] !== undefined){
-				//delete this element
-				delete savedata[cell.hive.classname][cell.id];
-				valueChanged = true;
+	if(cell.id == null){
+		//we don't need to save this
+		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+			for(const fn of cell.onUpdate){
+				fn(cell, valueAsCorrectType);
 			}
 		}
-		else{
-			//value has changed. Update save data accordingly.
-			savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
-			valueChanged = true;
-		}
-	}
-		
-	//do post-update stuff here.
-	if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
-		for(const fn of cell.onUpdate){
-			fn(cell, valueAsCorrectType);
-		}
-	}
-
-	// update progress percent.
-	if(skipSave){
-		progressIsDirty = true;
+		return true;
 	}
 	else{
-		if(progressIsDirty){
-			//TODO: cleanCalculate()
-		}
-		else{
-			//and then update parent.
-			let cellObj = cell;
-			while(cellObj != null && cellObj.cache != null){
-				//clear this cache...
-				cellObj.cache = null;
-				//so this will recalculate cache
-				progressCalculator.sumCompletionItems(cellObj);
+		if(!skipSave){
+			//now we get the save data for this.
+			let oldval = savedata[cell.hive.classname][cell.id];
+			if(valueAsCorrectType == oldval){
+				//do nothing.
+				return false;
+			}
+
+			if(valueAsCorrectType === undefined){
+				if(savedata[cell.hive.classname][cell.id] !== undefined){
+					//delete this element
+					delete savedata[cell.hive.classname][cell.id];
+				}
+			}
+			else{
+				savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
 			}
 		}
+		
+		//do post-update stuff here.
+		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
+			for(const fn of cell.onUpdate){
+				fn(cell, valueAsCorrectType);
+			}
+		}
+		if(!skipSave){
+			saveProgressToCookie();
+		}
+		return true;
 	}
-	
-
-
-	if(cell.id != null && !skipSave){
-		saveProgressToCookie();
-	}
-	return valueChanged;
 }
 
 /**
@@ -203,17 +171,10 @@ function ProgressCalculator(){
 	this.hivesToCalculate = [];
 }
 
-/**
- * Calculate user progress.
- * @param progressClasses List of classes that have progress
- * @param jsondata root node that contains hives
- */
 ProgressCalculator.prototype.calculateProgress = function(progressClasses, jsondata){
-	//start by adding all hives to the list of "hives to sum up"
 	this.hivesToCalculate = progressClasses.map(x=>jsondata[x.name]);
 	this.hiveResults = new Map();
-	const MAX_HIVES = 16;//prevent endless recursion
-
+	var MAX_HIVES = 16;//prevent endless recursion
 	let i = 0;
 	for(i = 0; (i < this.hivesToCalculate.length && i < MAX_HIVES); i+=1){
 		const thisHive = this.hivesToCalculate[i];
@@ -251,11 +212,9 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 	const weight = subtotalJsonNode.weight;
 	//optimization so we're not looking for progress in nodes that don't have it (eg saves)
 	if(weight == 0){
-		subtotalJsonNode.cache = [0,0];
 		return 0;
 	}
 	const [items,total] = this.sumCompletionItems(subtotalJsonNode);
-	
 	
 	//try to find subtotals
 	//this may fail if we have multiple score nodes from different hives with the same name.
@@ -264,11 +223,8 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 		nodeInternalName = subtotalJsonNode.name;
 	}
 	if(nodeInternalName == null){
-		if(window.debug){
-			console.warn("score node has no name");
-			debugger;
-		}
-		nodeInternalName = "__UNNAMED__"
+		console.warn("score node has no name");
+		debugger;
 	}
 	const overviewId = "overview_"+nodeInternalName.replaceAll(" ","_").toLowerCase();
 	const maybeItem = document.getElementById(overviewId);
@@ -283,7 +239,7 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 
 /**
  * Recursively sum completion items for all cells in this tree.
- * @param {Cell} cell tree root
+ * @param {object} cell tree root
  * @returns {[Number,Number]} an array of [completed items, total items] for this tree.
  */
 ProgressCalculator.prototype.sumCompletionItems = function(cell){
@@ -309,6 +265,14 @@ ProgressCalculator.prototype.sumCompletionItems = function(cell){
 		}
 		else{
 			result = [completed,total];
+		}
+		//we only recalculate the value of intermediate nodes here, so run all their onUpdate() stuff here.
+		if(cell.onUpdate != null && cell.onUpdate.length > 0){
+			for(const fn of cell.onUpdate){
+				fn(cell, completed, total);
+			}
+			//this whole thing is a class because of THIS FUCKER
+			this.hivesToCalculate.push(cell.hive);
 		}
 	}
 	cell.cache = result;
