@@ -152,13 +152,22 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 }
 
 /**
- * Recalculate progress
+ * Recalculate progress. Also updates UI.
  * @returns {Number} progress
  */
 function recalculateProgress(){
 	//we have to recalculate hives that are updated because of refs to other hives.
 	var calculator = new ProgressCalculator();
-	return calculator.calculateProgress(progressClasses, jsondata);
+	const percentCompleteSoFar = calculator.calculateProgress(progressClasses, jsondata);
+
+	let progress = (percentCompleteSoFar * 100).toFixed(2);
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+		element.innerText = progress.toString();
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
+		}
+	});
+	return percentCompleteSoFar;
 }
 
 function sumCompletionItems(cell){

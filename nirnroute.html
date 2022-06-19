@@ -5,9 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<link rel="stylesheet" type="text/css" href="nirnroute.css"/>
-	<script src="obliviondata.js"></script>
-	<script src="base64ArrayBuffer.js"></script>
-	<script src="sharing.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Nirnroute — Interactive Oblivion Checklist</title>
 </head>
@@ -117,7 +114,8 @@
 	import * as map from './js/map.mjs';
 	import * as point from './js/map/point.mjs';
 	import * as nirn from './js/nirnroute.mjs';
-	
+	import * as sharing from './js/sharing.mjs';
+
 	if(userdata.loadCookie("debug") == true){
 		window.debug = true;
 	}

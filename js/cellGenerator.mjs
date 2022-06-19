@@ -35,8 +35,9 @@ const CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME = 0x2000; //should name link open in i
 const CELL_FORMAT_NAMELINK_SHOW_CLASSNAME = 0x4000; //should name show class in front of it?
 const CELL_FORMAT_NAMELINK_FORCE_MINIPAGE = 0x8000; //force minipage even for npcs without a refid?
 const CELL_FORMAT_NAMELINK_LINK_MAP      = 0x10000; //link map instead of minipage
+
 /**
- * Guide formatting items
+ * default formatting for items on guide page
  */
 const CELL_FORMAT_GUIDE = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_USE_SPAN
 | CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME | CELL_FORMAT_NAMELINK_SHOW_CLASSNAME
@@ -48,7 +49,7 @@ const CELL_FORMAT_GUIDE = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_USE_SPAN
 const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT_SHOW_NOTES | CELL_FORMAT_SHOW_EXTRACOLUMN;
 
 /**
- * checklist formatting items
+ * default formatting for items on checklist page
  */
 const CELL_FORMAT_CHECKLIST = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_SET_ROW_ONCLICK | CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS;
 
@@ -149,9 +150,9 @@ let lastCell_format = null;
 let lastCell_classname = null;
 
 /**
- * 
- * @param cell 
- * @param classname 
+ * Create a html element(with checkbox, name, etc) for the specified cell with the specified format.
+ * @param cell obliviondata cell to create the html element for
+ * @param extraColumnName 
  * @param format if format == 0, then regular cell. format == 1 then 
  */
 function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){

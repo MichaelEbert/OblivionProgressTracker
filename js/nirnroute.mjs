@@ -33,7 +33,9 @@ async function init(){
     const mapContainer = document.getElementById("mapContainer");
     mapContainer.style.width = window.settings.iframeWidth;
     mapContainer.addEventListener('mouseup',(event)=>{
-        console.log("mup");
+        if(window.debug){
+            console.log("mouseup");
+        }
         //we need to convert px to vw.
         let widthInPx = /(\d*)px/.exec(event.target.style.width);
         if(widthInPx?.length > 1){
