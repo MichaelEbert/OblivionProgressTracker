@@ -84,7 +84,10 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
 			promises.push(generatePromiseFunc(basedir,klass)());
 		}
 	}
-	return Promise.allSettled(promises).then(()=>computeTotalWeight());
+	return Promise.allSettled(promises).then(()=>{
+		computeTotalWeight();
+		window.jsondata = jsondata;
+	});
 }
 
 /**
