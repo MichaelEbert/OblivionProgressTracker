@@ -3,7 +3,7 @@
 // Functions that generate the page
 //===========================
 function init(){
-	document.addEventListener("progressChanged",updateUIFromSaveData);
+	document.addEventListener("progressLoad",updateUIFromSaveData);
 	obliviondata.loadJsonData().then(()=>{
 		userdata.loadSettingsFromCookie();
 		//populate sections with json data.
