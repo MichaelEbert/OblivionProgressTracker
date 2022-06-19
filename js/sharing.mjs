@@ -226,6 +226,17 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				}
 				document.dispatchEvent(new Event("progressLoad"));
 			}
+		}).catch((e)=>{
+			if(e.status == 400){
+				alert("Share code '"+settings.remoteShareCode+"' isn't in correct format. It should be 6 characters.");
+			}
+			if(e.status == 404){
+				alert("Share code '"+settings.remoteShareCode+"' doesn't exist. Did you mistype it?");
+			}
+			else{
+				alert("invalid url: "+e.responseURL+" retuned with status "+e.status);
+			}
+			stopSpectating();
 		});
 	}
 }
@@ -234,15 +245,12 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
  * Start (or stop) spectating by viewing a remote url.
  * @param {Event} event onchange update.
  */
-function setRemoteUrl(event){
-	{
-		initShareSettings();
-		settings.remoteShareCode = event.target.value;
-		saveCookie("settings",settings);
-		startSpectating()
-			.catch((e)=>
-			alert("invalid url: "+e));
-	}
+function setRemoteUrl(event)
+{
+	initShareSettings();
+	settings.remoteShareCode = event.target.value;
+	saveCookie("settings",settings);
+	startSpectating();
 }
 
 
