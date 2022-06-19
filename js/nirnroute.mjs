@@ -208,8 +208,14 @@ function getFastTravelInstructions(thisNirnroot){
     }
     else{
         const nearestPlace = findCell(thisNirnroot.cell.fastTravelId, "location");
-        const direction = getFastTravelDirection(thisNirnroot, nearestPlace);
-        return `Fast travel to ${nearestPlace.name} and head ${direction}`;
+        var direction;
+        if(nearestPlace == undefined){
+            direction = "undefined";
+        }
+        else{
+            direction = getFastTravelDirection(thisNirnroot, nearestPlace);
+        }
+        return `Fast travel to ${nearestPlace?.name} and head ${direction}`;
     }
 }
 
