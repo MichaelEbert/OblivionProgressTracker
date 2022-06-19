@@ -136,7 +136,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     }
 
     if(this.currentLocation != null){
-        this.currentLocation.draw(ctx, null, this.currentLocation);
+        this.currentLocation.draw(ctx, mouseLoc, this.currentLocation);
     }
 
     //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
@@ -180,6 +180,12 @@ Overlay.prototype.click = function(clickLoc){
                 return true;
             }
         }
+    }
+    //allow deselecting element even if nothing else is enabled
+    if(this.currentLocation?.contains(clickLoc))
+    {
+        this.currentLocation = null;
+        return true;
     }
     return false;
 }
