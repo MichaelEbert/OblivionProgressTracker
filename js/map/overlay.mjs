@@ -90,7 +90,9 @@ Overlay.prototype.recalculateBoundingBox = function(){
     this.tsp_locations.recalculate();
     this.tsp_nirnroots.recalculate();
 }
-
+/**
+ * location currently hovered over
+ */
 var hloc = null;
 /**
  * Draw icons on the map
@@ -111,7 +113,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
         for(const locIcon of this.locations){
             //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
-            locIcon.draw(ctx, mouseLoc, this.currentLocation);
+            locIcon.draw(ctx, null, this.currentLocation);
             if(hloc == null && locIcon.contains(mouseLoc)){
                 hloc = locIcon;
             }
@@ -124,7 +126,7 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
 
     if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
         for(const nirnIcon of this.nirnroots){
-            nirnIcon.draw(ctx, mouseLoc, this.currentLocation);
+            nirnIcon.draw(ctx, null, this.currentLocation);
             if(hloc == null && nirnIcon.contains(mouseLoc)){
                 hloc = nirnIcon;
             }
@@ -136,7 +138,11 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
     }
 
     if(this.currentLocation != null){
-        this.currentLocation.draw(ctx, mouseLoc, this.currentLocation);
+        this.currentLocation.draw(ctx, null, this.currentLocation);
+        //unlike all the others, always default to hloc == currentLocation.
+        if(this.currentLocation.contains(mouseLoc)){
+            hloc = this.currentLocation;
+        }
     }
 
     //last icon in array was just drawn, so redraw hovered icon so it appears on top of everything else.
