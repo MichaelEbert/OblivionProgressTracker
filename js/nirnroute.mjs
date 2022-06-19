@@ -25,6 +25,21 @@ function fallbackIngameImage(eventArgs){
 }
 
 async function init(){
+    //The 'popstate' is so when user clicks "back" to go to prev nirn, it reloads the page correctly
+    window.addEventListener('popstate', ()=>{
+        let windowParams = new URLSearchParams(window.location.search);
+        let maybeWindowParams = ["tspId","tsp","tspid"];
+        for(const maybeParam of maybeWindowParams)
+        {
+            if(windowParams.get(maybeParam) != null ){
+                targetNirnroot = parseInt(windowParams.get(maybeParam));
+                break;
+            }
+        }
+        
+        let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
+        activateNirnroot(firstNirn.formId);
+    });
     document.getElementById("button_tspNirnroot").checked = true;
     document.getElementById("button_Nirnroot").checked = true;
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
@@ -137,6 +152,9 @@ function activateNirnroot(nirnFormId){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
 
+    const newUrl = window.location.toString().split("?")[0] + "?tspId="+thisNirnroot.cell.tspId;
+    window.history.pushState(null, "", newUrl);
+    document.title = "Nirnroute — Nirnroot #"+thisNirnroot.cell.tspId;
 
     const nameElement = document.getElementById("nirnName");
     nameElement.innerText = "Nirnroot "+thisNirnroot.cell.tspId+" “"+(thisNirnroot.cell.name??thisNirnroot.cell.formId)+"”";
