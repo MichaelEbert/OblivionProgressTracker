@@ -287,8 +287,8 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 
 /**
  * Find the cell with the given formID.
- * @param {} formId 
- * @param {*} classHint optional class name to search.
+ * @param {String} formId 
+ * @param {String} classHint optional class name to search.
  */
 function findCell(formId, classHint = null){
 	let classesToSearch;
