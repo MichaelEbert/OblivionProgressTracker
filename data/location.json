@@ -83,8 +83,7 @@
 		{"name":"Marsh-Punk Camp","x":157524,"y":-70683,"formId":"0x000175ED","icon":"Camp"},
 		{"name":"Seran Camp","x":168931,"y":-70622,"formId":"0x0017CF9D","icon":"Camp"},
 		{"name":"Nayon Camp","x":173366,"y":-18930,"formId":"0x000175DD","icon":"Camp"},
-		{"name":"Garnet Camp","x":181586,"y":-51958,"formId":"0x000175E7","icon":"Camp"},
-		{"name":"Hrota Cave","x":-194969,"y":-18042,"formId":"0x0001570B","icon":"Camp"}
+		{"name":"Garnet Camp","x":181586,"y":-51958,"formId":"0x000175E7","icon":"Camp"}
 	]},
 	{"name":"Mines","elements":[
 		{"name":"Bleak Mine","x":-189161,"y":2310,"formId":"0x0001752B","icon":"Mine"},
@@ -426,6 +425,7 @@
 		{"name":"Redwater Slough","x":171056,"y":-57810,"formId":"0x0017C44A","icon":"Cave"},
 		{"name":"Lost Boy Cavern","x":172712,"y":-13537,"formId":"0x00015700","icon":"Cave"},
 		{"name":"Arrowshaft Cavern","x":174756,"y":3738,"formId":"0x00015A2F","icon":"Cave"},
-		{"name":"Leafrot Cave","x":178816,"y":-46692,"formId":"0x00015245","icon":"Cave"}
+		{"name":"Leafrot Cave","x":178816,"y":-46692,"formId":"0x00015245","icon":"Cave"},
+		{"name":"Hrota Cave","x":-194969,"y":-18042,"formId":"0x0001570B","icon":"Cave"}
 	]}
 ]}
