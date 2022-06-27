@@ -8,10 +8,13 @@ import * as map from './map.mjs'
 import { jsondata, findOnTree, findCell } from './obliviondata.mjs';
 import { saveCookie } from './userdata.mjs';
 
-// ok first, lets just do a dual page of map and images.
 var prevNirnroot;
 var thisNirnroot;
 var nextNirnroot;
+
+/**
+ * Debugging function to get prev, this and next nirnroot.
+ */
 function getNirnroots(){
     return [prevNirnroot,thisNirnroot,nextNirnroot];
 }
@@ -23,8 +26,7 @@ function fallbackIngameImage(eventArgs){
 		loadImageTries += 1;
 	}
 }
-
-async function init(){
+function initEventListeners(){
     //The 'popstate' is so when user clicks "back" to go to prev nirn, it reloads the page correctly
     window.addEventListener('popstate', ()=>{
         let windowParams = new URLSearchParams(window.location.search);
@@ -40,37 +42,6 @@ async function init(){
         let firstNirn = findOnTree(jsondata.nirnroot, (x=>x.tspId == targetNirnroot));
         activateNirnroot(firstNirn.formId);
     });
-    document.getElementById("button_tspNirnroot").checked = true;
-    document.getElementById("button_Nirnroot").checked = true;
-    document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
-    document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
-
-    const mapContainer = document.getElementById("mapContainer");
-    mapContainer.style.width = window.settings.iframeWidth;
-    mapContainer.addEventListener('mouseup',(event)=>{
-        if(window.debug){
-            console.log("mouseup");
-        }
-        //we need to convert px to vw.
-        let widthInPx = /(\d*)px/.exec(event.target.style.width);
-        if(widthInPx?.length > 1){
-            const newWidthPx = parseInt(widthInPx[1]);
-            const documentWidthPx = window.innerWidth;
-            let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
-            event.target.style.width = newWidthEm;
-            if(settings.iframeWidth != newWidthEm){
-                settings.iframeWidth = newWidthEm;
-                saveCookie("settings",settings);
-            }
-        }
-    });
-    
-    if(window.debug){
-        window.getNirnroots = getNirnroots;
-    }    
-
-    await map.initMap();
-    map.setZoomLevel(0.8);
 
     const nextButton = document.getElementById("nextButton");
     const prevButton = document.getElementById("prevButton");
@@ -96,10 +67,48 @@ async function init(){
         }
     });
 
+    document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
+    document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
+
+    const mapContainer = document.getElementById("mapContainer");
+    mapContainer.style.width = window.settings.iframeWidth;
+    mapContainer.addEventListener('mouseup',(event)=>{
+        if(window.debug){
+            console.log("mouseup");
+        }
+        //we need to convert px to vw.
+        let widthInPx = /(\d*)px/.exec(event.target.style.width);
+        if(widthInPx?.length > 1){
+            const newWidthPx = parseInt(widthInPx[1]);
+            const documentWidthPx = window.innerWidth;
+            let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
+            event.target.style.width = newWidthEm;
+            if(settings.iframeWidth != newWidthEm){
+                settings.iframeWidth = newWidthEm;
+                saveCookie("settings",settings);
+            }
+        }
+    });
+}
+
+
+async function init(){
+    initEventListeners();
+    
+    if(window.debug){
+        window.getNirnroots = getNirnroots;
+    }    
+
+    //set "display nirns" and "display nirn TSP" on
+    document.getElementById("button_tspNirnroot").checked = true;
+    document.getElementById("button_Nirnroot").checked = true;
+    await map.initMap();
+    map.setZoomLevel(0.8);
 
     if(window.debug){
         console.log("activating first nirnroot");
     }
+
     let targetNirnroot = 0;
     let windowParams = new URLSearchParams(window.location.search);
     let maybeWindowParams = ["tspId","tsp","tspid"];
@@ -148,8 +157,6 @@ function activateNirnroot(nirnFormId){
     
     if(window.debug){
         console.log("thisNirnroot is now "+thisNirnroot.cell.formId+" with tspid "+thisTspId);
-    }
-    if(window.debug){
         console.log("nextNirnroot is now "+nextNirnroot.cell.formId+" with tspid "+nextNirnroot.cell.tspId);
     }
     const newUrl = window.location.toString().split("?")[0] + "?tspId="+thisTspId;
@@ -182,6 +189,11 @@ function activateNirnroot(nirnFormId){
     map.draw();
 }
 
+/**
+ * Find the nirnroot before the current one in the TSP path.
+ * @param thisNirnroot 
+ * @returns {MapObject} The nirnroot before this one in the TSP path.
+ */
 function findNextNirnroot(thisNirnroot){
     let thisTspId = parseInt(thisNirnroot.cell.tspId);
     let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == thisTspId+1));
@@ -192,6 +204,11 @@ function findNextNirnroot(thisNirnroot){
     return nextOne;
 }
 
+/**
+ * Find the nirnroot after the current one in the TSP path.
+ * @param thisNirnroot 
+ * @returns {MapObject} The nirnroot after this one in the TSP path.
+ */
 function findPrevNirnroot(thisNirnroot){
     let thisTspId = parseInt(thisNirnroot.cell.tspId);
     let nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == thisTspId-1));
@@ -202,6 +219,13 @@ function findPrevNirnroot(thisNirnroot){
     return prevOne;
 }
 
+/**
+ * Obtain text directions that can be used to fast travel to the target nirnroot.
+ *  If it is faster to travel from the previous nirnroot (aka no nearest fast travel location specified),
+ * then returns an empty string.
+ * @param thisNirnroot 
+ * @returns {string} Directions in text format
+ */
 function getFastTravelInstructions(thisNirnroot){
     if(thisNirnroot.cell.fastTravelId == null){
         return "";
@@ -213,15 +237,20 @@ function getFastTravelInstructions(thisNirnroot){
             direction = "undefined";
         }
         else{
-            direction = getFastTravelDirection(thisNirnroot, nearestPlace);
+            direction = getFastTravelDirection(nearestPlace, thisNirnroot.cell);
         }
         return `Fast travel to ${nearestPlace?.name} and head ${direction}`;
     }
 }
 
-function getFastTravelDirection(thisNirnroot, nearestPlace){
-    const travelX = thisNirnroot.cell.x - nearestPlace.x;
-    const travelY = thisNirnroot.cell.y - nearestPlace.y;
+/**
+ * @param sourcePlace source location to travel from
+ * @param targetPlace target location to travel to
+ * @returns {String} Which of the 8 cardinal or ordinal directions to travel from the sourcePlace to reach the targetPlace.
+ */
+function getFastTravelDirection(sourcePlace, targetPlace){
+    const travelX = targetPlace.x - sourcePlace.x;
+    const travelY = targetPlace.y - sourcePlace.y;
 
     const travelAngle = Math.atan2(travelY, travelX);
     const π = Math.PI;
