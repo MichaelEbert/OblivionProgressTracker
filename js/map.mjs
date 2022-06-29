@@ -31,6 +31,7 @@ import { saveCookie } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
+import { OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -168,7 +169,7 @@ async function initMap(){
 
 function drawFrame(){
     drawBaseMap();
-    overlay.draw(ctx, zoomLevel, lastMouseLoc);
+    overlay.draw(ctx, lastMouseLoc, zoomLevel);
 }
 
 /**
@@ -222,10 +223,10 @@ function zoomToFormId(formid){
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
         overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-        overlay.currentLocation = overlay.nirnroots.find(x=>x.cell == targetCell);
+        overlay.currentLocation = overlay.nirnroots.icons.find(x=>x.cell == targetCell);
     }
     else{
-        overlay.currentLocation = overlay.locations.find(x=>x.cell == targetCell);
+        overlay.currentLocation = overlay.locations.icons.find(x=>x.cell == targetCell);
     }
     centerMap(worldSpaceToMapSpace(coords));
 }
@@ -292,6 +293,7 @@ async function initImgs(){
             "Check",
             "X",
             "POI",
+            "Wayshrine",
             "Overlay_Fixed",
             "Overlay_No_Reroll",
             "Overlay_Two_Fame"
@@ -438,6 +440,9 @@ function initListeners(){
         }
         if(button_nirnroot.checked){
             activeLayers |= OVERLAY_LAYER_NIRNROOTS;
+        }
+        if(button_wayshrine.checked){
+            activeLayers |= OVERLAY_LAYER_WAYSHRINES;
         }
         if(button_tspNone.checked){
             activeTsp = 0;
@@ -586,6 +591,7 @@ function iconSwitch(Input){
         case "Settlement": return icons.Settlement;
         case "Shrine": return icons.Shrine;
         case "Nirnroot": return icons.Nirnroot;
+        case "Wayshrine": return icons.Wayshrine;
         case "POI": return icons.POI;
             
         default: 

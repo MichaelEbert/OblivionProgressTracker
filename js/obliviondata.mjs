@@ -59,6 +59,7 @@ const classes = [
 	new JsonClass("location",true, true),
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
+	new JsonClass("wayshrine",false),
 	//used in class reset calculator only
 	new JsonClass("race", false),
 	new JsonClass("birthsign", false)
