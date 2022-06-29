@@ -1,17 +1,19 @@
 "use strict"
 
-export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS };
+export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES };
 
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
 import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPath.mjs";
+import { OverlayLayer } from "./overlayLayer.mjs"
 import { runOnTree, jsondata } from "../obliviondata.mjs";
 import { findCell } from "../obliviondata.mjs";
 
 const OVERLAY_LAYER_NONE = 0x0;
 const OVERLAY_LAYER_LOCATIONS = 0x1;
 const OVERLAY_LAYER_NIRNROOTS = 0x2;
+const OVERLAY_LAYER_WAYSHRINES = 0x4;
 
 /*********************************
  * OVERLAY FUNCTIONS
@@ -19,9 +21,9 @@ const OVERLAY_LAYER_NIRNROOTS = 0x2;
  *********************************/
 function Overlay(){
     this.locations = [];
-    this.tsp_locations = [];
     this.nirnroots = [];
-    this.tsp_nirnroots = [];
+    this.wayshrines = [];
+    this.layers = [];
     this.lastZoomLevel = undefined;
     this.currentLocation = null;
     this.activeLayers = OVERLAY_LAYER_NONE;
@@ -29,9 +31,11 @@ function Overlay(){
     this.setActiveLayers(OVERLAY_LAYER_LOCATIONS);
 
     //the following funcitons need a captured this variable
-    let ovr = this;
     let locTspArr = [];
+    let locationArr = [];
     let nirnTspArr = [];
+    let nirnrootArr = [];
+    let wayshrineArr = [];
     runOnTree(jsondata.location, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
@@ -40,7 +44,7 @@ function Overlay(){
         else{
             newIcon = new MapLocation(loc);
         }
-        ovr.locations.push(newIcon);
+        locationArr.push(newIcon);
         
         if(loc.tspId != null){
             locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
@@ -55,7 +59,7 @@ function Overlay(){
         else{
             newIcon = new MapLocation(loc);
         }
-        ovr.locations.push(newIcon);
+        locationArr.push(newIcon);
         
         if(loc.tspId != null){
             locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
@@ -65,7 +69,7 @@ function Overlay(){
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors"){
             let newIcon = new MapLocation(nirn)
-            ovr.nirnroots.push(newIcon);
+            nirnrootArr.push(newIcon);
 
             if(nirn.tspId != null){
                 if(nirn.fastTravelId != null){
@@ -79,32 +83,34 @@ function Overlay(){
         }
     });
 
+    runOnTree(jsondata.wayshrine, function(loc){
+        let newIcon = new MapLocation(loc);
+        wayshrineArr.push(newIcon);
+    });
+
     //Sort and run intial world->map->screen space calculations for TSP arrays.
-    this.tsp_locations = new TSPPath(locTspArr);
-    this.tsp_nirnroots = new TSPPath(nirnTspArr);
+    this.locations = new OverlayLayer(locationArr, locTspArr);
+    this.nirnroots = new OverlayLayer(nirnrootArr, nirnTspArr);
+    this.wayshrines = new OverlayLayer(wayshrineArr);
+    this.layers.push(this.locations);
+    this.layers.push(this.nirnroots);
+    this.layers.push(this.wayshrines);
 }
 
 Overlay.prototype.recalculateBoundingBox = function(){
-    for(const locIcon of this.locations){
-        locIcon.recalculateBoundingBox();
+    for(const layer of this.layers){
+        layer.recalculateBoundingBox();
     }
-    for(const icon of this.nirnroots){
-        icon.recalculateBoundingBox();
-    }
-    if(this.poi != null){
-        this.poi.recalculateBoundingBox();
-    }
-    this.tsp_locations.recalculate();
-    this.tsp_nirnroots.recalculate();
 }
 /**
  * location currently hovered over
  */
 var hloc = null;
+
 /**
  * Draw icons on the map
  */
-Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
+Overlay.prototype.draw = function(ctx, mouseLoc, zoomLevel){
     if(zoomLevel != this.lastZoomLevel){
         this.lastZoomLevel = zoomLevel;
         this.recalculateBoundingBox();
@@ -114,31 +120,11 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
         hloc = null;
     }
 
-    if(this.activeTsp & OVERLAY_LAYER_LOCATIONS){
-        this.tsp_locations.draw(ctx);
+    let hlocRef = {value:hloc};
+    for(const layer of this.layers){
+        layer.draw(ctx, mouseLoc, this.currentLocation, hlocRef);
     }
-    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
-        for(const locIcon of this.locations){
-            //this call we don't have to include mouseLoc because if mouseLoc is true, we will redraw later.
-            locIcon.draw(ctx, null, this.currentLocation);
-            if(hloc == null && locIcon.contains(mouseLoc)){
-                hloc = locIcon;
-            }
-        }
-    }
-
-    if(this.activeTsp & OVERLAY_LAYER_NIRNROOTS){
-        this.tsp_nirnroots.draw(ctx);
-    }
-
-    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
-        for(const nirnIcon of this.nirnroots){
-            nirnIcon.draw(ctx, null, this.currentLocation);
-            if(hloc == null && nirnIcon.contains(mouseLoc)){
-                hloc = nirnIcon;
-            }
-        }
-    }
+    hloc = hlocRef.value;
 
     if(this.poi != null){
         this.poi.draw(ctx);
@@ -159,41 +145,12 @@ Overlay.prototype.draw = function(ctx, zoomLevel, mouseLoc){
 }
 
 Overlay.prototype.click = function(clickLoc){
-    const clickLocInMapSpace = screenSpaceToMapSpace(clickLoc);
-    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
-        for(const icon of this.locations){
-            if(icon.contains(clickLoc)){
-                if(window.debug){
-                    let name = icon.cell.name ?? icon.cell.formId;
-                    console.log("selected "+name);
-                }
-                if(this.currentLocation == icon){
-                    this.currentLocation = null;
-                }
-                else{
-                    this.currentLocation = icon;
-                }
-                return true;
-            }
+    for(const layer of this.layers){
+        if(layer.click(clickLoc, this)){
+            return true;
         }
     }
-    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
-        for(const icon of this.nirnroots){
-            if(icon.contains(clickLoc)){
-                if(window.debug){
-                    let name = icon.cell.name ?? icon.cell.formId;
-                    console.log("selected "+name);
-                }
-                if(this.currentLocation == icon){
-                    this.currentLocation = null;
-                }
-                else{
-                    this.currentLocation = icon;
-                }
-                return true;
-            }
-        }
-    }
+    
     //allow deselecting element even if nothing else is enabled
     if(this.currentLocation?.contains(clickLoc))
     {
@@ -210,35 +167,34 @@ Overlay.prototype.click = function(clickLoc){
  */
 Overlay.prototype.doubleClick = function(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
-    if(this.activeLayers & OVERLAY_LAYER_LOCATIONS){
-        for(const icon of this.locations){
-            if(icon.contains(clickLoc)){
-                let activated = icon.onClick(clickLoc);
-                if(activated){
-                    return true;
-                }
-            }
-        }
-    }
-    if(this.activeLayers & OVERLAY_LAYER_NIRNROOTS){
-        for(const icon of this.nirnroots){
-            if(icon.contains(clickLoc)){
-                let activated = icon.onClick(clickLoc);
-                if(activated){
-                    return true;
-                }
-            }
+    for(const layer of this.layers){
+        if(layer.doubleClick(clickLoc)){
+            return true;
         }
     }
     return false;
 }
 
-Overlay.prototype.setActiveLayers = function(layers){
+Overlay.prototype.setActiveLayers = function(layers, tsp){
     this.activeLayers = layers;
+
+    if(layers != null){
+        this.locations.visible = ((layers & OVERLAY_LAYER_LOCATIONS) != 0);
+        this.nirnroots.visible = ((layers & OVERLAY_LAYER_NIRNROOTS) != 0);
+        this.wayshrines.visible = ((layers & OVERLAY_LAYER_WAYSHRINES) != 0);
+    }
+    
+    if(tsp != null){
+        this.locations.tspVisible = ((tsp & OVERLAY_LAYER_LOCATIONS) != 0);
+        this.nirnroots.tspVisible = ((tsp & OVERLAY_LAYER_NIRNROOTS) != 0);
+        this.wayshrines.tspVisible = ((tsp & OVERLAY_LAYER_WAYSHRINES) != 0);
+    }
+
 }
 
 Overlay.prototype.addActiveLayer = function(newLayer){
     this.activeLayers |= newLayer;
+    this.setActiveLayers(this.activeLayers);
 }
 
 Overlay.prototype.setActiveTsp = function(tsp){
@@ -247,6 +203,7 @@ Overlay.prototype.setActiveTsp = function(tsp){
         case OVERLAY_LAYER_LOCATIONS:
         case OVERLAY_LAYER_NIRNROOTS:
             this.activeTsp = tsp;
+            this.setActiveLayers(null, tsp);
             break;
         default:
             console.error("unknown TSP selected:" + tsp);

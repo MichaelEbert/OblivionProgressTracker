@@ -79,7 +79,7 @@ TSPPath.prototype.draw = function(ctx){
     let z = mapSpaceToScreenSpace(new Point(this.locations[this.locations.length - 1]));
     
     ctx.beginPath();
-    if(a.lineStyle == TSP_STYLE_DASHED){
+    if(this.locations[0].lineStyle == TSP_STYLE_DASHED){
         ctx.setLineDash([8,12]);
         ctx.strokeStyle = "#4040B0"
     }

@@ -66,9 +66,9 @@
 <div class="contentContainer">
 <div class="mapContainer" id="mapContainer">
 	<div class="mapButtonBar">
-		<label><input type="checkbox" name="icon_selection" id="button_Location" checked title="Shows all Locations that need to be discovered.">Locations</label>
-		<label><input type="checkbox" name="icon_selection" id="button_Nirnroot" title="Shows where all Nirnroot are in the overworld."/>Nirnroots</label>
-		<label><input type="checkbox" name="icon_selection" id="button_Wayshrine" title="Shows where all Wayshrines are in the overworld."/>Wayshrines (TODO)</label>
+		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
+		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
+		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines</label>
 		<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 		<button id="showSettingsButton">Show Settings</button>
 		<button id="helpButton">Help!</button>
@@ -86,6 +86,9 @@
 		<br/>
 		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
 		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
+		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
+		<br/>
+		<button id="resetMapButton">Reset Map</button>
 	</div>
 	<div id="help" style="display:none">
 		<h2>FAQ</h2>

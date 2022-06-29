@@ -15,7 +15,8 @@ export{
 	saveProgressToCookie,
 	loadSettingsFromCookie,
 	loadProgressFromCookie,
-	resetProgress
+	resetProgress,
+	resetProgressForHive
 }
 
 

@@ -59,6 +59,7 @@ const classes = [
 	new JsonClass("location",true, true),
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
+	new JsonClass("wayshrine",false),
 	//used in class reset calculator only
 	new JsonClass("race", false),
 	new JsonClass("birthsign", false)
@@ -287,8 +288,8 @@ function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNu
 
 /**
  * Find the cell with the given formID.
- * @param {} formId 
- * @param {*} classHint optional class name to search.
+ * @param {String} formId 
+ * @param {String} classHint optional class name to search.
  */
 function findCell(formId, classHint = null){
 	let classesToSearch;
