@@ -6,6 +6,7 @@ export{
 
 import * as map from './map.mjs'
 import { jsondata, findOnTree, findCell } from './obliviondata.mjs';
+import { updateChecklistProgress } from './progressCalculation.mjs';
 import { saveCookie } from './userdata.mjs';
 
 var prevNirnroot;
@@ -46,18 +47,21 @@ function initEventListeners(){
     const nextButton = document.getElementById("nextButton");
     const prevButton = document.getElementById("prevButton");
     nextButton.addEventListener('click', (_evt)=>{
+        updateChecklistProgress(null, true, null, thisNirnroot.cell);
         activateNirnroot(nextNirnroot.cell.formId); 
     });
+    prevButton.addEventListener('click', (_evt)=>{
+        updateChecklistProgress(null, false, null, prevNirnroot.cell);
+        activateNirnroot(prevNirnroot.cell.formId); 
+    });
+
     document.body.addEventListener('keyup', (evt)=>{
         if(evt.code === "ArrowRight"){
             nextButton.click();
         }
-        else if(evt.code === "ArrowLeft"){
+        else if(evt.code === "ArrowLeft"){ 
             prevButton.click();
         }
-    });
-    prevButton.addEventListener('click', (_evt)=>{
-        activateNirnroot(prevNirnroot.cell.formId); 
     });
     document.getElementById("nirnIdField").addEventListener('change', (_evt)=>{
         let targetNirnroot = parseInt(_evt.target.value);
