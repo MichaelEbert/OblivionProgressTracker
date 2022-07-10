@@ -261,13 +261,16 @@ function updateIframe(visible){
 	}
 	if(visible){
 		//iframe going from off to on
-		if(document.getElementById("iframeContainer") != null){
-			document.getElementById("iframeContainer").style.display = ""
+		const sidebar = document.getElementById("sidebarContent");
+		if(sidebar == null){
+			console.error("Could not find sidebar.");
 		}
-		else{
-			var iframeContainer = document.createElement("div");
-			iframeContainer.classList.add("resizableContainer");
-			iframeContainer.classList.add("sidebarContainer");
+
+		sidebar.style.display = "";
+		let iframeContainer = document.getElementById("iframeContainer");
+		if(iframeContainer == null){
+			iframeContainer = document.createElement("div");
+			iframeContainer.classList.add("iframeContainer");
 			iframeContainer.id = "iframeContainer";
 
 			var myframe = document.createElement("iframe");
@@ -291,15 +294,15 @@ function updateIframe(visible){
 				}
 				
 			});
-			var sidebar = document.getElementById("sidebar");
+			
 			if(sidebar != null){
-				sidebar.prepend(iframeContainer);
+				sidebar.append(iframeContainer);
 			}
 			else{
 				document.body.prepend(iframeContainer);
 			}
 			if(settings?.iframeWidth){
-				iframeContainer.style.width = settings.iframeWidth;
+				sidebar.style.width = settings.iframeWidth;
 			}
 		}
 		
