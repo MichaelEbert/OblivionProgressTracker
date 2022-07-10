@@ -331,7 +331,7 @@ function updateIframe(visible){
 						img.style = "width:100%;cursor:zoom-in";
 					}
 				});
-			});
+			};
 		}
 		__displayingIframe = true;
 	}
