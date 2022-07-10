@@ -310,6 +310,29 @@ function updateIframe(visible){
 				lnk.target = "myframe";
 			}
 		}
+		if(navigator.userAgent.includes("Chrome") ){
+			//Chrome doesn't resize images in iframes so we get to do it ourselves.
+			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
+			myframe.onLoad = (evt)=>{
+				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
+				if(img == null || img.tagName != "IMG"){
+					return;
+				}
+				//if img is already at max size, leave it be.
+				if(img.naturalWidth < myframe.contentDocument.body.clientWidth){
+					return;
+				}
+				img.style = "width:100%;cursor:zoom-in";
+				img.addEventListener('click', (evt)=>{
+					if(img.style.width == "100%"){
+						img.style = "cursor:zoom-out";
+					}
+					else{
+						img.style = "width:100%;cursor:zoom-in";
+					}
+				});
+			});
+		}
 		__displayingIframe = true;
 	}
 	else{
