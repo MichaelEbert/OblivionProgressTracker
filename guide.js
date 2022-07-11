@@ -261,13 +261,16 @@ function updateIframe(visible){
 	}
 	if(visible){
 		//iframe going from off to on
-		if(document.getElementById("iframeContainer") != null){
-			document.getElementById("iframeContainer").style.display = ""
+		const sidebar = document.getElementById("sidebarContent");
+		if(sidebar == null){
+			console.error("Could not find sidebar.");
 		}
-		else{
-			var iframeContainer = document.createElement("div");
-			iframeContainer.classList.add("resizableContainer");
-			iframeContainer.classList.add("sidebarContainer");
+
+		sidebar.style.display = "";
+		let iframeContainer = document.getElementById("iframeContainer");
+		if(iframeContainer == null){
+			iframeContainer = document.createElement("div");
+			iframeContainer.classList.add("iframeContainer");
 			iframeContainer.id = "iframeContainer";
 
 			var myframe = document.createElement("iframe");
@@ -291,15 +294,15 @@ function updateIframe(visible){
 				}
 				
 			});
-			var sidebar = document.getElementById("sidebar");
+			
 			if(sidebar != null){
-				sidebar.prepend(iframeContainer);
+				sidebar.append(iframeContainer);
 			}
 			else{
 				document.body.prepend(iframeContainer);
 			}
 			if(settings?.iframeWidth){
-				iframeContainer.style.width = settings.iframeWidth;
+				sidebar.style.width = settings.iframeWidth;
 			}
 		}
 		
@@ -309,6 +312,29 @@ function updateIframe(visible){
 			if(lnk.target == "_blank"){
 				lnk.target = "myframe";
 			}
+		}
+		if(navigator.userAgent.includes("Chrome") ){
+			//Chrome doesn't resize images in iframes so we get to do it ourselves.
+			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
+			myframe.onLoad = (evt)=>{
+				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
+				if(img == null || img.tagName != "IMG"){
+					return;
+				}
+				//if img is already at max size, leave it be.
+				if(img.naturalWidth < myframe.contentDocument.body.clientWidth){
+					return;
+				}
+				img.style = "width:100%;cursor:zoom-in";
+				img.addEventListener('click', (evt)=>{
+					if(img.style.width == "100%"){
+						img.style = "cursor:zoom-out";
+					}
+					else{
+						img.style = "width:100%;cursor:zoom-in";
+					}
+				});
+			};
 		}
 		__displayingIframe = true;
 	}

@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html><head>
-	<meta charset="UTF-8"/>
-	<link rel="stylesheet" type="text/css" href="../main.css"/>
-	<link rel="stylesheet" type="text/css" href="../guide.css"/>
-	<script src="../obliviondata.js"></script>
-	<script src="./spellstacking.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Spell stacking</title>
-</head>
-<body>
 <!-- begin topbar-->
 <nav id="topbar" class="topbar">
 	<a href="./index.html" class="topbarSection">Checklist</a>
@@ -66,36 +55,3 @@
 	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
 </nav>
 <!-- end topbar-->
-<br/><br/>
-<div class="h2">Spell stacking</div>
-<p>Calculator used to find your spell magnitude after using the spell stacking strategies illustrated <a href="https://prclive.run/wiki/index.php/Oblivion:Spell_Stacking">here</a>.</p>
-  <p>Spell1 and Spell2 are two unique spells that you alternate casting. Hit refers to when you have an enchanted weapon that applies Weakness to Magicka that you strike between casts.</p>
-
-
-<div class="section" id="stacks">
-  <b> Combo type </b> <br/>
-  <input type="radio" id="s1_s2" name="stackcombo" value="s1_s2" checked="true">
-  <label for="s1_s2">Spell1-Spell2</label><br/>
-  <input type="radio" id="s1_h_s2_h" name="stackcombo" value="s1_h_s2_h">
-  <label for="s1_h_s2_h">Spell1-Hit-Spell2-Hit</label>
-</div>
-
-<div class="section" id="stack_values">
-  <b> Stacking parameters </b>  
-  <p>Count cycles?<input type="checkbox" id="cycles"></input></p>
-  <label for="spellstackcasts" id="stack_label">Number of individual casts:</label>
-  <input type="number" id="spellstackcasts" name="spellstackcasts" min=1 ><br/>
-  <label for="bodies">Number of reflecting bodies:</label>
-    <input type="number" id="bodies" name="bodies" min=1><br/>
-  </div>
-
-<div class="section" id="stack_result">
-  <b>Your spell multiplier:</b><div id="stack_mult_output">1</div><br/>
-  <b>Your aoe spell multplier:</b><p id="stack_aoe_output">1</p>
-</div>
-
-<script>
-	init();
-</script>
-</body>
-</html>
