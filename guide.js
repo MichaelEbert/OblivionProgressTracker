@@ -321,10 +321,6 @@ function updateIframe(visible){
 				if(img == null || img.tagName != "IMG"){
 					return;
 				}
-				//if img is already at max size, leave it be.
-				if(img.naturalWidth < myframe.contentDocument.body.clientWidth){
-					return;
-				}
 				img.style = "width:100%;cursor:zoom-in";
 				img.addEventListener('click', (evt)=>{
 					if(img.style.width == "100%"){
