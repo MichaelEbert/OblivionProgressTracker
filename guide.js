@@ -277,9 +277,22 @@ function updateIframe(visible){
 			myframe.name="myframe";
 			myframe.id="myframe";
 			myframe.classList.add("iframe");
+			myframe.src="toc-3.html";
 			
 			iframeContainer.appendChild(myframe);
-			iframeContainer.addEventListener('mouseup',(event)=>{
+			
+			if(sidebar != null){
+				sidebar.append(iframeContainer);
+			}
+			else{
+				document.body.prepend(iframeContainer);
+			}
+			if(settings?.iframeWidth){
+				sidebar.style.width = settings.iframeWidth;
+			}
+
+			const widthWindow = document.querySelector(".resizableWidthContainer");
+			widthWindow.addEventListener('mouseup',(event)=>{
 				//we need to convert px to vw.
 				let widthInPx = /(\d*)px/.exec(event.target.style.width);
 				if(widthInPx?.length > 1){
@@ -294,16 +307,6 @@ function updateIframe(visible){
 				}
 				
 			});
-			
-			if(sidebar != null){
-				sidebar.append(iframeContainer);
-			}
-			else{
-				document.body.prepend(iframeContainer);
-			}
-			if(settings?.iframeWidth){
-				sidebar.style.width = settings.iframeWidth;
-			}
 		}
 		
 		//update all _blank links to open in iframe
@@ -319,10 +322,6 @@ function updateIframe(visible){
 			myframe.onLoad = (evt)=>{
 				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
 				if(img == null || img.tagName != "IMG"){
-					return;
-				}
-				//if img is already at max size, leave it be.
-				if(img.naturalWidth < myframe.contentDocument.body.clientWidth){
 					return;
 				}
 				img.style = "width:100%;cursor:zoom-in";
@@ -341,7 +340,7 @@ function updateIframe(visible){
 	else{
 		//iframe going from on to off
 		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		document.getElementById("iframeContainer").style.display="none";
+		document.getElementById("sidebarContent").style.display="none";
 
 		//reset links to open in new tab, otherwise it looks like they're doing nothing.
 		var links = document.getElementsByTagName("A");

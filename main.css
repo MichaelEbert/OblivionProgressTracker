@@ -3,11 +3,12 @@
 	--base-color: #E5D9B9;
 	--lighter-color: #FBEFD5;
 	--lightest-color: #FFF5B5;
+	--topbar-height: 2.5em;
 }
 
 html{
 	font-family: serif;
-	scroll-padding-top: 3em;/*below topbar*/
+	scroll-padding-top: var(--topbar-height);/*below topbar*/
 }
 
 body{
@@ -97,15 +98,24 @@ td{
 .contentContainer{
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: 3em; /*save room for topbar*/
+	margin-top: var(--topbar-height); /*save room for topbar*/
 }
 
 .sidebarContent{
 	width: 500px;
-	position: sticky; /*within the .sidebar, this is the "content" container that slides up and down to stay on the page.*/
-	top: 3em; /*save room for topbar*/
 	display: flex;
 	flex-direction: column;
+	height:100%;
+}
+
+/*this can't be applied to the same as resizableContainer because box-sizing causes the resize widget to be below teh screen.*/
+.screenHeight{
+	position: sticky; /*within the .sidebar, this is the "content" container that slides up and down to stay on the page.*/
+	height: 100vh;
+	top: var(--topbar-height); /*start at very top of page (minus topbar)*/
+	/*the following make the height 100vh minus overlap*/
+	box-sizing:border-box;
+	padding-bottom:3.5em;
 }
 
 /*you can't resize iframes, so we use this to give it a nice resizable handle*/
@@ -117,15 +127,6 @@ td{
 .resizableWidthContainer{
 	resize: horizontal;
 	overflow: hidden;
-}
-
-.sidebarContent{
-	width: 500px;
-	position: sticky;
-	top: 3em;
-	display: flex;
-	flex-direction: column;
-	height: 90vh;
 }
 
 .iframeContainer{
@@ -145,6 +146,7 @@ td{
 .main{
 	flex-shrink: 1;
 	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
+	margin-top: var(--topbar-height);
 }
 
 .progress{

@@ -6,7 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
 	<script src="guide.js"></script>
 	<script src="autoread.js"></script>
-	<script src="collapsible.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
 </head>
@@ -72,15 +71,16 @@
 <div class="contentContainer">
 
 <div class="sidebar" id="sidebar">
-	<div id="sidebarContent" class="sidebarContent resizableWidthContainer">
+	<div class="screenHeight">
+	<div id="sidebarContent" class="sidebarContent resizableWidthContainer ">
 		<div id="sidebarLinks">
 			<a href="./toc-3.html" target="_blank">TOC</a>
 			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
 		</div>
-	</div>
+	</div></div>
 </div>
-
-<article id="guide" class="main">
+<!-- margin-top 0 em because contentContainer already has a margin-top.-->
+<article id="guide" class="main" style="margin-top:0em">
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
 <button onclick="initSpeak()" id="enable_speech_btn">Enable speech</button>
@@ -4739,7 +4739,15 @@ Time stops as soon as the Quest Completed message appears for this quest.
 </div>
 </div></div><!-- imperial dragon armor end-->
 You have completed the 100% run!
-
+<!-- BEGIN FOOTER-->
+<footer>
+<hr/>
+<p>Licensed under GPLv3.
+ <a href="https://github.com/MichaelEbert/OblivionProgressTracker">Contribute</a>
+ PRCLive twitch
+ </p>
+</footer>
+<!-- END FOOTER-->
 </article><!-- main end-->
 </div>
 <script type="module">
@@ -4763,7 +4771,7 @@ You have completed the 100% run!
 			window.debug = true;
 		}
 		init();
-		makeCollapsible();
 	}).call(window);
 </script>
+<script src="collapsible.js"></script>
 </body>
