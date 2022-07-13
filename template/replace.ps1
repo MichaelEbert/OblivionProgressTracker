@@ -7,8 +7,9 @@ Param(
 	[Parameter(ValueFromPipeline=$true)][System.IO.FileSystemInfo[]]$files,
 	[string]$beginKey,
 	[string]$endKey,
-	[string]$replacementText)
+	[System.IO.FileSystemInfo]$replacementFile)
 Begin{
+	$replacementText = [System.IO.File]::ReadAllText($replacementFile.fullname);
 	if(!$replacementText.startsWith($beginKey) -or !$replacementText.endsWith($endKey)){
 		throw "replacement must begin and end with the same text used to match on!"
 	}
@@ -31,7 +32,8 @@ Process{
 }
 
 $replacementText = [System.IO.File]::ReadAllText((get-item navbar.html).fullname);
-get-childitem "../" "*.html" -recurse | replaceText -beginKey '<!-- begin topbar-->' -endKey '<!-- end topbar-->' -replacementText $replacementText
+get-childitem "../" "*.html" -recurse | replaceText -beginKey '<!-- begin topbar-->' -endKey '<!-- end topbar-->' -replacementFile (get-item navbar.html)
+get-childitem "../" "*.html" -recurse | replaceText -beginKey '<!-- BEGIN FOOTER-->' -endKey '<!-- END FOOTER-->' -replacementFile (get-item footer.html)
 
 
 	
