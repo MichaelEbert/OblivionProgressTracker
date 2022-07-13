@@ -7,7 +7,6 @@
 	<script src="./external/oblivion-save-reader-v1.3/dist/bundle.savefile.js"></script>
     <script src="./external/oblivion-save-reader-v1.3/dist/bundle.record.js"></script>
 	<script src="./settings.js"></script>
-	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -72,6 +71,7 @@
 <h1>Settings</h1>
 <div class="section">
 <div class="sectionTitle">Preferences</div>
+<div class="collapsibleContent">
 	<div class="category">
 		<div class="categoryTitle">General</div>
 		<!--When you add a setting here, also add it in userdata.mjs so it will be populated for new users.-->
@@ -90,11 +90,12 @@
 		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label><br/>
 		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label><br/>
 	</div>
-	
+</div>
 </div>
 
 <div class="section">
 <div class="sectionTitle">Sharing</div>
+<div class="collapsibleContent">
 	<label><input type="text" id="serverUrl" size="60" class="autoTextSetting"/>Share server path </label><br/>
 	<button id="shareProgressButton" onclick="uploadCurrentSave()">Share Progress*</button> My share URL:<input type="text" id="myShareUrl" size="80" readonly="true"/><br/>
 	<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto upload save on change</label><br/>
@@ -104,11 +105,14 @@
 	<label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto refresh time (seconds)</label><br/>
 
 </div>
+</div>
 <div class="section">
 <div class="sectionTitle">Import/Export</div>
+<div class="collapsibleContent">
 	<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button><br/>
 	<button id="exportProgressButton" onclick="exportProgress()">Save Progress to File</button><br/>
 	<label>Import Progress from file: <input type="file" id="fileinput"/></label><br/>
+</div>
 </div>
 <p style="font-size: small">*By sharing your progress, you agree that your progress, progress url, ip address, and time uploaded may be stored on a server.</p>
 
@@ -143,5 +147,6 @@
 		}
 	});
 </script>
+<script src="collapsible.js"></script>
 </body>
 </html>
