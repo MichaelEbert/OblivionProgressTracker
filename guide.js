@@ -277,6 +277,7 @@ function updateIframe(visible){
 			myframe.name="myframe";
 			myframe.id="myframe";
 			myframe.classList.add("iframe");
+			myframe.src="toc-3.html";
 			
 			iframeContainer.appendChild(myframe);
 			iframeContainer.addEventListener('mouseup',(event)=>{
