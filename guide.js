@@ -280,7 +280,19 @@ function updateIframe(visible){
 			myframe.src="toc-3.html";
 			
 			iframeContainer.appendChild(myframe);
-			iframeContainer.addEventListener('mouseup',(event)=>{
+			
+			if(sidebar != null){
+				sidebar.append(iframeContainer);
+			}
+			else{
+				document.body.prepend(iframeContainer);
+			}
+			if(settings?.iframeWidth){
+				sidebar.style.width = settings.iframeWidth;
+			}
+
+			const widthWindow = document.querySelector(".resizableWidthContainer");
+			widthWindow.addEventListener('mouseup',(event)=>{
 				//we need to convert px to vw.
 				let widthInPx = /(\d*)px/.exec(event.target.style.width);
 				if(widthInPx?.length > 1){
@@ -295,16 +307,6 @@ function updateIframe(visible){
 				}
 				
 			});
-			
-			if(sidebar != null){
-				sidebar.append(iframeContainer);
-			}
-			else{
-				document.body.prepend(iframeContainer);
-			}
-			if(settings?.iframeWidth){
-				sidebar.style.width = settings.iframeWidth;
-			}
 		}
 		
 		//update all _blank links to open in iframe
@@ -338,7 +340,7 @@ function updateIframe(visible){
 	else{
 		//iframe going from on to off
 		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		document.getElementById("iframeContainer").style.display="none";
+		document.getElementById("sidebarContent").style.display="none";
 
 		//reset links to open in new tab, otherwise it looks like they're doing nothing.
 		var links = document.getElementsByTagName("A");
