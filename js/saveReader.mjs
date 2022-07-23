@@ -276,6 +276,7 @@ function UpdateNirnroot(savedata, saveFile)
 }
 
 /**
+ * Import save data from dragged over file
  * @param {DragEvent} e 
  */
 function parseSave(e){
@@ -296,6 +297,10 @@ function parseSave(e){
             return saveFile
         }).then(createUserProgressFile).then((dataFromSave)=>{
             console.log(dataFromSave);
+            //copy save #s over
+            if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
+                dataFromSave.save = window.savedata.save;
+            }
             window.savedata = dataFromSave;
             saveProgressToCookie();
             window.location.reload();
