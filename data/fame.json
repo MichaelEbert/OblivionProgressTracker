@@ -128,7 +128,9 @@
 		,{"formId":"0x0001C0DD","name":"19th fight/hero?"}
 		,{"formId":"0x000176BE","name":"20th fight/elf?"}
 		,{"formId":"0x000176C4","name":"21st fight/yellow team/champion promo?"}
-		,{"formId":"0x0003B1DD","name":"22nd fight/grand champ promo, heavy raiment?","scale":10}
-		,{"formId":"0x0003B1DE","name":"22nd fight/grand champ promo, light raiment?","scale":0}
+		,{"max":10,"elements":[
+			 {"formId":"0x0003B1DD","name":"22nd fight/grand champ promo, (heavy raiment)","scale":10,"notes":"only need 1 of the two 22nd fights"}
+			,{"formId":"0x0003B1DE","name":"22nd fight/grand champ promo, (light raiment)","scale":10,"notes":"only need 1 of the two 22nd fights"}
+		]}
 	]}
 ]}

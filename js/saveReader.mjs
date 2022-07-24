@@ -276,6 +276,7 @@ function UpdateNirnroot(savedata, saveFile)
 }
 
 /**
+ * Import save data from dragged over file
  * @param {DragEvent} e 
  */
 function parseSave(e){
@@ -285,21 +286,28 @@ function parseSave(e){
     if (dt) {
         const files = dt.files;
         for (const file of files)
-        file.arrayBuffer().then((b) => {
-            let ts = Date.now();
-            console.log(`Starting save file parse at ${ts}`);
-            const saveFile = new window.oblivionSaveFile.SaveFile(b);
-            let ts2 = Date.now();
-            console.log(`Initial parse done, elapsed ${ts2 - ts}`);
-            ts = ts2;
-            console.log(saveFile);
-            return saveFile
-        }).then(createUserProgressFile).then((dataFromSave)=>{
-            console.log(dataFromSave);
-            window.savedata = dataFromSave;
-            saveProgressToCookie();
-            window.alert("Imported from save file. Refresh to view.");
-        });
+        {
+            document.body.style = "opacity:0.5"
+            file.arrayBuffer().then((b) => {
+                let ts = Date.now();
+                console.log(`Starting save file parse at ${ts}`);
+                const saveFile = new window.oblivionSaveFile.SaveFile(b);
+                let ts2 = Date.now();
+                console.log(`Initial parse done, elapsed ${ts2 - ts}`);
+                ts = ts2;
+                console.log(saveFile);
+                return saveFile
+            }).then(createUserProgressFile).then((dataFromSave)=>{
+                console.log(dataFromSave);
+                //copy save #s over
+                if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
+                    dataFromSave.save = window.savedata.save;
+                }
+                window.savedata = dataFromSave;
+                saveProgressToCookie();
+                window.location.reload();
+            });
+        }
     }
 };
 
