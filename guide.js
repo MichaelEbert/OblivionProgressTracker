@@ -109,6 +109,9 @@ function replaceElements(){
 					format |= CELL_FORMAT_DISABLE_CHECKBOX;
 				}
 
+				if(settings.classnameCheck){
+					format |= CELL_FORMAT_NAMELINK_SHOW_CLASSNAME;
+				}
 				if(elementclass == "npc"){
 					format |= CELL_FORMAT_SKIP_ID;
 					format &= ~CELL_FORMAT_SHOW_CHECKBOX;
