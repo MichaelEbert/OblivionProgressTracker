@@ -176,9 +176,9 @@ Overlay.prototype.doubleClick = function(clickLoc){
 }
 
 Overlay.prototype.setActiveLayers = function(layers, tsp){
-    this.activeLayers = layers;
 
     if(layers != null){
+        this.activeLayers = layers;
         this.locations.visible = ((layers & OVERLAY_LAYER_LOCATIONS) != 0);
         this.nirnroots.visible = ((layers & OVERLAY_LAYER_NIRNROOTS) != 0);
         this.wayshrines.visible = ((layers & OVERLAY_LAYER_WAYSHRINES) != 0);
