@@ -14,7 +14,8 @@ export {
     //and misc others as needed
     CELL_FORMAT_DISABLE_CHECKBOX, 
     CELL_FORMAT_SKIP_ID, 
-    CELL_FORMAT_SHOW_CHECKBOX
+    CELL_FORMAT_SHOW_CHECKBOX,
+    CELL_FORMAT_NAME_CHECKS_OFF
 }
 
 //arrrgh this is so ugly
@@ -29,6 +30,7 @@ const CELL_FORMAT_SHOW_CHECKBOX    = 0x0040;//should checkbox be included?
 const CELL_FORMAT_DISABLE_CHECKBOX = 0x0080;//disable checkmark
 const CELL_FORMAT_PUSH_REFERENCES  = 0x0100;//push references to minipage
 const CELL_FORMAT_SKIP_ID          = 0x0200;//some npc refs don't have IDs
+const CELL_FORMAT_NAME_CHECKS_OFF  = 0x0400;//have entire name check off, and have a separate help link.
 //the following also are link format options
 const CELL_FORMAT_NAMELINK_ENABLE  = 0x1000;//should name be a link or just text?
 const CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME = 0x2000; //should name link open in iframe?
@@ -53,9 +55,7 @@ const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT
  */
 const CELL_FORMAT_CHECKLIST = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_SET_ROW_ONCLICK | CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS;
 
-
-
-
+//rename link constants
 const LINK_FORMAT_FORCE_MINIPAGE = CELL_FORMAT_NAMELINK_FORCE_MINIPAGE;
 const LINK_FORMAT_ALLOW_IFRAME   = CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME;
 const LINK_FORMAT_SHOW_CLASSNAME = CELL_FORMAT_NAMELINK_SHOW_CLASSNAME;
@@ -76,27 +76,29 @@ function createLinkElement(cell, linkName, format){
 	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
 	var usableId = cell.formId ?? cell.id;
 
+    let linkHref;
 	const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || format & LINK_FORMAT_FORCE_MINIPAGE);
 	if(useMinipage){
-		linky.href ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
+		linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
 		if(usableId == null){
-			linky.href +="&name="+cell.name.replace(" ","_");
+			linkHref +="&name="+cell.name.replace(" ","_");
 		}
 	}
 	else if(cell.link){
-		linky.href = cell.link;
+		linkHref = cell.link;
 	}
 	else{
         if((format & LINK_FORMAT_LINK_MAP) && cell.formId != null){
-            linky.href = "./map.html?formId="+cell.formId;
+            linkHref = "./map.html?formId="+cell.formId;
             if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
-                linky.href += "&topbar=false";
+                linkHref += "&topbar=false";
             }
         }
         else{
-            linky.href="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
+            linkHref="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
         }
-	}
+    }
+    linky.href = linkHref;
 	
 	if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
         linky.target="myframe";
@@ -281,6 +283,34 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
                 rcheck.disabled = true;
             }
             rowhtml.appendChild(rcheck);
+        }
+    }
+
+    //help icon
+    if(format & CELL_FORMAT_NAME_CHECKS_OFF){
+        let htmlHelp;
+        if(!COPYING){
+            htmlHelp = document.createElement("a");
+            htmlHelp.innerText = "❔"
+
+        }
+        else{
+            let index;
+            if(format & CELL_FORMAT_SHOW_CHECKBOX){
+                index = 2;
+            }
+            else{
+                index = 1;
+            }
+            htmlHelp = rowhtml.children[index];
+        }
+        if(htmlHelp == null){
+            debugger;
+        }
+        let linky = createLinkElement(cell, usableName, format);
+        htmlHelp.href = linky.href;
+        if(!COPYING){
+            rowhtml.appendChild(htmlHelp);
         }
     }
 
