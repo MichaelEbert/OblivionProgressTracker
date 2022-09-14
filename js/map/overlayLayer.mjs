@@ -54,7 +54,7 @@ OverlayLayer.prototype.click = function(clickLoc, currentLocationRef){
             if(icon.contains(clickLoc)){
                 if(window.debug){
                     let name = icon.cell.name ?? icon.cell.formId;
-                    console.log("selected "+name);
+                    console.log("selected "+name+" (formId "+icon.cell.formId+")");
                 }
                 if(currentLocationRef.currentLocation == icon){
                     currentLocationRef.currentLocation = null;
