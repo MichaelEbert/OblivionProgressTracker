@@ -6,7 +6,7 @@ export{
 
 import * as map from './map.mjs'
 import { jsondata, findOnTree, findCell } from './obliviondata.mjs';
-import { updateChecklistProgress } from './progressCalculation.mjs';
+import { updateChecklistProgress, recalculateProgress } from './progressCalculation.mjs';
 import { saveCookie } from './userdata.mjs';
 
 var prevNirnroot;
@@ -48,10 +48,12 @@ function initEventListeners(){
     const prevButton = document.getElementById("prevButton");
     nextButton.addEventListener('click', (_evt)=>{
         updateChecklistProgress(null, true, null, thisNirnroot.cell);
+        recalculateProgress();
         activateNirnroot(nextNirnroot.cell.formId); 
     });
     prevButton.addEventListener('click', (_evt)=>{
         updateChecklistProgress(null, false, null, prevNirnroot.cell);
+        recalculateProgress();
         activateNirnroot(prevNirnroot.cell.formId); 
     });
 

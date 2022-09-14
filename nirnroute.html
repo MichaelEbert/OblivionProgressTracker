@@ -69,7 +69,7 @@
 <div class="contentContainer">
 <div class="sidebar" id="sidebar">
 <!-- sidebar contains images n navigation n stuff.-->
-<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" >Nirnroots Found: ##</span>
+<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" >Nirnroots Found: <span id="overview_nirnroot">##</span></span>
 <br/>
 <button id="prevButton" title="left arrow">Prev</button><button id="nextButton" title="right arrow">Next</button>&nbsp;&nbsp;<label>Jump to <input type="number" id="nirnIdField"/></label>
 <br/>
@@ -112,6 +112,7 @@
 	import * as point from './js/map/point.mjs';
 	import * as nirn from './js/nirnroute.mjs';
 	import * as sharing from './js/sharing.mjs';
+	import * as progress from './js/progressCalculation.mjs';
 
 	if(userdata.loadCookie("debug") == true){
 		window.debug = true;
@@ -142,6 +143,8 @@
 		obliviondata.loadJsonData().then(()=>{
 			userdata.loadProgressFromCookie();
 			nirn.init();
+			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
+			progress.recalculateProgress();
 		});
 	}).call(window);
 </script>
