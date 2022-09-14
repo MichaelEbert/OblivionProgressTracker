@@ -39,5 +39,7 @@
     {"name":"Imperial City Waterfront","x":17816,"y":44587,"formId":"0x00047388","icon":"City"},
     {"name":"Kvatch","x":-146937,"y":-27082,"formId":"0x0001E8A2","icon":"City"},
     {"name":"Castle Skingrad","x":-62547,"y":-1418,"formId":"0x00098352","icon":"City"},
-    {"name":"Anvil Lighthouse","x":-196733,"y":-37483,"formId":"0x0005402D","icon":"City"}
+    {"name":"Anvil Lighthouse","x":-196733,"y":-37483,"formId":"0x0005402D","icon":"City"},
+    {"name":"Imperial Prison Sewer","x":47110,"y":83000,"formId":"0x000C50D6","icon":"Cave"},
+    {"name":"Weynon Priory","x":-56998,"y":85906,"formId":"0x0001E6ED","icon":"Settlement"}
 ]}

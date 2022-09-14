@@ -35,7 +35,7 @@ function init(){
 						spectateBanner.innerText = "Spectating ⟳";
 						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
 					});
-				})
+				});
 				document.getElementById("topbar").appendChild(spectateBanner);
 	
 			}

@@ -324,7 +324,8 @@ async function initImgs(){
     });
 }
 
-function onMouseClick(mouseLoc){
+function onMouseDoubleClick(mouseLoc){
+     //todo: rename these methods to be accurate
     if(window.debug){
         let mapLoc = screenSpaceToMapSpace(mouseLoc);
         console.log("click at screen: " + mouseLoc+", map: "+mapLoc+" world: "+mapSpaceToWorldSpace(mapLoc));
@@ -334,7 +335,8 @@ function onMouseClick(mouseLoc){
     }
 }
 
-function onMouseDoubleClick(mouseLoc){
+function onMouseClick(mouseLoc){
+    //todo: rename these methods to be accurate
     if(overlay.doubleClick(mouseLoc)){
         drawFrame();
     }
@@ -362,6 +364,10 @@ function initListeners(){
     });
     viewport.addEventListener("pointerdown", function(event){
         //check double click stuff
+        if(event.buttons & 2){
+            //right-click, ignore
+            return;
+        }
         if(Date.now() - clickStartTime < DOUBLE_CLICK_LIMIT_MS){
             doubleClickMouseDownLoc = mouseDownLoc;
             doubleClickStartTime = clickStartTime;
@@ -396,7 +402,7 @@ function initListeners(){
             Math.abs(doubleClickMouseDownLoc.y - event.offsetY) < CLICK_LIMIT_PIXELS &&
             Date.now() - doubleClickStartTime < DOUBLE_CLICK_LIMIT_MS){
                 //double click.
-                onMouseDoubleClick(lastMouseLoc);
+                //onMouseDoubleClick(lastMouseLoc);
         }
         else{
             if(Math.abs(mouseDownLoc.x - event.offsetX) < CLICK_LIMIT_PIXELS &&
@@ -408,6 +414,11 @@ function initListeners(){
         if(window.debugPointing){
             console.log("mouseup @ "+event.offsetX + ","+event.offsetY);
         }
+    });
+    viewport.addEventListener("contextmenu", function(event){
+        lastMouseLoc = new Point(event.offsetX, event.offsetY);
+        onMouseDoubleClick(lastMouseLoc);
+        event.preventDefault();
     });
     viewport.onmouseout = function(){isDown = false;};
     viewport.onwheel = function(e){    

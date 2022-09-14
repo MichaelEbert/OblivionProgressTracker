@@ -4,10 +4,7 @@
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
 	<link rel="stylesheet" type="text/css" href="guide.css"/>
-	<script src="obliviondata.js"></script>
-	<script src="progress.js"></script>
 	<script src="guide.js"></script>
-	<script src="collapsible.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Casual — Interactive Oblivion Checklist</title>
 </head>
@@ -71,6 +68,13 @@
 <!-- end topbar-->
 <div class="contentContainer" id="contentContainer">
 <div class="sidebar" id="sidebar">
+	<div class="screenHeight">
+	<div id="sidebarContent" class="sidebarContent resizableWidthContainer ">
+		<div id="sidebarLinks">
+			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
+		</div>
+	</div></div>
+</div>
 </div>
 <article>
 <h1>Oblivion 100% Completion Challenge</h1>
@@ -1515,23 +1519,27 @@ Taking the Iron Key off the Goblin in the first rat area and making a save will 
 </article>
 </div>
 <script type="module">
-	import exportNamespace from './js/module-shim.mjs';
+	import exportNamespace from './js/module-shim.mjs'
 	import * as common from './js/cellGenerator.mjs';
-	import * as progress from './js/progressCalculation.mjs';
-	import * as userdata from './js/userdata.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs';
 	exportNamespace(common);
 	exportNamespace(progress);
 	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
+	window.sharing = sharing;
+	window.progress = progress;
+	window.userdata = userdata;
+
 	(function(){
-		if(window.loadCookie("debug") == true){
-		window.debug = true;
+		if(loadCookie("debug") == true){
+			window.debug = true;
 		}
 		init();
-		makeCollapsible();
 	}).call(window);
 </script>
-<script>
-	//TODO: this should be removed later on when we have progression working normally on this page.
-	recalculateProgressAndUpdateProgressUI();
-</script>
+<script src="collapsible.js"></script>
 </body>
