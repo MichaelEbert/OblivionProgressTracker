@@ -102,7 +102,11 @@ function generatePromiseFunc(basedir, klass){
 	return async function()
 	{
 		let baseFile = fetch(basedir+"/data/"+klass.name+".json")
-			.then(resp=>resp.json());
+			.then(resp=>resp.json())
+			.catch((e=>{
+				console.error("Error in "+klass.name+".json:");
+				console.error(e);
+			}));
 		let customFile = fetch(basedir+"/data/"+klass.name+"_custom.json")
 			.then(resp=>
 				{
@@ -110,7 +114,11 @@ function generatePromiseFunc(basedir, klass){
 						return null;
 					}
 					return resp.json();
-				});
+				})
+			.catch((e=>{
+				console.error("Error in "+klass.name+".json:");
+				console.error(e);
+			}));
 		let hive = await mergeData(baseFile, customFile);
 		if(window.debugAsync){
 			console.log("setting "+hive.classname+" jsondata");
