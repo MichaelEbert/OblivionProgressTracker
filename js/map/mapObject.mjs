@@ -208,7 +208,11 @@ MapLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
     }
     if(this.contains(mouseLoc)){
         //start with array with single element
-        let linesToRender = [this.cell.name];
+        let formattedName = this.cell.name;
+        if(this.cell.hive.classname == "nirnroot"){
+            formattedName += " (#" + this.cell.tspId + ")";
+        }
+        let linesToRender = [formattedName];
 
         if(window.settings.mapShowFormId == true){
             linesToRender.push("formId " + this.cell.formId.toString());

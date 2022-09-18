@@ -220,7 +220,7 @@
 	{"name":"Shrines","elements":[
 		{"name":"Malacath's Shrine","x":-202274,"y":10675,"formId":"0x0003B369","icon":"Shrine"},
 		{"name":"Meridia's Shrine","x":-97994,"y":7969,"formId":"0x0003B36B","icon":"Shrine"},
-		{"name":"Sanguine's Shrine","x":-85773,"y":37435,"formId":"0x00097008","icon":"Shrine"},
+		{"name":"Shrine of Sanguine","x":-85773,"y":37435,"formId":"0x00097008","icon":"Shrine"},
 		{"name":"Hermaeus Mora's Shrine","x":-47329,"y":159680,"formId":"0x0003B366","icon":"Shrine"},
 		{"name":"Molag Bal's Shrine","x":-47106,"y":53565,"formId":"0x0003B368","icon":"Shrine"},
 		{"name":"Clavicus Vile's Shrine","x":-13291,"y":34720,"formId":"0x0003B365","icon":"Shrine"},

@@ -294,6 +294,7 @@ async function initImgs(){
             "X",
             "POI",
             "Wayshrine",
+            "HeavenStone",
             "Overlay_Fixed",
             "Overlay_No_Reroll",
             "Overlay_Two_Fame"
