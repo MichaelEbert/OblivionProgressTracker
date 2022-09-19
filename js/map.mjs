@@ -604,6 +604,7 @@ function iconSwitch(Input){
         case "Shrine": return icons.Shrine;
         case "Nirnroot": return icons.Nirnroot;
         case "Wayshrine": return icons.Wayshrine;
+        case "HeavenStone": return icons.HeavenStone;
         case "POI": return icons.POI;
             
         default: 
