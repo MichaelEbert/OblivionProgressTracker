@@ -287,6 +287,10 @@ function parseSave(e){
         const files = dt.files;
         for (const file of files)
         {
+            if(!file.name.endsWith(".ess")){
+                alert("Invalid save file dragged in.");
+                return;
+            }
             document.body.style = "opacity:0.5"
             file.arrayBuffer().then((b) => {
                 let ts = Date.now();
@@ -299,10 +303,15 @@ function parseSave(e){
                 return saveFile
             }).then(createUserProgressFile).then((dataFromSave)=>{
                 console.log(dataFromSave);
+                if(Object.keys(dataFromSave).length == 0){
+                    alert("Invalid save file dragged in.");
+                    return;
+                }
                 //copy save #s over
                 if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
                     dataFromSave.save = window.savedata.save;
                 }
+                
                 window.savedata = dataFromSave;
                 saveProgressToCookie();
                 window.location.reload();
