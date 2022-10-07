@@ -1,4 +1,4 @@
-﻿{"version":4, "name":"Locations","weight":8, "classname":"location", "elements":[
+﻿{"version":4, "name":"Locations","weight":5, "classname":"location", "elements":[
 	{"name":"Forts","elements":[
 		{"name":"Crowhaven","x":-208980,"y":-10052,"formId":"0x0001750D","icon":"Fort"},
 		{"name":"Fort Sutch","x":-193771,"y":13012,"formId":"0x000174F4","icon":"Fort"},
