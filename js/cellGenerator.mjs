@@ -12,9 +12,10 @@ export {
     CELL_FORMAT_GUIDE, 
     CELL_FORMAT_CHECKLIST, 
     //and misc others as needed
-    CELL_FORMAT_DISABLE_CHECKBOX, 
-    CELL_FORMAT_SKIP_ID, 
+    CELL_FORMAT_SET_ROW_ONCLICK,
     CELL_FORMAT_SHOW_CHECKBOX,
+    CELL_FORMAT_DISABLE_CHECKBOX, 
+    CELL_FORMAT_SKIP_ID,
     CELL_FORMAT_NAMELINK_CHECK_OFF,
     CELL_FORMAT_NAMELINK_SHOW_CLASSNAME
 }
@@ -43,7 +44,8 @@ const CELL_FORMAT_NAMELINK_CHECK_OFF     = 0x20000;//have entire name check off,
  * default formatting for items on guide page
  */
 const CELL_FORMAT_GUIDE = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_USE_SPAN
-| CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME | CELL_FORMAT_PUSH_REFERENCES;
+| CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME | CELL_FORMAT_PUSH_REFERENCES
+| CELL_FORMAT_NAMELINK_CHECK_OFF | CELL_FORMAT_SET_ROW_ONCLICK;
 
 /**
  * Additional items to show on the checklist page. We break them out here so you can more easily categorize them.
@@ -220,44 +222,29 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     rowhtml.setAttribute("clid",usableId);
 
     //name
-    if(!COPYING){
-        var rName = document.createElement("span");
-        rName.classList.add(classname+"Name");
-    }
-    else{
-        var rName = rowhtml.children[0];
-    }
-
     let usableName = cell.name ?? refCell?.name ?? classname + usableId;
-    if(format & CELL_FORMAT_NAMELINK_ENABLE){
-        let nameFormat = format;
-        if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
-            nameFormat &= ~CELL_FORMAT_NAMELINK_CHECK_OFF;
-            nameFormat &= ~CELL_FORMAT_NAMELINK_ENABLE;
-        }
-        let linkElement = createLinkElement(cell, usableName, nameFormat);
-        if(linkElement != null){
-            if(format & CELL_FORMAT_PUSH_REFERENCES){
-                linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
-            }
-            if(COPYING){
-                rName.replaceChild(linkElement, rName.children[0]);
-            }
-            else{
-                rName.appendChild(linkElement);
-            }
-        }
+    let nameFormat = format;
+    if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+        nameFormat &= ~CELL_FORMAT_NAMELINK_CHECK_OFF;
+        nameFormat &= ~CELL_FORMAT_NAMELINK_ENABLE;
     }
-    else{
-        let capitalClassName = "";
-        if(format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME){
-            capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
-        }
-        rName.innerText = capitalClassName + usableName;
+    let linkElement = createLinkElement(cell, usableName, nameFormat);
+    if(linkElement == null && debug){
+        debugger;
     }
-
-    if(!COPYING){
-        rowhtml.appendChild(rName);
+    if(linkElement != null){
+        if(format & CELL_FORMAT_PUSH_REFERENCES){
+            linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
+        }
+        if(format & CELL_FORMAT_SHOW_CHECKBOX && format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+            linkElement.classList.add("defaultCursor");
+        }
+        if(COPYING){
+            rowhtml.replaceChild(linkElement, rowhtml.children[0]);
+        }
+        else{
+            rowhtml.appendChild(linkElement);
+        }
     }
 
     //checkbox
@@ -301,11 +288,9 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     }
 
     //help icon
-    if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+    if((format & CELL_FORMAT_NAMELINK_CHECK_OFF) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
         let htmlHelp;
-
         let linky = createLinkElement(cell, usableName, format);
-        linky.addEventListener('click',checkboxClicked);
         if(!COPYING){
             rowhtml.appendChild(linky);
         }
@@ -372,6 +357,10 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
 
+    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
+        rowhtml.addEventListener('click',window.rowClicked);
+    }
+
     return rowhtml;
 }
 
@@ -407,10 +396,6 @@ function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, clas
     if(format & CELL_FORMAT_SET_IDS && rcheck != null){
         rowhtml.id = classname+usableId.toString();
         rcheck.id = rowhtml.id+"check";
-    }
-
-    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
-        rowhtml.addEventListener('click',window.rowClicked);
     }
 }
 

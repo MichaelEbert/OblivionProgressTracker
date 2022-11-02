@@ -104,7 +104,7 @@ function replaceElements(){
 			if(found){
 				//step 2: create the internal stuff.
 				const elementclass = cell.hive.classname;
-				let format = CELL_FORMAT_GUIDE | CELL_FORMAT_NAMELINK_CHECK_OFF;
+				let format = CELL_FORMAT_GUIDE;
 				if(element.getAttribute("disabled") == "true"){
 					format |= CELL_FORMAT_DISABLE_CHECKBOX;
 				}
@@ -149,7 +149,7 @@ function replaceElements(){
  */
 function getNpcData(npcElement){
 	var maybeFormId = npcElement.getAttribute("clid");
-	if(maybeFormId != null){
+	if(maybeFormId != null && maybeFormId != "undefined"){
 		var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.formId == maybeFormId);
 		if(maybeNpcData != null){
 			return maybeNpcData;
@@ -163,7 +163,7 @@ function getNpcData(npcElement){
 	
 	//element didn't have a formid. search by name.
 	//maybe we can look up by name
-	var npcName = npcElement.innerText;
+	var npcName = npcElement.children[0].innerText;
 	var maybeNpcData = jsondata.npc?.elements.find(npc=>npc.name.toLowerCase() == npcName.toLowerCase())
 	if(maybeNpcData != null){
 		return maybeNpcData;
@@ -239,7 +239,7 @@ function checkboxClicked(event){
 	var parentid = rowHtml.getAttribute("clid");
 	var classname = rowHtml.classList[0];
 	updateChecklistProgressFromInputElement(parentid, event.target, classname);
-	
+	event.stopPropagation();
 	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
 	recalculateProgressAndUpdateProgressUI();
 	saveProgressToCookie();
@@ -247,6 +247,44 @@ function checkboxClicked(event){
 		uploadCurrentSave();
 	}
 }
+
+function rowClicked(event){
+	if(event.target.nodeName == "A"){
+		//if user clicks link, don't treat that as checking off the element.
+		return;
+	}
+	const checkbox = Array.from(this.children).find(x=>x.tagName=="INPUT");
+	if(checkbox == null){
+		return;
+	}
+	if(checkbox.type == "number"){
+		checkbox.focus();
+		checkbox.select();
+	}
+	else{
+		checkbox.checked = !checkbox.checked;
+		userInputData(this, checkbox);
+	}
+}
+
+/**
+ * called when user inputs data
+ * @param {Element} rowHtml 
+ * @param {Element} checkboxElement 
+ */
+function userInputData(rowHtml, checkboxElement){
+	//extract what it is from the parent id so we can update progress
+	var classname = rowHtml.classList[0];
+	let rowid = rowHtml.getAttribute("clid");
+	progress.updateChecklistProgressFromInputElement(rowid, checkboxElement, classname);
+	
+	recalculateProgressAndUpdateProgressUI();
+	window.userdata.saveProgressToCookie();
+	if(settings.autoUploadCheck){
+		window.sharing.uploadCurrentSave();
+	}
+}
+
 
 var __displayingIframe = false;
 /**
@@ -392,7 +430,7 @@ function getAllReferencesOnPage(cell){
 	var npcLinks = document.getElementsByClassName("npc");
 	var refs = [];
 	for(var link of npcLinks){
-		if(link.innerText == cell.name){
+		if(link.children[0].innerText == cell.name){
 			//TODO: or formId
 			refs.push(getElementReferenceLocation(link));
 		}
