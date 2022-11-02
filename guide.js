@@ -104,7 +104,7 @@ function replaceElements(){
 			if(found){
 				//step 2: create the internal stuff.
 				const elementclass = cell.hive.classname;
-				let format = CELL_FORMAT_GUIDE;
+				let format = CELL_FORMAT_GUIDE | CELL_FORMAT_NAMELINK_CHECK_OFF;
 				if(element.getAttribute("disabled") == "true"){
 					format |= CELL_FORMAT_DISABLE_CHECKBOX;
 				}
