@@ -233,6 +233,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         debugger;
     }
     if(linkElement != null){
+        linkElement.classList.add(classname+"Name");
         if(format & CELL_FORMAT_PUSH_REFERENCES){
             linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
         }
