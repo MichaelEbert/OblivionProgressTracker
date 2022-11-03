@@ -189,6 +189,10 @@ td{
 	break-inside: avoid;
 }
 
+.defaultCursor{
+	cursor:default;
+}
+
 .item{
 	padding:0.1em;
 	margin:0.2em;
