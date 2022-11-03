@@ -157,7 +157,7 @@
 		,{"name":"Vaermina","formId":"0x000146AE","notes":"Get the Palla, volume 1 skill book in the final room next to the orb while doing this quest.","stages":[100]}
 	]}
 	,{"name":"Thieves Guild","elements":[
-		{"name":"Finding the Thieves Guild","formId":"0x000355DF","stages":[100]}
+		{"name":"Finding the Thieves Guild","formId":"0x000355DF","notes":"Get this quest in your journal from Myvryna Arano or a beggar before talking to Armand.","stages":[100]}
 		,{"name":"May the Best Thief Win","formId":"0x000355E1","stages":[50,90]}
 		,{"name":"Blood Price","formId":"0x000BF021","notes":"If a quest on this list has a Blood Price quest directly below, then you must do the Blood Price for that quest before completing it.","stages":[18]}
 		,{"name":"Independent Thievery","formId":"0x0001EE46","stages":[120]}
