@@ -46,6 +46,12 @@ td{
 	padding:0.2em;
 }
 
+.checklist-icon{
+	width:18px;
+	height:18px;
+	padding-right:5px;
+}
+
 :target {
 	border: .4em solid red;
 }
