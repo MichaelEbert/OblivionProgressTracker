@@ -1,174 +1,174 @@
 {"version":4,"name":"Misc","classname":"misc","elements":[
     {"name":"Closed Oblivion Gates","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
-			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed"}
+			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed","icon":"Gate"}
 		]}
-		,{"name":"17 Fixed Gates","elements":[
+		,{"name":"17 Fixed Generic Gates","elements":[
 			{"formId":"0xFFFFFFC2","type":"number","elements":[
-				{"name":"Oblivion Gate - Anvil","formId":"0x00026EBF","notes":"Fixed, Two_Fame, No_Reroll"}
-				,{"name":"Oblivion Gate - Chorrol","formId":"0x000270F7","notes":"Fixed, Two_Fame, No_Reroll"}
-				,{"name":"Oblivion Gate - Skingrad","formId":"0x000270F8","notes":"Fixed, Two_Fame, No_Reroll"}
-				,{"name":"Oblivion Gate - Bravil","formId":"0x00026EBE","notes":"Fixed, Two_Fame, No_Reroll"}
-				,{"name":"Oblivion Gate - Leyawiin","formId":"0x00026F13","notes":"Fixed, Two_Fame, No_Reroll"}
+				{"name":"Oblivion Gate - Anvil","formId":"0x00026EBF","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"}
+				,{"name":"Oblivion Gate - Chorrol","formId":"0x000270F7","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"}
+				,{"name":"Oblivion Gate - Skingrad","formId":"0x000270F8","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"}
+				,{"name":"Oblivion Gate - Bravil","formId":"0x00026EBE","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"}
+				,{"name":"Oblivion Gate - Leyawiin","formId":"0x00026F13","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"}
 			]}
 			,{"formId":"0xFFFFFFC3","type":"number","elements":[
-				{"name":"Oblivion Gate - Cheydinhal","formId":"0x00026F12","notes":"Fixed, No_Reroll"}
-				,{"name":"Oblivion Gate","formId":"0x0005403E","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x0018B245","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x000615E2","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x00188824","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x000572EE","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x00188742","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x0018ADFF","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x000623B6","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x0018AE1C","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x0018A833","notes":"Fixed"}
-				,{"name":"Oblivion Gate","formId":"0x0018D324","notes":"Fixed"}
+				{"name":"Oblivion Gate - Cheydinhal","formId":"0x00026F12","notes":"Fixed, No_Reroll","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0005403E","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0018B245","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x000615E2","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x00188824","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x000572EE","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x00188742","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0018ADFF","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x000623B6","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0018AE1C","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0018A833","notes":"Fixed","icon":"Gate"}
+				,{"name":"Oblivion Gate","formId":"0x0018D324","notes":"Fixed","icon":"Gate"}
 			]}
 		]}
-		,{"name":"40 Random Gates","formId":"0xFFFFFFC4","type":"number","max":40,"elements":[
-			{"name":"Oblivion Gate","formId":"0x0018B249","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B248","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B24A","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B243","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B244","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B247","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B246","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615E3","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000613FA","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615E1","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615E4","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00062541","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615EC","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615EB","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0006253F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0005A376","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615EA","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0005A68E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00057388","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0006253C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0006253D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000615E8","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00064416","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00057038","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00055D87","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000836D3","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000517B5","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B0C6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000643DC","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018BB72","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00051262","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018BD37","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B0C5","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D8C6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000521A8","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018884F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0006440E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018BB6B","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0005160D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D8C7","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018BB6D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B0C3","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623BA","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623BC","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623B8","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623BE","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018BB70","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623C0","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000608A8","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B740","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000623C2","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D1C6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D8C4","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000643F2","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B742","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D322","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000608BD","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B73C","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000614CE","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D172","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000645CE","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018B73E","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D320","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D1B4","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D18D","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x00061699","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D328","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000608D5","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000608EB","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D19F","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D326","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000616AB","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x0018D329","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000645D6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000616D1","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000614CD","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000645A3","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000616BF","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000616E6","notes":"Random"}
-			,{"name":"Oblivion Gate","formId":"0x000616FF","notes":"Random"}
+		,{"name":"Random Gates (Need 40)","formId":"0xFFFFFFC4","type":"number","max":40,"elements":[
+			{"name":"Oblivion Gate","formId":"0x0018B249","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B248","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B24A","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B243","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B244","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B247","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B246","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615E3","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000613FA","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615E1","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615E4","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00062541","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615EC","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615EB","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0006253F","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0005A376","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615EA","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0005A68E","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00057388","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0006253C","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0006253D","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000615E8","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00064416","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00057038","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00055D87","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000836D3","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000517B5","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C6","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000643DC","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB72","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00051262","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018BD37","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C5","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C6","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000521A8","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018884F","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0006440E","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB6B","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0005160D","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C7","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB6D","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B0C3","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623BA","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623BC","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623B8","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623BE","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018BB70","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623C0","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000608A8","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B740","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000623C2","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D1C6","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D8C4","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000643F2","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B742","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D322","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000608BD","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B73C","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000614CE","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D172","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000645CE","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018B73E","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D320","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D1B4","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D18D","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x00061699","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D328","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000608D5","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000608EB","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D19F","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D326","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000616AB","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x0018D329","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000645D6","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000616D1","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000614CD","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000645A3","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000616BF","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000616E6","notes":"Random","icon":"Gate"}
+			,{"name":"Oblivion Gate","formId":"0x000616FF","notes":"Random","icon":"Gate"}
 		]}
 		,{"name":"Main Quest Pt. 2","elements":[
-			{"name":"Oblivion Gate - Bruma","formId":"0x00026EBA","notes":"Fixed"}
-			,{"ref":"0x0001E730","name":"Great Gate"}
+			{"name":"Oblivion Gate - Bruma","formId":"0x00026EBA","notes":"Fixed","icon":"Gate"}
+			,{"ref":"0x0001E730","name":"Great Gate","icon":"Gate"}
 		]}
 	]}
 	,{"name":"Pilgrim's Grace","weight":0.5,"elements":[
-		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51}
-		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49}
-		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50}
-		,{"formId":"0xFFFFFFD3","name":"Julianos","globalIndex":55}
-		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54}
-		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47}
-		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48}
-		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52}
-		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53}
+		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD3","name":"Julianos","globalIndex":55,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
 	]}
-	,{"name":"Houses","weight":0.3,"elements":[
-		{"formId":"0x0003636F","name":"Benirus Manor"}
-		,{"formId":"0x00085480","name":"Bravil House for Sale"}
-		,{"formId":"0x00085481","name":"Bruma House for Sale"}
-		,{"formId":"0x00085483","name":"Cheydinhal House for Sale"}
-		,{"formId":"0x00085482","name":"Arborwatch"}
-		,{"formId":"0x00085485","name":"Shack for Sale"}
-		,{"formId":"0x0008547F","name":"Leyawiin House for Sale"}
-		,{"formId":"0x00085484","name":"Rosethorn Hall"}
+	,{"name":"Houses","weight":0.3,"extraColumn":"city","elements":[
+		{"formId":"0x0003636F","name":"Benirus Manor","city":"Anvil","icon":"Settlement"}
+		,{"formId":"0x00085480","name":"Bravil House for Sale","city":"Bravil","icon":"Settlement"}
+		,{"formId":"0x00085481","name":"Bruma House for Sale","city":"Bruma","icon":"Settlement"}
+		,{"formId":"0x00085483","name":"Cheydinhal House for Sale","city":"Cheydinhal","icon":"Settlement"}
+		,{"formId":"0x00085482","name":"Arborwatch","city":"Chorrol","icon":"Settlement"}
+		,{"formId":"0x00085485","name":"Shack for Sale","city":"Imperial City","icon":"Settlement"}
+		,{"formId":"0x0008547F","name":"Leyawiin House for Sale","city":"Leyawiin","icon":"Settlement"}
+		,{"formId":"0x00085484","name":"Rosethorn Hall","city":"Skingrad","icon":"Settlement"}
 	]}
 	,{"name":"Horses","weight":0.3,"extraColumn":"city","elements":[
-		{"formId":"0x0004E28E","name":"White Horse","city":"Anvil"}
-		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil"}
-		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma"}
-		,{"formId":"0x0004BF2F","name":"Black Horse","city":"Cheydinhal"}
-		,{"formId":"0x0004DE96","name":"Chestnut Horse","city":"Chorrol"}
-		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
-		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
+		{"formId":"0x0004E28E","name":"White Horse","city":"Anvil","icon":"Horse"}
+		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil","icon":"Horse"}
+		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma","icon":"Horse"}
+		,{"formId":"0x0004BF2F","name":"Black Horse","city":"Cheydinhal","icon":"Horse"}
+		,{"formId":"0x0004DE96","name":"Chestnut Horse","city":"Chorrol","icon":"Horse"}
+		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin","icon":"Horse"}
+		,{"formId":"0x000545D6","name":"Bay Horse","city":"Skingrad","icon":"Horse"}
 	]}
 	,{"name":"Artifacts","weight":0.1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
-		{"ref":"0x000146A2","name":"Azura"}
-		,{"ref":"0x000146A3","name":"Boethia"}
-		,{"ref":"0x000146A4","name":"Clavicus Vile"}
-		,{"ref":"0x000146AF","name":"Hermaeus Mora"}
-		,{"ref":"0x000146A5","name":"Hircine"}
-		,{"ref":"0x000146A6","name":"Malacath"}
-		,{"ref":"0x000146A7","name":"Mephala"}
-		,{"ref":"0x000146A8","name":"Meridia"}
-		,{"ref":"0x000146B0","name":"Molag Bal"}
-		,{"ref":"0x000146A9","name":"Namira"}
-		,{"ref":"0x000146AA","name":"Nocturnal"}
-		,{"ref":"0x000146AB","name":"Peryite"}
-		,{"ref":"0x000146AC","name":"Sanguine"}
-		,{"ref":"0x000146AD","name":"Sheogorath"}
-		,{"ref":"0x000146AE","name":"Vaermina"}
+		{"ref":"0x000146A2","name":"Azura","icon":"ArtifactAzura"}
+		,{"ref":"0x000146A3","name":"Boethia","icon":"ArtifactBoethia"}
+		,{"ref":"0x000146A4","name":"Clavicus Vile","icon":"ArtifactClavicus"}
+		,{"ref":"0x000146AF","name":"Hermaeus Mora","icon":"ArtifactHermaeus"}
+		,{"ref":"0x000146A5","name":"Hircine","icon":"ArtifactHircine"}
+		,{"ref":"0x000146A6","name":"Malacath","icon":"ArtifactMalacath"}
+		,{"ref":"0x000146A7","name":"Mephala","icon":"ArtifactMephala"}
+		,{"ref":"0x000146A8","name":"Meridia","icon":"ArtifactMeridia"}
+		,{"ref":"0x000146B0","name":"Molag Bal","icon":"ArtifactMolag"}
+		,{"ref":"0x000146A9","name":"Namira","icon":"ArtifactNamira"}
+		,{"ref":"0x000146AA","name":"Nocturnal","icon":"ArtifactNocturnal"}
+		,{"ref":"0x000146AB","name":"Peryite","icon":"ArtifactPeryite"}
+		,{"ref":"0x000146AC","name":"Sanguine","icon":"ArtifactSanguine"}
+		,{"ref":"0x000146AD","name":"Sheogorath","icon":"ArtifactSheogorath"}
+		,{"ref":"0x000146AE","name":"Vaermina","icon":"ArtifactVaermina"}
 	]}
 	,{"name":"Greater Powers","weight":0.5,"elements":[
-		{"formId":"0x0006B69E","name":"Jone's Shadow"}
-		,{"formId":"0x0006B69D","name":"Gates of Aetherius"}
-		,{"formId":"0x0006B69F","name":"Jode's Blood"}
-		,{"formId":"0x0006B6A0","name":"Sithian Web"}
-		,{"formId":"0x0006B6A1","name":"Skein of Magnus"}
-		,{"formId":"0x0006B6A2","name":"Shield of Shezarr"}
-		,{"formId":"0x0006B6A3","name":"Dragon Dream"}
-		,{"formId":"0x00014D23","name":"Pilgrim's Grace"}
+		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic"}
+		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist"}
+		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify"}
+		,{"formId":"0x0006B69E","name":"Jone's Shadow","icon":"MagicFortify"}
+		,{"formId":"0x00014D23","name":"Pilgrim's Grace","icon":"MagicFortify"}
+		,{"formId":"0x0006B6A2","name":"Shield of Shezarr","icon":"MagicReflectSpell"}
+		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify"}
+		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify"}
 	]}
 ]}
 

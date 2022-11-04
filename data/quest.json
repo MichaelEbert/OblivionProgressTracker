@@ -1,268 +1,268 @@
 {"version":4,"name":"Quests","classname":"quest","weight":51.3,"elements":[
 	{"name":"Main Questline","elements":[
-		{"name":"Tutorial","formId":"0x0001E723","stages":[84,100]}
-		,{"name":"Deliver the Amulet","formId":"0x0001E724","stages":[100]}
-		,{"name":"Find the Heir","formId":"0x0001E725","stages":[100]}
-		,{"name":"Breaking the Siege of Kvatch","formId":"0x000224D8","stages":[100]}
-		,{"name":"The Battle for Castle Kvatch","formId":"0x00028C72","stages":[100]}
-		,{"name":"Weynon Priory","link":"https://en.uesp.net/wiki/Oblivion:Weynon_Priory_(quest)","notes":"Visit Cloud Ruler Temple before starting this quest","formId":"0x0001E726","stages":[100]}
-		,{"name":"The Path of Dawn","formId":"0x0001E727","stages":[100]}
-		,{"name":"Dagon Shrine","notes":"All the Oblivion gates will be able to be found after completing this quest with the exception of the Bruma Gate and the Great Gate.","formId":"0x0001E728","stages":[100]}
-		,{"name":"Spies","formId":"0x0001E729","stages":[100]}
-		,{"name":"Blood of the Daedra","formId":"0x0001E72A","stages":[100]}
-		,{"name":"Blood of the Divines","formId":"0x0001E72B","stages":[100]}
-		,{"name":"Miscarcand","formId":"0x0001E72E","stages":[100]}
-		,{"name":"Bruma Gate","formId":"0x0001E72C","stages":[100]}
-		,{"name":"Allies for Bruma","notes":"Get all 7 cities to provide aid to get 7 fame.","formId":"0x0001E72D","stages":[100]}
-		,{"name":"Defense of Bruma","notes":"Make sure you have fully completed Allies for Bruma before starting this quest.","formId":"0x0001E72F","stages":[100]}
-		,{"name":"Great Gate","formId":"0x0001E730","stages":[100]}
-		,{"name":"Paradise","notes":"Must close all Oblivion Gates before starting this quest.","formId":"0x0000C20B","stages":[100]}
-		,{"name":"Light the Dragonfires","formId":"0x0002A38F","stages":[100]}
-		,{"name":"Imperial Dragon Armor","formId":"0x000ADE3F","stages":[30]}
-	]}
-	,{"name":"Journal-Filled","elements":[
-		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Meet non-journal requirements for this quest before you finish the Thieves Guild. Get cast out and readmitted to count as complete.","stages":[10,20,30,40]}
-		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Meet non-journal requirements for this quest before you finish the Fighters Guild. Get up through the second expulsion, but do not get expelled a third time.","stages":[60]}
-		,{"name":"The Arena","formId":"0x000E0C91","notes":"Talk to Ysabel after becoming Arena Grand Champion to get the offer to fight creatures in order to fulfill non-journal requirements.","stages":[100]}
-		,{"name":"Whispers of Death","formId":"0x00030064","notes":"This quest cannot be updated. Having it in your journal is all that is needed for the non-journal requirements.","stages":[10]}
+		{"name":"Tutorial","formId":"0x0001E723","stages":[84,100],"icon":"QuestGeneral"}
+		,{"name":"Deliver the Amulet","formId":"0x0001E724","stages":[100],"icon":"QuestAmulet"}
+		,{"name":"Find the Heir","formId":"0x0001E725","stages":[100],"icon":"QuestHeir"}
+		,{"name":"Breaking the Siege of Kvatch","formId":"0x000224D8","stages":[100],"icon":"QuestGate"}
+		,{"name":"The Battle for Castle Kvatch","formId":"0x00028C72","stages":[100],"icon":"QuestGeneral"}
+		,{"name":"Weynon Priory","link":"https://en.uesp.net/wiki/Oblivion:Weynon_Priory_(quest)","notes":"Visit Cloud Ruler Temple before starting this quest","formId":"0x0001E726","stages":[100],"icon":"QuestWeynon"}
+		,{"name":"The Path of Dawn","formId":"0x0001E727","stages":[100],"icon":"QuestDawn"}
+		,{"name":"Dagon Shrine","notes":"All the Oblivion gates will be able to be found after completing this quest with the exception of the Bruma Gate and the Great Gate.","formId":"0x0001E728","stages":[100],"icon":"QuestDagon"}
+		,{"name":"Spies","formId":"0x0001E729","stages":[100],"icon":"QuestBird"}
+		,{"name":"Blood of the Daedra","formId":"0x0001E72A","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Blood of the Divines","formId":"0x0001E72B","stages":[100],"icon":"QuestHelmet"}
+		,{"name":"Miscarcand","formId":"0x0001E72E","stages":[100],"icon":"QuestWindow"}
+		,{"name":"Bruma Gate","formId":"0x0001E72C","stages":[100],"icon":"QuestGate"}
+		,{"name":"Allies for Bruma","notes":"Get all 7 cities to provide aid to get 7 fame.","formId":"0x0001E72D","stages":[100],"icon":"QuestBird"}
+		,{"name":"Defense of Bruma","notes":"Make sure you have fully completed Allies for Bruma before starting this quest.","formId":"0x0001E72F","stages":[100],"icon":"QuestGate"}
+		,{"name":"Great Gate","formId":"0x0001E730","stages":[100],"icon":"QuestGate"}
+		,{"name":"Paradise","notes":"Must close all Oblivion Gates before starting this quest.","formId":"0x0000C20B","stages":[100],"icon":"QuestParadise"}
+		,{"name":"Light the Dragonfires","formId":"0x0002A38F","stages":[100],"icon":"QuestDragonfires"}
+		,{"name":"Imperial Dragon Armor","formId":"0x000ADE3F","stages":[30],"icon":"QuestHelmet"}
 	]}
 	,{"name":"Dark Brotherhood","elements":[
-			{"name":"Initiation Quests","elements":[
-			{"name":"A Knife in the Dark","formId":"0x000224EB","stages":[100,115]}
+		{"name":"Initiation Quests","elements":[
+			{"name":"A Knife in the Dark","formId":"0x000224EB","stages":[100,115],"icon":"QuestDarkBrotherhood"}
 		]}
 		,{"name":"Suspension Quests","elements":[
-			{"name":"A Dark Exile","notes":"Do this quest before starting Purification.","formId":"0x00026DE0","stages":[100]}
-			,{"name":"Another Dark Exile","notes":"Do this quest before starting Purification. Do not get exiled a third time.","formId":"0x00026DE1","stages":[100]}
+			{"name":"A Dark Exile","notes":"Do this quest before starting Purification.","formId":"0x00026DE0","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Another Dark Exile","notes":"Do this quest before starting Purification. Do not get exiled a third time.","formId":"0x00026DE1","stages":[100],"icon":"QuestDarkBrotherhood"}
 		]}
 		,{"name":"Misc. Quests","elements":[
-			{"name":"The Renegade Shadowscale","formId":"0x00035589","notes":"Finish before doing Purification","stages":[100]}
-			,{"name":"Darkness Eternal","formId":"0x0004CE4C","notes":"Get this quest in your journal before doing Purification.","stages":[115,116]}
+			{"name":"The Renegade Shadowscale","formId":"0x00035589","notes":"Finish before doing Purification","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Darkness Eternal","formId":"0x0004CE4C","notes":"Get this quest in your journal before doing Purification.","stages":[115,116],"icon":"QuestDarkBrotherhood"}
 		]}
 		,{"name":"Contract Quests","elements":[
-			{"name":"Welcome to the Family","formId":"0x00023DD6","stages":[100]}
-			,{"name":"A Watery Grave","formId":"0x000232CF","stages":[100]}
-			,{"name":"Blood of the Damned","formId":"0x000232D0","stages":[100]}
-			,{"name":"Accidents Happen","formId":"0x000232D1","stages":[100]}
-			,{"name":"No Rest for the Wicked","formId":"0x000232D4","stages":[100]}
-			,{"name":"Scheduled for Execution","formId":"0x000239E1","stages":[100]}
-			,{"name":"To Serve Sithis","formId":"0x00023DD7","stages":[100]}
-			,{"name":"The Assassinated Man","formId":"0x000253B9","stages":[100,110]}
-			,{"name":"My Brother's Keeper","formId":"0x000253BA","stages":[100]}
-			,{"name":"The Lonely Wanderer","formId":"0x000253BB","stages":[100]}
-			,{"name":"Enter the Eliminator","formId":"0x000253BC","stages":[100]}
-			,{"name":"Bad Medicine","formId":"0x000253BD","stages":[100]}
-			,{"name":"The Night Mother's Child","formId":"0x000253BE","stages":[100]}
-			,{"name":"Whodunit?","formId":"0x000253BF","stages":[100]}
-			,{"name":"The Assassin's Gambit","formId":"0x000253C0","stages":[100]}
-			,{"name":"Permanent Retirement","formId":"0x000253C1","stages":[100]}
-			,{"name":"Of Secret and Shadow","formId":"0x000253C2","stages":[100]}
-			,{"name":"The Purification","formId":"0x0002FF1C","notes":"Start Darkness Eternal and complete The Renegade Shadowscale and the first two Dark Exiles before doing this quest. Do not get exiled a third time.","stages":[100]}
+			{"name":"Welcome to the Family","formId":"0x00023DD6","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"A Watery Grave","formId":"0x000232CF","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Blood of the Damned","formId":"0x000232D0","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Accidents Happen","formId":"0x000232D1","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"No Rest for the Wicked","formId":"0x000232D4","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Scheduled for Execution","formId":"0x000239E1","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"To Serve Sithis","formId":"0x00023DD7","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Assassinated Man","formId":"0x000253B9","stages":[100,110],"icon":"QuestDarkBrotherhood"}
+			,{"name":"My Brother's Keeper","formId":"0x000253BA","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Lonely Wanderer","formId":"0x000253BB","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Enter the Eliminator","formId":"0x000253BC","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Bad Medicine","formId":"0x000253BD","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Night Mother's Child","formId":"0x000253BE","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Whodunit?","formId":"0x000253BF","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Assassin's Gambit","formId":"0x000253C0","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Permanent Retirement","formId":"0x000253C1","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Of Secret and Shadow","formId":"0x000253C2","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Purification","formId":"0x0002FF1C","notes":"Start Darkness Eternal and complete The Renegade Shadowscale and the first two Dark Exiles before doing this quest. Do not get exiled a third time.","stages":[100],"icon":"QuestDarkBrotherhood"}
 		]}
 		,{"name":"Black Hand Quests","elements":[
-			{"name":"The Dead Drop","formId":"0x00030203","stages":[100]}
-			,{"name":"Affairs of a Wizard","formId":"0x00007BF2","stages":[100]}
-			,{"name":"Next of Kin","formId":"0x0003005F","notes":"Invest in Andreas Draconis before doing this quest.","stages":[100]}
-			,{"name":"Broken Vows","formId":"0x0002FF1E","stages":[100]}
-			,{"name":"Final Justice","formId":"0x0002FF20","stages":[100]}
-			,{"name":"A Matter of Honor","formId":"0x0002FF22","stages":[100]}
-			,{"name":"The Coldest Sleep","formId":"0x0002FF24","stages":[100]}
-			,{"name":"A Kiss Before Dying","formId":"0x0002FF26","stages":[100]}
-			,{"name":"Following a Lead","formId":"0x00030060","stages":[100]}
-			,{"name":"Honor Thy Mother","formId":"0x00030062","stages":[100]}
+			{"name":"The Dead Drop","formId":"0x00030203","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Affairs of a Wizard","formId":"0x00007BF2","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Next of Kin","formId":"0x0003005F","notes":"Invest in Andreas Draconis before doing this quest.","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Broken Vows","formId":"0x0002FF1E","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Final Justice","formId":"0x0002FF20","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"A Matter of Honor","formId":"0x0002FF22","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"The Coldest Sleep","formId":"0x0002FF24","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"A Kiss Before Dying","formId":"0x0002FF26","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Following a Lead","formId":"0x00030060","stages":[100],"icon":"QuestDarkBrotherhood"}
+			,{"name":"Honor Thy Mother","formId":"0x00030062","stages":[100],"icon":"QuestDarkBrotherhood"}
 		]}
 	]}
 	,{"name":"Fighters Guild","elements":[
-		{"name":"Join the Fighters Guild","formId":"0x00024298","stages":[100]}
-		,{"name":"A Rat Problem","formId":"0x00035713","notes":"Rat out Quill-Weave to get the Fame.","stages":[100,110,200]}
-		,{"name":"The Unfortunate Shopkeeper","formId":"0x00035714","stages":[100]}
-		,{"name":"The Desolate Mine","formId":"0x00027F8E","notes":"All 3 members in the mine must survive to get 1 fame.","stages":[100,110]}
-		,{"name":"Unfinished Business","formId":"0x00024297","notes":"You need to rat out Maglir to get 1 fame.","stages":[100,105]}
-		,{"name":"Drunk and Disorderly","formId":"0x0002429C","stages":[100]}
-		,{"name":"Den of Thieves","formId":"0x00035715","notes":"Complete Newheim's Flagon quest along with this one.","stages":[100]}
-		,{"name":"Amelion's Debt","formId":"0x00035718","stages":[100]}
-		,{"name":"The Master's Son","formId":"0x0002D154","stages":[100]}
-		,{"name":"More Unfinished Business","formId":"0x0002D71A","stages":[100]}
-		,{"name":"Azani Blackheart","formId":"0x0002D71B","notes":"Visit Arpenia before starting this quest.","stages":[100]}
-		,{"name":"The Wandering Scholar","formId":"0x00035716","stages":[100,110]}
-		,{"name":"The Fugitives","formId":"0x00035719","stages":[100]}
-		,{"name":"Trolls of Forsaken Mine","formId":"0x0002D71C","stages":[100]}
-		,{"name":"The Stone of St. Alessia","formId":"0x00035717","notes":"Visit Sedor before starting this quest.","stages":[100]}
-		,{"name":"The Noble's Daughter","formId":"0x0003571A","stages":[100]}
-		,{"name":"Mystery at Harlun's Watch","formId":"0x0003571B","stages":[100]}
-		,{"name":"Information Gathering","formId":"0x000356C8","stages":[100,105]}
-		,{"name":"Infiltration","formId":"0x000356C9","stages":[100]}
-		,{"name":"The Hist","formId":"0x000356CA","stages":[100]}
-	]}
-	,{"name":"Villages and Inns","elements":[
-		{"name":"A Venerable Vintage","formId":"0x00185FED","stages":[100]}
-		,{"name":"Bear Season","formId":"0x00185FEB","stages":[100,200]}
-		,{"name":"Go Fish","formId":"0x00185FEE","stages":[100,110,200]}
-		,{"name":"Goblin Trouble","formId":"0x00007B2E","stages":[100]}
-		,{"name":"No Stone Unturned","formId":"0x00185FE9","stages":[100,200]}
-		,{"name":"Revenge Served Cold","formId":"0x00185FE8","stages":[100,200]}
-		,{"name":"The Gravefinder's Repose","formId":"0x00185FEA","stages":[100]}
-		,{"name":"The Potato Snatcher","formId":"0x00177A31","stages":[100,200]}
-		,{"name":"The Sunken One","formId":"0x00185FEC","stages":[100]}
-		,{"name":"When the Vow Breaks","formId":"0x00185FEF","stages":[100,200]}
-		,{"name":"Zero Visibility","formId":"0x0002F86B","stages":[100]}
+		{"name":"Join the Fighters Guild","formId":"0x00024298","stages":[100],"icon":"QuestFighters"}
+		,{"name":"A Rat Problem","formId":"0x00035713","notes":"Rat out Quill-Weave to get the Fame.","stages":[100,110,200],"icon":"QuestFighters"}
+		,{"name":"The Unfortunate Shopkeeper","formId":"0x00035714","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Desolate Mine","formId":"0x00027F8E","notes":"All 3 members in the mine must survive to get 1 fame.","stages":[100,110],"icon":"QuestFighters"}
+		,{"name":"Unfinished Business","formId":"0x00024297","notes":"You need to rat out Maglir to get 1 fame.","stages":[100,105],"icon":"QuestFighters"}
+		,{"name":"Drunk and Disorderly","formId":"0x0002429C","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Den of Thieves","formId":"0x00035715","notes":"Complete Newheim's Flagon quest along with this one.","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Newheim's Flagon","formId":"0x00002E60","stages":[95],"icon":"QuestFighters"}
+		,{"name":"Amelion's Debt","formId":"0x00035718","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Master's Son","formId":"0x0002D154","stages":[100],"icon":"QuestFighters"}
+		,{"name":"More Unfinished Business","formId":"0x0002D71A","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Azani Blackheart","formId":"0x0002D71B","notes":"Visit Arpenia before starting this quest.","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Wandering Scholar","formId":"0x00035716","stages":[100,110],"icon":"QuestFighters"}
+		,{"name":"The Fugitives","formId":"0x00035719","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Trolls of Forsaken Mine","formId":"0x0002D71C","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Stone of St. Alessia","formId":"0x00035717","notes":"Visit Sedor before starting this quest.","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Noble's Daughter","formId":"0x0003571A","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Mystery at Harlun's Watch","formId":"0x0003571B","stages":[100],"icon":"QuestFighters"}
+		,{"name":"Information Gathering","formId":"0x000356C8","stages":[100,105],"icon":"QuestFighters"}
+		,{"name":"Infiltration","formId":"0x000356C9","stages":[100],"icon":"QuestFighters"}
+		,{"name":"The Hist","formId":"0x000356CA","stages":[100],"icon":"QuestFighters"}
 	]}
 	,{"name":"Mages Guild","elements":[
 		{"name":"Initiation Quests","elements":[
-			{"name":"Join the Mages Guild","formId":"0x0002CD10","stages":[100]}
-			,{"name":"Bravil Recommendation","formId":"0x0002D936","stages":[100]}
-			,{"name":"Leyawiin Recommendation","formId":"0x0002D93C","stages":[100]}
-			,{"name":"Cheydinhal Recommendation","formId":"0x0002D410","stages":[100]}
-			,{"name":"Fingers of the Mountain","formId":"0x000224E1","notes":"Give the book to Teekeeus to get 2 fame instead of 1.","stages":[100,200]}
-			,{"name":"Fingers of the Mountain, Part II","formId":"0x00028C05","stages":[200,255]}
-			,{"name":"Bruma Recommendation","formId":"0x0002CBC8","stages":[100]}
-			,{"name":"Skingrad Recommendation","formId":"0x0002D28B","stages":[100]}
-			,{"name":"Anvil Recommendation","formId":"0x0002D32B","stages":[100]}
+			{"name":"Join the Mages Guild","formId":"0x0002CD10","stages":[100],"icon":"QuestMages"}
+			,{"name":"Bravil Recommendation","formId":"0x0002D936","stages":[100],"icon":"QuestMages"}
+			,{"name":"Leyawiin Recommendation","formId":"0x0002D93C","stages":[100],"icon":"QuestMages"}
+			,{"name":"Cheydinhal Recommendation","formId":"0x0002D410","stages":[100],"icon":"QuestMages"}
+			,{"name":"Fingers of the Mountain","formId":"0x000224E1","notes":"Give the book to Teekeeus to get 2 fame instead of 1.","stages":[100,200],"icon":"QuestMages"}
+			,{"name":"Fingers of the Mountain, Part II","formId":"0x00028C05","stages":[200,255],"icon":"QuestMages"}
+			,{"name":"Bruma Recommendation","formId":"0x0002CBC8","stages":[100],"icon":"QuestMages"}
+			,{"name":"Skingrad Recommendation","formId":"0x0002D28B","stages":[100],"icon":"QuestMages"}
+			,{"name":"Anvil Recommendation","formId":"0x0002D32B","stages":[100],"icon":"QuestMages"}
 		]}
 		,{"name":"Suspension Quests","elements":[
-			{"name":"Mages Guild Suspension","formId":"0x00022E92","stages":[100]}
-			,{"name":"Mages Guild Second Suspension","formId":"0x00025032","stages":[100]}
-		]}
-		,{"name":"Misc. Quests","elements":[
-			{"name":"Alchemy Acquisitions","formId":"0x000A78CE","stages":[100]}
+			{"name":"Mages Guild Suspension","formId":"0x00022E92","stages":[100],"icon":"QuestMages"}
+			,{"name":"Mages Guild Second Suspension","formId":"0x00025032","stages":[100],"icon":"QuestMages"}
 		]}
 		,{"name":"Post-Initiation Quests","elements":[
-			{"name":"A Mage's Staff","formId":"0x00034E14","stages":[100]}
-			,{"name":"Ulterior Motives","formId":"0x0003564F","stages":[100]}
-			,{"name":"Vahtacen's Secret","formId":"0x00035F28","stages":[100]}
-			,{"name":"Necromancer's Moon","formId":"0x00036300","stages":[100]}
-			,{"name":"Liberation or Apprehension?","formId":"0x0000395F","stages":[100]}
-			,{"name":"Information at a Price","formId":"0x00003960","stages":[100]}
-			,{"name":"A Plot Revealed","formId":"0x00003961","notes":"Invest in Selena Orania before doing this quest.","stages":[100]}
-			,{"name":"The Bloodworm Helm","formId":"0x0000C039","stages":[100]}
-			,{"name":"The Necromancer's Amulet","formId":"0x0000C03A","stages":[100]}
-			,{"name":"Ambush","formId":"0x0000C03B","stages":[100]}
-			,{"name":"Confront the King","formId":"0x0000C03C","stages":[100]}
+			{"name":"A Mage's Staff","formId":"0x00034E14","stages":[100],"icon":"QuestMages"}
+			,{"name":"Ulterior Motives","formId":"0x0003564F","stages":[100],"icon":"QuestMages"}
+			,{"name":"Vahtacen's Secret","formId":"0x00035F28","stages":[100],"icon":"QuestMages"}
+			,{"name":"Necromancer's Moon","formId":"0x00036300","stages":[100],"icon":"QuestMages"}
+			,{"name":"Liberation or Apprehension?","formId":"0x0000395F","stages":[100],"icon":"QuestMages"}
+			,{"name":"Information at a Price","formId":"0x00003960","stages":[100],"icon":"QuestMages"}
+			,{"name":"A Plot Revealed","formId":"0x00003961","notes":"Invest in Selena Orania before doing this quest.","stages":[100],"icon":"QuestMages"}
+			,{"name":"The Bloodworm Helm","formId":"0x0000C039","stages":[100],"icon":"QuestMages"}
+			,{"name":"The Necromancer's Amulet","formId":"0x0000C03A","stages":[100],"icon":"QuestMages"}
+			,{"name":"Ambush","formId":"0x0000C03B","stages":[100],"icon":"QuestMages"}
+			,{"name":"Confront the King","formId":"0x0000C03C","stages":[100],"icon":"QuestMages"}
 		]}
-	]}
-	,{"name":"Daedric Shrines","elements":[
-		{"name":"Azura","formId":"0x000146A2","stages":[100]}
-		,{"name":"Boethia","formId":"0x000146A3","stages":[100]}
-		,{"name":"Clavicus Vile","formId":"0x000146A4","stages":[100,105]}
-		,{"name":"Hermaeus Mora","formId":"0x000146AF","stages":[100]}
-		,{"name":"Hircine","formId":"0x000146A5","stages":[100]}
-		,{"name":"Malacath","formId":"0x000146A6","stages":[100,200]}
-		,{"name":"Mephala","formId":"0x000146A7","notes":"Invest in Kirsten before doing this quest.","stages":[100,105,110,115]}
-		,{"name":"Meridia","formId":"0x000146A8","stages":[100]}
-		,{"name":"Molag Bal","formId":"0x000146B0","stages":[100,105,110]}
-		,{"name":"Namira","formId":"0x000146A9","stages":[100,105,110]}
-		,{"name":"Nocturnal","formId":"0x000146AA","stages":[100]}
-		,{"name":"Peryite","formId":"0x000146AB","stages":[100]}
-		,{"name":"Sanguine","formId":"0x000146AC","stages":[100,105]}
-		,{"name":"Sheogorath","formId":"0x000146AD","stages":[100]}
-		,{"name":"Vaermina","formId":"0x000146AE","notes":"Get the Palla, volume 1 skill book in the final room next to the orb while doing this quest.","stages":[100]}
+		,{"name":"Misc. Quests","elements":[
+			{"name":"Alchemy Acquisitions","formId":"0x000A78CE","stages":[100],"icon":"QuestMages"}
+		]}
 	]}
 	,{"name":"Thieves Guild","elements":[
-		{"name":"Finding the Thieves Guild","formId":"0x000355DF","notes":"Get this quest in your journal from Myvryna Arano or a beggar before talking to Armand.","stages":[100]}
-		,{"name":"May the Best Thief Win","formId":"0x000355E1","stages":[50,90]}
-		,{"name":"Blood Price","formId":"0x000BF021","notes":"If a quest on this list has a Blood Price quest directly below, then you must do the Blood Price for that quest before completing it.","stages":[18]}
-		,{"name":"Independent Thievery","formId":"0x0001EE46","stages":[120]}
-		,{"name":"Untaxing the Poor","formId":"0x0003486D","stages":[30]}
-		,{"name":"The Elven Maiden","formId":"0x00034EA2","stages":[80]}
-		,{"name":"Blood Price","formId":"0x000BF024","stages":[35]}
-		,{"name":"Ahdarji's Heirloom","formId":"0x00035DE0","stages":[80]}
-		,{"name":"Blood Price","formId":"0x000BF01C","stages":[45]}
-		,{"name":"Misdirection","formId":"0x00036332","stages":[60]}
-		,{"name":"Blood Price","formId":"0x000BF01D","stages":[55]}
-		,{"name":"Lost Histories","formId":"0x00036333","stages":[70]}
-		,{"name":"Blood Price","formId":"0x000BF01E","stages":[65]}
-		,{"name":"Taking Care of Lex","formId":"0x00036334","stages":[90]}
-		,{"name":"Blood Price","formId":"0x000BF020","stages":[75]}
-		,{"name":"Turning a Blind Eye","formId":"0x00036335","stages":[50,100]}
-		,{"name":"Blood Price","formId":"0x000BF022","stages":[85]}
-		,{"name":"Arrow of Extrication","formId":"0x00036336","stages":[40,50]}
-		,{"name":"Blood Price","formId":"0x000BF023","stages":[95]}
-		,{"name":"Boots of Springheel Jak","formId":"0x00036337","stages":[50,60]}
-		,{"name":"Blood Price","formId":"0x000BF025","stages":[105]}
-		,{"name":"The Ultimate Heist","formId":"0x00036338","notes":"Get the Fire and Darkness skill book in the Hall of Epochs before finishing this quest. Get 2920, Second Seed (v5) next to the fireplace at the end of the Imperial Battlemage’s Chambers.","stages":[160,200]}
+		{"name":"Finding the Thieves Guild","formId":"0x000355DF","notes":"Get this quest in your journal from Myvryna Arano or a beggar before talking to Armand.","stages":[100],"icon":"QuestThieves"}
+		,{"name":"May the Best Thief Win","formId":"0x000355E1","stages":[50,90],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF021","notes":"If a quest on this list has a Blood Price quest directly below, then you must do the Blood Price for that quest before completing it.","stages":[18],"icon":"QuestThieves"}
+		,{"name":"Independent Thievery","formId":"0x0001EE46","stages":[120],"icon":"QuestThieves"}
+		,{"name":"Untaxing the Poor","formId":"0x0003486D","stages":[30],"icon":"QuestThieves"}
+		,{"name":"The Elven Maiden","formId":"0x00034EA2","stages":[80],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF024","stages":[35],"icon":"QuestThieves"}
+		,{"name":"Ahdarji's Heirloom","formId":"0x00035DE0","stages":[80],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF01C","stages":[45],"icon":"QuestThieves"}
+		,{"name":"Misdirection","formId":"0x00036332","stages":[60],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF01D","stages":[55],"icon":"QuestThieves"}
+		,{"name":"Lost Histories","formId":"0x00036333","stages":[70],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF01E","stages":[65],"icon":"QuestThieves"}
+		,{"name":"Taking Care of Lex","formId":"0x00036334","stages":[90],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF020","stages":[75],"icon":"QuestThieves"}
+		,{"name":"Turning a Blind Eye","formId":"0x00036335","stages":[50,100],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF022","stages":[85],"icon":"QuestThieves"}
+		,{"name":"Arrow of Extrication","formId":"0x00036336","stages":[40,50],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF023","stages":[95],"icon":"QuestThieves"}
+		,{"name":"Boots of Springheel Jak","formId":"0x00036337","stages":[50,60],"icon":"QuestThieves"}
+		,{"name":"Blood Price","formId":"0x000BF025","stages":[105],"icon":"QuestThieves"}
+		,{"name":"The Ultimate Heist","formId":"0x00036338","notes":"Get the Fire and Darkness skill book in the Hall of Epochs before finishing this quest. Get 2920, Second Seed (v5) next to the fireplace at the end of the Imperial Battlemage’s Chambers.","stages":[160,200],"icon":"QuestThieves"}
+	]}
+	,{"name":"Journal-Filled","elements":[
+		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Meet non-journal requirements for this quest before you finish the Thieves Guild. Get cast out and readmitted to count as complete.","stages":[10,20,30,40],"icon":"QuestThieves"}
+		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Meet non-journal requirements for this quest before you finish the Fighters Guild. Get up through the second expulsion, but do not get expelled a third time.","stages":[60],"icon":"QuestFighters"}
+		,{"name":"The Arena","formId":"0x000E0C91","notes":"Talk to Ysabel after becoming Arena Grand Champion to get the offer to fight creatures in order to fulfill non-journal requirements.","stages":[100],"icon":"QuestArena"}
+		,{"name":"Whispers of Death","formId":"0x00030064","notes":"This quest cannot be updated. Having it in your journal is all that is needed for the non-journal requirements.","stages":[10],"icon":"QuestDarkBrotherhood"}
+	]}
+	,{"name":"Daedric Shrines","elements":[
+		{"name":"Azura","formId":"0x000146A2","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Boethia","formId":"0x000146A3","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Clavicus Vile","formId":"0x000146A4","stages":[100,105],"icon":"QuestDaedric"}
+		,{"name":"Hermaeus Mora","formId":"0x000146AF","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Hircine","formId":"0x000146A5","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Malacath","formId":"0x000146A6","stages":[100,200],"icon":"QuestDaedric"}
+		,{"name":"Mephala","formId":"0x000146A7","notes":"Invest in Kirsten before doing this quest.","stages":[100,105,110,115],"icon":"QuestDaedric"}
+		,{"name":"Meridia","formId":"0x000146A8","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Molag Bal","formId":"0x000146B0","stages":[100,105,110],"icon":"QuestDaedric"}
+		,{"name":"Namira","formId":"0x000146A9","stages":[100,105,110],"icon":"QuestDaedric"}
+		,{"name":"Nocturnal","formId":"0x000146AA","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Peryite","formId":"0x000146AB","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Sanguine","formId":"0x000146AC","stages":[100,105],"icon":"QuestDaedric"}
+		,{"name":"Sheogorath","formId":"0x000146AD","stages":[100],"icon":"QuestDaedric"}
+		,{"name":"Vaermina","formId":"0x000146AE","notes":"Get the Palla, volume 1 skill book in the final room next to the orb while doing this quest.","stages":[100],"icon":"QuestDaedric"}
 	]}
 	,{"name":"Master Training","elements":[
-		{"name":"Acrobatics Training","formId":"0x0018BA2B","stages":[100]}
-		,{"name":"Alchemy Training","formId":"0x0018BA2A","stages":[100,200]}
-		,{"name":"Alteration Training","formId":"0x0018BA2C","stages":[100,200]}
-		,{"name":"Armorer Training","formId":"0x0018BA2D","stages":[100,200]}
-		,{"name":"Athletics Training","formId":"0x0018BA2E","stages":[100,200]}
-		,{"name":"Blade Training","formId":"0x0018BA2F","stages":[100,200]}
-		,{"name":"Block Training","formId":"0x0018BA30","stages":[100,200]}
-		,{"name":"Blunt Training","formId":"0x0018BA31","stages":[100,200]}
-		,{"name":"Conjuration Training","formId":"0x0018BA32","stages":[100,200]}
-		,{"name":"Destruction Training","formId":"0x0018B197","stages":[100,200]}
-		,{"name":"Hand to Hand Training","formId":"0x0018BA33","stages":[100,200]}
-		,{"name":"Heavy Armor Training","formId":"0x0018B2F9","stages":[100,200]}
-		,{"name":"Illusion Training","formId":"0x0018BA34","stages":[100,200]}
-		,{"name":"Light Armor Training","formId":"0x0018BA35","stages":[100,200]}
-		,{"name":"Marksman Training","formId":"0x0003C168","stages":[100,200]}
-		,{"name":"Mercantile Training","formId":"0x0018BA36","stages":[100,200]}
-		,{"name":"Mysticism Training","formId":"0x0018BA37","stages":[100,200]}
-		,{"name":"Restoration Training","formId":"0x0018BA38","stages":[100,200]}
-		,{"name":"Security Training","formId":"0x0018BA39","stages":[100,200]}
-		,{"name":"Sneak Training","formId":"0x0018BA3A","stages":[100,200]}
-		,{"name":"Speechcraft Training","formId":"0x0018BA3B","stages":[100,200,255]}
+		{"name":"Acrobatics Training","formId":"0x0018BA2B","stages":[100],"icon":"QuestTraining"}
+		,{"name":"Alchemy Training","formId":"0x0018BA2A","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Alteration Training","formId":"0x0018BA2C","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Armorer Training","formId":"0x0018BA2D","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Athletics Training","formId":"0x0018BA2E","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Blade Training","formId":"0x0018BA2F","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Block Training","formId":"0x0018BA30","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Blunt Training","formId":"0x0018BA31","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Conjuration Training","formId":"0x0018BA32","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Destruction Training","formId":"0x0018B197","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Hand to Hand Training","formId":"0x0018BA33","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Heavy Armor Training","formId":"0x0018B2F9","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Illusion Training","formId":"0x0018BA34","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Light Armor Training","formId":"0x0018BA35","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Marksman Training","formId":"0x0003C168","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Mercantile Training","formId":"0x0018BA36","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Mysticism Training","formId":"0x0018BA37","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Restoration Training","formId":"0x0018BA38","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Security Training","formId":"0x0018BA39","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Sneak Training","formId":"0x0018BA3A","stages":[100,200],"icon":"QuestTraining"}
+		,{"name":"Speechcraft Training","formId":"0x0018BA3B","stages":[100,200,255],"icon":"QuestTraining"}
 	]}
-	,{"name":"Main Cities","elements":[
+	,{"name":"Misc. Quests","elements":[
 		{"name":"Anvil","elements":[
-			{"name":"Newheim's Flagon","formId":"0x00002E60","stages":[95]}
-			,{"name":"Where Spirits Have Lease","formId":"0x0003636F","stages":[120]}
-			,{"name":"The Siren's Deception","formId":"0x0003AF05","notes":"Don't allow the Sirens to be killed prematurely or else you don't get any fame.","stages":[100,110,150]}
-			,{"name":"The Ghost Ship of Anvil","formId":"0x00095A68","stages":[100]}
+			{"name":"Where Spirits Have Lease","formId":"0x0003636F","stages":[120],"icon":"QuestGeneral"}
+			,{"name":"The Siren's Deception","formId":"0x0003AF05","notes":"Don't allow the Sirens to be killed prematurely or else you don't get any fame.","stages":[100,110,150],"icon":"QuestGeneral"}
+			,{"name":"The Ghost Ship of Anvil","formId":"0x00095A68","stages":[100],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Bravil","elements":[
-			{"name":"Caught in the Hunt","formId":"0x0001F426","notes":"Don't let Aleron Loche die prematurely or else you don't get 1 fame.","stages":[100,150]}
-			,{"name":"Through A Nightmare, Darkly","formId":"0x0002CA50","notes":"Make sure to get The Lunar Lorkhan in the Dreamworld before leaving it.","stages":[90,100,200]}
-			,{"name":"The Forlorn Watchman","formId":"0x00033E93","stages":[120]}
-			,{"name":"Buying a house in Bravil","formId":"0x00085480","stages":[30]}
+			{"name":"Caught in the Hunt","formId":"0x0001F426","notes":"Don't let Aleron Loche die prematurely or else you don't get 1 fame.","stages":[100,150],"icon":"QuestGeneral"}
+			,{"name":"Through A Nightmare, Darkly","formId":"0x0002CA50","notes":"Make sure to get The Lunar Lorkhan in the Dreamworld before leaving it.","stages":[90,100,200],"icon":"QuestGeneral"}
+			,{"name":"The Forlorn Watchman","formId":"0x00033E93","stages":[120],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Bravil","formId":"0x00085480","stages":[30],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Bruma","elements":[
-			{"name":"Two Sides of the Coin","formId":"0x00017837","notes":"Don't let Arnora die before you talk to Jorundr or else you don't get 1 fame.","stages":[100,160,180,200]}
-			,{"name":"A Brotherhood Betrayed","formId":"0x00017839","notes":"Don't let a quest NPC die prematurely or let Raynil Dralas escape or else you don't get 1 fame.","stages":[120,170,200]}
-			,{"name":"Lifting the Vale","formId":"0x00017835","stages":[150]}
-			,{"name":"Buying a house in Bruma","formId":"0x00085481","stages":[30]}
+			{"name":"Two Sides of the Coin","formId":"0x00017837","notes":"Don't let Arnora die before you talk to Jorundr or else you don't get 1 fame.","stages":[100,160,180,200],"icon":"QuestGeneral"}
+			,{"name":"A Brotherhood Betrayed","formId":"0x00017839","notes":"Don't let a quest NPC die prematurely or let Raynil Dralas escape or else you don't get 1 fame.","stages":[120,170,200],"icon":"QuestGeneral"}
+			,{"name":"Lifting the Vale","formId":"0x00017835","stages":[150],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Bruma","formId":"0x00085481","stages":[30],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Cheydinhal","elements":[
-			{"name":"A Brush with Death","formId":"0x00017606","stages":[100,200]}
-			,{"name":"Buying a house in Cheydinhal","formId":"0x00085483","stages":[30]}
-			,{"name":"Corruption and Conscience","formId":"0x00017838","notes":"Don't kill Ulrich Leland or else you don't get 1 fame.","stages":[100,180,200]}
-			,{"name":"The Wayward Knight","formId":"0x00031B77","notes":"Farwil must live in order to get 2 fame.","stages":[100,105,110,115,150,200]}
+			{"name":"A Brush with Death","formId":"0x00017606","stages":[100,200],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Cheydinhal","formId":"0x00085483","stages":[30],"icon":"QuestGeneral"}
+			,{"name":"Corruption and Conscience","formId":"0x00017838","notes":"Don't kill Ulrich Leland or else you don't get 1 fame.","stages":[100,180,200],"icon":"QuestGeneral"}
+			,{"name":"The Wayward Knight","formId":"0x00031B77","notes":"Farwil must live in order to get 2 fame.","stages":[100,105,110,115,150,200],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Chorrol","elements":[
-			{"name":"The Killing Field","formId":"0x000224C7","stages":[100,120,200]}
-			,{"name":"Separated at Birth","formId":"0x00023E85","stages":[100]}
-			,{"name":"Legacy Lost","formId":"0x0002B8DB","stages":[100]}
-			,{"name":"Sins of the Father","formId":"0x0002BA46","notes":"Don't give the Honorblade of Chorrol to Fathis Ules or else you don't get 1 fame.","stages":[100]}
-			,{"name":"A Shadow Over Hackdirt","formId":"0x00027815","notes":"Invest in merchants Etira Moslin and Vlanhonder Moslin before doing this quest.","stages":[100]}
-			,{"name":"Canvas the Castle","formId":"0x0003151E","notes":"Turn in Chanel to get 1 fame.","stages":[100,150,220]}
-			,{"name":"Buying a house in Chorrol","formId":"0x00085482","stages":[30]}
+			{"name":"The Killing Field","formId":"0x000224C7","stages":[100,120,200],"icon":"QuestGeneral"}
+			,{"name":"Separated at Birth","formId":"0x00023E85","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Legacy Lost","formId":"0x0002B8DB","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Sins of the Father","formId":"0x0002BA46","notes":"Don't give the Honorblade of Chorrol to Fathis Ules or else you don't get 1 fame.","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"A Shadow Over Hackdirt","formId":"0x00027815","notes":"Invest in merchants Etira Moslin and Vlanhonder Moslin before doing this quest.","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Canvas the Castle","formId":"0x0003151E","notes":"Turn in Chanel to get 1 fame.","stages":[100,150,220],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Chorrol","formId":"0x00085482","stages":[30],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Imperial City","elements":[
-			{"name":"Buy a house in the Imperial City","formId":"0x00085485","stages":[30]}
-			,{"name":"Unfriendly Competition","formId":"0x00016718","stages":[150,200]}
-			,{"name":"The Collector","formId":"0x0002AB4A","stages":[60,100]}
-			,{"name":"Nothing You Can Possess","formId":"0x0002B19E","stages":[100]}
-			,{"name":"Secrets of the Ayleids","formId":"0x0002E5BE","stages":[100]}
-			,{"name":"Order of the Virtuous Blood","formId":"0x0001D21C","notes":"Don't kill Roland Jenseric or else you don't get 1 fame.","stages":[160,200,250]}
-			,{"name":"Imperial Corruption","formId":"0x00035CA8","stages":[91,119]}
-			,{"name":"An Unexpected Voyage","formId":"0x0000C1B8","stages":[100]}
-			,{"name":"Origin of the Gray Prince","formId":"0x00038ED6","notes":"Start this quest before fighting Agronak gro-Malog in the Arena.","stages":[100,115]}
-			,{"name":"Vampire Cure","formId":"0x0003E933","stages":[100]}
+			{"name":"Buy a house in the Imperial City","formId":"0x00085485","stages":[30],"icon":"QuestGeneral"}
+			,{"name":"Unfriendly Competition","formId":"0x00016718","stages":[150,200],"icon":"QuestGeneral"}
+			,{"name":"The Collector","formId":"0x0002AB4A","stages":[60,100],"icon":"QuestGeneral"}
+			,{"name":"Nothing You Can Possess","formId":"0x0002B19E","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Secrets of the Ayleids","formId":"0x0002E5BE","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Order of the Virtuous Blood","formId":"0x0001D21C","notes":"Don't kill Roland Jenseric or else you don't get 1 fame.","stages":[160,200,250],"icon":"QuestGeneral"}
+			,{"name":"Imperial Corruption","formId":"0x00035CA8","stages":[91,119],"icon":"QuestGeneral"}
+			,{"name":"An Unexpected Voyage","formId":"0x0000C1B8","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Origin of the Gray Prince","formId":"0x00038ED6","notes":"Start this quest before fighting Agronak gro-Malog in the Arena.","stages":[100,115],"icon":"QuestGeneral"}
+			,{"name":"Vampire Cure","formId":"0x0003E933","stages":[100],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Leyawiin","elements":[
-			{"name":"Raid on Greyland","formId":"0x00181C6B","stages":[100,200]}
-			,{"name":"Tears of the Savior","formId":"0x00022E5A","stages":[100,200]}
-			,{"name":"Whom Gods Annoy","formId":"0x00035A95","stages":[100]}
-			,{"name":"Mazoga the Orc","formId":"0x0008596C","stages":[100,200,210]}
-			,{"name":"Knights of the White Stallion","formId":"0x0008596D","stages":[100,105,110]}
-			,{"name":"Buying a house in Leyawiin","formId":"0x0008547F","stages":[30]}
+			{"name":"Raid on Greyland","formId":"0x00181C6B","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"Tears of the Savior","formId":"0x00022E5A","stages":[100,200],"icon":"QuestGeneral"}
+			,{"name":"Whom Gods Annoy","formId":"0x00035A95","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Mazoga the Orc","formId":"0x0008596C","stages":[100,200,210],"icon":"QuestGeneral"}
+			,{"name":"Knights of the White Stallion","formId":"0x0008596D","stages":[100,105,110],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Leyawiin","formId":"0x0008547F","stages":[30],"icon":"QuestGeneral"}
 		]}
 		,{"name":"Skingrad","elements":[
-			{"name":"Paranoia","formId":"0x00028D83","notes":"Show Glarthir's note to a town guard and have him executed to get 1 fame.","stages":[9,54,65,70,81,82,100]}
-			,{"name":"Buying a house in Skringrad","formId":"0x00085484","stages":[30]}
-			,{"name":"Helping Hands","formId":"0x000B97DD","stages":[100]}
-			,{"name":"The Rosethorn Cache","formId":"0x000B6C0C","stages":[100]}
-			,{"name":"Seeking Your Roots","formId":"0x0004E936","stages":[100,200]}
+			{"name":"Paranoia","formId":"0x00028D83","notes":"Show Glarthir's note to a town guard and have him executed to get 1 fame.","stages":[9,54,65,70,81,82,100],"icon":"QuestGeneral"}
+			,{"name":"Buying a house in Skringrad","formId":"0x00085484","stages":[30],"icon":"QuestGeneral"}
+			,{"name":"Helping Hands","formId":"0x000B97DD","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"The Rosethorn Cache","formId":"0x000B6C0C","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"Seeking Your Roots","formId":"0x0004E936","stages":[100,200],"icon":"QuestGeneral"}
+		]}
+		,{"name":"Villages and Inns","elements":[
+			{"name":"A Venerable Vintage","formId":"0x00185FED","stages":[100],"icon":"QuestGeneral2"}
+			,{"name":"Bear Season","formId":"0x00185FEB","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"Go Fish","formId":"0x00185FEE","stages":[100,110,200],"icon":"QuestGeneral2"}
+			,{"name":"Goblin Trouble","formId":"0x00007B2E","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"No Stone Unturned","formId":"0x00185FE9","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"Revenge Served Cold","formId":"0x00185FE8","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"The Gravefinder's Repose","formId":"0x00185FEA","stages":[100],"icon":"QuestGeneral"}
+			,{"name":"The Potato Snatcher","formId":"0x00177A31","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"The Sunken One","formId":"0x00185FEC","stages":[100],"icon":"QuestGeneral2"}
+			,{"name":"When the Vow Breaks","formId":"0x00185FEF","stages":[100,200],"icon":"QuestGeneral2"}
+			,{"name":"Zero Visibility","formId":"0x0002F86B","stages":[100],"icon":"QuestGeneral2"}
 		]}
 	]}
 ]}

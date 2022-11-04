@@ -254,7 +254,7 @@
 		{"name":"Oblivion Gate","x":79155,"y":147790,"formId":"0x00003986","notes":"Fixed","icon":"Gate"},
 		{"name":"Oblivion Gate","x":123858,"y":-146772,"formId":"0x000038A9","notes":"Fixed","icon":"Gate"},
 		{"name":"Oblivion Gate","x":137895,"y":-132036,"formId":"0x000038B4","notes":"Fixed","icon":"Gate"},
-		{"name":"Random Gates", "max":40, "formId":"0xFFFFFFC1", "elements":[
+		{"name":"Random Gates (Need 40)", "max":40, "formId":"0xFFFFFFC1", "elements":[
 			{"name":"Oblivion Gate","x":-202682,"y":2772,"formId":"0x00014D15","notes":"Random","icon":"Gate"},
 			{"name":"Oblivion Gate","x":-195584,"y":25312,"formId":"0x00014D17","notes":"Random","icon":"Gate"},
 			{"name":"Oblivion Gate","x":-178032,"y":-17136,"formId":"0x000CD413","notes":"Random","icon":"Gate"},

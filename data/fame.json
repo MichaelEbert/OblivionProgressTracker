@@ -1,4 +1,4 @@
-{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":1,"notes":"Automatically checked off when the corresponding tasks are completed","elements":[
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":1,"notes":"Except for Arena Fights, automatically checked off when the corresponding tasks are completed","elements":[
 	{"name":"Oblivion Gates Closed","extraColumn":"displayTotal","elements":[
 		{"ref":"0x0001E8A3", "displayTotal":1}
 		,{"ref":"0xFFFFFFC3","name":"Fixed Gates (1 Fame)","type":"number", "displayTotal":12}
@@ -107,30 +107,30 @@
 		]}
 	]},
 	{"name":"Arena Fights","elements":[
-		 {"formId":"0x00027668","name":"Pit Dog - Bosmer"}
-		,{"formId":"0x0001DC4D","name":"Pit Dog - Imperial"}
-		,{"formId":"0x0001DC4C","name":"Pit Dog - Argonian"}
-		,{"formId":"0x00025B39","name":"Brawler - Nord"}
-		,{"formId":"0x000164C4","name":"Brawler - 2 Bosmers"}
-		,{"formId":"0x000164CA","name":"Brawler - Khajiit"}
-		,{"formId":"0x00017690","name":"Bloodletter - Redguard"}
-		,{"formId":"0x00017696","name":"Bloodletter - Breton"}
-		,{"formId":"0x0001769C","name":"Bloodletter - Dunmer"}
-		,{"formId":"0x000176A3","name":"Myrmidon - Bosmer"}
-		,{"formId":"0x000176A9","name":"Myrmidon - Altmer"}
-		,{"formId":"0x000176AF","name":"Myrmidon - Orc"}
-		,{"formId":"0x000176B5","name":"Warrior - Nord"}
-		,{"formId":"0x000176B8","name":"Warrior - Altmer"}
-		,{"formId":"0x00017832","name":"Warrior - Orc"}
-		,{"formId":"0x0001C0CB","name":"Gladiator - 3 Argonians"}
-		,{"formId":"0x0001C0D1","name":"Gladiator - Khajiit"}
-		,{"formId":"0x0001C0D7","name":"Gladiator - Breton"}
-		,{"formId":"0x0001C0DD","name":"Hero - Imperial"}
-		,{"formId":"0x000176BE","name":"Hero - Altmer"}
-		,{"formId":"0x000176C4","name":"Hero - Yellow Team Champion and 2 Dunmers"}
+		 {"formId":"0x00027668","name":"Pit Dog - Bosmer","scale":1,"icon":"ArenaPitDog"}
+		,{"formId":"0x0001DC4D","name":"Pit Dog - Imperial","scale":1,"icon":"ArenaPitDog"}
+		,{"formId":"0x0001DC4C","name":"Pit Dog - Argonian","scale":1,"icon":"ArenaPitDog"}
+		,{"formId":"0x00025B39","name":"Brawler - Nord","scale":1,"icon":"ArenaBrawler"}
+		,{"formId":"0x000164C4","name":"Brawler - 2 Bosmers","scale":1,"icon":"ArenaBrawler"}
+		,{"formId":"0x000164CA","name":"Brawler - Khajiit","scale":1,"icon":"ArenaBrawler"}
+		,{"formId":"0x00017690","name":"Bloodletter - Redguard","scale":1,"icon":"ArenaBloodletter"}
+		,{"formId":"0x00017696","name":"Bloodletter - Breton","scale":1,"icon":"ArenaBloodletter"}
+		,{"formId":"0x0001769C","name":"Bloodletter - Dunmer","scale":1,"icon":"ArenaBloodletter"}
+		,{"formId":"0x000176A3","name":"Myrmidon - Bosmer","scale":1,"icon":"ArenaMyrmidon"}
+		,{"formId":"0x000176A9","name":"Myrmidon - Altmer","scale":1,"icon":"ArenaMyrmidon"}
+		,{"formId":"0x000176AF","name":"Myrmidon - Orc","scale":1,"icon":"ArenaMyrmidon"}
+		,{"formId":"0x000176B5","name":"Warrior - Nord","scale":1,"icon":"ArenaWarrior"}
+		,{"formId":"0x000176B8","name":"Warrior - Altmer","scale":1,"icon":"ArenaWarrior"}
+		,{"formId":"0x00017832","name":"Warrior - Orc","scale":1,"icon":"ArenaWarrior"}
+		,{"formId":"0x0001C0CB","name":"Gladiator - 3 Argonians","scale":1,"icon":"ArenaGladiator"}
+		,{"formId":"0x0001C0D1","name":"Gladiator - Khajiit","scale":1,"icon":"ArenaGladiator"}
+		,{"formId":"0x0001C0D7","name":"Gladiator - Breton","scale":1,"icon":"ArenaGladiator"}
+		,{"formId":"0x0001C0DD","name":"Hero - Imperial","scale":1,"icon":"ArenaHero"}
+		,{"formId":"0x000176BE","name":"Hero - Altmer","scale":1,"icon":"ArenaHero"}
+		,{"formId":"0x000176C4","name":"Hero - Yellow Team Champion and 2 Dunmers","scale":1,"icon":"ArenaHero"}
 		,{"max":10,"elements":[
-			 {"formId":"0x0003B1DD","name":"Champion - Agronak gro-Malog (Heavy Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights."}
-			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights."}
+			 {"formId":"0x0003B1DD","name":"Champion - Agronak gro-Malog (Heavy Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"ArenaChampion"}
+			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"Arenachampion"}
 		]}
 	]}
 ]}

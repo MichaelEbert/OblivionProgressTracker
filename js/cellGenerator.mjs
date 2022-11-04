@@ -26,12 +26,13 @@ const CELL_FORMAT_USE_SPAN         = 0x0001; //normally, use div for element.
 const CELL_FORMAT_INDIRECT         = 0x0002; //indirect cell. does random stuff.
 const CELL_FORMAT_SET_IDS          = 0x0004; //do we want to set the html ids
 const CELL_FORMAT_SET_ROW_ONCLICK  = 0x0008; //do we add onclick element to the html row
-const CELL_FORMAT_SHOW_NOTES       = 0x0010;//should we show notes?
-const CELL_FORMAT_SHOW_EXTRACOLUMN = 0x0020;//should we show extra column?
-const CELL_FORMAT_SHOW_CHECKBOX    = 0x0040;//should checkbox be included?
-const CELL_FORMAT_DISABLE_CHECKBOX = 0x0080;//disable checkmark
-const CELL_FORMAT_PUSH_REFERENCES  = 0x0100;//push references to minipage
-const CELL_FORMAT_SKIP_ID          = 0x0200;//some npc refs don't have IDs
+const CELL_FORMAT_SHOW_NOTES       = 0x0010; //should we show notes?
+const CELL_FORMAT_SHOW_EXTRACOLUMN = 0x0020; //should we show extra column?
+const CELL_FORMAT_SHOW_CHECKBOX    = 0x0040; //should checkbox be included?
+const CELL_FORMAT_DISABLE_CHECKBOX = 0x0080; //disable checkmark
+const CELL_FORMAT_PUSH_REFERENCES  = 0x0100; //push references to minipage
+const CELL_FORMAT_SKIP_ID          = 0x0200; //some npc refs don't have IDs
+const CELL_FORMAT_SHOW_ICON        = 0x0400; //should we show an objective icon?
 //the following also are link format options
 const CELL_FORMAT_NAMELINK_ENABLE  = 0x1000;//should name be a link or just text?
 const CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME = 0x2000; //should name link open in iframe?
@@ -50,7 +51,7 @@ const CELL_FORMAT_GUIDE = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_USE_SPAN
 /**
  * Additional items to show on the checklist page. We break them out here so you can more easily categorize them.
  */
-const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT_SHOW_NOTES | CELL_FORMAT_SHOW_EXTRACOLUMN;
+const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT_SHOW_NOTES | CELL_FORMAT_SHOW_EXTRACOLUMN | CELL_FORMAT_SHOW_ICON;
 
 /**
  * default formatting for items on checklist page
@@ -376,6 +377,16 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
  */
 function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING){
     //misc stuff
+    if(format & CELL_FORMAT_SHOW_ICON){
+        if(cell.icon){
+            let htmlIcon = document.createElement("img");
+            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            htmlIcon.style = "width: 16px; padding-right: 5px; vertical-align: center;" //THIS IS PROBABLY A BAD WAY TO DO THIS
+            htmlIcon.draggable = "false";
+            rowhtml.insertBefore(htmlIcon, rowhtml.children[0]);
+        }
+    }
+
     if(format & CELL_FORMAT_SHOW_NOTES){
         if(cell.notes){
 			var notesIcon = document.createElement("span");
