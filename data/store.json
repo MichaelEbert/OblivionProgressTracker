@@ -1,4 +1,4 @@
-{"version": 4,"name": "Stores invested in","classname":"store","weight":1, "elements": [
+{"version": 4,"name": "Stores Invested In","classname":"store","weight":1, "elements": [
     {"name": "Anvil","elements": [
         {"name": "Enilroth","formId": "0x0003630B","icon":"Shop"},
         {"name": "Felen Relas","formId": "0x0002D06C","icon":"Shop"},

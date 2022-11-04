@@ -49,14 +49,14 @@ const classes = [
 	// name, containsUserProgress, isStandard, completionWeight
 	// containsUserProgress means that it will show in the main checklist page (and save in userdata, sync with server, etc.)
 	new JsonClass("quest",true,true),
-	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
 	new JsonClass("store",true,true),
+	new JsonClass("book",true,true),
 	new JsonClass("misc",true),
 	new JsonClass("npc",false),
 	new JsonClass("fame",true),
-	new JsonClass("nirnroot",true, true),
 	new JsonClass("location",true, true),
+	new JsonClass("nirnroot",true, true),
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
 	new JsonClass("wayshrine",false),

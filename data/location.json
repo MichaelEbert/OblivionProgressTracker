@@ -1,4 +1,4 @@
-﻿{"version":4, "name":"Locations","weight":5, "classname":"location", "elements":[
+﻿{"version":4, "name":"Places Found","weight":5, "classname":"location", "elements":[
 	{"name":"Forts","elements":[
 		{"name":"Crowhaven","x":-208980,"y":-10052,"formId":"0x0001750D","icon":"Fort"},
 		{"name":"Fort Sutch","x":-193771,"y":13012,"formId":"0x000174F4","icon":"Fort"},
@@ -235,26 +235,28 @@
 		{"name":"Peryite's Shrine","x":157339,"y":-19871,"formId":"0x0003B36E","icon":"Shrine"}
 	]},
 	{"name":"Oblivion Gates", "elements":[
-		{"name":"Oblivion Gate - Anvil","x":-202117,"y":-23049,"formId":"0x000CD414","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate - Bruma","x":30043,"y":143344,"formId":"0x0000CEFA","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate - Kvatch","x":-144798,"y":-17910,"formId":"0x0000CEF7","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate - Chorrol","x":-63444,"y":84905,"formId":"0x0000CEFB","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate - Skingrad","x":-52058,"y":2307,"formId":"0x0000CEFD","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate - Bravil","x":71302,"y":-27351,"formId":"0x0000CEF9","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate - Leyawiin","x":103901,"y":-138643,"formId":"0x0000CEFC","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate - Cheydinhal","x":109041,"y":96580,"formId":"0x0000CEF8","notes":"Fixed, No_Reroll","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-187164,"y":14116,"formId":"0x0000CD09","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-165840,"y":-23920,"formId":"0x00014D1A","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-122279,"y":25777,"formId":"0x000038CC","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-99123,"y":14940,"formId":"0x000039CA","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-71309,"y":28821,"formId":"0x000039D3","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":-56868,"y":63627,"formId":"0x000038FE","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":28954,"y":756,"formId":"0x00003967","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":65340,"y":-6272,"formId":"0x00003937","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":79155,"y":147790,"formId":"0x00003986","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":123858,"y":-146772,"formId":"0x000038A9","notes":"Fixed","icon":"Gate"},
-		{"name":"Oblivion Gate","x":137895,"y":-132036,"formId":"0x000038B4","notes":"Fixed","icon":"Gate"},
-		{"name":"Random Gates (Need 40)", "max":40, "formId":"0xFFFFFFC1", "elements":[
+		{"name":"19 Fixed Gates", "elements":[
+			{"name":"Oblivion Gate - Anvil","x":-202117,"y":-23049,"formId":"0x000CD414","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Bruma","x":30043,"y":143344,"formId":"0x0000CEFA","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate - Kvatch","x":-144798,"y":-17910,"formId":"0x0000CEF7","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate - Chorrol","x":-63444,"y":84905,"formId":"0x0000CEFB","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Skingrad","x":-52058,"y":2307,"formId":"0x0000CEFD","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Bravil","x":71302,"y":-27351,"formId":"0x0000CEF9","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Leyawiin","x":103901,"y":-138643,"formId":"0x0000CEFC","notes":"Fixed, Two_Fame, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate - Cheydinhal","x":109041,"y":96580,"formId":"0x0000CEF8","notes":"Fixed, No_Reroll","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-187164,"y":14116,"formId":"0x0000CD09","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-165840,"y":-23920,"formId":"0x00014D1A","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-122279,"y":25777,"formId":"0x000038CC","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-99123,"y":14940,"formId":"0x000039CA","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-71309,"y":28821,"formId":"0x000039D3","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":-56868,"y":63627,"formId":"0x000038FE","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":28954,"y":756,"formId":"0x00003967","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":65340,"y":-6272,"formId":"0x00003937","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":79155,"y":147790,"formId":"0x00003986","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":123858,"y":-146772,"formId":"0x000038A9","notes":"Fixed","icon":"Gate"},
+			{"name":"Oblivion Gate","x":137895,"y":-132036,"formId":"0x000038B4","notes":"Fixed","icon":"Gate"}
+		]}
+		,{"name":"Random Gates", "max":40, "formId":"0xFFFFFFC1", "notes":"You can only find 40 of these 80 random potential locations.", "elements":[
 			{"name":"Oblivion Gate","x":-202682,"y":2772,"formId":"0x00014D15","notes":"Random","icon":"Gate"},
 			{"name":"Oblivion Gate","x":-195584,"y":25312,"formId":"0x00014D17","notes":"Random","icon":"Gate"},
 			{"name":"Oblivion Gate","x":-178032,"y":-17136,"formId":"0x000CD413","notes":"Random","icon":"Gate"},

@@ -1,4 +1,4 @@
-{"version": 4,"name":"Books","classname":"book","weight":8,"elements": [
+{"version": 4,"name":"Skill Books Read","classname":"book","weight":8,"elements": [
       {"name": "Acrobatics","elements": [
           {"name": "The Black Arrow, v 1","formId": "0x000243CD","icon":"Book2"},
           {"name": "A Dance in Fire, v1","formId": "0x000243CB","icon":"Book1"},

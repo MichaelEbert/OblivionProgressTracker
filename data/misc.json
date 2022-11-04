@@ -1,4 +1,4 @@
-{"version":4,"name":"Misc","classname":"misc","elements":[
+{"version":4,"name":"Misc.","classname":"misc","elements":[
     {"name":"Closed Oblivion Gates","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed","icon":"Gate"}
@@ -113,7 +113,7 @@
 			,{"ref":"0x0001E730","name":"Great Gate","icon":"Gate"}
 		]}
 	]}
-	,{"name":"Pilgrim's Grace","weight":0.5,"elements":[
+	,{"name":"Pilgrim's Grace","weight":0.5,"notes":"Getting all of the Wayshrines unlocks the Pilgrim's Grace Greater Power.","elements":[
 		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50,"icon":"Wayshrine"}
