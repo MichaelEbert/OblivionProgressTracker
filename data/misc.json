@@ -1,5 +1,5 @@
 {"version":4,"name":"Misc","classname":"misc","elements":[
-    {"name":"Closed Oblivion Gates","weight":5,"formId":"0xFFFFFFC0","type":"number","elements":[
+    {"name":"Closed Oblivion Gates","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed"}
 		]}
@@ -113,7 +113,7 @@
 			,{"ref":"0x0001E730","name":"Great Gate"}
 		]}
 	]}
-	,{"name":"Pilgrim's Grace","weight":0,"elements":[
+	,{"name":"Pilgrim's Grace","weight":0.5,"elements":[
 		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51}
 		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49}
 		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50}
@@ -124,7 +124,7 @@
 		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52}
 		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53}
 	]}
-	,{"name":"Houses","weight":1,"elements":[
+	,{"name":"Houses","weight":0.3,"elements":[
 		{"formId":"0x0003636F","name":"Benirus Manor"}
 		,{"formId":"0x00085480","name":"Bravil House for Sale"}
 		,{"formId":"0x00085481","name":"Bruma House for Sale"}
@@ -134,7 +134,7 @@
 		,{"formId":"0x0008547F","name":"Leyawiin House for Sale"}
 		,{"formId":"0x00085484","name":"Rosethorn Hall"}
 	]}
-	,{"name":"Horses","weight":1,"extraColumn":"city","elements":[
+	,{"name":"Horses","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0004E28E","name":"White Horse","city":"Anvil"}
 		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil"}
 		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma"}
@@ -143,7 +143,7 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin"}
 		,{"formId":"0x000545D6","name":"Bay Horse 2","city":"Skingrad"}
 	]}
-	,{"name":"Artifacts","weight":1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
+	,{"name":"Artifacts","weight":0.1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
 		{"ref":"0x000146A2","name":"Azura"}
 		,{"ref":"0x000146A3","name":"Boethia"}
 		,{"ref":"0x000146A4","name":"Clavicus Vile"}
@@ -160,7 +160,7 @@
 		,{"ref":"0x000146AD","name":"Sheogorath"}
 		,{"ref":"0x000146AE","name":"Vaermina"}
 	]}
-	,{"name":"Greater Powers","weight":1,"elements":[
+	,{"name":"Greater Powers","weight":0.5,"elements":[
 		{"formId":"0x0006B69E","name":"Jone's Shadow"}
 		,{"formId":"0x0006B69D","name":"Gates of Aetherius"}
 		,{"formId":"0x0006B69F","name":"Jode's Blood"}

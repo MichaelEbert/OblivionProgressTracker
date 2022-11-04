@@ -1,4 +1,4 @@
-{"version":4, "name":"Nirnroot", "classname":"nirnroot","weight":2, "extraColumn":"cell", "elements":[
+{"version":4, "name":"Nirnroot", "classname":"nirnroot","weight":14, "extraColumn":"cell", "elements":[
     {"formId":"0x0006DEBA","x":-223623.9531,"y":-12376.31445,"z":73.03217316,"cell":"Outdoors"},
     {"formId":"0x0006F136","x":-219316.9531,"y":-16615.5957,"z":87.9577713,"cell":"Outdoors"},
     {"formId":"0x0006F131","x":-218724.7188,"y":-2261.121826,"z":184.8167267,"cell":"Outdoors"},

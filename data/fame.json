@@ -1,4 +1,4 @@
-{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":5,"notes":"Automatically checked off when the corresponding tasks are completed","elements":[
+{"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":1,"notes":"Automatically checked off when the corresponding tasks are completed","elements":[
 	{"name":"Oblivion Gates Closed","extraColumn":"displayTotal","elements":[
 		{"ref":"0x0001E8A3", "displayTotal":1}
 		,{"ref":"0xFFFFFFC3","name":"Fixed Gates (1 Fame)","type":"number", "displayTotal":12}
@@ -107,30 +107,30 @@
 		]}
 	]},
 	{"name":"Arena Fights","elements":[
-		 {"formId":"0x00027668","name":"1st fight?"}
-		,{"formId":"0x0001DC4D","name":"2nd fight?"}
-		,{"formId":"0x0001DC4C","name":"3rd fight/brawler promo?"}
-		,{"formId":"0x00025B39","name":"4th fight?"}
-		,{"formId":"0x000164C4","name":"5th fight?"}
-		,{"formId":"0x000164CA","name":"6th fight/bloodletter promo?"}
-		,{"formId":"0x00017690","name":"7th fight/redguard?"}
-		,{"formId":"0x00017696","name":"8th fight/breton?"}
-		,{"formId":"0x0001769C","name":"9th fight/myrmidon promo?"}
-		,{"formId":"0x000176A3","name":"10th fight/wood elf?"}
-		,{"formId":"0x000176A9","name":"11th fight/altmer?"}
-		,{"formId":"0x000176AF","name":"12th fight/orc/warrior promo?"}
-		,{"formId":"0x000176B5","name":"13th fight/nord?"}
-		,{"formId":"0x000176B8","name":"14th fight/high elf?"}
-		,{"formId":"0x00017832","name":"15th fight/orc/gladiator promo?"}
-		,{"formId":"0x0001C0CB","name":"16th fight/yellow team?"}
-		,{"formId":"0x0001C0D1","name":"17th fight/cat?"}
-		,{"formId":"0x0001C0D7","name":"18th fight/hero promo?"}
-		,{"formId":"0x0001C0DD","name":"19th fight/hero?"}
-		,{"formId":"0x000176BE","name":"20th fight/elf?"}
-		,{"formId":"0x000176C4","name":"21st fight/yellow team/champion promo?"}
+		 {"formId":"0x00027668","name":"Pit Dog - Bosmer"}
+		,{"formId":"0x0001DC4D","name":"Pit Dog - Imperial"}
+		,{"formId":"0x0001DC4C","name":"Pit Dog - Argonian"}
+		,{"formId":"0x00025B39","name":"Brawler - Nord"}
+		,{"formId":"0x000164C4","name":"Brawler - 2 Bosmers"}
+		,{"formId":"0x000164CA","name":"Brawler - Khajiit"}
+		,{"formId":"0x00017690","name":"Bloodletter - Redguard"}
+		,{"formId":"0x00017696","name":"Bloodletter - Breton"}
+		,{"formId":"0x0001769C","name":"Bloodletter - Dunmer"}
+		,{"formId":"0x000176A3","name":"Myrmidon - Bosmer"}
+		,{"formId":"0x000176A9","name":"Myrmidon - Altmer"}
+		,{"formId":"0x000176AF","name":"Myrmidon - Orc"}
+		,{"formId":"0x000176B5","name":"Warrior - Nord"}
+		,{"formId":"0x000176B8","name":"Warrior - Altmer"}
+		,{"formId":"0x00017832","name":"Warrior - Orc"}
+		,{"formId":"0x0001C0CB","name":"Gladiator - 3 Argonians"}
+		,{"formId":"0x0001C0D1","name":"Gladiator - Khajiit"}
+		,{"formId":"0x0001C0D7","name":"Gladiator - Breton"}
+		,{"formId":"0x0001C0DD","name":"Hero - Imperial"}
+		,{"formId":"0x000176BE","name":"Hero - Altmer"}
+		,{"formId":"0x000176C4","name":"Hero - Yellow Team Champion and 2 Dunmers"}
 		,{"max":10,"elements":[
-			 {"formId":"0x0003B1DD","name":"22nd fight/grand champ promo, (heavy raiment)","scale":10,"notes":"only need 1 of the two 22nd fights"}
-			,{"formId":"0x0003B1DE","name":"22nd fight/grand champ promo, (light raiment)","scale":10,"notes":"only need 1 of the two 22nd fights"}
+			 {"formId":"0x0003B1DD","name":"Champion - Agronak gro-Malog (Heavy Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights."}
+			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights."}
 		]}
 	]}
 ]}
