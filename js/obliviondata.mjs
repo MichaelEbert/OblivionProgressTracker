@@ -223,7 +223,7 @@ function computeTotalWeight(){
 				continue;
 			}
 			if(hive.version >= 2){
-				totalweight += runOnTree(hive,(e=>parseInt(e.weight)),0,(e=>e.weight != null));
+				totalweight += runOnTree(hive,(e=>parseFloat(e.weight)),0,(e=>e.weight != null));
 			}
 			else{
 				totalweight += klass.weight;
