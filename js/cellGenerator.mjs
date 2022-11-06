@@ -381,7 +381,7 @@ function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, clas
         if(cell.icon){
             let htmlIcon = document.createElement("img");
             htmlIcon.src = "images/Icon_" + cell.icon + ".png";
-            htmlIcon.style = "width: 16px; padding-right: 5px; vertical-align: center;" //THIS IS PROBABLY A BAD WAY TO DO THIS
+            htmlIcon.style = "width: 1em; padding-right: 0.3em; vertical-align: center;" //THIS IS PROBABLY A BAD WAY TO DO THIS
             htmlIcon.draggable = "false";
             rowhtml.insertBefore(htmlIcon, rowhtml.children[0]);
         }

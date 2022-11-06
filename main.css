@@ -47,9 +47,9 @@ td{
 }
 
 .checklist-icon{
-	width:18px;
-	height:18px;
-	padding-right:5px;
+	width:1em;
+	height:1em;
+	padding-right:0.3em;
 }
 
 :target {
