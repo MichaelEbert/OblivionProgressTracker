@@ -14,6 +14,7 @@ html{
 body{
 	background-color: var(--base-color);
 	margin-top: 0;
+	font-family: Calibri;
 }
 
 br{
@@ -44,6 +45,10 @@ tr{
 
 td{
 	padding:0.2em;
+}
+
+code{
+	background-color: whitesmoke;
 }
 
 :target {

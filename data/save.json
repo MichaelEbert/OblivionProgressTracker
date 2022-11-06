@@ -1,5 +1,5 @@
 {"version":2,"weight":0,"name":"save","elements":[
-{"id":"permakey","name":"permakey","type":"number"},
-{"id":"sigil","name":"sigil","type":"number"},
-{"id":"safetysave","name":"","type":"number"}
+{"id":"TutorialSaddleSave","name":"TutorialSaddleSave","type":"number"},
+{"id":"PermaKey_Save","name":"PermaKey_Save","type":"number"},
+{"id":"RatSkip_Save","name":"RatSkip_Save","type":"number"}
 ]}
