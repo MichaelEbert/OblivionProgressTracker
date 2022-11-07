@@ -54,19 +54,16 @@ img{
 	font-weight: bold;
 }
 
-/*needs the ol li so its more specific than the generic second-level list style 'li ol li'*/
 ol.dialogue {
-	list-style-type: '↳ ';
+	list-style-type: '↳';
 	color: #434343;
 	font-style: italic;
-	counter-reset: item;
 }
-ol.dialogue > li {
+ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe) {
 	text-indent: -2em;
   	list-style-type: none;
-  	counter-increment: item;
 }
-ol.dialogue > li::before {
+ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe)::before {
 	display: inline-block;
 	width: 1em;
   	padding-right: 0.5em;
@@ -81,21 +78,25 @@ li.shop {
 	list-style-image: url("images/Icon_ShopBullet.png");
 	font-style: normal;
 	color: black;
+	margin-left: -0.5em;
 }
 li.spell{
 	list-style-image: url("images/Icon_SpellBullet.png");
 	font-style: normal;
 	color: black;
+	margin-left: -0.5em;
 }
 li.train{
 	list-style-image: url("images/Icon_TrainingBullet.png");
 	font-style: normal;
 	color: black;
+	margin-left: -0.5em;
 }
 li.bribe{
 	list-style-image: url("images/Icon_BribeBullet.png");
 	font-style: normal;
 	color: black;
+	margin-left: -0.5em;
 }
 
 /*
