@@ -24,14 +24,13 @@ export {
     getCtx
 };
 
-import {Point} from "./map/point.mjs";
+import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
-import { saveCookie } from "./userdata.mjs"
-import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS } from "./map/overlay.mjs";
+import { saveCookie, saveProgressToCookie } from "./userdata.mjs"
+import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
-import { OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
 
 /**
  * The element that contains the canvas. We can use this to query for how much of the canvas the user can see.
@@ -108,6 +107,12 @@ function updateRandomGateCount(Found){
         randomGateDisplay.innerText = getRandomGateCount();    
         randomGateDisplay.style = "color:black";
     }
+}
+
+function clearRandomGateCount(){
+    randomGateCount = 0;
+    randomGateDisplay.innerText = getRandomGateCount();    
+    randomGateDisplay.style = "color:black";
 }
 
 function initRandomGateCount(){
@@ -482,6 +487,9 @@ function initListeners(){
         if(confirm("Delete saved map progress?")){
             resetProgressForHive(jsondata.location);
             resetProgressForHive(jsondata.nirnroot);
+            clearRandomGateCount();
+            saveProgressToCookie();
+            location.reload();
         }
     });
 }
