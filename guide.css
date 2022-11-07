@@ -54,30 +54,47 @@ img{
 	font-weight: bold;
 }
 
-/*needs the ol li so its more specific than the generic second-level list style 'li ol li'*/
-.dialogue li{
-	font-style: italic;
+ol.dialogue {
 	list-style-type: '↳ ';
+	color: #434343;
+	font-style: italic;
+	counter-reset: item;
 }
-
-.dialogue li:nth-child(n+2){
-	margin-left: 1em;
+ol.dialogue > li {
+	text-indent: -2em;
+  	list-style-type: none;
+  	counter-increment: item;
 }
-
-.dialogue li:nth-child(n+3){
-	margin-left: 2em;
+ol.dialogue > li::before {
+	display: inline-block;
+	width: 1em;
+  	padding-right: 0.5em;
+  	font-style: normal;
+  	text-align: right;
+  	content: "↳";
 }
-
-.dialogue li:nth-child(n+4){
-	margin-left: 3em;
+li.advpre {
+	font-style: normal;
 }
-
-.dialogue li:nth-child(n+5){
-	margin-left: 4em;
+li.shop {
+	list-style-image: url("images/Icon_ShopBullet.png");
+	font-style: normal;
+	color: black;
 }
-
-.dialogue li:nth-child(n+6){
-	margin-left: 5em;
+li.spell{
+	list-style-image: url("images/Icon_SpellBullet.png");
+	font-style: normal;
+	color: black;
+}
+li.train{
+	list-style-image: url("images/Icon_TrainingBullet.png");
+	font-style: normal;
+	color: black;
+}
+li.bribe{
+	list-style-image: url("images/Icon_BribeBullet.png");
+	font-style: normal;
+	color: black;
 }
 
 .item{

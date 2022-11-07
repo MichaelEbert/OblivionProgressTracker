@@ -46,6 +46,10 @@ td{
 	padding:0.2em;
 }
 
+code{
+	background-color: whitesmoke;
+}
+
 .checklist-icon{
 	width:1em;
 	height:1em;
