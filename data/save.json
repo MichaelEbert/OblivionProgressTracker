@@ -1,5 +1,7 @@
 {"version":2,"weight":0,"name":"save","elements":[
 {"id":"TutorialSaddleSave","name":"TutorialSaddleSave","type":"number"},
 {"id":"PermaKey_Save","name":"PermaKey_Save","type":"number"},
-{"id":"RatSkip_Save","name":"RatSkip_Save","type":"number"}
+{"id":"RatSkip_Save","name":"RatSkip_Save","type":"number"},
+{"id":"BaurusGrate_Save","name":"BaurusGrate_Save","type":"number"},
+{"id":"InsideSewer_Save","name":"InsideSewer_Save","type":"number"}
 ]}

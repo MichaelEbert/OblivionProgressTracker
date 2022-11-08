@@ -59,11 +59,11 @@ ol.dialogue {
 	color: #434343;
 	font-style: italic;
 }
-ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe) {
+ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe, li.inst) {
 	text-indent: -2em;
   	list-style-type: none;
 }
-ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe)::before {
+ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe, li.inst)::before {
 	display: inline-block;
 	width: 1em;
   	padding-right: 0.5em;
@@ -98,27 +98,16 @@ li.bribe{
 	color: black;
 	margin-left: -0.5em;
 }
-
-/*
-.dialogue li:nth-child(n+2){
-	margin-left: 1em;
+li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. */
+	list-style-type: circle;
+	font-style: normal;
+	color: black;
+	margin-left: -0.5em;
 }
-
-.dialogue li:nth-child(n+3){
-	margin-left: 2em;
+ol.warning{
+	list-style-type: '⚠ ';
+	color: black;
 }
-
-.dialogue li:nth-child(n+4){
-	margin-left: 3em;
-}
-
-.dialogue li:nth-child(n+5){
-	margin-left: 4em;
-}
-
-.dialogue li:nth-child(n+6){
-	margin-left: 5em;
-}*/
 
 .item{
 	margin: 0em;
@@ -164,5 +153,12 @@ li.bribe{
 
 .nirnroot{
 	font-weight: bold;
-	color:seagreen;
+	color:#1155cc;
+}
+
+a.screenshot::after{
+	content: '📷';
+	font-size: 0.75em; 
+	vertical-align: super;
+	text-decoration: none;
 }
