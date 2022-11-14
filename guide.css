@@ -109,6 +109,11 @@ ol.warning{
 	color: black;
 }
 
+li > .questComp {
+	color: black;
+	font-style: normal;
+}
+
 .item{
 	margin: 0em;
 	padding: 0em;
