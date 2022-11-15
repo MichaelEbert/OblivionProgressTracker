@@ -12,10 +12,11 @@ export {
     CELL_FORMAT_GUIDE, 
     CELL_FORMAT_CHECKLIST, 
     //and misc others as needed
-    CELL_FORMAT_DISABLE_CHECKBOX, 
-    CELL_FORMAT_SKIP_ID, 
+    CELL_FORMAT_SET_ROW_ONCLICK,
     CELL_FORMAT_SHOW_CHECKBOX,
-    CELL_FORMAT_NAME_CHECKS_OFF,
+    CELL_FORMAT_DISABLE_CHECKBOX, 
+    CELL_FORMAT_SKIP_ID,
+    CELL_FORMAT_NAMELINK_CHECK_OFF,
     CELL_FORMAT_NAMELINK_SHOW_CLASSNAME
 }
 
@@ -25,30 +26,32 @@ const CELL_FORMAT_USE_SPAN         = 0x0001; //normally, use div for element.
 const CELL_FORMAT_INDIRECT         = 0x0002; //indirect cell. does random stuff.
 const CELL_FORMAT_SET_IDS          = 0x0004; //do we want to set the html ids
 const CELL_FORMAT_SET_ROW_ONCLICK  = 0x0008; //do we add onclick element to the html row
-const CELL_FORMAT_SHOW_NOTES       = 0x0010;//should we show notes?
-const CELL_FORMAT_SHOW_EXTRACOLUMN = 0x0020;//should we show extra column?
-const CELL_FORMAT_SHOW_CHECKBOX    = 0x0040;//should checkbox be included?
-const CELL_FORMAT_DISABLE_CHECKBOX = 0x0080;//disable checkmark
-const CELL_FORMAT_PUSH_REFERENCES  = 0x0100;//push references to minipage
-const CELL_FORMAT_SKIP_ID          = 0x0200;//some npc refs don't have IDs
-const CELL_FORMAT_NAME_CHECKS_OFF  = 0x0400;//have entire name check off, and have a separate help link.
+const CELL_FORMAT_SHOW_NOTES       = 0x0010; //should we show notes?
+const CELL_FORMAT_SHOW_EXTRACOLUMN = 0x0020; //should we show extra column?
+const CELL_FORMAT_SHOW_CHECKBOX    = 0x0040; //should checkbox be included?
+const CELL_FORMAT_DISABLE_CHECKBOX = 0x0080; //disable checkmark
+const CELL_FORMAT_PUSH_REFERENCES  = 0x0100; //push references to minipage
+const CELL_FORMAT_SKIP_ID          = 0x0200; //some npc refs don't have IDs
+const CELL_FORMAT_SHOW_ICON        = 0x0400; //should we show an objective icon?
 //the following also are link format options
 const CELL_FORMAT_NAMELINK_ENABLE  = 0x1000;//should name be a link or just text?
 const CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME = 0x2000; //should name link open in iframe?
 const CELL_FORMAT_NAMELINK_SHOW_CLASSNAME = 0x4000; //should name show class in front of it?
 const CELL_FORMAT_NAMELINK_FORCE_MINIPAGE = 0x8000; //force minipage even for npcs without a refid?
 const CELL_FORMAT_NAMELINK_LINK_MAP      = 0x10000; //link map instead of minipage
+const CELL_FORMAT_NAMELINK_CHECK_OFF     = 0x20000;//have entire name check off, and have a separate help link.
 
 /**
  * default formatting for items on guide page
  */
 const CELL_FORMAT_GUIDE = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_USE_SPAN
-| CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME | CELL_FORMAT_PUSH_REFERENCES;
+| CELL_FORMAT_NAMELINK_ENABLE | CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME | CELL_FORMAT_PUSH_REFERENCES
+| CELL_FORMAT_NAMELINK_CHECK_OFF | CELL_FORMAT_SET_ROW_ONCLICK;
 
 /**
  * Additional items to show on the checklist page. We break them out here so you can more easily categorize them.
  */
-const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT_SHOW_NOTES | CELL_FORMAT_SHOW_EXTRACOLUMN;
+const CELL_FORMAT_ADDITIONAL_CHECKLIST_ITEMS = CELL_FORMAT_SET_IDS | CELL_FORMAT_SHOW_NOTES | CELL_FORMAT_SHOW_EXTRACOLUMN | CELL_FORMAT_SHOW_ICON;
 
 /**
  * default formatting for items on checklist page
@@ -70,49 +73,59 @@ const LINK_FORMAT_LINK_MAP       = CELL_FORMAT_NAMELINK_LINK_MAP;
  * @param {boolean} forceNewTab force link target to be _blank. Otherwise, will open in iframe.
  */
 function createLinkElement(cell, linkName, format){
-    const linky = document.createElement("a");
     const classname = cell.hive.classname;
-	
-	//so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
-	var usableId = cell.formId ?? cell.id;
-
-    let linkHref;
-	const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || format & LINK_FORMAT_FORCE_MINIPAGE);
-	if(useMinipage){
-		linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
-		if(usableId == null){
-			linkHref +="&name="+cell.name.replace(" ","_");
-		}
-	}
-	else if(cell.link){
-		linkHref = cell.link;
-	}
-	else{
-        if((format & LINK_FORMAT_LINK_MAP) && cell.formId != null){
-            linkHref = "./map.html?formId="+cell.formId;
-            if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
-                linkHref += "&topbar=false";
+    //so... uh... during transition from id to formid, we gotta do fallbacks n stuff.
+    var usableId = cell.formId ?? cell.id;
+    let linky;
+    if(format & CELL_FORMAT_NAMELINK_ENABLE){
+        linky = document.createElement("a");
+        let linkHref;
+        const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (usableId != null || format & LINK_FORMAT_FORCE_MINIPAGE);
+        if(useMinipage){
+            linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+usableId;
+            if(usableId == null){
+                linkHref +="&name="+cell.name.replace(" ","_");
             }
         }
+        else if(cell.link){
+            linkHref = cell.link;
+        }
         else{
-            linkHref="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
+            if((format & LINK_FORMAT_LINK_MAP) && cell.formId != null){
+                linkHref = "./map.html?formId="+cell.formId;
+                if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
+                    linkHref += "&topbar=false";
+                }
+            }
+            else{
+                linkHref="https://en.uesp.net/wiki/Oblivion:"+linkName.replaceAll(" ","_");
+            }
+        }
+        linky.href = linkHref;	
+        if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
+            linky.target="myframe";
+        }
+        else{
+            linky.target="_blank";
         }
     }
-    linky.href = linkHref;
-	
-	if((format & LINK_FORMAT_ALLOW_IFRAME) && window.settings.iframeCheck){
-        linky.target="myframe";
-	}
-	else{
-		linky.target="_blank";
-	}
-
-    //capitalize classname
-    let capitalClassName = "";
-    if(format & LINK_FORMAT_SHOW_CLASSNAME){
-        capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
+    else{
+        linky = document.createElement("span");
     }
-	linky.innerText = capitalClassName + linkName;
+
+    //construct link name
+    if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+        linky.innerText = "❔";
+        linky.style = "font-size: 0.75em; vertical-align: super; text-decoration: none;"
+    }
+    else{
+        //capitalize classname
+        let capitalClassName = "";
+        if(format & LINK_FORMAT_SHOW_CLASSNAME){
+            capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
+        }
+        linky.innerText = capitalClassName + linkName;
+    }
 	return linky;
 }
 
@@ -211,39 +224,30 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     rowhtml.setAttribute("clid",usableId);
 
     //name
-    if(!COPYING){
-        var rName = document.createElement("span");
-        rName.classList.add(classname+"Name");
-    }
-    else{
-        var rName = rowhtml.children[0];
-    }
-
     let usableName = cell.name ?? refCell?.name ?? classname + usableId;
-    if(format & CELL_FORMAT_NAMELINK_ENABLE){
-        let linkElement = createLinkElement(cell, usableName, format);
-        if(linkElement != null){
-            if(format & CELL_FORMAT_PUSH_REFERENCES){
-                linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
-            }
-            if(COPYING){
-                rName.replaceChild(linkElement, rName.children[0]);
-            }
-            else{
-                rName.appendChild(linkElement);
-            }
-        }
+    let nameFormat = format;
+    if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+        nameFormat &= ~CELL_FORMAT_NAMELINK_CHECK_OFF;
+        nameFormat &= ~CELL_FORMAT_NAMELINK_ENABLE;
     }
-    else{
-        let capitalClassName = "";
-        if(format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME){
-            capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
-        }
-        rName.innerText = capitalClassName + usableName;
+    let linkElement = createLinkElement(cell, usableName, nameFormat);
+    if(linkElement == null && debug){
+        debugger;
     }
-
-    if(!COPYING){
-        rowhtml.appendChild(rName);
+    if(linkElement != null){
+        linkElement.classList.add(classname+"Name");
+        if(format & CELL_FORMAT_PUSH_REFERENCES){
+            linkElement.addEventListener('click',window.pushNpcReferencesToMinipage);
+        }
+        if(format & CELL_FORMAT_SHOW_CHECKBOX && format & CELL_FORMAT_NAMELINK_CHECK_OFF){
+            linkElement.classList.add("defaultCursor");
+        }
+        if(COPYING){
+            rowhtml.replaceChild(linkElement, rowhtml.children[0]);
+        }
+        else{
+            rowhtml.appendChild(linkElement);
+        }
     }
 
     //checkbox
@@ -287,12 +291,11 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     }
 
     //help icon
-    if(format & CELL_FORMAT_NAME_CHECKS_OFF){
+    if((format & CELL_FORMAT_NAMELINK_CHECK_OFF) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
         let htmlHelp;
+        let linky = createLinkElement(cell, usableName, format);
         if(!COPYING){
-            htmlHelp = document.createElement("a");
-            htmlHelp.innerText = "❔"
-
+            rowhtml.appendChild(linky);
         }
         else{
             let index;
@@ -303,14 +306,10 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
                 index = 1;
             }
             htmlHelp = rowhtml.children[index];
-        }
-        if(htmlHelp == null){
-            debugger;
-        }
-        let linky = createLinkElement(cell, usableName, format);
-        htmlHelp.href = linky.href;
-        if(!COPYING){
-            rowhtml.appendChild(htmlHelp);
+            if(htmlHelp == null){
+                debugger;
+            }
+            htmlHelp.replaceWith(linky);
         }
     }
 
@@ -361,6 +360,10 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
 
+    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
+        rowhtml.addEventListener('click',window.rowClicked);
+    }
+
     return rowhtml;
 }
 
@@ -375,6 +378,16 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
  */
 function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING){
     //misc stuff
+    if(format & CELL_FORMAT_SHOW_ICON){
+        if(cell.icon){
+            let htmlIcon = document.createElement("img");
+            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            htmlIcon.style = "width: 1em; padding-right: 0.3em; vertical-align: center;" //THIS IS PROBABLY A BAD WAY TO DO THIS
+            htmlIcon.draggable = "false";
+            rowhtml.insertBefore(htmlIcon, rowhtml.children[0]);
+        }
+    }
+
     if(format & CELL_FORMAT_SHOW_NOTES){
         if(cell.notes){
 			var notesIcon = document.createElement("span");
@@ -396,10 +409,6 @@ function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, clas
     if(format & CELL_FORMAT_SET_IDS && rcheck != null){
         rowhtml.id = classname+usableId.toString();
         rcheck.id = rowhtml.id+"check";
-    }
-
-    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
-        rowhtml.addEventListener('click',window.rowClicked);
     }
 }
 

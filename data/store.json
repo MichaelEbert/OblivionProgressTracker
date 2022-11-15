@@ -1,129 +1,129 @@
-{"version": 4,"name": "Stores invested in","classname":"store","weight":5, "elements": [
+{"version": 4,"name": "Stores Invested In","classname":"store","weight":1, "elements": [
     {"name": "Anvil","elements": [
-        {"name": "Enilroth","formId": "0x0003630B"},
-        {"name": "Felen Relas","formId": "0x0002D06C"},
-        {"name": "Maenlorn","formId": "0x0000BC7A"},
-        {"name": "Norbert Lelles","formId": "0x00035725"},
-        {"name": "Orrin","formId": "0x0003D7FD"},
-        {"name": "Varel Morvayn","formId": "0x0000BC6E"},
-        {"name": "Wilbur","formId": "0x0000BC76"}
+        {"name": "Enilroth","formId": "0x0003630B","icon":"Shop"},
+        {"name": "Felen Relas","formId": "0x0002D06C","icon":"Shop"},
+        {"name": "Maenlorn","formId": "0x0000BC7A","icon":"Shop"},
+        {"name": "Norbert Lelles","formId": "0x00035725","icon":"Shop"},
+        {"name": "Orrin","formId": "0x0003D7FD","icon":"Shop"},
+        {"name": "Varel Morvayn","formId": "0x0000BC6E","icon":"Shop"},
+        {"name": "Wilbur","formId": "0x0000BC76","icon":"Shop"}
       ]
     },
     {"name": "Bravil","elements": [
-        {"name": "Ardaline","formId": "0x0002F080"},
-        {"name": "Bogrum gro-Galash","formId": "0x0000A117"},
-        {"name": "Daenlin","formId": "0x0000A11C"},
-        {"name": "Gilgondorin","formId": "0x0000A129"},
-        {"name": "Luciana Galena","formId": "0x0000A130"},
-        {"name": "Nilawen","formId": "0x0000A123"},
-        {"name": "Nordinor","formId": "0x0003E180"},
-        {"name": "Tadrose Helas","formId": "0x0000A118"}
+        {"name": "Ardaline","formId": "0x0002F080","icon":"Shop"},
+        {"name": "Bogrum gro-Galash","formId": "0x0000A117","icon":"Shop"},
+        {"name": "Daenlin","formId": "0x0000A11C","icon":"Shop"},
+        {"name": "Gilgondorin","formId": "0x0000A129","icon":"Shop"},
+        {"name": "Luciana Galena","formId": "0x0000A130","icon":"Shop"},
+        {"name": "Nilawen","formId": "0x0000A123","icon":"Shop"},
+        {"name": "Nordinor","formId": "0x0003E180","icon":"Shop"},
+        {"name": "Tadrose Helas","formId": "0x0000A118","icon":"Shop"}
       ]
     },
     {"name": "Bruma","elements": [
-        {"name": "Fjotreid","formId": "0x00036262"},
-        {"name": "Hafid Hollowleg","formId": "0x0003626B"},
-        {"name": "Karinnarre","formId": "0x0003E18F"},
-        {"name": "Olav","formId": "0x0003626E"},
-        {"name": "Olfand","formId": "0x00036266"},
-        {"name": "Ongar the World-Weary","formId": "0x00036285"},
-        {"name": "Selena Orania","notes": "Must be invested in before A Plot Revealed","formId": "0x00003461"},
-        {"name": "Skjorta","formId": "0x00036265"},
-        {"name": "Suurootan","formId": "0x00036267"}
+        {"name": "Fjotreid","formId": "0x00036262","icon":"Shop"},
+        {"name": "Hafid Hollowleg","formId": "0x0003626B","icon":"Shop"},
+        {"name": "Karinnarre","formId": "0x0003E18F","icon":"Shop"},
+        {"name": "Olav","formId": "0x0003626E","icon":"Shop"},
+        {"name": "Olfand","formId": "0x00036266","icon":"Shop"},
+        {"name": "Ongar the World-Weary","formId": "0x00036285","icon":"Shop"},
+        {"name": "Selena Orania","notes": "Invest in her before starting A Plot Revealed","formId": "0x00003461","icon":"Shop"},
+        {"name": "Skjorta","formId": "0x00036265","icon":"Shop"},
+        {"name": "Suurootan","formId": "0x00036267","icon":"Shop"}
       ]
     },
     {"name": "Cheydinhal","elements": [
-        {"name": "Borba gra-Uzgash","formId": "0x00003644"},
-        {"name": "Dervera Romalen","formId": "0x00003639"},
-        {"name": "Eilonwy","formId": "0x0000364A"},
-        {"name": "Mach-Na","formId": "0x00003641"},
-        {"name": "Magra gro-Naybek","formId": "0x0003E191"},
-        {"name": "Mariana Ancharia","formId": "0x00003654"},
-        {"name": "Tertia Viducia","formId": "0x0000363B"}
+        {"name": "Borba gra-Uzgash","formId": "0x00003644","icon":"Shop"},
+        {"name": "Dervera Romalen","formId": "0x00003639","icon":"Shop"},
+        {"name": "Eilonwy","formId": "0x0000364A","icon":"Shop"},
+        {"name": "Mach-Na","formId": "0x00003641","icon":"Shop"},
+        {"name": "Magra gro-Naybek","formId": "0x0003E191","icon":"Shop"},
+        {"name": "Mariana Ancharia","formId": "0x00003654","icon":"Shop"},
+        {"name": "Tertia Viducia","formId": "0x0000363B","icon":"Shop"}
       ]
     },
     {"name": "Chorrol","elements": [
-        {"name": "Angalmo","formId": "0x00023508"},
-        {"name": "Emfrid","formId": "0x00023504"},
-        {"name": "Estelle Renoit","formId": "0x000234DB"},
-        {"name": "Rasheda","formId": "0x000234FC"},
-        {"name": "Sabine Laul","formId": "0x0002350D"},
-        {"name": "Seed-Neeus","formId": "0x000234FD"},
-        {"name": "Talasma","formId": "0x00023502"}
+        {"name": "Angalmo","formId": "0x00023508","icon":"Shop"},
+        {"name": "Emfrid","formId": "0x00023504","icon":"Shop"},
+        {"name": "Estelle Renoit","formId": "0x000234DB","icon":"Shop"},
+        {"name": "Rasheda","formId": "0x000234FC","icon":"Shop"},
+        {"name": "Sabine Laul","formId": "0x0002350D","icon":"Shop"},
+        {"name": "Seed-Neeus","formId": "0x000234FD","icon":"Shop"},
+        {"name": "Talasma","formId": "0x00023502","icon":"Shop"}
       ]
     },
     {"name": "IC — Market District","elements": [
-        {"name": "Claudette Perrick","formId": "0x0001D212"},
-        {"name": "Delos Fandas","formId": "0x0001D20D"},
-        {"name": "Hamlof Red-Tooth","formId": "0x0001D20F"},
-        {"name": "Jensine","formId": "0x0001D20B"},
-        {"name": "Maro Rufus","formId": "0x0001D211"},
-        {"name": "Ogier Georick","formId": "0x0001D159"},
-        {"name": "Palonirya","formId": "0x0001D207"},
-        {"name": "Phintias","formId": "0x0001D158"},
-        {"name": "Rindir","formId": "0x0001D15E"},
-        {"name": "Rohssan","formId": "0x0001D15A"},
-        {"name": "Sergius Verus","formId": "0x0001D209"},
-        {"name": "Tertullian Verus","formId": "0x0001D20A"},
-        {"name": "Thoronir","formId": "0x0001D15D"},
-        {"name": "Urbul gro-Orkulg","formId": "0x0001D213"},
-        {"name": "Varnado","formId": "0x0001D210"},
-        {"name": "Velus Hosidius","formId": "0x0001D15B"},
-        {"name": "Viator Accius","formId": "0x0001D15C"}
+        {"name": "Claudette Perrick","formId": "0x0001D212","icon":"Shop"},
+        {"name": "Delos Fandas","formId": "0x0001D20D","icon":"Shop"},
+        {"name": "Hamlof Red-Tooth","formId": "0x0001D20F","icon":"Shop"},
+        {"name": "Jensine","formId": "0x0001D20B","icon":"Shop"},
+        {"name": "Maro Rufus","formId": "0x0001D211","icon":"Shop"},
+        {"name": "Ogier Georick","formId": "0x0001D159","icon":"Shop"},
+        {"name": "Palonirya","formId": "0x0001D207","icon":"Shop"},
+        {"name": "Phintias","formId": "0x0001D158","icon":"Shop"},
+        {"name": "Rindir","formId": "0x0001D15E","icon":"Shop"},
+        {"name": "Rohssan","formId": "0x0001D15A","icon":"Shop"},
+        {"name": "Sergius Verus","formId": "0x0001D209","icon":"Shop"},
+        {"name": "Tertullian Verus","formId": "0x0001D20A","icon":"Shop"},
+        {"name": "Thoronir","formId": "0x0001D15D","icon":"Shop"},
+        {"name": "Urbul gro-Orkulg","formId": "0x0001D213","icon":"Shop"},
+        {"name": "Varnado","formId": "0x0001D210","icon":"Shop"},
+        {"name": "Velus Hosidius","formId": "0x0001D15B","icon":"Shop"},
+        {"name": "Viator Accius","formId": "0x0001D15C","icon":"Shop"}
       ]
     },
     {"name": "IC — Other","elements": [
-        {"name": "Augusta Calidia","formId": "0x0002F878"},
-        {"name": "Fathis Ules","formId": "0x0000391B"},
-        {"name": "Julienne Fanis","formId": "0x00024AC2"},
-        {"name": "Ley Marillin","formId": "0x0001C4B2"},
-        {"name": "Luther Broad","formId": "0x0001C4B7"},
-        {"name": "Ormil","formId": "0x00014730"},
-        {"name": "Shady Sam","formId": "0x000C45B8"},
-        {"name": "Willet","formId": "0x0001D5B4"}
+        {"name": "Augusta Calidia","formId": "0x0002F878","icon":"Shop"},
+        {"name": "Fathis Ules","formId": "0x0000391B","icon":"Shop"},
+        {"name": "Julienne Fanis","formId": "0x00024AC2","icon":"Shop"},
+        {"name": "Ley Marillin","formId": "0x0001C4B2","icon":"Shop"},
+        {"name": "Luther Broad","formId": "0x0001C4B7","icon":"Shop"},
+        {"name": "Ormil","formId": "0x00014730","icon":"Shop"},
+        {"name": "Shady Sam","formId": "0x000C45B8","icon":"Shop"},
+        {"name": "Willet","formId": "0x0001D5B4","icon":"Shop"}
       ]
     },
     {"name": "Kvatch","elements": [
-        {"name": "Batul gra-Sharob","formId": "0x0002ECB4"},
-        {"name": "Sigrid","formId": "0x0002ECB7"}
+        {"name": "Batul gra-Sharob","formId": "0x0002ECB4","icon":"Shop"},
+        {"name": "Sigrid","formId": "0x0002ECB7","icon":"Shop"}
       ]
     },
     {"name": "Leyawiin","elements": [
-        {"name": "Alves Uvenim","formId": "0x000314E5"},
-        {"name": "Bugak gro-Bol","formId": "0x0003E214"},
-        {"name": "Dar Jee","formId": "0x0003599B"},
-        {"name": "Elsynia","formId": "0x0003E185"},
-        {"name": "Gundalas","formId": "0x00035292"},
-        {"name": "S'drassa","formId": "0x000314E4"},
-        {"name": "Shuravi","formId": "0x0003528D"},
-        {"name": "Tun-Zeeus","formId": "0x00035294"},
-        {"name": "Witseidutsei","formId": "0x0002C8D9"}
+        {"name": "Alves Uvenim","formId": "0x000314E5","icon":"Shop"},
+        {"name": "Bugak gro-Bol","formId": "0x0003E214","icon":"Shop"},
+        {"name": "Dar Jee","formId": "0x0003599B","icon":"Shop"},
+        {"name": "Elsynia","formId": "0x0003E185","icon":"Shop"},
+        {"name": "Gundalas","formId": "0x00035292","icon":"Shop"},
+        {"name": "S'drassa","formId": "0x000314E4","icon":"Shop"},
+        {"name": "Shuravi","formId": "0x0003528D","icon":"Shop"},
+        {"name": "Tun-Zeeus","formId": "0x00035294","icon":"Shop"},
+        {"name": "Witseidutsei","formId": "0x0002C8D9","icon":"Shop"}
       ]
     },
     {"name": "Skingrad","elements": [
-        {"name": "Agnete the Pickled","formId": "0x00028F9A"},
-        {"name": "Erina Jeranus","formId": "0x00028F8F"},
-        {"name": "Falanu Hlaalu","formId": "0x00028E74"},
-        {"name": "Gunder","formId": "0x00028F99"},
-        {"name": "Mog gra-Mogakh","formId": "0x00028F8B"},
-        {"name": "Sinderion","formId": "0x0003E92C"}
+        {"name": "Agnete the Pickled","formId": "0x00028F9A","icon":"Shop"},
+        {"name": "Erina Jeranus","formId": "0x00028F8F","icon":"Shop"},
+        {"name": "Falanu Hlaalu","formId": "0x00028E74","icon":"Shop"},
+        {"name": "Gunder","formId": "0x00028F99","icon":"Shop"},
+        {"name": "Mog gra-Mogakh","formId": "0x00028F8B","icon":"Shop"},
+        {"name": "Sinderion","formId": "0x0003E92C","icon":"Shop"}
       ]
     },
     {"name": "Other","elements": [
-        {"name": "Abhuki","formId": "0x000389B9"},
-        {"name": "Andreas Draconis","notes": "Must be invested in before Next of Kin","formId": "0x00031025"},
-        {"name": "Candice Corgine","formId": "0x000243C9"},
-        {"name": "Christophe Marane","formId": "0x0002DC05"},
-        {"name": "Davela Hlaren","formId": "0x0003AB4F"},
-        {"name": "Engorm","formId": "0x00097009"},
-        {"name": "Etira Moslin","notes": "Must be invested in before A Shadow Over Hackdirt","formId": "0x000280E6"},
-        {"name": "Foroch","formId": "0x0003AB52"},
-        {"name": "Kirsten","notes": "Must be invested in before Mephala's quest","formId": "0x0009823E"},
-        {"name": "Malene","formId": "0x00030021"},
-        {"name": "Manheim Maulhand","formId": "0x00024FE1"},
-        {"name": "Nerussa","formId": "0x000BB9CC"},
-        {"name": "S'thasa","formId": "0x000897E8"},
-        {"name": "Vlanhonder Moslin","notes": "Must be invested in before A Shadow Over Hackdirt","formId": "0x000280FC"}
+        {"name": "Abhuki","formId": "0x000389B9","icon":"Shop"},
+        {"name": "Andreas Draconis","notes": "Invest in him before killing him during Next of Kin","formId": "0x00031025","icon":"Shop"},
+        {"name": "Candice Corgine","formId": "0x000243C9","icon":"Shop"},
+        {"name": "Christophe Marane","formId": "0x0002DC05","icon":"Shop"},
+        {"name": "Davela Hlaren","formId": "0x0003AB4F","icon":"Shop"},
+        {"name": "Engorm","formId": "0x00097009","icon":"Shop"},
+        {"name": "Etira Moslin","notes": "Invest in her before doing A Shadow Over Hackdirt","formId": "0x000280E6","icon":"Shop"},
+        {"name": "Foroch","formId": "0x0003AB52","icon":"Shop"},
+        {"name": "Kirsten","notes": "Invest in her before doing Mephala's quest","formId": "0x0009823E","icon":"Shop"},
+        {"name": "Malene","formId": "0x00030021","icon":"Shop"},
+        {"name": "Manheim Maulhand","formId": "0x00024FE1","icon":"Shop"},
+        {"name": "Nerussa","formId": "0x000BB9CC","icon":"Shop"},
+        {"name": "S'thasa","formId": "0x000897E8","icon":"Shop"},
+        {"name": "Vlanhonder Moslin","notes": "Invest in him before doing A Shadow Over Hackdirt","formId": "0x000280FC","icon":"Shop"}
       ]
     }
   ]
