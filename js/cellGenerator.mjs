@@ -375,7 +375,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
 
-    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
+    if((format & CELL_FORMAT_SET_ROW_ONCLICK) && !(format & CELL_FORMAT_DISABLE_CHECKBOX)){
         rowhtml.addEventListener('click',window.rowClicked);
     }
 
