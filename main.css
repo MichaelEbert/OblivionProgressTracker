@@ -64,10 +64,15 @@ kbd {
     white-space: nowrap;
 }
 
-.checklist-icon{
-	width:1em;
-	height:1em;
-	padding-right:0.3em;
+#overview{
+	font-size: large;
+}
+
+.overviewIcon{
+	width: 1.2em;
+	height: 1.2em;
+	padding-right: 0.3em;
+	vertical-align: middle;
 }
 
 :target {
@@ -238,12 +243,12 @@ kbd {
 .itemIcon{
 	width: 1em;
 	padding-right: 0.3em;
-	vertical-align: center;
 }
 
 .itemHelp{
-	font-size: 0.75em;
+	font-size: small;
 	text-decoration: none;
+	vertical-align: super;
 }
 
 .checked{

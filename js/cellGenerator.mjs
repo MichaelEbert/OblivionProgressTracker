@@ -230,6 +230,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
         if(!COPYING){
             htmlIcon = document.createElement("img");
             htmlIcon.classList.add("itemIcon");
+            htmlIcon.loading = "lazy";
             htmlIcon.draggable = "false";
             rowhtml.appendChild(htmlIcon);
         }
