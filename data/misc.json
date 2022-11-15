@@ -143,22 +143,22 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin","icon":"Horse"}
 		,{"formId":"0x000545D6","name":"Bay Horse","city":"Skingrad","icon":"Horse"}
 	]}
-	,{"name":"Artifacts","weight":0.1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
-		{"ref":"0x000146A2","name":"Azura","icon":"ArtifactAzura"}
-		,{"ref":"0x000146A3","name":"Boethia","icon":"ArtifactBoethia"}
-		,{"ref":"0x000146A4","name":"Clavicus Vile","icon":"ArtifactClavicus"}
-		,{"ref":"0x000146AF","name":"Hermaeus Mora","icon":"ArtifactHermaeus"}
-		,{"ref":"0x000146A5","name":"Hircine","icon":"ArtifactHircine"}
-		,{"ref":"0x000146A6","name":"Malacath","icon":"ArtifactMalacath"}
-		,{"ref":"0x000146A7","name":"Mephala","icon":"ArtifactMephala"}
-		,{"ref":"0x000146A8","name":"Meridia","icon":"ArtifactMeridia"}
-		,{"ref":"0x000146B0","name":"Molag Bal","icon":"ArtifactMolag"}
-		,{"ref":"0x000146A9","name":"Namira","icon":"ArtifactNamira"}
-		,{"ref":"0x000146AA","name":"Nocturnal","icon":"ArtifactNocturnal"}
-		,{"ref":"0x000146AB","name":"Peryite","icon":"ArtifactPeryite"}
-		,{"ref":"0x000146AC","name":"Sanguine","icon":"ArtifactSanguine"}
-		,{"ref":"0x000146AD","name":"Sheogorath","icon":"ArtifactSheogorath"}
-		,{"ref":"0x000146AE","name":"Vaermina","icon":"ArtifactVaermina"}
+	,{"name":"Artifacts","weight":0.1,"extraColumn":"shrine","notes":"Automatically checked off when the corresponding quest is completed","elements":[
+		{"ref":"0x000146A2","name":"Azura's Star","shrine":"Azura","icon":"ArtifactAzura"}
+		,{"ref":"0x000146A3","name":"Goldbrand","shrine":"Boethia","icon":"ArtifactBoethia"}
+		,{"ref":"0x000146A4","name":"Masque of Clavicus Vile","shrine":"Clavicus Vile","icon":"ArtifactClavicus"}
+		,{"ref":"0x000146AF","name":"Oghma Infinium","shrine":"Hermaeus Mora","icon":"ArtifactHermaeus"}
+		,{"ref":"0x000146A5","name":"Saviour's Hide","shrine":"Hircine","icon":"ArtifactHircine"}
+		,{"ref":"0x000146A6","name":"Volendrung","shrine":"Malacath","icon":"ArtifactMalacath"}
+		,{"ref":"0x000146A7","name":"Ebony Blade","shrine":"Mephala","icon":"ArtifactMephala"}
+		,{"ref":"0x000146A8","name":"Ring of Khajiiti","shrine":"Meridia","icon":"ArtifactMeridia"}
+		,{"ref":"0x000146B0","name":"Mace of Molag Bal","shrine":"Molag Bal","icon":"ArtifactMolag"}
+		,{"ref":"0x000146A9","name":"Ring of Namira","shrine":"Namira","icon":"ArtifactNamira"}
+		,{"ref":"0x000146AA","name":"Skeleton Key","shrine":"Nocturnal","icon":"ArtifactNocturnal"}
+		,{"ref":"0x000146AB","name":"Spell Breaker","shrine":"Peryite","icon":"ArtifactPeryite"}
+		,{"ref":"0x000146AC","name":"Sanguine Rose","shrine":"Sanguine","icon":"ArtifactSanguine"}
+		,{"ref":"0x000146AD","name":"Wabbajack","shrine":"Sheogorath","icon":"ArtifactSheogorath"}
+		,{"ref":"0x000146AE","name":"Skull of Corruption","shrine":"Vaermina","icon":"ArtifactVaermina"}
 	]}
 	,{"name":"Greater Powers","weight":0.5,"elements":[
 		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic"}
