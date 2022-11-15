@@ -360,9 +360,12 @@ function updateIframe(visible){
 		if(navigator.userAgent.includes("Chrome") ){
 			//Chrome doesn't resize images in iframes so we get to do it ourselves.
 			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
-			myframe.onLoad = (evt)=>{
+			myframe.onload = (evt)=>{
 				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
 				if(img == null || img.tagName != "IMG"){
+					if(window.debug){
+						console.log("can't find img to resize");
+					}
 					return;
 				}
 				img.style = "width:100%;cursor:zoom-in";
@@ -374,6 +377,7 @@ function updateIframe(visible){
 						img.style = "width:100%;cursor:zoom-in";
 					}
 				});
+				console.log("img loaded in second window");
 			};
 		}
 		__displayingIframe = true;

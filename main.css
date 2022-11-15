@@ -7,7 +7,7 @@
 }
 
 html{
-	font-family: serif;
+	font-family: Calibri,serif;
 	scroll-padding-top: var(--topbar-height);/*below topbar*/
 }
 
@@ -64,10 +64,15 @@ kbd {
     white-space: nowrap;
 }
 
-.checklist-icon{
-	width:1em;
-	height:1em;
-	padding-right:0.3em;
+#overview{
+	font-size: large;
+}
+
+.overviewIcon{
+	width: 1.2em;
+	height: 1.2em;
+	padding-right: 0.3em;
+	vertical-align: middle;
 }
 
 :target {
@@ -176,9 +181,11 @@ kbd {
 .progress{
 	font-size: min(3em,12vw); /* on mobile, 3em is obnoxious so we decrease it */
 	font-weight: bold;
+	font-family: serif;
 }
 
 .h2,.sectionTitle{
+	font-family: serif;
 	font-size: 2.2em;
 	font-weight: bold;
 	/*break-after:avoid;*/
@@ -195,6 +202,7 @@ kbd {
 }
 
 .categoryTitle{
+	font-family: serif;
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
 	text-align: center;
@@ -230,6 +238,17 @@ kbd {
 
 .item.checked:hover{
 	background-color: #80DD80;
+}
+
+.itemIcon{
+	width: 1em;
+	padding-right: 0.3em;
+}
+
+.itemHelp{
+	font-size: small;
+	text-decoration: none;
+	vertical-align: super;
 }
 
 .checked{

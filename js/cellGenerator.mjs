@@ -116,7 +116,7 @@ function createLinkElement(cell, linkName, format){
     //construct link name
     if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
         linky.innerText = "❔";
-        linky.style = "font-size: 0.75em; vertical-align: super; text-decoration: none;"
+        linky.classList.add("itemHelp");
     }
     else{
         //capitalize classname
@@ -178,6 +178,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     }
 
     format = adjustFormatting(cell, format);
+    let indices = new Indices(format);
 
     //constants used for the rest of this function
     let refCell;
@@ -223,6 +224,28 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     }
     rowhtml.setAttribute("clid",usableId);
 
+    //img before name
+    if(format & CELL_FORMAT_SHOW_ICON){
+        let htmlIcon;
+        if(!COPYING){
+            htmlIcon = document.createElement("img");
+            htmlIcon.classList.add("itemIcon");
+            htmlIcon.loading = "lazy";
+            htmlIcon.draggable = false;
+            rowhtml.appendChild(htmlIcon);
+        }
+        else{
+            htmlIcon = rowhtml.children[indices.ICON];
+        }
+
+        if(cell.icon){
+            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+        }
+        else{
+            htmlIcon.src = "";
+        }
+    }
+
     //name
     let usableName = cell.name ?? refCell?.name ?? classname + usableId;
     let nameFormat = format;
@@ -243,7 +266,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             linkElement.classList.add("defaultCursor");
         }
         if(COPYING){
-            rowhtml.replaceChild(linkElement, rowhtml.children[0]);
+            rowhtml.replaceChild(linkElement, rowhtml.children[indices.NAME]);
         }
         else{
             rowhtml.appendChild(linkElement);
@@ -257,7 +280,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             rcheck = document.createElement("input");
         }
         else{
-            rcheck = rowhtml.children[1];
+            rcheck = rowhtml.children[indices.CHECKBOX];
         }
         let usableCell = cell;
         if(format & CELL_FORMAT_INDIRECT){
@@ -298,14 +321,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
             rowhtml.appendChild(linky);
         }
         else{
-            let index;
-            if(format & CELL_FORMAT_SHOW_CHECKBOX){
-                index = 2;
-            }
-            else{
-                index = 1;
-            }
-            htmlHelp = rowhtml.children[index];
+            htmlHelp = rowhtml.children[indices.HELP];
             if(htmlHelp == null){
                 debugger;
             }
@@ -360,7 +376,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
 
-    if(format & CELL_FORMAT_SET_ROW_ONCLICK){
+    if((format & CELL_FORMAT_SET_ROW_ONCLICK) && !(format & CELL_FORMAT_DISABLE_CHECKBOX)){
         rowhtml.addEventListener('click',window.rowClicked);
     }
 
@@ -378,15 +394,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
  */
 function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING){
     //misc stuff
-    if(format & CELL_FORMAT_SHOW_ICON){
-        if(cell.icon){
-            let htmlIcon = document.createElement("img");
-            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
-            htmlIcon.style = "width: 1em; padding-right: 0.3em; vertical-align: center;" //THIS IS PROBABLY A BAD WAY TO DO THIS
-            htmlIcon.draggable = "false";
-            rowhtml.insertBefore(htmlIcon, rowhtml.children[0]);
-        }
-    }
 
     if(format & CELL_FORMAT_SHOW_NOTES){
         if(cell.notes){
@@ -448,4 +455,25 @@ function createInitialElement(classname, usableId, format, COPYING, in_rowhtml){
     }
     rowhtml.setAttribute("clid",usableId);
     return rowhtml;
+}
+
+function Indices(format){
+    let index = 0;
+    if(format & CELL_FORMAT_SHOW_ICON){
+        this.ICON = index;
+        index++;
+    }
+
+    this.NAME = index;
+    index++;
+
+    if(format & CELL_FORMAT_SHOW_CHECKBOX){
+        this.CHECKBOX = index;
+        index++;
+    }
+
+    if((format & CELL_FORMAT_NAMELINK_CHECK_OFF) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
+        this.HELP = index;
+        index++;
+    }
 }
