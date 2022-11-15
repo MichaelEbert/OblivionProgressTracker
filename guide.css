@@ -34,7 +34,6 @@ img{
 .collapsibleContent {
 	display: inline;
 	overflow: hidden;
-	font-family: Calibri;
 }
 
 .active:after {
