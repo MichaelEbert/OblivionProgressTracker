@@ -238,6 +238,11 @@ kbd {
 	vertical-align: center;
 }
 
+.itemHelp{
+	font-size: 0.75em;
+	text-decoration: none;
+}
+
 .checked{
 	background-color: lightgreen;
 }

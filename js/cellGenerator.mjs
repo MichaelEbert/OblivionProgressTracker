@@ -116,7 +116,7 @@ function createLinkElement(cell, linkName, format){
     //construct link name
     if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
         linky.innerText = "❔";
-        linky.style = "font-size: 0.75em; vertical-align: super; text-decoration: none;"
+        linky.classList.add("itemHelp");
     }
     else{
         //capitalize classname
