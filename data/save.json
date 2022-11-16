@@ -11,5 +11,11 @@
 {"id":"EarlyArcChapel_Save","name":"EarlyArcChapel_Save","type":"number"},
 {"id":"ArcaneUniversity_Save","name":"ArcaneUniversity_Save","type":"number"},
 {"id":"Praxographical_Save","name":"Praxographical_Save","type":"number"},
-{"id":"Chironasium_Save","name":"Chironasium_Save","type":"number"}
+{"id":"Chironasium_Save","name":"Chironasium_Save","type":"number"},
+{"id":"Weynon_Save","name":"Weynon_Save","type":"number"},
+{"id":"TowerSkip_Save","name":"TowerSkip_Save","type":"number"},
+{"id":"KvatchSigil_Save","name":"KvatchSigil_Save","type":"number"},
+{"id":"DeAggro_Save","name":"DeAggro_Save","type":"number"},
+{"id":"Savlian_Save","name":"Savlian_Save","type":"number"},
+{"id":"CloudRuler_Save","name":"CloudRuler_Save","type":"number"}
 ]}

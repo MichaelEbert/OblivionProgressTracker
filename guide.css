@@ -54,6 +54,11 @@ img{
 	font-weight: bold;
 }
 
+a{
+	color: black;
+	text-decoration: underline dotted grey; 
+}
+
 ol.dialogue {
 	list-style-type: '↳';
 	color: #434343;
@@ -109,7 +114,7 @@ ol.warning{
 	color: black;
 }
 
-li > .questComp {
+li > .objComp {
 	color: black;
 	font-style: normal;
 }
