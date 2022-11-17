@@ -129,7 +129,7 @@
 		,{"formId":"0x000176C4","name":"Hero - Yellow Team Champion and 2 Dunmers","scale":1,"icon":"ArenaHero"}
 		,{"max":10,"elements":[
 			 {"formId":"0x0003B1DD","name":"Champion - Agronak gro-Malog (Heavy Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"ArenaChampion"}
-			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"Arenachampion"}
+			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"ArenaChampion"}
 		]}
 	]}
 ]}
