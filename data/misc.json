@@ -160,15 +160,15 @@
 		,{"ref":"0x000146AD","name":"Wabbajack","shrine":"Sheogorath","icon":"ArtifactSheogorath"}
 		,{"ref":"0x000146AE","name":"Skull of Corruption","shrine":"Vaermina","icon":"ArtifactVaermina"}
 	]}
-	,{"name":"Greater Powers","weight":0.5,"elements":[
-		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic"}
-		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist"}
-		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify"}
-		,{"formId":"0x0006B69E","name":"Jone's Shadow","icon":"MagicFortify"}
-		,{"formId":"0x00014D23","name":"Pilgrim's Grace","icon":"MagicFortify"}
-		,{"formId":"0x0006B6A2","name":"Shield of Shezarr","icon":"MagicReflectSpell"}
-		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify"}
-		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify"}
+	,{"name":"Greater Powers","weight":0.5,"extraColumn":"stone","notes":"You need varying amounts of Renown (Fame + Infamy) to acquire each power. Hover each note for values.","elements":[
+		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic","stone":"Dragon Stone","notes":"70 Renown requied."}
+		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist","stone":"Aetherius Stone","notes":"20 Renown requied."}
+		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify","stone":"Jode Stone","notes":"30 Renown requied."}
+		,{"formId":"0x0006B69E","name":"Jone's Shadow","icon":"MagicFortify","stone":"Jone Stone","notes":"10 Renown requied."}
+		,{"formId":"0x00014D23","name":"Pilgrim's Grace","icon":"MagicFortify","stone":"9 Wayshrines"}
+		,{"formId":"0x0006B6A2","name":"Shield of Shezarr","icon":"MagicReflectSpell","stone":"Shezarr Stone","notes":"60 Renown requied."}
+		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify","stone":"Sithian Stone","notes":"40 Renown requied."}
+		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify","stone":"Magnus Stone","notes":"50 Renown requied."}
 	]}
 ]}
 
