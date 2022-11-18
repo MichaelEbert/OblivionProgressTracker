@@ -15,8 +15,13 @@ function init(){
 			initMulti(hive, base,0);
 		}
 		//BAD HACK to get these specific columns to wrap
-		document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
-		document.getElementById("main_misc_Closed_Oblivion_Gates_40_Random_Gates").children[0].style = "break-inside:unset";
+		try{
+			document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
+			document.getElementById("main_misc_Closed_Oblivion_Gates_40_Random_Gates").children[0].style = "break-inside:unset";
+		}
+		catch{
+			debugger;
+		}
 	}).then(()=>{
 		if(userdata.loadProgressFromCookie() == false){
 			userdata.resetProgress();
