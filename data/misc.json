@@ -1,5 +1,5 @@
 {"version":4,"name":"Misc.","classname":"misc","elements":[
-    {"name":"Closed Oblivion Gates","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
+    {"name":"Oblivion Gates Shut","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed","icon":"Gate"}
 		]}
@@ -121,10 +121,10 @@
 		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD7","name":"Tiber Septim","globalIndex":52,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
 	]}
-	,{"name":"Houses","weight":0.3,"extraColumn":"city","elements":[
+	,{"name":"Houses Owned","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0003636F","name":"Benirus Manor","city":"Anvil","icon":"Settlement"}
 		,{"formId":"0x00085480","name":"Bravil House for Sale","city":"Bravil","icon":"Settlement"}
 		,{"formId":"0x00085481","name":"Bruma House for Sale","city":"Bruma","icon":"Settlement"}
@@ -134,7 +134,7 @@
 		,{"formId":"0x0008547F","name":"Leyawiin House for Sale","city":"Leyawiin","icon":"Settlement"}
 		,{"formId":"0x00085484","name":"Rosethorn Hall","city":"Skingrad","icon":"Settlement"}
 	]}
-	,{"name":"Horses","weight":0.3,"extraColumn":"city","elements":[
+	,{"name":"Horses Owned","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0004E28E","name":"White Horse","city":"Anvil","icon":"Horse"}
 		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil","icon":"Horse"}
 		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma","icon":"Horse"}
@@ -143,7 +143,7 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin","icon":"Horse"}
 		,{"formId":"0x000545D6","name":"Bay Horse","city":"Skingrad","icon":"Horse"}
 	]}
-	,{"name":"Artifacts","weight":0.1,"extraColumn":"shrine","notes":"Automatically checked off when the corresponding quest is completed","elements":[
+	,{"name":"Artifacts Found","weight":0.1,"extraColumn":"shrine","notes":"Automatically checked off when the corresponding quest is completed","elements":[
 		{"ref":"0x000146A2","name":"Azura's Star","shrine":"Azura","icon":"ArtifactAzura"}
 		,{"ref":"0x000146A3","name":"Goldbrand","shrine":"Boethia","icon":"ArtifactBoethia"}
 		,{"ref":"0x000146A4","name":"Masque of Clavicus Vile","shrine":"Clavicus Vile","icon":"ArtifactClavicus"}
