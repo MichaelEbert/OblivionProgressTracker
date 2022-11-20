@@ -323,3 +323,5 @@ function findCell(formId, classHint = null){
 	}
 	return cell;
 }
+
+window.findCell = findCell;
