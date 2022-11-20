@@ -28,20 +28,8 @@ function init(){
 		}
 		if(settings.remoteShareCode){
 			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = document.createElement("SPAN");
-				spectateBanner.innerText = "Spectating ⟳";
-				spectateBanner.id = "spectateBanner";
-				spectateBanner.style.backgroundColor = "#90FF90";
-				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
-				spectateBanner.addEventListener("click", function(){
-					spectateBanner.innerText = "Reloading...";
-					sharing.startSpectating(false, true).then(()=>{
-						spectateBanner.innerText = "Spectating ⟳";
-						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
-					});
-				});
+				let spectateBanner = sharing.createSpectateBanner();
 				document.getElementById("topbar").appendChild(spectateBanner);
-	
 			}
 			if(settings.spectateAutoRefresh == true){
 				sharing.startSpectating(false, true);

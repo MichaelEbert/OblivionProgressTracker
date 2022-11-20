@@ -180,6 +180,13 @@
 			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
 			progress.recalculateProgress();
+
+			if(settings.remoteShareCode){
+				if(!document.getElementById("spectateBanner")){
+					let spectateBanner = sharing.createSpectateBanner();
+					document.getElementById("topbar").appendChild(spectateBanner);
+				}
+			}
 		});
 	}).call(window);
 
