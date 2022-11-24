@@ -120,12 +120,7 @@ function createLinkElement(cell, linkName, format){
             linky.innerText = "❔";
         }
         else{
-            //capitalize classname
-            let capitalClassName = "";
-            if(format & LINK_FORMAT_SHOW_CLASSNAME){
-                capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
-            }
-            linky.innerText = capitalClassName + linkName;
+            linky.innerText = linkName;
         }
         linky.classList.add("itemHelp");
     }
