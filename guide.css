@@ -109,14 +109,19 @@ li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. 
 	color: black;
 	margin-left: -0.5em;
 }
+li.ayleid {
+	list-style-image: url("images/Icon_AyleidBullet.png");
+	margin-left: -0.5em;
+}
 ol.warning{
 	list-style-type: '⚠ ';
 	color: black;
 }
 
-li > .objComp {
+.objComp {
 	color: black;
 	font-style: normal;
+	font-size: 0.8em;
 }
 
 .item{
