@@ -153,7 +153,7 @@ async function uploadCurrentSave(){
  * stop spectating and go back to local save data.
  */
 function stopSpectating(){
-	console.log("clearing remote data");
+	console.log("stopping spectating.");
 	settings.remoteShareCode = null;
 	saveCookie("settings",settings);
 	
@@ -191,7 +191,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
 	}
 	if(window.debug){
-		console.log("spectating update");
+		console.log("spectate update");
 	}
 	let code = settings.remoteShareCode;
 	if(code == null || code == ""){
@@ -261,7 +261,7 @@ function createSpectateBanner(){
 	let spectateBanner = document.createElement("SPAN");
 	spectateBanner.innerText = "Spectating ⟳";
 	spectateBanner.id = "spectateBanner";
-	spectateBanner.style.backgroundColor = "#90FF90";
+	spectateBanner.classList.add("spectateBanner");
 	spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh."
 	spectateBanner.addEventListener("click", function(){
 		// childNodes[0] because that's the #text fragment. can't do innerText because the cancel button is there as well.

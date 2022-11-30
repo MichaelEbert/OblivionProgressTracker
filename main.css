@@ -124,6 +124,11 @@ kbd {
 	display: block;
 }
 
+.spectateBanner{
+	background-color: #90FF90;
+	cursor: pointer;
+}
+
 .contentContainer{
 	display: flex;
 	flex-direction: row-reverse;
