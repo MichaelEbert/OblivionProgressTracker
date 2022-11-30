@@ -200,6 +200,10 @@ function zoomToInitialLocation(){
     //default to imperial city coords
     let coords = new Point(27223,65975);
     let maybeFormId = windowParams.get("formId");
+    if(windowParams.get("zoom")){
+        setZoomLevel(parseFloat(windowParams.get("zoom")));
+    }
+
     if(maybeFormId != null){
         //focus on formId
         zoomToFormId(maybeFormId);
