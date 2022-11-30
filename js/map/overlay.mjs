@@ -67,7 +67,7 @@ function Overlay(){
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
-        if(nirn.cell == "Outdoors"){
+        if(nirn.cell == "Outdoors" && nirn.cell.parent.name != "City"){
             let newIcon = new MapLocation(nirn)
             nirnrootArr.push(newIcon);
 

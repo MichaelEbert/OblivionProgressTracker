@@ -257,14 +257,14 @@
         {"formId":"0x0006F180","x":189155.1094,"y":-22257.54492,"z":525.7055054,"cell":"Outdoors","icon":"Nirnroot"}
     ]}
     ,{"name":"City","elements":[
-        {"formId":"0x0006F225","x":-185768.0313,"y":-28506.92578,"z":140.0505981,"cell":"City - Anvil","icon":"Nirnroot"}, 
-        {"formId":"0x00070F95","x":30755.30859,"y":59078.625,"z":3454.130615,"cell":"City - Imperial City Arboretum","icon":"Nirnroot"},
-        {"formId":"0x0006DC42","x":61179.78125,"y":-37305.30859,"z":479.9412231,"cell":"City - Bravil","icon":"Nirnroot"},
-        {"formId":"0x0006DC44","x":64984.52734,"y":-40379.5,"z":559.7116699,"cell":"City - Bravil","icon":"Nirnroot"},
-        {"formId":"0x0006DC46","x":66862.98438,"y":-39550.10156,"z":714.1365967,"cell":"City - Bravil","icon":"Nirnroot"},
-        {"formId":"0x0006DC36","x":94558.55469,"y":-142224.1719,"z":38.46307373,"cell":"City - Leyawiin","icon":"Nirnroot"},
-        {"formId":"0x0006DC33","x":95001.33594,"y":-144504.9531,"z":93.87365723,"cell":"City - Leyawiin","icon":"Nirnroot"},
-        {"formId":"0x0006F0E4","x":121030.5156,"y":87946.33594,"z":7023.139648,"cell":"City - Cheydinhal","icon":"Nirnroot"}
+        {"formId":"0x0006F225","x":-185768.0313,"y":-28506.92578,"z":140.0505981,"cell":"Outdoors","icon":"Nirnroot"}, 
+        {"formId":"0x00070F95","x":30755.30859,"y":59078.625,"z":3454.130615,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC42","x":61179.78125,"y":-37305.30859,"z":479.9412231,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC44","x":64984.52734,"y":-40379.5,"z":559.7116699,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC46","x":66862.98438,"y":-39550.10156,"z":714.1365967,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC36","x":94558.55469,"y":-142224.1719,"z":38.46307373,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC33","x":95001.33594,"y":-144504.9531,"z":93.87365723,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006F0E4","x":121030.5156,"y":87946.33594,"z":7023.139648,"cell":"Outdoors","icon":"Nirnroot"}
     ]}
     ,{"name":"Indoors","elements":[
         {"formId":"0x0006D91D","x":-256,"y":2461,"z":-49,"cell":"ImperialSewerSystemN01","icon":"Nirnroot"},
