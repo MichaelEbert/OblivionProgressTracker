@@ -24,7 +24,7 @@ window.savedata = null;
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
-const SETTINGS_VERSION = 2;
+const SETTINGS_VERSION = 3;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
@@ -222,8 +222,13 @@ function initSettings(){
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
 				changed |= initProperty(settings, "spectateAutoRefreshInterval", 30);
+			case 3:
+				//2 to 3: reset minipage since we're not really using them
+				if(settings.minipageCheck != null){
+					settings.minipageCheck = false;
+				}
 			default:
-				//uhh
+				//done
 				break;
 		}
 		settings.version = SETTINGS_VERSION;
@@ -232,7 +237,7 @@ function initSettings(){
 
 	//default values
 	
-	changed |= initProperty(settings, "minipageCheck",true);
+	changed |= initProperty(settings, "minipageCheck", false);
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	changed |= initProperty(settings, "iframeMinWidth", 600);
 	changed |= initProperty(settings, "iframeWidth", "45vw");
