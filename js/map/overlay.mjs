@@ -20,15 +20,11 @@ const OVERLAY_LAYER_WAYSHRINES = 0x4;
  *  this is the icons n stuff on the map canvas.
  *********************************/
 function Overlay(){
-    this.locations = [];
-    this.nirnroots = [];
-    this.wayshrines = [];
-    this.layers = [];
+    this.layers = new Map();
     this.lastZoomLevel = undefined;
     this.currentLocation = null;
     this.activeLayers = OVERLAY_LAYER_NONE;
     this.activeTsp = OVERLAY_LAYER_NONE;
-    this.setActiveLayers(OVERLAY_LAYER_LOCATIONS);
 
     //the following funcitons need a captured this variable
     let locTspArr = [];
@@ -67,9 +63,27 @@ function Overlay(){
     });
 
     runOnTree(jsondata.nirnroot, function(nirn){
-        if(nirn.cell == "Outdoors" && nirn.cell.parent.name != "City"){
+        if(nirn.cell == "Outdoors" && nirn.parent.name != "City"){
             let newIcon = new MapLocation(nirn)
             nirnrootArr.push(newIcon);
+
+            if(nirn.tspId != null){
+                if(nirn.fastTravelId != null){
+                    let maybeFastTravelLoc = findCell(nirn.fastTravelId, "location");
+                    if(maybeFastTravelLoc != null){
+                        nirnTspArr.push(new TSPLocation(maybeFastTravelLoc.x, maybeFastTravelLoc.y, nirn.tspId - 0.1, TSP_STYLE_DASHED));
+                    }
+                }
+                nirnTspArr.push(new TSPLocation(nirn.x, nirn.y, nirn.tspId, TSP_STYLE_SOLID));
+            }
+        }
+    });
+
+    let cityNirnArr = [];
+    runOnTree(jsondata.nirnroot, function(nirn){
+        if(nirn.cell == "Outdoors" && nirn.parent.name == "City"){
+            let newIcon = new MapLocation(nirn)
+            cityNirnArr.push(newIcon);
 
             if(nirn.tspId != null){
                 if(nirn.fastTravelId != null){
@@ -89,16 +103,17 @@ function Overlay(){
     });
 
     //Sort and run intial world->map->screen space calculations for TSP arrays.
-    this.locations = new OverlayLayer(locationArr, locTspArr);
-    this.nirnroots = new OverlayLayer(nirnrootArr, nirnTspArr);
-    this.wayshrines = new OverlayLayer(wayshrineArr);
-    this.layers.push(this.locations);
-    this.layers.push(this.nirnroots);
-    this.layers.push(this.wayshrines);
+    this.layers.set("locations",new OverlayLayer(locationArr, locTspArr));
+    this.layers.set("nirnroots",new OverlayLayer(nirnrootArr, nirnTspArr));
+    this.layers.set("wayshrines",new OverlayLayer(wayshrineArr));
+    this.layers.set("cityNirns",new OverlayLayer(cityNirnArr));
+    this.layers.get("cityNirns").visible = false;
+
+    this.setActiveLayers(OVERLAY_LAYER_LOCATIONS);
 }
 
 Overlay.prototype.recalculateBoundingBox = function(){
-    for(const layer of this.layers){
+    for(const layer of this.layers.values()){
         layer.recalculateBoundingBox();
     }
 }
@@ -121,7 +136,7 @@ Overlay.prototype.draw = function(ctx, mouseLoc, zoomLevel){
     }
 
     let hlocRef = {value:hloc};
-    for(const layer of this.layers){
+    for(const layer of this.layers.values()){
         layer.draw(ctx, mouseLoc, this.currentLocation, hlocRef);
     }
     hloc = hlocRef.value;
@@ -145,7 +160,7 @@ Overlay.prototype.draw = function(ctx, mouseLoc, zoomLevel){
 }
 
 Overlay.prototype.click = function(clickLoc){
-    for(const layer of this.layers){
+    for(const layer of this.layers.values()){
         if(layer.click(clickLoc, this)){
             return true;
         }
@@ -167,7 +182,7 @@ Overlay.prototype.click = function(clickLoc){
  */
 Overlay.prototype.doubleClick = function(clickLoc){
     //overlay coordinates are all in map space, so we convert to that before checking.
-    for(const layer of this.layers){
+    for(const layer of this.layers.values()){
         if(layer.doubleClick(clickLoc)){
             return true;
         }
@@ -179,15 +194,15 @@ Overlay.prototype.setActiveLayers = function(layers, tsp){
 
     if(layers != null){
         this.activeLayers = layers;
-        this.locations.visible = ((layers & OVERLAY_LAYER_LOCATIONS) != 0);
-        this.nirnroots.visible = ((layers & OVERLAY_LAYER_NIRNROOTS) != 0);
-        this.wayshrines.visible = ((layers & OVERLAY_LAYER_WAYSHRINES) != 0);
+        this.layers.get("locations").visible = ((layers & OVERLAY_LAYER_LOCATIONS) != 0);
+        this.layers.get("nirnroots").visible = ((layers & OVERLAY_LAYER_NIRNROOTS) != 0);
+        this.layers.get("wayshrines").visible = ((layers & OVERLAY_LAYER_WAYSHRINES) != 0);
     }
     
     if(tsp != null){
-        this.locations.tspVisible = ((tsp & OVERLAY_LAYER_LOCATIONS) != 0);
-        this.nirnroots.tspVisible = ((tsp & OVERLAY_LAYER_NIRNROOTS) != 0);
-        this.wayshrines.tspVisible = ((tsp & OVERLAY_LAYER_WAYSHRINES) != 0);
+        this.layers.get("locations").tspVisible = ((tsp & OVERLAY_LAYER_LOCATIONS) != 0);
+        this.layers.get("nirnroots").tspVisible = ((tsp & OVERLAY_LAYER_NIRNROOTS) != 0);
+        this.layers.get("wayshrines").tspVisible = ((tsp & OVERLAY_LAYER_WAYSHRINES) != 0);
     }
 
 }
@@ -209,5 +224,26 @@ Overlay.prototype.setActiveTsp = function(tsp){
             console.error("unknown TSP selected:" + tsp);
             this.activeTsp = OVERLAY_LAYER_NONE;
             break;
+    }
+}
+
+/**
+ * Search for an icon by its formid.
+ * @param formId 
+ */
+Overlay.prototype.getIconByFormId = function(formId){
+    for(const layer of this.layers.values()){
+        let maybeLoc = layer.icons.find(x=>x.cell.formId == formId);
+        if(maybeLoc){
+            return maybeLoc;
+        }
+    }
+    return null;
+}
+
+Overlay.prototype.setCurrentLocationByFormId = function(formId){
+    let icon = this.getIconByFormId(formId);
+    if(icon != null){
+        this.currentLocation = icon;
     }
 }

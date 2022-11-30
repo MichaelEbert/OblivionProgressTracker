@@ -16,7 +16,8 @@ export{
 	loadSettingsFromCookie,
 	loadProgressFromCookie,
 	resetProgress,
-	resetProgressForHive
+	resetProgressForHive,
+	initAutoSettings
 }
 
 
@@ -319,4 +320,50 @@ function resetProgress(shouldConfirm=false){
 	}
 	saveProgressToCookie();
 	document.dispatchEvent(new Event("progressLoad"));
+}
+
+/**
+ * all checkboxes with class "autosetting" will automatically have a setting created for them.
+ * all input with class "autoTextSetting" will automatically have a setting created for them.
+ */
+function initAutoSettings(settingsEvent, textSettingsEvent){
+    let autoSettings = document.getElementsByClassName("autosetting");
+    for(const setting of autoSettings){
+        setting.addEventListener('change', onSettingChange);
+        if(settingsEvent != null){setting.addEventListener('change', settingsEvent);}
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.checked = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
+        }
+    }
+    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
+    for(const setting of autoTextSettings){
+        setting.addEventListener('change', onSettingChangeText);
+        if(textSettingsEvent != null){setting.addEventListener('change', textSettingsEvent);}
+        const settingName = setting.id;
+        if(settings[settingName] != null){
+            setting.value = settings[settingName];
+        }
+        if(window.debug){
+            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
+        }
+    }
+}
+
+/**
+ * on boolean settings change 
+ */
+function onSettingChange(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.checked;
+	saveCookie("settings",settings);	
+}
+
+function onSettingChangeText(event){
+	var settingsVal = event.target.id;
+	settings[settingsVal] = event.target.value;
+	saveCookie("settings",settings);
 }

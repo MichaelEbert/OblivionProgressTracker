@@ -27,7 +27,7 @@ export {
 import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
-import { saveCookie, saveProgressToCookie } from "./userdata.mjs"
+import { saveCookie, saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
@@ -145,7 +145,7 @@ async function initMap(){
     }
     //start image loading here, we will wait for it later.
     let images = initImgs();
-    initAutoSettings();
+    initAutoSettings(drawFrame, drawFrame);
 
     viewport = document.getElementById("wrapper_Map");
 
@@ -231,12 +231,10 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS);
-        overlay.currentLocation = overlay.nirnroots.icons.find(x=>x.cell == targetCell);
+        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS); 
     }
-    else{
-        overlay.currentLocation = overlay.locations.icons.find(x=>x.cell == targetCell);
-    }
+
+    overlay.setCurrentLocationByFormId(formid);
     centerMap(worldSpaceToMapSpace(coords));
 }
 
@@ -445,13 +443,14 @@ function initListeners(){
         drawFrame();
     };
 
-
     const button_location = document.getElementById("button_Location");
     const button_nirnroot = document.getElementById("button_Nirnroot");
     const button_wayshrine = document.getElementById("button_Wayshrine");
     const button_tspNone = document.getElementById("button_tspNone");
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
+
+    let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
     var displaySettingsFunc = function(){
         let activeLayers = 0;
@@ -623,47 +622,4 @@ function iconSwitch(Input){
             console.warn("Element has invalid iconname: " + Input + ".");
             return icons.X;
     }
-}
-
-/**
- * TODO: merge this with the implementation in settings.js
- */
-function initAutoSettings(){
-    let autoSettings = document.getElementsByClassName("autosetting");
-    for(const setting of autoSettings){
-        setting.addEventListener('change', onSettingChange);
-        const settingName = setting.id;
-        if(settings[settingName] != null){
-            setting.checked = settings[settingName];
-        }
-        if(window.debug){
-            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
-        }
-    }
-    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
-    for(const setting of autoTextSettings){
-        setting.addEventListener('change', onSettingChangeText);
-        const settingName = setting.id;
-        if(settings[settingName] != null){
-            setting.value = settings[settingName];
-        }
-        if(window.debug){
-            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
-        }
-    }
-}
-
-/**
- * on boolean settings change 
- */
-function onSettingChange(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.checked;
-	saveCookie("settings",settings);	
-}
-
-function onSettingChangeText(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.value;
-	saveCookie("settings",settings);
 }
