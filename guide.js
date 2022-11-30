@@ -277,7 +277,7 @@ function userInputData(rowHtml, checkboxElement){
 }
 
 
-var __displayingIframe = false;
+var __displayingIframe = null;
 /**
  * Update iframe visibility
  * @param {boolean} visible should iframe be visible
@@ -376,13 +376,26 @@ function updateIframe(visible){
 	else{
 		//iframe going from on to off
 		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		document.getElementById("sidebarContent").style.display="none";
+		let sidebar= document.getElementById("sidebarContent");
+		if(sidebar != null){
+			sidebar.style.display = "none";
+		}
 
-		//reset links to open in new tab, otherwise it looks like they're doing nothing.
-		var links = document.getElementsByTagName("A");
-		for(var lnk of links){
-			if(lnk.target == "myframe"){
-				lnk.target = "_blank";
+		if(settings.iframeCheck == "window"){
+			var links = document.getElementsByTagName("A");
+			for(var lnk of links){
+				if(lnk.target == "_blank"){
+					lnk.target = "myframe";
+				}
+			}
+		}
+		else{
+			//reset links to open in new tab, otherwise it looks like they're doing nothing.
+			var links = document.getElementsByTagName("A");
+			for(var lnk of links){
+				if(lnk.target == "myframe"){
+					lnk.target = "_blank";
+				}
 			}
 		}
 		__displayingIframe = false;

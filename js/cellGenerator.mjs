@@ -372,7 +372,8 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
 
     if(cell.onUpdate == null){
         cell.onUpdate = [];
-        if(window.debug){
+        if(window.debug && cell.hive.name != "npc"){
+            //i dont even know what this means anymore
             console.warn("Cell has no onUpdate during cell generation: ");
             console.warn(cell);
         }

@@ -3,6 +3,10 @@
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<script src="./js/module-shim.mjs" type="module"></script>
+	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
+    <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
+	<script src="main.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Interactive Oblivion Checklist</title>
 </head>
@@ -66,14 +70,51 @@
 </nav>
 <!-- end topbar-->
 <article id="main" class="main">
-<h1>Oblivion Progress Tracker</h1>
-<p>This is a site that tracks 100% progress of The Elder Scrolls IV: Oblivion.</p>
-<h2>Tips</h2>
-<ul>
-<li>You can drag and drop an oblivion save file over the checklist to read the progress of that save file.</li>
-<li>Settings can be changed on the settings page</li>
-<li>If you have "enable opening links in-page" set to "other window", you have to manually drag the tab that's created out to a new window.</li>
-</ul>
+<div id="overview" class="section">
+	<div id="progress" class="progress">Total Progress: <span class="totalProgressPercent">0</span>%</div>
+
+	<table>
+		<tr><td><img class="overviewIcon" src="images/Icon_QuestGeneral.png">Quests Completed</td><td><span id="overview_quest"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Skills.png">Master Skills</td><td><span id="overview_skill"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Fame.png">Fame</td><td><span id="overview_fame"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Landmark.png">Places Found</td><td><span id="overview_location"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Gate.png">Oblivion Gates Shut</td><td><span id="overview_closed_oblivion_gates"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Horse.png">Horses Owned</td><td><span id="overview_houses"></span></td></tr>
+	</table>
+	<table>
+		<tr><td><img class="overviewIcon" src="images/Icon_Settlement.png">Houses Owned</td><td><span id="overview_horses"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Shop.png">Stores Invested In</td><td><span id="overview_store"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Book9.png">Skill Books Read</td><td><span id="overview_book"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_ArtifactAzura.png">Artifacts Found</td><td><span id="overview_artifacts"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Nirnroot.png">Nirnroots Found</td><td><span id="overview_nirnroot"></span></td></tr>
+	</table>
+</div>
 
 </article>
+<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as common from './js/cellGenerator.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as sharing from './js/sharing.mjs'
+	import * as saveReader from './js/saveReader.mjs'
+	window.common = common;
+	window.progress = progress;
+	window.userdata = userdata;
+	window.obliviondata = obliviondata;
+	window.sharing = sharing;
+	window.saveReader = saveReader;
+	console.log("AAAA");
+	(function(){
+		if(window.userdata.loadCookie("debug") == true){
+			window.debug = true;
+		}
+		if(window.userdata.loadCookie("debugAsync") == true){
+		window.debugAsync = true;
+	}
+		init();
+	}).call(window);
+</script>
 </body></html>

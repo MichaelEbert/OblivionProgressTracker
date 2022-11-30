@@ -13,7 +13,8 @@
 <body>
 	<!-- begin topbar-->
 <nav id="topbar" class="topbar">
-	<a href="./index.html" class="topbarSection">Checklist</a>
+	<a href="./index.html" class="topbarSection">Home</a>
+	<a href="./main.html" class="topbarSection">Checklist</a>
 	
 	<div class="topbarSection">
 		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
@@ -79,9 +80,10 @@
 		<label><input type="checkbox" id="minipageCheck" class="autosetting"/> Link books to local page (uncheck for direct UESP links)</label><br/>
 		<label><input type="checkbox" id="classnameCheck" class="autosetting"/>Show [npc], [book], etc. in front of checklist names on guide</label><br/>
 		<label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
-			<option value="auto">Auto</option>
-			<option value="on">Always on</option>
-			<option value="off">Always off</option>
+			<option value="auto" title="open links in iframe if window is wide enough">Auto</option>
+			<option value="on" title="always open links in iframe">Always on</option>
+			<option value="off" title="never open links in iframe">Always off</option>
+			<option value="window" title="Open links in another window">Other Window</option>
 		</select> enable opening links in-page on right side of screen</label><br/>
 		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/>Minimum page width to show second column (for auto)</label><br/>
 		<label><input type="text" id="iframeWidth" class="autoTextSetting"/>Width of second column (when shown)</label><br/>
