@@ -273,9 +273,10 @@ MapLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
     }
     //green highlight
     if(currentSelection == this){
+        const bordersize = 2;
         ctx.beginPath();
         ctx.fillStyle = "#00DD00";
-        ctx.rect(screenSpaceOrigin.x - 1, screenSpaceOrigin.y - 1, this.icon.width + 2, this.icon.height + 2);
+        ctx.rect(screenSpaceOrigin.x - bordersize, screenSpaceOrigin.y - bordersize, this.icon.width + (bordersize * 2), this.icon.height + (bordersize*2));
         ctx.fill();
 
     }
