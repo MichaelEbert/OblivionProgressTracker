@@ -115,7 +115,13 @@ function createLinkElement(cell, linkName, format){
 
     //construct link name
     if(format & CELL_FORMAT_NAMELINK_CHECK_OFF){
-        linky.innerText = "❔";
+        if(!(format & CELL_FORMAT_NAMELINK_LINK_MAP)){
+            //TODO: move this to outer function, pass in display name + link instead of using display name to create link
+            linky.innerText = "❔";
+        }
+        else{
+            linky.innerText = linkName;
+        }
         linky.classList.add("itemHelp");
     }
     else{
@@ -316,7 +322,8 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
     //help icon
     if((format & CELL_FORMAT_NAMELINK_CHECK_OFF) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
         let htmlHelp;
-        let linky = createLinkElement(cell, usableName, format);
+
+        let linky = createLinkElement(cell, usableName, format & ~CELL_FORMAT_NAMELINK_LINK_MAP);
         if(!COPYING){
             rowhtml.appendChild(linky);
         }
@@ -326,6 +333,23 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST){
                 debugger;
             }
             htmlHelp.replaceWith(linky);
+        }
+        if(cell.x != null && cell.y != null){
+            let mapLink = createLinkElement(cell, "🗺️", format | CELL_FORMAT_NAMELINK_LINK_MAP);
+            if(!COPYING){
+                rowhtml.appendChild(mapLink);
+            }
+            else if(rowhtml.children[indices.MAP] == null){
+                rowhtml.appendChild(mapLink);
+            }
+            else{
+                rowhtml.children[indices.MAP].replaceWith(mapLink);
+            }
+        }
+        else{
+            if(rowhtml.children[indices.MAP] != null){
+                rowhtml.children[indices.MAP].remove();
+            }
         }
     }
 
@@ -474,6 +498,8 @@ function Indices(format){
 
     if((format & CELL_FORMAT_NAMELINK_CHECK_OFF) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
         this.HELP = index;
+        index++;
+        this.MAP = index;
         index++;
     }
 }

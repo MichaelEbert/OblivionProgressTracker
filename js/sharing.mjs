@@ -7,7 +7,7 @@ import { decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
-export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl};
+export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl, createSpectateBanner};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -210,7 +210,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		return downloadSave(downloadUrl)
 		.then((dl)=>{
 			if(dl){
-				//we can't save teh date object so we convert it to a pretty print string here
+				//we can't serialize the date object so we convert it to a pretty print string here
 				let dlTime = new Date();
 				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 				saveCookie("settings",settings);
@@ -253,4 +253,34 @@ function setRemoteUrl(event)
 	startSpectating();
 }
 
+/**
+ * Create a "spectating" banner element
+ * @returns html element to control spectating.
+ */
+function createSpectateBanner(){
+	let spectateBanner = document.createElement("SPAN");
+	spectateBanner.innerText = "Spectating ⟳";
+	spectateBanner.id = "spectateBanner";
+	spectateBanner.style.backgroundColor = "#90FF90";
+	spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh."
+	spectateBanner.addEventListener("click", function(){
+		// childNodes[0] because that's the #text fragment. can't do innerText because the cancel button is there as well.
+		spectateBanner.childNodes[0].nodeValue = "Reloading...";
+		startSpectating(false, true).then(()=>{
+			spectateBanner.childNodes[0].nodeValue = "Spectating ⟳";
+			spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh.";
+		});
+	});
+
+	let spectateCancelButton = document.createElement("SPAN");
+	spectateCancelButton.innerText = "🗙";
+	spectateCancelButton.title = "Cancel spectating";
+	spectateCancelButton.addEventListener("click", function(){
+		stopSpectating();
+		spectateBanner.remove();
+	});
+	spectateBanner.appendChild(spectateCancelButton);
+
+	return spectateBanner;
+}
 
