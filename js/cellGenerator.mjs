@@ -365,9 +365,15 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //map icon
     if(format & CELL_FORMAT_SHOW_MAPICON)
     {
+        if(cell.formId == "0x000615EB"){
+            debugger;
+        }
         let usableCell = cell;
         if(cell.ref != null &&( cell.x == null || cell.y == null)){
             usableCell = refCell;
+        }
+        if(usableCell.location != null){
+            usableCell = usableCell.location;
         }
         if(usableCell.x != null && usableCell.y != null && (usableCell.cell == "Outdoors" || usableCell.cell == null)){
             let mapLink = createLinkElement(usableCell, "🗺️", format | CELL_FORMAT_NAMELINK_MAPLINK);
