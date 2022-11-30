@@ -208,7 +208,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version !== SETTINGS_VERSION)
+	if(settings.version < SETTINGS_VERSION)
 	{
 		switch(settings.version){
 			case null:
@@ -231,6 +231,7 @@ function initSettings(){
 				//done
 				break;
 		}
+		
 		settings.version = SETTINGS_VERSION;
 		changed = true;
 	}
