@@ -111,7 +111,45 @@ li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. 
 }
 li.ayleid {
 	list-style-image: url("images/Icon_AyleidBullet.png");
-	margin-left: -0.5em;
+}
+li.camp {
+	list-style-image: url("images/Icon_CampBullet.png");
+}
+li.cave {
+	list-style-image: url("images/Icon_CaveBullet.png");
+}
+li.city {
+	list-style-image: url("images/Icon_CityBullet.png");
+}
+li.fort {
+	list-style-image: url("images/Icon_FortBullet.png");
+}
+li.gate {
+	list-style-image: url("images/Icon_GateBullet.png");
+}
+li.heavenstone {
+	list-style-image: url("images/Icon_HeavenStoneBullet.png");
+}
+li.inn {
+	list-style-image: url("images/Icon_InnBullet.png");
+}
+li.landmark {
+	list-style-image: url("images/Icon_LandmarkBullet.png");
+}
+li.mine {
+	list-style-image: url("images/Icon_MineBullet.png");
+}
+li.nirnroot {
+	list-style-image: url("images/Icon_NirnrootBullet.png");
+}
+li.settlement {
+	list-style-image: url("images/Icon_SettlementBullet.png");
+}
+li.shrine {
+	list-style-image: url("images/Icon_ShrineBullet.png");
+}
+li.wayshrine {
+	list-style-image: url("images/Icon_WayshrineBullet.png");
 }
 ol.warning{
 	list-style-type: '⚠ ';
