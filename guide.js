@@ -17,23 +17,14 @@ function init(){
 		loadProgressFromCookie();
 		if(settings.remoteShareCode){
 			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = document.createElement("SPAN");
-				spectateBanner.innerText = "Spectating ⟳";
-				spectateBanner.id = "spectateBanner";
-				spectateBanner.style.backgroundColor = "#90FF90";
-				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
-				spectateBanner.addEventListener("click", function(){
-					spectateBanner.innerText = "Reloading...";
-					sharing.startSpectating(false, true).then(()=>{
-						spectateBanner.innerText = "Spectating ⟳";
-						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
-					});
-				})
+				let spectateBanner = sharing.createSpectateBanner();
 				document.getElementById("topbar").appendChild(spectateBanner);
-	
 			}
 		}
 		replaceElements();
+		if(settings.spectateAutoRefresh == true){
+			sharing.startSpectating(false, true);
+		}
 	});
 }
 
@@ -286,7 +277,7 @@ function userInputData(rowHtml, checkboxElement){
 }
 
 
-var __displayingIframe = false;
+var __displayingIframe = null;
 /**
  * Update iframe visibility
  * @param {boolean} visible should iframe be visible
@@ -360,9 +351,12 @@ function updateIframe(visible){
 		if(navigator.userAgent.includes("Chrome") ){
 			//Chrome doesn't resize images in iframes so we get to do it ourselves.
 			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
-			myframe.onLoad = (evt)=>{
+			myframe.onload = (evt)=>{
 				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
 				if(img == null || img.tagName != "IMG"){
+					if(window.debug){
+						console.log("can't find img to resize");
+					}
 					return;
 				}
 				img.style = "width:100%;cursor:zoom-in";
@@ -374,6 +368,7 @@ function updateIframe(visible){
 						img.style = "width:100%;cursor:zoom-in";
 					}
 				});
+				console.log("img loaded in second window");
 			};
 		}
 		__displayingIframe = true;
@@ -381,13 +376,26 @@ function updateIframe(visible){
 	else{
 		//iframe going from on to off
 		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		document.getElementById("sidebarContent").style.display="none";
+		let sidebar= document.getElementById("sidebarContent");
+		if(sidebar != null){
+			sidebar.style.display = "none";
+		}
 
-		//reset links to open in new tab, otherwise it looks like they're doing nothing.
-		var links = document.getElementsByTagName("A");
-		for(var lnk of links){
-			if(lnk.target == "myframe"){
-				lnk.target = "_blank";
+		if(settings.iframeCheck == "window"){
+			var links = document.getElementsByTagName("A");
+			for(var lnk of links){
+				if(lnk.target == "_blank"){
+					lnk.target = "myframe";
+				}
+			}
+		}
+		else{
+			//reset links to open in new tab, otherwise it looks like they're doing nothing.
+			var links = document.getElementsByTagName("A");
+			for(var lnk of links){
+				if(lnk.target == "myframe"){
+					lnk.target = "_blank";
+				}
 			}
 		}
 		__displayingIframe = false;

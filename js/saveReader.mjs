@@ -3,6 +3,7 @@
 export {parseSave}
 
 import { loadJsonData, jsondata, progressClasses, runOnTree, findCell } from './obliviondata.mjs'
+import { initShareSettings, stopSpectating } from './sharing.mjs';
 import { saveProgressToCookie } from './userdata.mjs';
 
 
@@ -280,14 +281,24 @@ function UpdateNirnroot(savedata, saveFile)
  * @param {DragEvent} e 
  */
 function parseSave(e){
-    e.preventDefault();
-    e.stopPropagation();
     const dt = e.dataTransfer;
     if (dt) {
         const files = dt.files;
+        if(files.length > 1){
+            alert("Can only parse 1 save file at a time");
+            return;
+        }
         for (const file of files)
         {
+            if(!file.name.endsWith(".ess")){
+                alert("Invalid save file dragged in.");
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+
             document.body.style = "opacity:0.5"
+            stopSpectating();
             file.arrayBuffer().then((b) => {
                 let ts = Date.now();
                 console.log(`Starting save file parse at ${ts}`);
@@ -299,10 +310,15 @@ function parseSave(e){
                 return saveFile
             }).then(createUserProgressFile).then((dataFromSave)=>{
                 console.log(dataFromSave);
+                if(Object.keys(dataFromSave).length == 0){
+                    alert("Invalid save file dragged in.");
+                    return;
+                }
                 //copy save #s over
                 if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
                     dataFromSave.save = window.savedata.save;
                 }
+                
                 window.savedata = dataFromSave;
                 saveProgressToCookie();
                 window.location.reload();

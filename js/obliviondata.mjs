@@ -49,14 +49,14 @@ const classes = [
 	// name, containsUserProgress, isStandard, completionWeight
 	// containsUserProgress means that it will show in the main checklist page (and save in userdata, sync with server, etc.)
 	new JsonClass("quest",true,true),
-	new JsonClass("book",true,true),
 	new JsonClass("skill",true,true),
 	new JsonClass("store",true,true),
+	new JsonClass("book",true,true),
 	new JsonClass("misc",true),
 	new JsonClass("npc",false),
 	new JsonClass("fame",true),
-	new JsonClass("nirnroot",true, true),
 	new JsonClass("location",true, true),
+	new JsonClass("nirnroot",true, true),
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
 	new JsonClass("wayshrine",false),
@@ -170,6 +170,17 @@ function addParentLinks(node, parent){
 	
 }
 
+//bad hack to backlink close gates to their locations
+function linkOblivionGate(cell){
+	if(cell.gateCloseLink != null){
+		let otherCell = findCell(cell.gateCloseLink, "misc");
+		if(otherCell != null){
+			otherCell.location = cell;
+		}
+	}
+}
+
+
 /**
  * turn a bunch of json data from different files into a single js object.
  * @param {Object} hive base hive data
@@ -203,6 +214,9 @@ async function mergeData(hivePromise, customdataPromise){
 	}
 	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
+	if(hive.classname == "location"){
+		runOnTree(hive, linkOblivionGate);
+	}
 	addParentLinks(hive, null);
 	return hive;
 }
@@ -223,7 +237,7 @@ function computeTotalWeight(){
 				continue;
 			}
 			if(hive.version >= 2){
-				totalweight += runOnTree(hive,(e=>parseInt(e.weight)),0,(e=>e.weight != null));
+				totalweight += runOnTree(hive,(e=>parseFloat(e.weight)),0,(e=>e.weight != null));
 			}
 			else{
 				totalweight += klass.weight;
@@ -323,3 +337,5 @@ function findCell(formId, classHint = null){
 	}
 	return cell;
 }
+
+window.findCell = findCell;

@@ -5,39 +5,9 @@ function updateShareUrl(){
 	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
 }
 
-/**
- * all checkboxes with class "autosetting" will automatically have a setting created for them.
- * all input with class "autoTextSetting" will automatically have a setting created for them.
- */
-function initAutoSettings(){
-    let autoSettings = document.getElementsByClassName("autosetting");
-    for(const setting of autoSettings){
-        setting.addEventListener('change', onSettingChange);
-        const settingName = setting.id;
-        if(settings[settingName] != null){
-            setting.checked = settings[settingName];
-        }
-        if(window.debug){
-            console.log("Auto boolean setting "+settingName+" with value "+settings[settingName]);
-        }
-    }
-    let autoTextSettings = document.getElementsByClassName("autoTextSetting");
-    for(const setting of autoTextSettings){
-        setting.addEventListener('change', onSettingChangeText);
-        const settingName = setting.id;
-        if(settings[settingName] != null){
-            setting.value = settings[settingName];
-        }
-        if(window.debug){
-            console.log("Auto text setting "+settingName+" with value "+settings[settingName]);
-        }
-    }
-}
-
 function init(){
     loadProgressFromCookie();
-    
-    initAutoSettings();
+    userdata.initAutoSettings();
     
     //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);
@@ -70,22 +40,6 @@ function init(){
 
 function copyShareKeyToClipboard(){
     navigator.clipboard.writeText(settings.shareKey);
-}
-
-
-/**
- * on boolean settings change 
- */
-function onSettingChange(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.checked;
-	saveCookie("settings",settings);	
-}
-
-function onSettingChangeText(event){
-	var settingsVal = event.target.id;
-	settings[settingsVal] = event.target.value;
-	saveCookie("settings",settings);
 }
 
 function exportProgress(){

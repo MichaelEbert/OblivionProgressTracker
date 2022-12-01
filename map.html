@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
@@ -10,7 +10,8 @@
 <body>
 	<!-- begin topbar-->
 <nav id="topbar" class="topbar">
-	<a href="./index.html" class="topbarSection">Checklist</a>
+	<a href="./index.html" class="topbarSection">Home</a>
+	<a href="./main.html" class="topbarSection">Checklist</a>
 	
 	<div class="topbarSection">
 		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
@@ -70,7 +71,7 @@
 	<div class="mapButtonBar">
 		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
 		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
-		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines</label>
+		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
 		<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 		<button id="showSettingsButton">Show Settings</button>
 		<button id="helpButton">Help!</button>
@@ -100,6 +101,7 @@
 		<h3>How to use?</h3>
 		<p>Click on an icon to toggle its state between discovered/undiscovered. right-click to select.</p>
 		<h3>Oblivion gate key</h3>
+		<p>Oblivion gates have 3 states: Undiscovered, Discovered (checked), and Closed (red).</p>
 		<p>Oblivion gates may have up to 3 letters on their icon. Here is what they mean:
 		<ul>
 		<li><img style="float:unset" height="24" src="images/Icon_Overlay_Fixed.png">Fixed location (gate will always appear here)</li>
@@ -110,14 +112,14 @@
 		<p>The Traveling Salesman Path (TSP) is a calculated fastest route between each icon,
 			 it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.</p>
 
-		<h3>Why are icons inaccurate?</h3>
-		<p>On this map, the icons are centered on the exact locations that they are in the oblivion world. 
+		<h3>Why are the icon positions different from in-game?</h3>
+		<p>On this web map, the icons are centered on the exact locations that they are in the oblivion world. 
 			In other words, if you go to the center of the icon on this map, you'll be at the exact location of the marker.</p>
-		<p>On the in-game map, all icons are offset slightly to the right, which is confusing for first-time users.</p>
+		<p>When you are plaing Oblivion in-game, all icons are offset slightly to the right, which is confusing.</p>
 
 		<h3>How do random gates work?</h3>
 		<p>You need to only discover 40 random oblivion gates. 
-			Once you discover 40, the map will automatically check off the remaining random gate locations on the map, but not on the checklist.</p>
+			Once you discover 40, the map will automatically grey out the remaining random gate locations on the map, but not on the checklist.</p>
 	</div>
 
 	<div id="wrapper_Map" class="mapWrapper"></div>
@@ -179,6 +181,13 @@
 			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
 			progress.recalculateProgress();
+
+			if(settings.remoteShareCode){
+				if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
+					let spectateBanner = sharing.createSpectateBanner();
+					document.getElementById("topbar")?.appendChild(spectateBanner);
+				}
+			}
 		});
 	}).call(window);
 

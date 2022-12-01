@@ -14,30 +14,22 @@ function init(){
 			const hive = obliviondata.jsondata[klass.name];
 			initMulti(hive, base,0);
 		}
-		//BAD HACK for chrome (and other standards compliant browsers lol)
-		//Firefox ignores break-inside: avoid if the column is too long.
-		document.getElementById("main_nirnroot").children[0].style = "break-inside:unset";
-		document.getElementById("main_misc_Closed_Oblivion_Gates_40_Random_Gates").children[0].style = "break-inside:unset";
+		//BAD HACK to get these specific columns to wrap
+		try{
+			document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
+			document.getElementById("main_misc_Closed_Oblivion_Gates_40_Random_Gates").children[0].style = "break-inside:unset";
+		}
+		catch{
+			debugger;
+		}
 	}).then(()=>{
 		if(userdata.loadProgressFromCookie() == false){
 			userdata.resetProgress();
 		}
 		if(settings.remoteShareCode){
 			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = document.createElement("SPAN");
-				spectateBanner.innerText = "Spectating ⟳";
-				spectateBanner.id = "spectateBanner";
-				spectateBanner.style.backgroundColor = "#90FF90";
-				spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh."
-				spectateBanner.addEventListener("click", function(){
-					spectateBanner.innerText = "Reloading...";
-					sharing.startSpectating(false, true).then(()=>{
-						spectateBanner.innerText = "Spectating ⟳";
-						spectateBanner.title = "last updated "+settings.shareDownloadTime+". Click to refresh.";
-					});
-				});
+				let spectateBanner = sharing.createSpectateBanner();
 				document.getElementById("topbar").appendChild(spectateBanner);
-	
 			}
 			if(settings.spectateAutoRefresh == true){
 				sharing.startSpectating(false, true);

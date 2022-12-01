@@ -1,153 +1,153 @@
-{"version": 4,"name":"Books","classname":"book","weight":8,"elements": [
+{"version": 4,"name":"Skill Books Read","classname":"book","weight":8,"elements": [
       {"name": "Acrobatics","elements": [
-          {"name": "The Black Arrow, v 1","formId": "0x000243CD"},
-          {"name": "A Dance in Fire, v1","formId": "0x000243CB"},
-          {"name": "A Dance in Fire, v4","formId": "0x000243CC"},
-          {"name": "Mystery of Talara, v 1","notes": "Random Drop Exclusive","formId": "0x000243CE"},
-          {"name": "Thief","link": "https://en.uesp.net/wiki/Oblivion:Thief_(book)","formId": "0x000243CA"}
+          {"name": "The Black Arrow, v 1","formId": "0x000243CD","icon":"Book2"},
+          {"name": "A Dance in Fire, v1","formId": "0x000243CB","icon":"Book1"},
+          {"name": "A Dance in Fire, v4","formId": "0x000243CC","icon":"Book1"},
+          {"name": "Mystery of Talara, v 1","notes": "Random Drop Exclusive","formId": "0x000243CE","icon":"Book3"},
+          {"name": "Thief","link": "https://en.uesp.net/wiki/Oblivion:Thief_(book)","formId": "0x000243CA","icon":"Book4"}
         ]},
       {"name": "Alchemy","elements": [
-          {"name": "Calcinator Treatise","formId": "0x00073A5F"},
-          {"name": "De Rerum Dirennis","formId": "0x000243D2"},
-          {"name": "A Game at Dinner","formId": "0x000243CF"},
-          {"name": "Mannimarco, King of Worms","formId": "0x000243D0"},
-          {"name": "Song of the Alchemists","formId": "0x000243D1"}
+          {"name": "Calcinator Treatise","formId": "0x00073A5F","icon":"Book5"},
+          {"name": "De Rerum Dirennis","formId": "0x000243D2","icon":"Book5"},
+          {"name": "A Game at Dinner","formId": "0x000243CF","icon":"Book6"},
+          {"name": "Mannimarco, King of Worms","formId": "0x000243D0","icon":"Book4"},
+          {"name": "Song of the Alchemists","formId": "0x000243D1","icon":"Book5"}
         ]},
       {"name": "Alteration","elements": [
-          {"name": "Daughter of the Niben","formId": "0x000243D4"},
-          {"name": "The Dragon Break","formId": "0x000243D5"},
-          {"name": "The Lunar Lorkhan","formId": "0x000243D8"},
-          {"name": "Reality & Other Falsehoods","formId": "0x00073A69"},
-          {"name": "Sithis","formId": "0x000243D6"}
+          {"name": "Daughter of the Niben","formId": "0x000243D4","icon":"Book4"},
+          {"name": "The Dragon Break","formId": "0x000243D5","icon":"Book7"},
+          {"name": "The Lunar Lorkhan","formId": "0x000243D8","icon":"Book5"},
+          {"name": "Reality & Other Falsehoods","formId": "0x00073A69","icon":"Book8"},
+          {"name": "Sithis","formId": "0x000243D6","icon":"Book8"}
         ]},
       {"name": "Armorer","elements": [
-          {"name": "The Armorer's Challenge","formId": "0x000243D9"},
-          {"name": "Cherim's Heart of Anequina","formId": "0x000243DC"},
-          {"name": "Heavy Armor Repair","notes": "Random Drop Exclusive","formId": "0x00073A68"},
-          {"name": "Last Scabbard of Akrash","formId": "0x000243DA"},
-          {"name": "Light Armor Repair","formId": "0x00073A67"}
+          {"name": "The Armorer's Challenge","formId": "0x000243D9","icon":"Book3"},
+          {"name": "Cherim's Heart of Anequina","formId": "0x000243DC","icon":"Book4"},
+          {"name": "Heavy Armor Repair","notes": "Random Drop Exclusive","formId": "0x00073A68","icon":"Book8"},
+          {"name": "Last Scabbard of Akrash","formId": "0x000243DA","icon":"Book8"},
+          {"name": "Light Armor Repair","formId": "0x00073A67","icon":"Book8"}
         ]},
       {"name": "Athletics","elements": [
-          {"name": "The Argonian Account, Book 1","notes": "Random Drop Exclusive","formId": "0x000243E2"},
-          {"name": "Beggar","formId": "0x000243E1"},
-          {"name": "A Dance in Fire, v3","formId": "0x000243DF"},
-          {"name": "The Ransom of Zarek","formId": "0x000243DE"},
-          {"name": "The Red Kitchen Reader","formId": "0x000243E0"}
+          {"name": "The Argonian Account, Book 1","notes": "Random Drop Exclusive","formId": "0x000243E2","icon":"Book4"},
+          {"name": "Beggar","formId": "0x000243E1","icon":"Book4"},
+          {"name": "A Dance in Fire, v3","formId": "0x000243DF","icon":"Book1"},
+          {"name": "The Ransom of Zarek","formId": "0x000243DE","icon":"Book8"},
+          {"name": "The Red Kitchen Reader","formId": "0x000243E0","icon":"Book4"}
         ]},
       {"name": "Blade","elements": [
-          {"name": "2920, Morning Star (v1)","formId": "0x000243E4"},
-          {"name": "Battle of Sancre Tor","formId": "0x00073A61"},
-          {"name": "Fire and Darkness","formId": "0x000243E5"},
-          {"name": "Song Of Hrormir","formId": "0x000243E6"},
-          {"name": "Words and Philosophy","formId": "0x000243E3"}
+          {"name": "2920, Morning Star (v1)","formId": "0x000243E4","icon":"Book6"},
+          {"name": "Battle of Sancre Tor","formId": "0x00073A61","icon":"Book4"},
+          {"name": "Fire and Darkness","formId": "0x000243E5","icon":"Book4"},
+          {"name": "Song Of Hrormir","formId": "0x000243E6","icon":"Book4"},
+          {"name": "Words and Philosophy","formId": "0x000243E3","icon":"Book8"}
         ]},
       {"name": "Block","elements": [
-          {"name": "A Dance in Fire, v2","formId": "0x000243EA"},
-          {"name": "Death Blow of Abernanit","formId": "0x000243E8"},
-          {"name": "The Mirror","formId": "0x000243E9"},
-          {"name": "The Warp in the West","formId": "0x000243EC"},
-          {"name": "Warrior","formId": "0x000243EB"}
+          {"name": "A Dance in Fire, v2","formId": "0x000243EA","icon":"Book1"},
+          {"name": "Death Blow of Abernanit","formId": "0x000243E8","icon":"Book5"},
+          {"name": "The Mirror","formId": "0x000243E9","icon":"Book8"},
+          {"name": "The Warp in the West","formId": "0x000243EC","icon":"Book4"},
+          {"name": "Warrior","formId": "0x000243EB","icon":"Book4"}
         ]},
       {"name": "Blunt","elements": [
-          {"name": "The Importance of Where","formId": "0x000243EE"},
-          {"name": "King","formId": "0x000243F0"},
-          {"name": "The Legendary Sancre Tor","formId": "0x00073A62"},
-          {"name": "Mace Etiquette","notes": "Random Drop Exclusive","formId": "0x00073A66"},
-          {"name": "Night Falls on Sentinel","formId": "0x000243EF"}
+          {"name": "The Importance of Where","formId": "0x000243EE","icon":"Book3"},
+          {"name": "King","formId": "0x000243F0","icon":"Book4"},
+          {"name": "The Legendary Sancre Tor","formId": "0x00073A62","icon":"Book3"},
+          {"name": "Mace Etiquette","notes": "Random Drop Exclusive","formId": "0x00073A66","icon":"Book8"},
+          {"name": "Night Falls on Sentinel","formId": "0x000243EF","icon":"Book5"}
         ]},
       {"name": "Conjuration","elements": [
-          {"name": "2920, Frostfall (v10)","formId": "0x000243F5"},
-          {"name": "2920, Hearth Fire (v9)","formId": "0x000243F4"},
-          {"name": "The Doors of Oblivion","formId": "0x000243F2"},
-          {"name": "Liminal Bridges","formId": "0x00073A60"},
-          {"name": "Mythic Dawn Commentaries 1","formId": "0x00022B04"},
-          {"name": "The Warrior's Charge","notes": "Random Drop Exclusive","formId": "0x000243F6"}
+          {"name": "2920, Frostfall (v10)","formId": "0x000243F5","icon":"Book6"},
+          {"name": "2920, Hearth Fire (v9)","formId": "0x000243F4","icon":"Book6"},
+          {"name": "The Doors of Oblivion","formId": "0x000243F2","icon":"Book4"},
+          {"name": "Liminal Bridges","formId": "0x00073A60","icon":"Book4"},
+          {"name": "Mythic Dawn Commentaries 1","formId": "0x00022B04","icon":"Book6"},
+          {"name": "The Warrior's Charge","notes": "Random Drop Exclusive","formId": "0x000243F6","icon":"Book3"}
         ]},
       {"name": "Destruction","elements": [
-          {"name": "The Art of War Magic","formId": "0x000243FA"},
-          {"name": "The Horrors of Castle Xyr","formId": "0x000243F7"},
-          {"name": "A Hypothetical Treachery","formId": "0x000243F9"},
-          {"name": "Mystery of Talara, v 3","notes": "Random Drop Exclusive","formId": "0x000243FB"},
-          {"name": "Mythic Dawn Commentaries 2","formId": "0x00022B05"},
-          {"name": "Response to Bero's Speech","formId": "0x000243F8"}
+          {"name": "The Art of War Magic","formId": "0x000243FA","icon":"Book8"},
+          {"name": "The Horrors of Castle Xyr","formId": "0x000243F7","icon":"Book9"},
+          {"name": "A Hypothetical Treachery","formId": "0x000243F9","icon":"Book5"},
+          {"name": "Mystery of Talara, v 3","notes": "Random Drop Exclusive","formId": "0x000243FB","icon":"Book10"},
+          {"name": "Mythic Dawn Commentaries 2","formId": "0x00022B05","icon":"Book6"},
+          {"name": "Response to Bero's Speech","formId": "0x000243F8","icon":"Book3"}
         ]},
       {"name": "Hand to Hand","elements": [
-          {"name": "Ahzirr Traajijazeri","formId": "0x000243FE"},
-          {"name": "Immortal Blood","formId": "0x000243FC"},
-          {"name": "Master Zoaraym's Tale","notes": "Random Drop Exclusive","formId": "0x00024400"},
-          {"name": "Way of the Exposed Palm","formId": "0x00073A6A"},
-          {"name": "The Wolf Queen, v 2","formId": "0x000243FD"}
+          {"name": "Ahzirr Traajijazeri","formId": "0x000243FE","icon":"Book4"},
+          {"name": "Immortal Blood","formId": "0x000243FC","icon":"Book4"},
+          {"name": "Master Zoaraym's Tale","notes": "Random Drop Exclusive","formId": "0x00024400","icon":"Book3"},
+          {"name": "Way of the Exposed Palm","formId": "0x00073A6A","icon":"Book4"},
+          {"name": "The Wolf Queen, v 2","formId": "0x000243FD","icon":"Book4"}
         ]},
       {"name": "Heavy Armor","elements": [
-          {"name": "2920, MidYear (v6)","formId": "0x00024402"},
-          {"name": "Chimarvamidium","formId": "0x00024403"},
-          {"name": "Fighters Guild History, 1st Ed.","formId": "0x000A915C"},
-          {"name": "Hallgerd's Tale","formId": "0x00024401"},
-          {"name": "History of the Fighters Guild","notes": "Random Drop Exclusive","formId": "0x00024405"},
-          {"name": "How Orsinium Passed to Orcs","formId": "0x00024404"}
+          {"name": "2920, MidYear (v6)","formId": "0x00024402","icon":"Book6"},
+          {"name": "Chimarvamidium","formId": "0x00024403","icon":"Book5"},
+          {"name": "Fighters Guild History, 1st Ed.","formId": "0x000A915C","icon":"Book9"},
+          {"name": "Hallgerd's Tale","formId": "0x00024401","icon":"Book3"},
+          {"name": "History of the Fighters Guild","notes": "Random Drop Exclusive","formId": "0x00024405","icon":"Book4"},
+          {"name": "How Orsinium Passed to Orcs","formId": "0x00024404","icon":"Book8"}
         ]},
       {"name": "Illusion","elements": [
-          {"name": "The Argonian Account, Book 3","formId": "0x00024407"},
-          {"name": "Incident in Necrom","formId": "0x00024408"},
-          {"name": "Mystery of Talara, v 4","formId": "0x0002440A"},
-          {"name": "Mythic Dawn Commentaries 3","formId": "0x00022B06"},
-          {"name": "Palla, volume 1","formId": "0x00024409"},
-          {"name": "The Wolf Queen, v 3","formId": "0x00024406"}
+          {"name": "The Argonian Account, Book 3","formId": "0x00024407","icon":"Book4"},
+          {"name": "Incident in Necrom","formId": "0x00024408","icon":"Book8"},
+          {"name": "Mystery of Talara, v 4","formId": "0x0002440A","icon":"Book10"},
+          {"name": "Mythic Dawn Commentaries 3","formId": "0x00022B06","icon":"Book6"},
+          {"name": "Palla, volume 1","formId": "0x00024409","icon":"Book3"},
+          {"name": "The Wolf Queen, v 3","formId": "0x00024406","icon":"Book4"}
         ]},
       {"name": "Light Armor","elements": [
-          {"name": "Ice and Chitin","formId": "0x0002440C"},
-          {"name": "Lord Jornibret's Last Dance","formId": "0x0002440D"},
-          {"name": "The Rear Guard","formId": "0x0002440B"},
-          {"name": "The Refugees","formId": "0x0002440E"},
-          {"name": "Rislav The Righteous","notes": "Random Drop Exclusive","formId": "0x0002440F"}
+          {"name": "Ice and Chitin","formId": "0x0002440C","icon":"Book3"},
+          {"name": "Lord Jornibret's Last Dance","formId": "0x0002440D","icon":"Book8"},
+          {"name": "The Rear Guard","formId": "0x0002440B","icon":"Book5"},
+          {"name": "The Refugees","formId": "0x0002440E","icon":"Book4"},
+          {"name": "Rislav The Righteous","notes": "Random Drop Exclusive","formId": "0x0002440F","icon":"Book4"}
         ]},
       {"name": "Marksman","elements": [
-          {"name": "The Black Arrow, v 2","formId": "0x00024531"},
-          {"name": "A Dance in Fire, v5","formId": "0x00024411"},
-          {"name": "Father Of The Niben","formId": "0x00024530"},
-          {"name": "The Gold Ribbon of Merit","formId": "0x00024410"},
-          {"name": "Vernaccus and Bourlor","formId": "0x0002452F"}
+          {"name": "The Black Arrow, v 2","formId": "0x00024531","icon":"Book4"},
+          {"name": "A Dance in Fire, v5","formId": "0x00024411","icon":"Book1"},
+          {"name": "Father Of The Niben","formId": "0x00024530","icon":"Book4"},
+          {"name": "The Gold Ribbon of Merit","formId": "0x00024410","icon":"Book8"},
+          {"name": "Vernaccus and Bourlor","formId": "0x0002452F","icon":"Book3"}
         ]},
       {"name": "Mercantile","elements": [
-          {"name": "2920, Sun's Height (v7)","formId": "0x00024534"},
-          {"name": "The Buying Game","formId": "0x00024532"},
-          {"name": "A Dance in Fire, v6","formId": "0x00024535"},
-          {"name": "A Dance in Fire, v 7","notes": "Random Drop Exclusive","formId": "0x00024536"},
-          {"name": "The Wolf Queen, v 4","formId": "0x00024533"}
+          {"name": "2920, Sun's Height (v7)","formId": "0x00024534","icon":"Book6"},
+          {"name": "The Buying Game","formId": "0x00024532","icon":"Book5"},
+          {"name": "A Dance in Fire, v6","formId": "0x00024535","icon":"Book1"},
+          {"name": "A Dance in Fire, v 7","notes": "Random Drop Exclusive","formId": "0x00024536","icon":"Book1"},
+          {"name": "The Wolf Queen, v 4","formId": "0x00024533","icon":"Book4"}
         ]},
       {"name": "Mysticism","elements": [
-          {"name": "2920, Sun's Dawn (v2)","formId": "0x00024538"},
-          {"name": "Before the Ages of Man","formId": "0x00073A63"},
-          {"name": "The Black Arts On Trial","formId": "0x00024539"},
-          {"name": "The Firsthold Revolt","formId": "0x00024537"},
-          {"name": "Mythic Dawn Commentaries 4","formId": "0x00022B07"},
-          {"name": "Souls, Black and White","formId": "0x00073A6B"}
+          {"name": "2920, Sun's Dawn (v2)","formId": "0x00024538","icon":"Book6"},
+          {"name": "Before the Ages of Man","formId": "0x00073A63","icon":"Book4"},
+          {"name": "The Black Arts On Trial","formId": "0x00024539","icon":"Book4"},
+          {"name": "The Firsthold Revolt","formId": "0x00024537","icon":"Book8"},
+          {"name": "Mythic Dawn Commentaries 4","formId": "0x00022B07","icon":"Book6"},
+          {"name": "Souls, Black and White","formId": "0x00073A6B","icon":"Book4"}
         ]},
       {"name": "Restoration","elements": [
-          {"name": "2920, Rain's Hand (v4)","formId": "0x0002453F"},
-          {"name": "The Exodus","formId": "0x0002453E"},
-          {"name": "Mystery of Talara, v 2","notes": "Random Drop Exclusive","formId": "0x00024540"},
-          {"name": "Notes on Racial Phylogeny","formId": "0x0002453D"},
-          {"name": "Withershins","formId": "0x0002453C"}
+          {"name": "2920, Rain's Hand (v4)","formId": "0x0002453F","icon":"Book6"},
+          {"name": "The Exodus","formId": "0x0002453E","icon":"Book4"},
+          {"name": "Mystery of Talara, v 2","notes": "Random Drop Exclusive","formId": "0x00024540","icon":"Book10"},
+          {"name": "Notes on Racial Phylogeny","formId": "0x0002453D","icon":"Book5"},
+          {"name": "Withershins","formId": "0x0002453C","icon":"Book11"}
         ]},
       {"name": "Security","elements": [
-          {"name": "Advances in Lock Picking","formId": "0x00073A65"},
-          {"name": "The Locked Room","formId": "0x00024541"},
-          {"name": "Proper Lock Design","formId": "0x00073A64"},
-          {"name": "Surfeit of Thieves","notes": "Random Drop Exclusive","formId": "0x00024545"},
-          {"name": "The Wolf Queen, v 1","formId": "0x00024542"}
+          {"name": "Advances in Lock Picking","formId": "0x00073A65","icon":"Book4"},
+          {"name": "The Locked Room","formId": "0x00024541","icon":"Book3"},
+          {"name": "Proper Lock Design","formId": "0x00073A64","icon":"Book4"},
+          {"name": "Surfeit of Thieves","notes": "Random Drop Exclusive","formId": "0x00024545","icon":"Book8"},
+          {"name": "The Wolf Queen, v 1","formId": "0x00024542","icon":"Book4"}
         ]},
       {"name": "Sneak","elements": [
-          {"name": "2920, Last Seed (v8)","formId": "0x00024547"},
-          {"name": "Legend of Krately House","formId": "0x00024549"},
-          {"name": "Purloined Shadows","notes": "Random Drop Exclusive","formId": "0x0002454A"},
-          {"name": "Sacred Witness","formId": "0x00024548"},
-          {"name": "The Wolf Queen, v 6","formId": "0x00024546"}
+          {"name": "2920, Last Seed (v8)","formId": "0x00024547","icon":"Book6"},
+          {"name": "Legend of Krately House","formId": "0x00024549","icon":"Book4"},
+          {"name": "Purloined Shadows","notes": "Random Drop Exclusive","formId": "0x0002454A","icon":"Book4"},
+          {"name": "Sacred Witness","formId": "0x00024548","icon":"Book4"},
+          {"name": "The Wolf Queen, v 6","formId": "0x00024546","icon":"Book4"}
         ]},
       {"name": "Speechcraft","elements": [
-          {"name": "2920, Second Seed (v5)","formId": "0x0002454D"},
-          {"name": "Biography of the Wolf Queen","formId": "0x0002454B"},
-          {"name": "The Wolf Queen, v 5","formId": "0x0002454C"},
-          {"name": "The Wolf Queen, v 7","formId": "0x0002454E"}
+          {"name": "2920, Second Seed (v5)","formId": "0x0002454D","icon":"Book6"},
+          {"name": "Biography of the Wolf Queen","formId": "0x0002454B","icon":"Book4"},
+          {"name": "The Wolf Queen, v 5","formId": "0x0002454C","icon":"Book4"},
+          {"name": "The Wolf Queen, v 7","formId": "0x0002454E","icon":"Book4"}
         ]}
     ]}
