@@ -58,6 +58,5 @@
 {"id":"Paradise_Save","name":"Paradise_Save","type":"number"},
 {"id":"ArcaneFinal_Save","name":"ArcaneFinal_Save","type":"number"},
 {"id":"ModrynFinal_Save","name":"ModrynFinal_Save","type":"number"},
-{"id":"InfiniteLevelCopy_Save","name":"InfiniteLevelCopy_Save","type":"number"},
-{"id":"Example_Save","name":"Example_Save","type":"number"}
+{"id":"InfiniteLevelCopy_Save","name":"InfiniteLevelCopy_Save","type":"number"}
 ]}
