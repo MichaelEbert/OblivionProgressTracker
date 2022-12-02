@@ -58,6 +58,11 @@ img{
 	font-weight: bold;
 }
 
+a{
+	color: black;
+	text-decoration: underline dotted grey; 
+}
+
 ol.dialogue {
 	list-style-type: '↳';
 	color: #434343;

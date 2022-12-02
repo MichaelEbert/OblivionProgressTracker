@@ -170,6 +170,17 @@ function addParentLinks(node, parent){
 	
 }
 
+//bad hack to backlink close gates to their locations
+function linkOblivionGate(cell){
+	if(cell.gateCloseLink != null){
+		let otherCell = findCell(cell.gateCloseLink, "misc");
+		if(otherCell != null){
+			otherCell.location = cell;
+		}
+	}
+}
+
+
 /**
  * turn a bunch of json data from different files into a single js object.
  * @param {Object} hive base hive data
@@ -203,6 +214,9 @@ async function mergeData(hivePromise, customdataPromise){
 	}
 	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
+	if(hive.classname == "location"){
+		runOnTree(hive, linkOblivionGate);
+	}
 	addParentLinks(hive, null);
 	return hive;
 }
@@ -323,3 +337,5 @@ function findCell(formId, classHint = null){
 	}
 	return cell;
 }
+
+window.findCell = findCell;
