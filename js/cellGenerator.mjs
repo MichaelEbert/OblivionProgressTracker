@@ -67,6 +67,7 @@ const CELL_FORMAT_CHECKLIST = CELL_FORMAT_SHOW_CHECKBOX | CELL_FORMAT_SET_ROW_ON
  */
 function generateLinkUrl(cell, format){
     let linkHref;
+    const classname = cell.hive.classname
     // we are generating a map link
     if((format & CELL_FORMAT_NAMELINK_MAPLINK)){
         if(cell.formId == null){
