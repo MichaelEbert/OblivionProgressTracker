@@ -1,5 +1,5 @@
 {"version":4,"name":"Misc.","classname":"misc","elements":[
-    {"name":"Closed Oblivion Gates","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
+    {"name":"Oblivion Gates Shut","weight":9,"formId":"0xFFFFFFC0","type":"number","elements":[
 		{"name":"Main Quest Pt. 1","elements":[
 			{"name":"Oblivion Gate - Kvatch","formId":"0x0001E8A3","notes":"Fixed","icon":"Gate"}
 		]}
@@ -121,10 +121,10 @@
 		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD7","name":"Talos (Tiber Septim)","globalIndex":52,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD7","name":"Tiber Septim","globalIndex":52,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
 	]}
-	,{"name":"Houses","weight":0.3,"extraColumn":"city","elements":[
+	,{"name":"Houses Owned","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0003636F","name":"Benirus Manor","city":"Anvil","icon":"Settlement"}
 		,{"formId":"0x00085480","name":"Bravil House for Sale","city":"Bravil","icon":"Settlement"}
 		,{"formId":"0x00085481","name":"Bruma House for Sale","city":"Bruma","icon":"Settlement"}
@@ -134,7 +134,7 @@
 		,{"formId":"0x0008547F","name":"Leyawiin House for Sale","city":"Leyawiin","icon":"Settlement"}
 		,{"formId":"0x00085484","name":"Rosethorn Hall","city":"Skingrad","icon":"Settlement"}
 	]}
-	,{"name":"Horses","weight":0.3,"extraColumn":"city","elements":[
+	,{"name":"Horses Owned","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0004E28E","name":"White Horse","city":"Anvil","icon":"Horse"}
 		,{"formId":"0x0004E28F","name":"Bay Horse","city":"Bravil","icon":"Horse"}
 		,{"formId":"0x00054226","name":"Paint Horse","city":"Bruma","icon":"Horse"}
@@ -143,32 +143,44 @@
 		,{"formId":"0x00053232","name":"Paint Horse","city":"Leyawiin","icon":"Horse"}
 		,{"formId":"0x000545D6","name":"Bay Horse","city":"Skingrad","icon":"Horse"}
 	]}
-	,{"name":"Artifacts","weight":0.1,"notes":"Automatically checked off when the corresponding quest is completed","elements":[
-		{"ref":"0x000146A2","name":"Azura","icon":"ArtifactAzura"}
-		,{"ref":"0x000146A3","name":"Boethia","icon":"ArtifactBoethia"}
-		,{"ref":"0x000146A4","name":"Clavicus Vile","icon":"ArtifactClavicus"}
-		,{"ref":"0x000146AF","name":"Hermaeus Mora","icon":"ArtifactHermaeus"}
-		,{"ref":"0x000146A5","name":"Hircine","icon":"ArtifactHircine"}
-		,{"ref":"0x000146A6","name":"Malacath","icon":"ArtifactMalacath"}
-		,{"ref":"0x000146A7","name":"Mephala","icon":"ArtifactMephala"}
-		,{"ref":"0x000146A8","name":"Meridia","icon":"ArtifactMeridia"}
-		,{"ref":"0x000146B0","name":"Molag Bal","icon":"ArtifactMolag"}
-		,{"ref":"0x000146A9","name":"Namira","icon":"ArtifactNamira"}
-		,{"ref":"0x000146AA","name":"Nocturnal","icon":"ArtifactNocturnal"}
-		,{"ref":"0x000146AB","name":"Peryite","icon":"ArtifactPeryite"}
-		,{"ref":"0x000146AC","name":"Sanguine","icon":"ArtifactSanguine"}
-		,{"ref":"0x000146AD","name":"Sheogorath","icon":"ArtifactSheogorath"}
-		,{"ref":"0x000146AE","name":"Vaermina","icon":"ArtifactVaermina"}
+	,{"name":"Artifacts Found","weight":0.1,"extraColumn":"shrine","notes":"Automatically checked off when the corresponding quest is completed","elements":[
+		{"ref":"0x000146A2","name":"Azura's Star","shrine":"Azura","icon":"ArtifactAzura"}
+		,{"ref":"0x000146A3","name":"Goldbrand","shrine":"Boethia","icon":"ArtifactBoethia"}
+		,{"ref":"0x000146A4","name":"Masque of Clavicus Vile","shrine":"Clavicus Vile","icon":"ArtifactClavicus"}
+		,{"ref":"0x000146AF","name":"Oghma Infinium","shrine":"Hermaeus Mora","icon":"ArtifactHermaeus"}
+		,{"ref":"0x000146A5","name":"Saviour's Hide","shrine":"Hircine","icon":"ArtifactHircine"}
+		,{"ref":"0x000146A6","name":"Volendrung","shrine":"Malacath","icon":"ArtifactMalacath"}
+		,{"ref":"0x000146A7","name":"Ebony Blade","shrine":"Mephala","icon":"ArtifactMephala"}
+		,{"ref":"0x000146A8","name":"Ring of Khajiiti","shrine":"Meridia","icon":"ArtifactMeridia"}
+		,{"ref":"0x000146B0","name":"Mace of Molag Bal","shrine":"Molag Bal","icon":"ArtifactMolag"}
+		,{"ref":"0x000146A9","name":"Ring of Namira","shrine":"Namira","icon":"ArtifactNamira"}
+		,{"ref":"0x000146AA","name":"Skeleton Key","shrine":"Nocturnal","icon":"ArtifactNocturnal"}
+		,{"ref":"0x000146AB","name":"Spell Breaker","shrine":"Peryite","icon":"ArtifactPeryite"}
+		,{"ref":"0x000146AC","name":"Sanguine Rose","shrine":"Sanguine","icon":"ArtifactSanguine"}
+		,{"ref":"0x000146AD","name":"Wabbajack","shrine":"Sheogorath","icon":"ArtifactSheogorath"}
+		,{"ref":"0x000146AE","name":"Skull of Corruption","shrine":"Vaermina","icon":"ArtifactVaermina"}
 	]}
-	,{"name":"Greater Powers","weight":0.5,"elements":[
-		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic"}
-		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist"}
-		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify"}
-		,{"formId":"0x0006B69E","name":"Jone's Shadow","icon":"MagicFortify"}
-		,{"formId":"0x00014D23","name":"Pilgrim's Grace","icon":"MagicFortify"}
-		,{"formId":"0x0006B6A2","name":"Shield of Shezarr","icon":"MagicReflectSpell"}
-		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify"}
-		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify"}
+	,{"name":"Greater Powers","weight":0.5,"extraColumn":"stone","notes":"You need varying amounts of Renown (Fame + Infamy) to acquire each power. Hover each note for values.","elements":[
+		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic","stone":"Dragon Stone","notes":"70 Renown requied."}
+		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist","stone":"Aetherius Stone","notes":"20 Renown requied."}
+		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify","stone":"Jode Stone","notes":"30 Renown requied."}
+		,{"formId":"0x0006B69E","name":"Jone's Shadow","icon":"MagicFortify","stone":"Jone Stone","notes":"10 Renown requied."}
+		,{"formId":"0x00014D23","name":"Pilgrim's Grace","icon":"MagicFortify","stone":"9 Wayshrines"}
+		,{"formId":"0x0006B6A2","name":"Shield of Shezarr","icon":"MagicReflectSpell","stone":"Shezarr Stone","notes":"60 Renown requied."}
+		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify","stone":"Sithian Stone","notes":"40 Renown requied."}
+		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify","stone":"Magnus Stone","notes":"50 Renown requied."}
+	]}
+	,{"name":"Max Faction Ranks","weight":1,"extraColumn":"faction","notes":"All will check off assuming proper associated quest completion, except for the Blades faction rank, which needs to be acquired outside of normal questing.","elements":[
+		{"ref":"0x00030062","name":"Listener","icon":"RankListener","faction":"Dark Brotherhood"},
+		{"ref":"0x000E0C91","name":"Grand Champion","icon":"RankGrandChampion","faction":"Arena"},
+		{"ref":"0x000356CA","name":"Master","icon":"RankMaster","faction":"Fighters Guild"},
+		{"ref":"0x0000C03C","name":"Arch-Mage","icon":"RankArchMage","faction":"Mages Guild"},
+		{"formId":"0x000274AB","name":"Knight Sister/Brother","icon":"RankKnightSister","faction":"Blades","notes":"Talk to Jauffre to join this faction after completing Weynon Priory in case he dies during Great Gate. Faction rank name depends on your character's gender."},
+		{"ref":"0x00031B77","name":"Honorary Knight","icon":"RankHonoraryKnight","faction":"Knights of the Thorn"},
+		{"ref":"0x0002A38F","name":"Champion of Cyrodiil","icon":"RankChampionOfCyrodiil","faction":"Order of the Dragon"},
+		{"ref":"0x0008596D","name":"Knight-Errant","icon":"RankKnightErrant","faction":"Knights of the White Stallion"},
+		{"ref":"0x0001D21C","name":"Sister/Brother","icon":"RankSister","faction":"Order of the Virtuous Blood","notes":"Faction rank name depends on your character's gender."},
+		{"ref":"0x00036338","name":"Gray Fox","icon":"RankGrayFox","faction":"Thieves Guild"}
 	]}
 ]}
 

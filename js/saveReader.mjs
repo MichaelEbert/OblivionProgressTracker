@@ -192,6 +192,21 @@ function UpdateWayshrine(savedata, saveFile)
     };
 }
 
+function UpdateRank(savedata, saveFile)
+{
+    return (cell) =>
+    {
+        let record = saveFile.records.find((e) => e.formId === parseInt(cell.formId));
+        if (record) {
+            if (record.flags) {
+                savedata.misc[cell.id] = true;
+                return;
+            }
+        }
+        savedata.misc[cell.id] = false;
+    };
+}
+
 /// <summary>
 /// Update misc. Different because we do multiple different types of update here.
 /// </summary>
@@ -208,20 +223,23 @@ function RunMiscUpdates(miscHive, savedata, saveFile)
     {
         switch (child.name?.toLowerCase())
         {
-            case "horses":
+            case "horses owned":
                 runOnTree(child, UpdateHorse(savedata, saveFile));
                 break;
-            case "houses":
+            case "houses owned":
                 runOnTree(child, UpdateHouse(savedata, saveFile));
                 break;
             case "pilgrim's grace":
                 runOnTree(child, UpdateWayshrine(savedata, saveFile));
                 break;
-            case "arena fights":
+            case "arena fight fame":
                 runOnTree(child, UpdateArena(savedata, saveFile));
                 break;
             case "greater powers":
                 runOnTree(child, UpdatePower(savedata, saveFile));
+                break;
+            case "max faction ranks":
+                runOnTree(child, UpdateRank(savedata, saveFile));
                 break;
             case null:
             default:

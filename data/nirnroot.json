@@ -128,7 +128,6 @@
         {"formId":"0x0006B3A9","x":91718.66406,"y":-149481.9375,"z":50.06149292,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006F1E2","x":91837.33594,"y":-126871.4766,"z":285.0136414,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006F2E5","x":91907.60938,"y":-5278.085938,"z":21.83267021,"cell":"Outdoors","icon":"Nirnroot"},
-        {"formId":"0x0006DC38","x":92162.38281,"y":-138017.75,"z":194.8364716,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006B3B1","x":92545.34375,"y":-51450.47266,"z":66.75469971,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006F1E4","x":92601.61719,"y":-137243.5469,"z":70.39744568,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006F1EC","x":92661.59375,"y":-99495.66406,"z":96.45045471,"cell":"Outdoors","icon":"Nirnroot"},
@@ -264,6 +263,7 @@
         {"formId":"0x0006DC46","x":66862.98438,"y":-39550.10156,"z":714.1365967,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006DC36","x":94558.55469,"y":-142224.1719,"z":38.46307373,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006DC33","x":95001.33594,"y":-144504.9531,"z":93.87365723,"cell":"Outdoors","icon":"Nirnroot"},
+        {"formId":"0x0006DC38","x":92162.38281,"y":-138017.75,"z":194.8364716,"cell":"Outdoors","icon":"Nirnroot"},
         {"formId":"0x0006F0E4","x":121030.5156,"y":87946.33594,"z":7023.139648,"cell":"Outdoors","icon":"Nirnroot"}
     ]}
     ,{"name":"Indoors","elements":[
