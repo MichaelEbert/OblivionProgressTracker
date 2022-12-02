@@ -35,6 +35,10 @@ img{
 	display: inline;
 	overflow: hidden;
 }
+.collapsibleContent a{
+	color: black;
+	text-decoration: underline dotted grey; 
+}
 
 .active:after {
 	content: "➕"; /* Unicode character for "plus" sign (+) */
@@ -104,9 +108,57 @@ li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. 
 	color: black;
 	margin-left: -0.5em;
 }
+li.ayleid {
+	list-style-image: url("images/Icon_AyleidBullet.png");
+}
+li.camp {
+	list-style-image: url("images/Icon_CampBullet.png");
+}
+li.cave {
+	list-style-image: url("images/Icon_CaveBullet.png");
+}
+li.city {
+	list-style-image: url("images/Icon_CityBullet.png");
+}
+li.fort {
+	list-style-image: url("images/Icon_FortBullet.png");
+}
+li.gate {
+	list-style-image: url("images/Icon_GateBullet.png");
+}
+li.heavenstone {
+	list-style-image: url("images/Icon_HeavenStoneBullet.png");
+}
+li.inn {
+	list-style-image: url("images/Icon_InnBullet.png");
+}
+li.landmark {
+	list-style-image: url("images/Icon_LandmarkBullet.png");
+}
+li.mine {
+	list-style-image: url("images/Icon_MineBullet.png");
+}
+li.nirnroot {
+	list-style-image: url("images/Icon_NirnrootBullet.png");
+}
+li.settlement {
+	list-style-image: url("images/Icon_SettlementBullet.png");
+}
+li.shrine {
+	list-style-image: url("images/Icon_ShrineBullet.png");
+}
+li.wayshrine {
+	list-style-image: url("images/Icon_WayshrineBullet.png");
+}
 ol.warning{
 	list-style-type: '⚠ ';
 	color: black;
+}
+
+.objComp {
+	color: black;
+	font-style: normal;
+	font-size: 0.8em;
 }
 
 .item{

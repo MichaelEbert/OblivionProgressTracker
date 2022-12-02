@@ -170,5 +170,17 @@
 		,{"formId":"0x0006B6A0","name":"Sithian Web","icon":"MagicFortify","stone":"Sithian Stone","notes":"40 Renown requied."}
 		,{"formId":"0x0006B6A1","name":"Skein of Magnus","icon":"MagicFortify","stone":"Magnus Stone","notes":"50 Renown requied."}
 	]}
+	,{"name":"Max Faction Ranks","weight":1,"extraColumn":"faction","notes":"All will check off assuming proper associated quest completion, except for the Blades faction rank, which needs to be acquired outside of normal questing.","elements":[
+		{"ref":"0x00030062","name":"Listener","icon":"RankListener","faction":"Dark Brotherhood"},
+		{"ref":"0x000E0C91","name":"Grand Champion","icon":"RankGrandChampion","faction":"Arena"},
+		{"ref":"0x000356CA","name":"Master","icon":"RankMaster","faction":"Fighters Guild"},
+		{"ref":"0x0000C03C","name":"Arch-Mage","icon":"RankArchMage","faction":"Mages Guild"},
+		{"formId":"0x000274AB","name":"Knight Sister/Brother","icon":"RankKnightSister","faction":"Blades","notes":"Talk to Jauffre to join this faction after completing Weynon Priory in case he dies during Great Gate. Faction rank name depends on your character's gender."},
+		{"ref":"0x00031B77","name":"Honorary Knight","icon":"RankHonoraryKnight","faction":"Knights of the Thorn"},
+		{"ref":"0x0002A38F","name":"Champion of Cyrodiil","icon":"RankChampionOfCyrodiil","faction":"Order of the Dragon"},
+		{"ref":"0x0008596D","name":"Knight-Errant","icon":"RankKnightErrant","faction":"Knights of the White Stallion"},
+		{"ref":"0x0001D21C","name":"Sister/Brother","icon":"RankSister","faction":"Order of the Virtuous Blood","notes":"Faction rank name depends on your character's gender."},
+		{"ref":"0x00036338","name":"Gray Fox","icon":"RankGrayFox","faction":"Thieves Guild"}
+	]}
 ]}
 
