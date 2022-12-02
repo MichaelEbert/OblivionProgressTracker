@@ -35,7 +35,7 @@ img{
 	display: inline;
 	overflow: hidden;
 }
-.collapsibleContent a{
+.collapsibleContent a:not(span *){
 	color: black;
 	text-decoration: underline dotted grey; 
 }
