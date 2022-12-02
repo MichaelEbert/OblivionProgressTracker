@@ -318,7 +318,7 @@ function updateIframe(visible){
 			myframe.name="myframe";
 			myframe.id="myframe";
 			myframe.classList.add("iframe");
-			myframe.src="toc-3.html";
+			myframe.src="toc-4.html";
 			
 			iframeContainer.appendChild(myframe);
 			
