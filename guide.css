@@ -55,55 +55,44 @@ img{
 }
 
 ol.dialogue {
-	list-style-type: '↳';
+	list-style-type: '↳ ';
 	color: #434343;
 	font-style: italic;
 }
-ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe, li.inst) {
-	text-indent: -2em;
-  	list-style-type: none;
-}
-ol.dialogue > li:not(li.shop, li.spell, li.train, li.bribe, li.inst)::before {
-	display: inline-block;
-	width: 1em;
-  	padding-right: 0.5em;
-  	font-style: normal;
-  	text-align: right;
-  	content: "↳";
-}
-li.advpre {
+.dialogue li::marker{
 	font-style: normal;
 }
-li.shop {
-	list-style-image: url("images/Icon_ShopBullet.png");
+
+.dialogue .advpre {
+	font-style: normal;
+}
+
+.dialogue .shop,
+.dialogue .spell,
+.dialogue .train,
+.dialogue .bribe,
+.dialogue .inst{
 	font-style: normal;
 	color: black;
-	margin-left: -0.5em;
+}
+
+li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. */
+	list-style-type: circle;
+}
+
+li.shop {
+	list-style-image: url("images/Icon_ShopBullet.png");
 }
 li.spell{
 	list-style-image: url("images/Icon_SpellBullet.png");
-	font-style: normal;
-	color: black;
-	margin-left: -0.5em;
 }
 li.train{
 	list-style-image: url("images/Icon_TrainingBullet.png");
-	font-style: normal;
-	color: black;
-	margin-left: -0.5em;
 }
 li.bribe{
 	list-style-image: url("images/Icon_BribeBullet.png");
-	font-style: normal;
-	color: black;
-	margin-left: -0.5em;
 }
-li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. */
-	list-style-type: circle;
-	font-style: normal;
-	color: black;
-	margin-left: -0.5em;
-}
+
 li.ayleid {
 	list-style-image: url("images/Icon_AyleidBullet.png");
 }
