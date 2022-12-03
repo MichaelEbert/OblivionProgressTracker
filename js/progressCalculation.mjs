@@ -242,6 +242,10 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 		maybeItem.innerText = items.toString() + "/" + total.toString();
 	}
 	
+	for(const item of document.getElementsByClassName(overviewId)){
+		item.innerText = items.toString() + "/" + total.toString();
+	}
+	
 	// and finally, return weighted progress for total progress.
 	return (items/total)*weight;
 }
