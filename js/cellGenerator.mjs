@@ -182,6 +182,11 @@ function adjustFormatting(cell, defaultFormatting){
         defaultFormatting &= ~CELL_FORMAT_NAMELINK_ENABLE;
     }
 
+    if(!cell.hive.class.containsUserProgress){
+        defaultFormatting &= ~CELL_FORMAT_SHOW_CHECKBOX;
+        defaultFormatting &= ~CELL_FORMAT_NAMELINK_SEPARATE_HELP;
+    }
+
     return defaultFormatting
 }
 

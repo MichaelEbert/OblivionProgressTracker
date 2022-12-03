@@ -35,10 +35,6 @@ img{
 	display: inline;
 	overflow: hidden;
 }
-.collapsibleContent a:not(span *){
-	color: black;
-	text-decoration: underline dotted grey; 
-}
 
 .active:after {
 	content: "➕"; /* Unicode character for "plus" sign (+) */
@@ -165,6 +161,7 @@ ol.warning{
 	margin: 0em;
 	padding: 0em;
 	font-weight: bold;
+	border-bottom: none;
 }
 
 .check{
@@ -181,8 +178,10 @@ ol.warning{
 .bookName a,
 .storeName a,
 .nirnroot a,
-.npc a{
+.npc a,
+.glitch a{
 	color: inherit;
+	text-decoration: inherit;
 }
 
 .book{
@@ -207,6 +206,12 @@ ol.warning{
 .nirnroot{
 	font-weight: bold;
 	color:#1155cc;
+}
+
+.glitch,
+a.screenshot{
+	color: black;
+	text-decoration: underline dotted grey; 
 }
 
 a.screenshot::after{

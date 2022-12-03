@@ -109,7 +109,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 		cellObj = cellObj.parent;
 	}
 
-	if(cell.id == null){
+	if(cell.id == null || !cell.hive.class.containsUserProgress){
 		//we don't need to save this
 		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
 			for(const fn of cell.onUpdate){
