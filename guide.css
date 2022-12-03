@@ -36,6 +36,12 @@ img{
 	overflow: hidden;
 }
 
+.toc a{
+	text-decoration: underline;
+	color: black;
+	text-decoration-color: lightgray;
+}
+
 .active:after {
 	content: "➕"; /* Unicode character for "plus" sign (+) */
 }
