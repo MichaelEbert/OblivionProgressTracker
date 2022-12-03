@@ -35,6 +35,10 @@ img{
 	display: inline;
 	overflow: hidden;
 }
+.collapsibleContent a:not(span *){
+	color: black;
+	text-decoration: underline dotted grey; 
+}
 
 .active:after {
 	content: "➕"; /* Unicode character for "plus" sign (+) */
@@ -52,11 +56,6 @@ img{
 
 .subtitle{
 	font-weight: bold;
-}
-
-a{
-	color: black;
-	text-decoration: underline dotted grey; 
 }
 
 ol.dialogue {
@@ -188,6 +187,7 @@ ol.warning{
 
 .book{
 	color: magenta;
+	font-style: italic;
 }
 
 .quest{

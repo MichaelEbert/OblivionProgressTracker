@@ -1,12 +1,12 @@
 {"version":4,"name":"Fame","classname":"fame","extraColumn":"scale","weight":1,"notes":"Except for Arena Fights, automatically checked off when the corresponding tasks are completed","elements":[
-	{"name":"Oblivion Gates Closed","extraColumn":"displayTotal","elements":[
+	{"name":"Oblivion Gates Shut Fame","extraColumn":"displayTotal","elements":[
 		{"ref":"0x0001E8A3", "displayTotal":1,"icon":"Fame"}
 		,{"ref":"0xFFFFFFC3","name":"Fixed Gates (1 Fame)","type":"number", "displayTotal":12,"icon":"Fame"}
 		,{"ref":"0xFFFFFFC2","name":"Fixed Gates (2 Fame)","type":"number","scale":2, "displayTotal":5,"icon":"Fame"}
 		,{"ref":"0xFFFFFFC4","name":"Random Gates","type":"number","displayTotal":40,"icon":"Fame"}
 		,{"ref":"0x00026EBA","displayTotal":1,"icon":"Fame"}
 	]},
-	{"name":"Quests","elements":[
+	{"name":"Quest Fame","elements":[
 		{"name":"Main Quest","elements":[
 			{"ref":"0x0001E724","scale":1,"icon":"Fame"}
 			,{"ref":"0x000224D8","scale":1,"icon":"Fame"}
@@ -105,7 +105,7 @@
 			,{"ref":"0x00031B77","scale":2,"icon":"Fame"}
 		]}
 	]},
-	{"name":"Arena Fights","elements":[
+	{"name":"Arena Fight Fame","elements":[
 		 {"formId":"0x00027668","name":"Pit Dog - Bosmer","scale":1,"icon":"ArenaPitDog"}
 		,{"formId":"0x0001DC4D","name":"Pit Dog - Imperial","scale":1,"icon":"ArenaPitDog"}
 		,{"formId":"0x0001DC4C","name":"Pit Dog - Argonian","scale":1,"icon":"ArenaPitDog"}
@@ -129,7 +129,7 @@
 		,{"formId":"0x000176C4","name":"Hero - Yellow Team Champion and 2 Dunmers","scale":1,"icon":"ArenaHero"}
 		,{"max":10,"elements":[
 			 {"formId":"0x0003B1DD","name":"Champion - Agronak gro-Malog (Heavy Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"ArenaChampion"}
-			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"Arenachampion"}
+			,{"formId":"0x0003B1DE","name":"Champion - Agronak gro-Malog (Light Raiment)","scale":10,"notes":"Only need 1 of the two Grand Champion fights.","icon":"ArenaChampion"}
 		]}
 	]}
 ]}

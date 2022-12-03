@@ -33,9 +33,9 @@
 		{"name":"Stendarr","variant":"1","formId":"0x00175F02","x":-128961,"y":60436,"z":16585,"icon":"Wayshrine"},
 		{"name":"Stendarr","variant":"2","formId":"0x00175E13","x":84420,"y":-91657,"z":1078,"icon":"Wayshrine"},
 		{"name":"Stendarr","variant":"3","formId":"0x00175DC7","x":52684,"y":67365,"z":320,"icon":"Wayshrine"},
-		{"name":"Talos (Tiber Septim)","variant":"1","formId":"0x00175E85","x":-102951,"y":2196,"z":7181,"icon":"Wayshrine"},
-		{"name":"Talos (Tiber Septim)","variant":"2","formId":"0x00175DF1","x":40163,"y":-5004,"z":5453,"icon":"Wayshrine"},
-		{"name":"Talos (Tiber Septim)","variant":"3","formId":"0x00175EF4","x":51214,"y":7604,"z":1942,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"1","formId":"0x00175E85","x":-102951,"y":2196,"z":7181,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"2","formId":"0x00175DF1","x":40163,"y":-5004,"z":5453,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"3","formId":"0x00175EF4","x":51214,"y":7604,"z":1942,"icon":"Wayshrine"},
 		{"name":"Zenithar","variant":"1","formId":"0x00175E90","x":-156364,"y":-17096,"z":9224,"icon":"Wayshrine"},
 		{"name":"Zenithar","variant":"2","formId":"0x00175E7A","x":22799,"y":-1978,"z":1825,"icon":"Wayshrine"},
 		{"name":"Zenithar","variant":"3","formId":"0x0017606D","x":66282,"y":-17387,"z":1758,"icon":"Wayshrine"}
