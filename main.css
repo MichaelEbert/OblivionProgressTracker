@@ -97,10 +97,22 @@ kbd {
 }
 
 .topbarSection{
-	flex:1 1 10%;
+	flex: 1 1 10%;
 	text-align: center;
 	background-color: var(--lighter-color);
 	border-right: 1px solid black;
+	text-decoration: none;
+	color: black;
+}
+.topbarSection a{
+	text-decoration: none;
+	color: black;
+}
+.topbarSection.icon{
+	flex: 1 1 0%;
+}
+.topbarSection img{
+	float: none;
 }
 
 .topbarSublist{
@@ -141,6 +153,10 @@ kbd {
 	display: flex;
 	flex-direction: column;
 	height:100%;
+}
+#sidebarLinks a{
+	text-decoration: none;
+	color: black;
 }
 
 /*this can't be applied to the same as resizableContainer because box-sizing causes the resize widget to be below teh screen.*/

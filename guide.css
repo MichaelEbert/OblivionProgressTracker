@@ -35,9 +35,15 @@ img{
 	display: inline;
 	overflow: hidden;
 }
-.collapsibleContent a:not(span *){
+.collapsibleContent a:not(span *, .toc *){ /*hacky bad way of doing this. Need to add a glitch class when we get to v5 prior to first parse of md guide.*/
 	color: black;
 	text-decoration: underline dotted grey; 
+}
+
+.toc a{
+	text-decoration: underline;
+	color: black;
+	text-decoration-color: lightgray;
 }
 
 .active:after {
