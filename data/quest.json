@@ -145,12 +145,6 @@
 		,{"name":"Blood Price","formId":"0x000BF025","stages":[105],"icon":"QuestThieves"}
 		,{"name":"The Ultimate Heist","formId":"0x00036338","notes":"Get the Fire and Darkness skill book in the Hall of Epochs before finishing this quest. Get 2920, Second Seed (v5) next to the fireplace at the end of the Imperial Battlemage’s Chambers.","stages":[160,200],"icon":"QuestThieves"}
 	]}
-	,{"name":"Journal-Filled","elements":[
-		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Meet non-journal requirements for this quest before you finish the Thieves Guild. Get cast out and readmitted to count as complete.","stages":[10,20,30,40],"icon":"QuestThieves"}
-		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Meet non-journal requirements for this quest before you finish the Fighters Guild. Get up through the second expulsion, but do not get expelled a third time.","stages":[60],"icon":"QuestFighters"}
-		,{"name":"The Arena","formId":"0x000E0C91","notes":"Talk to Ysabel after becoming Arena Grand Champion to get the offer to fight creatures in order to fulfill non-journal requirements.","stages":[100],"icon":"QuestArena"}
-		,{"name":"Whispers of Death","formId":"0x00030064","notes":"This quest cannot be updated. Having it in your journal is all that is needed for the non-journal requirements.","stages":[10],"icon":"QuestDarkBrotherhood"}
-	]}
 	,{"name":"Daedric Shrines","elements":[
 		{"name":"Azura","formId":"0x000146A2","stages":[100],"icon":"QuestDaedric"}
 		,{"name":"Boethia","formId":"0x000146A3","stages":[100],"icon":"QuestDaedric"}
@@ -264,5 +258,11 @@
 			,{"name":"When the Vow Breaks","formId":"0x00185FEF","stages":[100,200],"icon":"QuestGeneral2"}
 			,{"name":"Zero Visibility","formId":"0x0002F86B","stages":[100],"icon":"QuestGeneral2"}
 		]}
+	]}
+	,{"name":"Journal-Filled","notes":"These quests cannot be completed, so you must advance them as far as possible. See notes for each quest for details.","elements":[
+		{"name":"Cast out of the Thieves Guild","formId":"0x0001E868","notes":"Meet non-journal requirements for this quest before you finish the Thieves Guild. Get cast out and readmitted to count as complete.","stages":[10,20,30,40],"icon":"QuestThieves"}
+		,{"name":"Expelled from the Fighters Guild","formId":"0x00025E27","notes":"Meet non-journal requirements for this quest before you finish the Fighters Guild. Get up through the second expulsion, but do not get expelled a third time.","stages":[60],"icon":"QuestFighters"}
+		,{"name":"The Arena","formId":"0x000E0C91","notes":"Talk to Ysabel after becoming Arena Grand Champion to get the offer to fight creatures in order to fulfill non-journal requirements.","stages":[100],"icon":"QuestArena"}
+		,{"name":"Whispers of Death","formId":"0x00030064","notes":"This quest cannot be updated. Having it in your journal is all that is needed for the non-journal requirements.","stages":[10],"icon":"QuestDarkBrotherhood"}
 	]}
 ]}
