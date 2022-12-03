@@ -155,7 +155,7 @@ function activateNirnroot(nirnFormId){
         prevNirnroot = findPrevNirnroot(thisNirnroot);
     }
     else{
-        thisNirnroot = thisNirnroot = map.getOverlay().nirnroots.icons.find(x=>x.cell.formId == nirnFormId);
+        thisNirnroot = thisNirnroot = map.getOverlay().layers.get("nirnroots").icons.find(x=>x.cell.formId == nirnFormId);
         prevNirnroot = findPrevNirnroot(thisNirnroot);
         nextNirnroot = findNextNirnroot(thisNirnroot);
     }
@@ -206,7 +206,7 @@ function findNextNirnroot(thisNirnroot){
     if(nextNirnrootCell == null){
         nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == 0));
     }
-    let nextOne = map.getOverlay().nirnroots.icons.find(x=>x.cell.formId == nextNirnrootCell.formId);
+    let nextOne = map.getOverlay().layers.get("nirnroots").icons.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return nextOne;
 }
 
@@ -221,7 +221,7 @@ function findPrevNirnroot(thisNirnroot){
     if(nextNirnrootCell == null){
         nextNirnrootCell = findOnTree(jsondata.nirnroot, (x=>x.tspId == 0));
     }
-    let prevOne = map.getOverlay().nirnroots.icons.find(x=>x.cell.formId == nextNirnrootCell.formId);
+    let prevOne = map.getOverlay().layers.get("nirnroots").icons.find(x=>x.cell.formId == nextNirnrootCell.formId);
     return prevOne;
 }
 
