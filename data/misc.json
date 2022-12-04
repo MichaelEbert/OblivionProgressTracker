@@ -113,17 +113,6 @@
 			,{"ref":"0x0001E730","name":"Great Gate","icon":"Gate"}
 		]}
 	]}
-	,{"name":"Pilgrim's Grace","weight":0.5,"notes":"Getting all of the Wayshrines unlocks the Pilgrim's Grace Greater Power.","elements":[
-		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD3","name":"Julianos","globalIndex":55,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD7","name":"Tiber Septim","globalIndex":52,"icon":"Wayshrine"}
-		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
-	]}
 	,{"name":"Houses Owned","weight":0.3,"extraColumn":"city","elements":[
 		{"formId":"0x0003636F","name":"Benirus Manor","city":"Anvil","icon":"Settlement"}
 		,{"formId":"0x00085480","name":"Bravil House for Sale","city":"Bravil","icon":"Settlement"}
@@ -159,6 +148,17 @@
 		,{"ref":"0x000146AC","name":"Sanguine Rose","shrine":"Sanguine","icon":"ArtifactSanguine"}
 		,{"ref":"0x000146AD","name":"Wabbajack","shrine":"Sheogorath","icon":"ArtifactSheogorath"}
 		,{"ref":"0x000146AE","name":"Skull of Corruption","shrine":"Vaermina","icon":"ArtifactVaermina"}
+	]}
+	,{"name":"Wayshrines","weight":0.5,"notes":"Getting all of the Wayshrines unlocks the Pilgrim's Grace Greater Power.","elements":[
+		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD3","name":"Julianos","globalIndex":55,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD4","name":"Kynareth","globalIndex":54,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD5","name":"Mara","globalIndex":47,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD6","name":"Stendarr","globalIndex":48,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD7","name":"Tiber Septim","globalIndex":52,"icon":"Wayshrine"}
+		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
 	]}
 	,{"name":"Greater Powers","weight":0.5,"extraColumn":"stone","notes":"You need varying amounts of Renown (Fame + Infamy) to acquire each power. Hover each note for values.","elements":[
 		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic","stone":"Dragon Stone","notes":"70 Renown requied."}
