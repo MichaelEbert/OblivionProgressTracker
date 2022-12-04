@@ -107,7 +107,12 @@ function replaceElements(){
 					format |= CELL_FORMAT_SKIP_ID;
 					format &= ~CELL_FORMAT_SHOW_CHECKBOX;
 				}
-				let newElement = initSingleCell(cell, null, format);
+
+				let customText = element.innerText;
+				if(customText.length == 0){
+					customText = null;
+				}
+				let newElement = initSingleCell(cell, null, format, customText);
 				element.replaceWith(newElement);
 				//step 3: load current data from cookies
 				if(newElement == null || elementclass == null){

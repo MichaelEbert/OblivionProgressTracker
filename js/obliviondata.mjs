@@ -60,6 +60,7 @@ const classes = [
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
 	new JsonClass("wayshrine",false),
+	new JsonClass("glitch",false),
 	//used in class reset calculator only
 	new JsonClass("race", false),
 	new JsonClass("birthsign", false)
@@ -120,6 +121,7 @@ function generatePromiseFunc(basedir, klass){
 				console.error(e);
 			}));
 		let hive = await mergeData(baseFile, customFile);
+		hive.class = klass;
 		if(window.debugAsync){
 			console.log("setting "+hive.classname+" jsondata");
 		}
