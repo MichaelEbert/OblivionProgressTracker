@@ -241,7 +241,7 @@ function initSettings(){
 	
 	changed |= initProperty(settings, "minipageCheck", false);
 	changed |= initProperty(settings, "iframeCheck", "auto");
-	changed |= initProperty(settings, "iframeMinWidth", 600);
+	changed |= initProperty(settings, "iframeMinWidth", 1000);
 	changed |= initProperty(settings, "iframeWidth", "45vw");
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
