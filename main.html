@@ -98,12 +98,8 @@
 	window.saveReader = saveReader;
 	console.log("AAAA");
 	(function(){
-		if(window.userdata.loadCookie("debug") == true){
-			window.debug = true;
-		}
-		if(window.userdata.loadCookie("debugAsync") == true){
-		window.debugAsync = true;
-	}
+		window.debug = window.userdata.loadCookie("debug");
+		window.debugAsync = window.userdata.loadCookie("debugAsync");
 		init();
 	}).call(window);
 </script>
