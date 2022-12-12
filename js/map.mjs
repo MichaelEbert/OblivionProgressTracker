@@ -453,28 +453,22 @@ function initListeners(){
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
     var displaySettingsFunc = function(){
-        let activeLayers = 0;
-        let activeTsp = 0;
-        if(button_location.checked){
-            activeLayers |= OVERLAY_LAYER_LOCATIONS;
-        }
-        if(button_nirnroot.checked){
-            activeLayers |= OVERLAY_LAYER_NIRNROOTS;
-        }
-        if(button_wayshrine.checked){
-            activeLayers |= OVERLAY_LAYER_WAYSHRINES;
-        }
+        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS, button_location.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS, button_nirnroot.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_WAYSHRINES, button_wayshrine.checked);
+        //overlay.setActiveLayer(OVERLAY_LAYER_CITYNIRNS, button_cityNirns.checked);
+        //overlay.setActiveLayer(OVERLAY_LAYER_NEARBYGATES, button_nearbyGates.checked);
+
         if(button_tspNone.checked){
-            activeTsp = 0;
+            overlay.setActiveTsp(OVERLAY_LAYER_NONE);
         }
-        if(button_tspLocation.checked){
-            activeTsp = OVERLAY_LAYER_LOCATIONS;
+        else if(button_tspLocation.checked){
+            overlay.setActiveTsp(OVERLAY_LAYER_LOCATIONS);
         }
-        if(button_tspNirnroot.checked){
-            activeTsp = OVERLAY_LAYER_NIRNROOTS;
+        else if(button_tspNirnroot.checked){
+            overlay.setActiveTsp(OVERLAY_LAYER_NIRNROOTS);
         }
-        overlay.setActiveLayers(activeLayers);
-        overlay.setActiveTsp(activeTsp);
+        
         drawFrame();
     }
 
