@@ -231,7 +231,7 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS); 
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS, true); 
     }
 
     overlay.setCurrentLocationByFormId(formid);
