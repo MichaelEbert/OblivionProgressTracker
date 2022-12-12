@@ -1,6 +1,6 @@
 "use strict"
 
-export { Overlay, setActiveLayer, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_CITYNIRNS, OVERLAY_LAYER_NEARBYGATES };
+export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_CITYNIRNS, OVERLAY_LAYER_NEARBYGATES };
 
 import { MapLocation, GateIcon } from "./mapObject.mjs";
 import { Point } from "./point.mjs";
@@ -25,8 +25,7 @@ function Overlay(){
     this.layers = new Map();
     this.lastZoomLevel = undefined;
     this.currentLocation = null;
-    this.activeLayers = OVERLAY_LAYER_NONE;
-    this.activeTsp = OVERLAY_LAYER_NONE;
+    this.activeTsp = null;
 
     //the following funcitons need a captured this variable
     let locTspArr = [];

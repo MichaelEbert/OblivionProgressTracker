@@ -28,7 +28,7 @@ import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
 import { saveCookie, saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
-import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
+import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
 
