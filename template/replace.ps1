@@ -15,10 +15,11 @@ Begin{
 		throw "replacement $replacementFile must begin with $beginKey and end with $endKey!"
 	}
 	write-verbose "==Replacing $replacementFile=="
+	$fileContents = [System.IO.File]::ReadAllText($file.fullname,[System.Text.Encoding]::UTF8);
 }
 Process{
 	foreach($file in $files){
-		$contents = [System.IO.File]::ReadAllText($file.fullname,[System.Text.Encoding]::UTF8);
+		$contents = $fileContents
 		$relPath = resolve-path -relative $file.fullname;
 		if(!$contents.contains($beginKey)){
 			write-verbose "skipping $relPath as it does not contain $beginKey" 
@@ -28,6 +29,12 @@ Process{
 			write-verbose "skipping $relPath as it is in template folder"
 			continue;
 		}
+		#correctly replace in tools folder, etc.
+		#TODO make generic
+		if($relPath.startsWith("..\tools")){
+			$contents = [Regex]::replace($contents,"href=`"\./","href=`"../");
+		}
+
 		write-verbose "Replacing in $relPath" 
 		$regex = $beginKey +".*"+$endKey;
 		$contents2 = [Regex]::replace($contents,$regex,$replacementText,[System.Text.RegularExpressions.RegexOptions]::Singleline)
