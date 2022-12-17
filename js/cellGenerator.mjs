@@ -371,9 +371,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //map icon
     if(format & CELL_FORMAT_SHOW_MAPICON)
     {
-        if(cell.formId == "0x000615EB"){
-            debugger;
-        }
         let usableCell = cell;
         if(cell.ref != null &&( cell.x == null || cell.y == null)){
             usableCell = refCell;

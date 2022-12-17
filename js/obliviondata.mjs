@@ -220,6 +220,9 @@ async function mergeData(hivePromise, customdataPromise){
 		runOnTree(hive, linkOblivionGate);
 	}
 	addParentLinks(hive, null);
+	if(window.debugAsync?.class==hive?.classname){
+		debugger;
+	}
 	return hive;
 }
 
@@ -234,7 +237,7 @@ function computeTotalWeight(){
 			if(hive == null){
 				// class data not loaded
 				if(window.debugAsync){
-					console.log(klass.name + "is not loaded!");
+					console.log(klass.name + " is not loaded!");
 				}
 				continue;
 			}
