@@ -9,6 +9,7 @@ export {
     mapSpaceToWorldSpace, 
     mapSpaceToScreenSpace, 
     screenSpaceToMapSpace,
+    worldSpaceToScreenSpace,
     getImageScale,
     ICON_NATIVE_HEIGHT, 
     iconSwitch, 
@@ -591,6 +592,15 @@ function mapSpaceToScreenSpace(mapSpacePoint){
  */
 function screenSpaceToMapSpace(screenSpacePoint){
     return screenSpacePoint.add(screenOriginInMapCoords);
+}
+
+/**
+ * Convert a point in world space to a point in screen space.
+ * @param {Point} worldSpacePoint 
+ * @returns {Point} screen space point
+ */
+function worldSpaceToScreenSpace(worldSpacePoint){
+    return mapSpaceToScreenSpace(worldSpaceToMapSpace(worldSpacePoint));
 }
 
 /**Returns appropriate icon from string input.*/
