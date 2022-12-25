@@ -29,7 +29,7 @@ import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
 import { saveCookie, saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
-import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
+import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_NEARBYGATES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
 
@@ -447,9 +447,12 @@ function initListeners(){
     const button_location = document.getElementById("button_Location");
     const button_nirnroot = document.getElementById("button_Nirnroot");
     const button_wayshrine = document.getElementById("button_Wayshrine");
+    const button_nearbyGates = document.getElementById("button_NearbyGates");
+
     const button_tspNone = document.getElementById("button_tspNone");
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
+
 
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
@@ -458,7 +461,7 @@ function initListeners(){
         overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS, button_nirnroot.checked);
         overlay.setActiveLayer(OVERLAY_LAYER_WAYSHRINES, button_wayshrine.checked);
         //overlay.setActiveLayer(OVERLAY_LAYER_CITYNIRNS, button_cityNirns.checked);
-        //overlay.setActiveLayer(OVERLAY_LAYER_NEARBYGATES, button_nearbyGates.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_NEARBYGATES, button_nearbyGates.checked);
 
         if(button_tspNone.checked){
             overlay.setActiveTsp(OVERLAY_LAYER_NONE);
@@ -476,6 +479,8 @@ function initListeners(){
     button_location.addEventListener("change", displaySettingsFunc);
     button_nirnroot.addEventListener("change", displaySettingsFunc);
     button_wayshrine.addEventListener("change", displaySettingsFunc);
+    button_nearbyGates.addEventListener("change", displaySettingsFunc);
+
     button_tspNone.addEventListener("change", displaySettingsFunc);
     button_tspLocation.addEventListener("change", displaySettingsFunc);
     button_tspNirnroot.addEventListener("change", displaySettingsFunc);
