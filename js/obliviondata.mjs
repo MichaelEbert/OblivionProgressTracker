@@ -78,17 +78,30 @@ const progressClasses = classes.filter(c=>c.containsUserProgress);
  * @param {(x:JsonClass)=> boolean} classFilter only load classes that match this filter
  */
 function loadJsonData(basedir=".",classFilter=(x=>true)){
-	jsondata = {};
 	var promises = [];
+	let localJsonData = {};
 	for(var klass of classes){
 		if(classFilter(klass)){
 			//be sure to *execute* the function, not just generate it
-			promises.push(generatePromiseFunc(basedir,klass)());
+			promises.push(generatePromiseFunc(basedir,klass, localJsonData)().catch(e=>{
+				console.log(e);
+				debugger;
+			}));
 		}
 	}
-	return Promise.allSettled(promises).then(()=>{
+	return Promise.allSettled(promises).then((_)=>{
+		if(window.debugAsync){
+			console.log(promises);
+		}
+		window.jsondata = localJsonData;
+		jsondata = localJsonData;
+		try{
+			runOnTree(jsondata.location, linkOblivionGate);
+		}
+		catch(e){
+			console.warn("linking oblivion gates failed:"+e);
+		}
 		computeTotalWeight();
-		window.jsondata = jsondata;
 	});
 }
 
@@ -99,7 +112,7 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
  * @param {JsonClass} klass 
  * @returns {Promise<void>} promise that does the needful
  */
-function generatePromiseFunc(basedir, klass){
+function generatePromiseFunc(basedir, klass, outDataObject){
 	return async function()
 	{
 		let baseFile = fetch(basedir+"/data/"+klass.name+".json")
@@ -122,10 +135,8 @@ function generatePromiseFunc(basedir, klass){
 			}));
 		let hive = await mergeData(baseFile, customFile);
 		hive.class = klass;
-		if(window.debugAsync){
-			console.log("setting "+hive.classname+" jsondata");
-		}
-		jsondata[klass.name] = hive;
+		outDataObject[klass.name] = hive;
+		console.log("set "+hive.classname+" jsondata");
 	};
 }
 
@@ -205,7 +216,9 @@ async function mergeData(hivePromise, customdataPromise){
 			if(customData != null){
 				runOnTree(hive, mergeCell(customData));
 			}
-			console.log("merged "+hive.classname);
+			if(window.debugAsync){
+				console.log("merged "+hive.classname);
+			}
 		}
 		catch(ex){
 			if(window.debugAsync){
@@ -216,9 +229,6 @@ async function mergeData(hivePromise, customdataPromise){
 	}
 	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
-	if(hive.classname == "location"){
-		runOnTree(hive, linkOblivionGate);
-	}
 	addParentLinks(hive, null);
 	if(window.debugAsync?.class==hive?.classname){
 		debugger;
