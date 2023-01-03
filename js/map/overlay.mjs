@@ -9,6 +9,7 @@ import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPa
 import { OverlayLayer } from "./overlayLayer.mjs"
 import { runOnTree, jsondata } from "../obliviondata.mjs";
 import { findCell } from "../obliviondata.mjs";
+import { NearbyGatesLayer, NearbyLine } from "./nearbyGatesLayer.mjs";
 
 const OVERLAY_LAYER_NONE = "";
 const OVERLAY_LAYER_LOCATIONS = "locations";
@@ -26,13 +27,20 @@ function Overlay(){
     this.lastZoomLevel = undefined;
     this.currentLocation = null;
     this.activeTsp = null;
+    
+    this.createLocationLayer();
+    this.createNirnrootLayer();
+    this.createWayshrineLayer();
+    this.createCityNirnLayer();
+    this.createNearbyGatesLayer();
 
-    //the following funcitons need a captured this variable
+    this.clearActiveLayers();
+    this.setActiveLayer(OVERLAY_LAYER_LOCATIONS, true);
+}
+
+Overlay.prototype.createLocationLayer = function(){
     let locTspArr = [];
     let locationArr = [];
-    let nirnTspArr = [];
-    let nirnrootArr = [];
-    let wayshrineArr = [];
     runOnTree(jsondata.location, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
@@ -62,7 +70,12 @@ function Overlay(){
             locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
         }
     });
+    this.layers.set(OVERLAY_LAYER_LOCATIONS,new OverlayLayer(locationArr, locTspArr));
+}
 
+Overlay.prototype.createNirnrootLayer = function(){
+    let nirnTspArr = [];
+    let nirnrootArr = [];
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors" && nirn.parent.name != "City"){
             let newIcon = new MapLocation(nirn)
@@ -79,7 +92,19 @@ function Overlay(){
             }
         }
     });
+    this.layers.set(OVERLAY_LAYER_NIRNROOTS,new OverlayLayer(nirnrootArr, nirnTspArr));
+}
 
+Overlay.prototype.createWayshrineLayer = function(){
+    let wayshrineArr = [];
+    runOnTree(jsondata.wayshrine, function(loc){
+        let newIcon = new MapLocation(loc);
+        wayshrineArr.push(newIcon);
+    });
+    this.layers.set(OVERLAY_LAYER_WAYSHRINES,new OverlayLayer(wayshrineArr));
+}
+
+Overlay.prototype.createCityNirnLayer = function(){
     let cityNirnArr = [];
     runOnTree(jsondata.nirnroot, function(nirn){
         if(nirn.cell == "Outdoors" && nirn.parent.name == "City"){
@@ -97,20 +122,39 @@ function Overlay(){
             }
         }
     });
+    this.layers.set(OVERLAY_LAYER_CITYNIRNS,new OverlayLayer(cityNirnArr));
+}
 
-    runOnTree(jsondata.wayshrine, function(loc){
-        let newIcon = new MapLocation(loc);
-        wayshrineArr.push(newIcon);
+Overlay.prototype.createNearbyGatesLayer = function(){
+    let nearbyGatesData = [];
+    let nearbyGatesLocations = [];
+    runOnTree(jsondata.location, function(loc){
+        if(loc.nearbyRandomGates != null){
+            let nearbyGates = [];
+            nearbyGatesLocations.push(loc);
+            for(const gateid of loc.nearbyRandomGates){
+                let gate = findCell(gateid, "location");
+                console.log("found gate:");
+                console.log(gate);
+                nearbyGates.push(gate);
+                nearbyGatesLocations.push(gate);
+            }
+            nearbyGatesData.push(new NearbyLine(loc, nearbyGates));
+        }
     });
 
-    //Sort and run intial world->map->screen space calculations for TSP arrays.
-    this.layers.set(OVERLAY_LAYER_LOCATIONS,new OverlayLayer(locationArr, locTspArr));
-    this.layers.set(OVERLAY_LAYER_NIRNROOTS,new OverlayLayer(nirnrootArr, nirnTspArr));
-    this.layers.set(OVERLAY_LAYER_WAYSHRINES,new OverlayLayer(wayshrineArr));
-    this.layers.set(OVERLAY_LAYER_CITYNIRNS,new OverlayLayer(cityNirnArr));
-    this.layers.get(OVERLAY_LAYER_CITYNIRNS).visible = false;
-    this.clearActiveLayers();
-    this.setActiveLayer(OVERLAY_LAYER_LOCATIONS, true);
+    let nearbyGatesIcons = [];
+    for(const loc of nearbyGatesLocations){
+        let newIcon = null;
+        if(loc.name.includes("Oblivion Gate")){
+            newIcon = new GateIcon(loc);
+        }
+        else{
+            newIcon = new MapLocation(loc);
+        }
+        nearbyGatesIcons.push(newIcon);
+    }
+    this.layers.set(OVERLAY_LAYER_NEARBYGATES,new NearbyGatesLayer(nearbyGatesIcons, nearbyGatesData));
 }
 
 Overlay.prototype.recalculateBoundingBox = function(){
@@ -207,7 +251,7 @@ Overlay.prototype.setActiveLayer = function(layer, active){
  * Clear all active layers
  */
 Overlay.prototype.clearActiveLayers = function(){
-    for(const layer in this.layers.values()){
+    for(const layer of this.layers.values()){
         layer.visible = false;
     }
 }

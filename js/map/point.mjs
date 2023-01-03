@@ -2,7 +2,7 @@
 export {Point};
 
 /**
- * 2d point. Jas useful math methods like multiply, divide, etc.
+ * 2d point. Has useful math methods like multiply, divide, etc.
  * @param x x of point 
  * @param y y of point
  */
