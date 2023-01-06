@@ -68,6 +68,12 @@ window.migrate = function(){
  * Attempt to upgrade the save data stored in `savedata` to the most recent version.
  */
 function upgradeSaveData(shouldConfirm){
+	if(savedata.version == null){
+		let reset = confirm("Save data is invalid or corrupted. Reset progress?");
+		if(reset){
+			resetProgress();
+		}
+	}
 	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
 	if(!(savedata.version >= 5)){
 		//tell user we can't upgrade.
@@ -263,7 +269,7 @@ function loadProgressFromCookie(){
 	loadSettingsFromCookie();	
 	var compressed = loadCookie("progress");
 	
-	if(compressed){
+	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
 		savedata = decompressSaveData(compressed);
 		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();

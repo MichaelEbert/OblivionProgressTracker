@@ -2,6 +2,7 @@
 // Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+import { resetProgress } from "./userdata.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
 import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
@@ -174,9 +175,7 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 	
 	var localProgress = loadCookie("progress_local");
-	if(localProgress?.version > 0){
-		saveCookie("progress",localProgress);
-	}
+	saveCookie("progress",localProgress);
 	saveCookie("progress_local",{});
 	
 	//check for function before loading because /share.html spectates, but immediately redirects
