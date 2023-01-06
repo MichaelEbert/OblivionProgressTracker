@@ -209,7 +209,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version < SETTINGS_VERSION)
+	if(settings.version < SETTINGS_VERSION || settings.version == null)
 	{
 		switch(settings.version){
 			case null:

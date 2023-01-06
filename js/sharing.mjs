@@ -3,7 +3,7 @@
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
-import { decompressSaveData } from "./userdata.mjs";
+import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
@@ -102,13 +102,21 @@ async function downloadSave(remoteUrl){
 		req.open("GET", remoteUrl, true);
 		req.setRequestHeader("Accept","application/json;odata=nometadata");
 		req.setRequestHeader("Content-Type","application/json");
+		if(settings.shareDownloadTimeInternal != null && settings.shareDownloadTimeInternal != ""){
+			req.setRequestHeader("If-Modified-Since",settings.shareDownloadTimeInternal);
+		}
 		
 		req.onload = function(){
 			if(this.status == 200){
 				//yay
 				resolve(JSON.parse(this.response));
 			}
+			else if(this.status == 304){
+				//unchanged
+				resolve();
+			}
 			else{
+
 				reject(this);
 			}
 		}
@@ -155,6 +163,8 @@ async function uploadCurrentSave(){
 function stopSpectating(){
 	console.log("stopping spectating.");
 	settings.remoteShareCode = null;
+	settings.shareDownloadTimeInternal = "";
+	settings.shareDownloadTime = "";
 	saveCookie("settings",settings);
 	
 	var localProgress = loadCookie("progress_local");
@@ -212,6 +222,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			if(dl){
 				//we can't serialize the date object so we convert it to a pretty print string here
 				let dlTime = new Date();
+				settings.shareDownloadTimeInternal = dlTime.toUTCString();
 				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 				saveCookie("settings",settings);
 
