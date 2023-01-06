@@ -2,8 +2,9 @@
 // Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+import { resetProgress } from "./userdata.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
-import { decompressSaveData } from "./userdata.mjs";
+import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
@@ -102,13 +103,21 @@ async function downloadSave(remoteUrl){
 		req.open("GET", remoteUrl, true);
 		req.setRequestHeader("Accept","application/json;odata=nometadata");
 		req.setRequestHeader("Content-Type","application/json");
+		if(settings.shareDownloadTimeInternal != null && settings.shareDownloadTimeInternal != ""){
+			req.setRequestHeader("If-Modified-Since",settings.shareDownloadTimeInternal);
+		}
 		
 		req.onload = function(){
 			if(this.status == 200){
 				//yay
 				resolve(JSON.parse(this.response));
 			}
+			else if(this.status == 304){
+				//unchanged
+				resolve();
+			}
 			else{
+
 				reject(this);
 			}
 		}
@@ -124,7 +133,7 @@ async function downloadSave(remoteUrl){
  * Upload current save to server. If currently spectating, does nothing.
  * we don't want remote save to replace current save. so we just set "viewing remote" and disable saving.
  */
-async function uploadCurrentSave(){
+async function uploadCurrentSave(notifyOnUpdate = true){
 	if(settings.remoteShareCode){
 		//if we're viewing remote, don't upload.
 		console.log("viewing remote data, will not upload.");
@@ -144,7 +153,13 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Progress Shared");
+			if(window.debug){
+				console.log("progress shared: "+result);
+			}
+			if(notifyOnUpdate){
+				//?????
+				alert("Progress Shared");
+			}
 		}
 	});
 }
@@ -155,12 +170,12 @@ async function uploadCurrentSave(){
 function stopSpectating(){
 	console.log("stopping spectating.");
 	settings.remoteShareCode = null;
+	settings.shareDownloadTimeInternal = "";
+	settings.shareDownloadTime = "";
 	saveCookie("settings",settings);
 	
 	var localProgress = loadCookie("progress_local");
-	if(localProgress?.version > 0){
-		saveCookie("progress",localProgress);
-	}
+	saveCookie("progress",localProgress);
 	saveCookie("progress_local",{});
 	
 	//check for function before loading because /share.html spectates, but immediately redirects
@@ -188,7 +203,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		autoUpdateListener = ()=>{
 			startSpectating(false, true);
 		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
+		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 	}
 	if(window.debug){
 		console.log("spectate update");
@@ -212,6 +227,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			if(dl){
 				//we can't serialize the date object so we convert it to a pretty print string here
 				let dlTime = new Date();
+				settings.shareDownloadTimeInternal = dlTime.toUTCString();
 				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 				saveCookie("settings",settings);
 

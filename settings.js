@@ -16,6 +16,7 @@ function init(){
         let sharecode = document.getElementById("remoteShareCode"); 
         sharecode.value = ""; 
         setRemoteUrl({target:sharecode});
+        document.getElementById("copyDataLocalButton").disabled = true;
         });
     document.addEventListener("progressShared",updateShareUrl);
 
@@ -27,6 +28,11 @@ function init(){
         document.getElementById("remoteShareCode").value = settings.remoteShareCode;
     }
     document.getElementById("copyShareKeyButton")?.addEventListener('click',copyShareKeyToClipboard);
+
+    document.getElementById("copyDataLocalButton").addEventListener('click',copySaveDataToLocal);
+    if(settings.remoteShareCode){
+        document.getElementById("copyDataLocalButton").disabled = false;
+    }
 
     const ignoreEvent = (e) => {
         e.preventDefault();
@@ -40,6 +46,12 @@ function init(){
 
 function copyShareKeyToClipboard(){
     navigator.clipboard.writeText(settings.shareKey);
+}
+
+function copySaveDataToLocal(){
+    userdata.saveCookie('progress_local',userdata.loadCookie('progress'));
+    sharing.stopSpectating();
+    document.getElementById("copyDataLocalButton").disabled = true;
 }
 
 function exportProgress(){

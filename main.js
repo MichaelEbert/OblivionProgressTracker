@@ -9,7 +9,6 @@ function init(){
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
-		console.log("should be loaded now!!");
 		for(const klass of obliviondata.progressClasses){
 			const hive = obliviondata.jsondata[klass.name];
 			initMulti(hive, base,0);
@@ -246,7 +245,7 @@ function userInputData(htmlRowId, checkboxElement){
 	recalculateProgressAndUpdateProgressUI();
 	window.userdata.saveProgressToCookie();
 	if(settings.autoUploadCheck){
-		window.sharing.uploadCurrentSave();
+		window.sharing.uploadCurrentSave(false);
 	}
 }
 

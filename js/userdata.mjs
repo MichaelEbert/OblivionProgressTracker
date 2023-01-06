@@ -68,6 +68,12 @@ window.migrate = function(){
  * Attempt to upgrade the save data stored in `savedata` to the most recent version.
  */
 function upgradeSaveData(shouldConfirm){
+	if(savedata.version == null){
+		let reset = confirm("Save data is invalid or corrupted. Reset progress?");
+		if(reset){
+			resetProgress();
+		}
+	}
 	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
 	if(!(savedata.version >= 5)){
 		//tell user we can't upgrade.
@@ -209,7 +215,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version < SETTINGS_VERSION)
+	if(settings.version < SETTINGS_VERSION || settings.version == null)
 	{
 		switch(settings.version){
 			case null:
@@ -222,7 +228,7 @@ function initSettings(){
 			case 1:
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
-				changed |= initProperty(settings, "spectateAutoRefreshInterval", 30);
+				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
 			case 3:
 				//2 to 3: reset minipage since we're not really using them
 				if(settings.minipageCheck != null){
@@ -263,7 +269,7 @@ function loadProgressFromCookie(){
 	loadSettingsFromCookie();	
 	var compressed = loadCookie("progress");
 	
-	if(compressed){
+	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
 		savedata = decompressSaveData(compressed);
 		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();

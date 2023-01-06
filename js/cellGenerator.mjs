@@ -426,7 +426,12 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //update the UI on progress update
     cell.onUpdate.push(function(cell, newValue){
         if(cell.type == "number"){
-            rcheck.value = newValue;
+            if(newValue == undefined){
+                rcheck.value = "";//js represents empty box contents as empty string, not undefined
+            }
+            else{
+                rcheck.value = newValue;
+            }
         }
         else{
             rcheck.checked = newValue;

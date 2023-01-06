@@ -277,7 +277,7 @@ function userInputData(rowHtml, checkboxElement){
 	recalculateProgressAndUpdateProgressUI();
 	window.userdata.saveProgressToCookie();
 	if(settings.autoUploadCheck){
-		window.sharing.uploadCurrentSave();
+		window.sharing.uploadCurrentSave(false);
 	}
 }
 

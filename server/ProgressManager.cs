@@ -4,7 +4,7 @@ namespace ShareApi
 {
     public class ProgressManager{
         //TODO: move this to a better place
-        public static ReadCache Cache = new ReadCache();
+        public static ReadCache<ReadProgress> Cache = new ReadCache<ReadProgress>();
 
         Random randomGen;
 
@@ -46,7 +46,7 @@ namespace ShareApi
         /// <param name="url"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        private bool UpdateSaveData(ProgressManagerSql sql, string url, string data){
+        private bool UpdateSaveData(ProgressManagerSql sql, string url, ReadProgress data){
             var updated = sql.SqlSaveUpdate(url,data);
             if(!updated){
                 //need to insert
@@ -58,7 +58,7 @@ namespace ShareApi
         }
 
         /// <summary>
-        /// Do progress update stuff.
+        /// Do progress update stuff. Called if update passes validation.
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace ShareApi
                 }
 
                 //we have a valid URL.
-                Cache.Set(url, update.SaveData,
+                Cache.Set(url, new ReadProgress(update.SaveData, DateTime.UtcNow),
                     (url, data) => { UpdateSaveData(sql, url, data); });
 
                 //return OK
