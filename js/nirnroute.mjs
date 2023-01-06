@@ -32,6 +32,7 @@ function initEventListeners(){
     window.addEventListener('popstate', ()=>{
         let windowParams = new URLSearchParams(window.location.search);
         let maybeWindowParams = ["tspId","tsp","tspid"];
+        let targetNirnroot = 0;
         for(const maybeParam of maybeWindowParams)
         {
             if(windowParams.get(maybeParam) != null ){
