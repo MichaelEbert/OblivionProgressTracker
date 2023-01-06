@@ -9,14 +9,14 @@ namespace ShareApi
     //this is heavily balanced towards cache misses.
     // so we put entries in a linked list instead of recording date for LRU eviction.
 
-    class CacheEntry
+    class CacheEntry<T>
     {
         public string Key;//useful for removing itself from the cache
-        public string Data;
-        public CacheEntry? Prev;
-        public CacheEntry? Next;
+        public T Data;
+        public CacheEntry<T>? Prev;
+        public CacheEntry<T>? Next;
 
-        public CacheEntry(string key, string data, CacheEntry? prev, CacheEntry? next)
+        public CacheEntry(string key, T data, CacheEntry<T>? prev, CacheEntry<T>? next)
         {
             Key = key;
             Data = data;
@@ -28,13 +28,13 @@ namespace ShareApi
     /// <summary>
     /// Transparent read cache 
     /// </summary>
-    public class ReadCache
+    public class ReadCache<T> where T:class
     {
         const int NUM_CACHE_ENTRIES = 50;
 
-        private Dictionary<string, CacheEntry> cache = new Dictionary<string, CacheEntry>(NUM_CACHE_ENTRIES);
-        private CacheEntry? oldest;
-        private CacheEntry? newest;
+        private Dictionary<string, CacheEntry<T>> cache = new Dictionary<string, CacheEntry<T>>(NUM_CACHE_ENTRIES);
+        private CacheEntry<T>? oldest;
+        private CacheEntry<T>? newest;
         //TODO: audit locks
         private readonly object lockObj = new Object();
 
@@ -42,9 +42,9 @@ namespace ShareApi
         {
         }
 
-        public string? Get(string key, Func<string, string?> readFunction)
+        public T? Get(string key, Func<string, T?> readFunction)
         {
-            bool cacheHit = cache.TryGetValue(key, out CacheEntry? maybeValue);
+            bool cacheHit = cache.TryGetValue(key, out CacheEntry<T>? maybeValue);
             if (cacheHit)
             {
                 //if cache hit, everything should exist.
@@ -85,7 +85,7 @@ namespace ShareApi
 
                 //first, grab data from SQL.
                 //then, add to cache.
-                string? value = readFunction(key);
+                T? value = readFunction(key);
                 if (value == null)
                 {
                     return null;
@@ -107,7 +107,7 @@ namespace ShareApi
                     }
                     //now we have guaranteed 1 cache space free.
 
-                    CacheEntry newEntry = new CacheEntry(key, value, newest, null);
+                    CacheEntry<T> newEntry = new CacheEntry<T>(key, value, newest, null);
                     cache.Add(key, newEntry);
                     SetMostRecentlyUsed(newEntry);
 
@@ -127,7 +127,7 @@ namespace ShareApi
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="writeFunction"></param>
-        public void Set(string key, string value, Action<string, string> writeFunction)
+        public void Set(string key, T value, Action<string, T> writeFunction)
         {
             //update cache, and then pass it on to backend.
             if (cache.ContainsKey(key))
@@ -144,7 +144,7 @@ namespace ShareApi
         /// Appends the target element to the end of the LRU list, and updates `newest` appropriately.
         /// </summary>
         /// <param name="entry"></param>
-        private void SetMostRecentlyUsed(CacheEntry entry)
+        private void SetMostRecentlyUsed(CacheEntry<T> entry)
         {
             //add back in at end of list
             entry.Next = null;

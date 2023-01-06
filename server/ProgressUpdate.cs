@@ -20,4 +20,19 @@ namespace ShareApi
         /// </summary>
         public byte[]? Key { get; set; }
     }
+
+    /// <summary>
+    /// data returned for a GET query
+    /// </summary>
+    public class ReadProgress
+    {
+        public string SaveData;
+        public DateTime LastModified;
+
+        public ReadProgress(string saveData, DateTime lastModified)
+        {
+            SaveData = saveData;
+            LastModified = lastModified;
+        }
+    }
 }
