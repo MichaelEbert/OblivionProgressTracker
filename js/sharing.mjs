@@ -132,7 +132,7 @@ async function downloadSave(remoteUrl){
  * Upload current save to server. If currently spectating, does nothing.
  * we don't want remote save to replace current save. so we just set "viewing remote" and disable saving.
  */
-async function uploadCurrentSave(){
+async function uploadCurrentSave(notifyOnUpdate = true){
 	if(settings.remoteShareCode){
 		//if we're viewing remote, don't upload.
 		console.log("viewing remote data, will not upload.");
@@ -152,7 +152,13 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Progress Shared");
+			if(window.debug){
+				console.log("progress shared: "+result);
+			}
+			if(notifyOnUpdate){
+				//?????
+				alert("Progress Shared");
+			}
 		}
 	});
 }
@@ -198,7 +204,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		autoUpdateListener = ()=>{
 			startSpectating(false, true);
 		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
+		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 	}
 	if(window.debug){
 		console.log("spectate update");

@@ -222,7 +222,7 @@ function initSettings(){
 			case 1:
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
-				changed |= initProperty(settings, "spectateAutoRefreshInterval", 30);
+				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
 			case 3:
 				//2 to 3: reset minipage since we're not really using them
 				if(settings.minipageCheck != null){
