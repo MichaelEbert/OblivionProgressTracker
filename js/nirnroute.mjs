@@ -234,7 +234,8 @@ function findPrevNirnroot(thisNirnroot){
  * @returns {string} Directions in text format
  */
 function getFastTravelInstructions(thisNirnroot){
-    if(thisNirnroot.cell.fastTravelId == null){
+    console.log(thisNirnroot.cell.fastTravelId);
+    if(thisNirnroot.cell.fastTravelId == null || thisNirnroot.cell.fastTravelId == "0x000AD373"){//THIS PREVENTS CONFUSING AUTO SWAMP INSTRUCTION
         return "";
     }
     else{
