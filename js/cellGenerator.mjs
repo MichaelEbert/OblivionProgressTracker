@@ -2,7 +2,7 @@
 
 import { updateChecklistProgress } from "./progressCalculation.mjs";
 import { findCell } from "./obliviondata.mjs"
-//common layout functions used by both main.js and guide.js
+//common layout functions used by both checklist.js and guide.js
 
 
 export {
