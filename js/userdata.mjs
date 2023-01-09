@@ -179,6 +179,11 @@ function decompressSaveData(compressedSaveData){
  * Save the user's progress.
  */
 function saveProgressToCookie(){
+	if(settings.remoteShareCode != null && settings.remoteShareCode != ""){
+		//user tried to save while spectating. Load progress instead to reset whatever they did.
+		loadProgressFromCookie();
+		return;
+	}
 	saveCookie("progress",compressSaveData(savedata));
 }
 
