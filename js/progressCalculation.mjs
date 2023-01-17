@@ -12,6 +12,7 @@ export{
 
 import { totalweight, jsondata, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
+import {uploadCurrentSave} from './sharing.mjs';
 
 /**
  * Update save progress for the specified element.
@@ -146,6 +147,9 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 		}
 		if(!skipSave){
 			saveProgressToCookie();
+			if(settings.autoUploadCheck){
+				uploadCurrentSave(false);
+			}
 		}
 		return true;
 	}

@@ -238,10 +238,6 @@ function checkboxClicked(event){
 	event.stopPropagation();
 	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
 	recalculateProgressAndUpdateProgressUI();
-	saveProgressToCookie();
-	if(settings.autoUploadCheck){
-		uploadCurrentSave();
-	}
 }
 
 function rowClicked(event){
@@ -275,10 +271,6 @@ function userInputData(rowHtml, checkboxElement){
 	progress.updateChecklistProgressFromInputElement(rowid, checkboxElement, classname);
 	
 	recalculateProgressAndUpdateProgressUI();
-	window.userdata.saveProgressToCookie();
-	if(settings.autoUploadCheck){
-		window.sharing.uploadCurrentSave(false);
-	}
 }
 
 
