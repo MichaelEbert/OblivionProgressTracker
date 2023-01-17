@@ -312,6 +312,7 @@ MapLocation.prototype.onClick = function(clickPos){
     }
 
     let wasChanged = updateChecklistProgress(null, !this.icon.checked, null, this.cell);
+    
     if(wasChanged){
         this.icon.checked = !this.icon.checked;
         recalculateProgress();
