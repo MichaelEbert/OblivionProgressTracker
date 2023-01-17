@@ -198,7 +198,7 @@ function UpdateRank(savedata, saveFile)
     {
         var record = saveFile.records.find((e) => e.formId===0x7);
         if (record) {
-            let rank = (record.subRecord.factions?.find(f=>saveFile.formIds[f.faction]===cell.formId)?.factionRank);
+            let rank = (record.subRecord.factions?.find(f=>saveFile.formIds[f.faction]===parseInt(cell.formId))?.factionRank);
             if(rank === cell.maxRank){
                 savedata.misc[cell.id] = true;
                 return;
