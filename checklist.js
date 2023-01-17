@@ -244,10 +244,6 @@ function userInputData(htmlRowId, checkboxElement){
 	}
 	
 	recalculateProgressAndUpdateProgressUI();
-	window.userdata.saveProgressToCookie();
-	if(settings.autoUploadCheck){
-		window.sharing.uploadCurrentSave(false);
-	}
 }
 
 function checkboxClicked(event){
