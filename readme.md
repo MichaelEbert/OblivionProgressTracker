@@ -40,7 +40,8 @@ Common to all nodes. All are optional.
 - "type": change the HTML input type from checkbox to something else. E.g. "type":"number" for save numbers or number of places discovered.
 - "max": Important for progress calculation. for type:number elements, determines the max value. for tree elements, any subtotal above this amount will be ignored.
 - "scale": *for progress calculation only*, multiply the inputted completed and total by this amount. Does not affect display.
-- "ref": get the value for this cell from a different cell with the target formId.
+- "ref": get the value for this cell from a different cell with the target formId. disables clicking on this cell.
+- "forwardInput": for "ref" cells, enable the cell and check off the cell targeted by the ref parameter when this cell is clicked on.
 - "gateCloseLink": for gates, the id of the cell that covers the closing of this gate.
 - "stages": for quests, stages that complete the quest. (Required for save reading)
 - "globalIndex": for wayshrines, global index in save file. (Required for save reading)

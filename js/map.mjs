@@ -495,6 +495,8 @@ function initListeners(){
             location.reload();
         }
     });
+
+    document.addEventListener("progressLoad",()=>overlay.recalculateBoundingBox());
 }
 
 function updateZoom(deltaZ, zoomPoint){

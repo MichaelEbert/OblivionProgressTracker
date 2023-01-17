@@ -168,9 +168,11 @@ function createLinkElement(cell, linkName, format){
 function adjustFormatting(cell, defaultFormatting){
     if(cell.ref != null){
         defaultFormatting |= CELL_FORMAT_INDIRECT;
-        defaultFormatting |= CELL_FORMAT_DISABLE_CHECKBOX;
-        defaultFormatting &= ~CELL_FORMAT_SET_ROW_ONCLICK; //row onclick disabled because the entire element is disabled.
         defaultFormatting &= ~CELL_FORMAT_NAMELINK_ENABLE;
+        if(!cell.forwardInput){
+            defaultFormatting |= CELL_FORMAT_DISABLE_CHECKBOX;
+            defaultFormatting &= ~CELL_FORMAT_SET_ROW_ONCLICK; //row onclick disabled because the entire element is disabled.
+        }
     }
 
     const classname = cell.hive.classname;

@@ -19,13 +19,14 @@ import {saveProgressToCookie} from './userdata.mjs';
  * @param {Element} inputElement HTML input element with the new value 
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
+ * @returns was value changed
  */
 function updateChecklistProgressFromInputElement(formId, inputElement, classHint = null, cellHint = null){
 	//lets extract the value from the input elemeent.
 	if(inputElement.tagName != "INPUT"){
 		debugger;
 		console.error("input elmeent does not have type INPUT");
-		return;
+		return false;
 	}
 
 	let newValue = null;
@@ -46,6 +47,7 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
  * @param {boolean} skipSave optional. Should we skip saving this value. Useful for loading from file.
+ * @returns was value changed
  */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, skipSave = false){
 	let cell = null;
@@ -59,7 +61,21 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			throw "Element not found to save progress on."
 		}
 	}
+	if(cell.ref && cell.forwardInput){
+		cell = findCell(cell.ref);
+	}
 
+	return updateChecklistProgressInternal(cell, newValue, skipSave);
+}
+
+/**
+ * Update save progress for the specified cell.
+ * @param {*} formId formid of the cell to update save data for.
+ * @param {*} value new value
+ * @param {boolean} skipSave optional. Should we skip saving this value. Useful for loading from file.
+ * @returns was value changed
+ */
+function updateChecklistProgressInternal(cell, newValue, skipSave){
 	let valueAsCorrectType;
 	if(cell.type == "number"){
 		switch(typeof(newValue)){
@@ -76,7 +92,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
-				return;
+				return false;
 		}
 	}
 	else{
@@ -99,7 +115,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
-				return;
+				return false;
 		}
 	}
 	//mark cached value as invalid
@@ -116,7 +132,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 				fn(cell, valueAsCorrectType);
 			}
 		}
-		return true;
+		return false;
 	}
 	else{
 		if(!skipSave){
