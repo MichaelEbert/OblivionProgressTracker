@@ -187,6 +187,26 @@ MapLocation.prototype.recalculateBoundingBox = function(){
     this.y = screenSpaceOrigin.y;
     this.width = this.icon.width;
     this.height = this.icon.height;
+    //TODO: move this to correct function
+    if(this.cell.id != null){
+        if(window.savedata[this.cell.hive.classname][this.cell.id]){
+            this.icon.checked = true;
+        }
+        else{
+            this.icon.checked = false;
+        }
+    }
+    if(this.cell.ref != null){
+        let refCell = findCell(this.cell.ref);
+        if(refCell?.id != null){
+            if(window.savedata[refCell.hive.classname][refCell.id]){
+                this.icon.checked = true;
+            }
+            else{
+                this.icon.checked = false;
+            }
+        }
+    }
 }
 
 /**
@@ -280,33 +300,23 @@ MapLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
         ctx.fill();
 
     }
-    if(this.cell.id != null){
-        if(window.savedata[this.cell.hive.classname][this.cell.id]){
-            this.icon.checked = true;
-        }
-        else{
-            this.icon.checked = false;
-        }
-    }
     this.icon.draw(ctx);
 }
 
-//actually happens on double click
 MapLocation.prototype.onClick = function(clickPos){
     if(window.settings.mapShowPrediscovered == false && this.prediscovered){
-        return false;
-    }
-    if(this.cell.id == null){
-        //no id, so you can't click it.
         return false;
     }
     if(window.debug){
         console.log(this.cell.name + " clicked (formId "+this.cell.formId+")");
     }
-    const classname = this.cell.hive.classname;
-    let prevState = window.savedata[classname][this.cell.id];
-    updateChecklistProgress(null, !prevState, null, this.cell);
-    recalculateProgress();
+
+    let wasChanged = updateChecklistProgress(null, !this.icon.checked, null, this.cell);
+    
+    if(wasChanged){
+        this.icon.checked = !this.icon.checked;
+        recalculateProgress();
+    }
     return true;
 }
 
@@ -394,20 +404,24 @@ function GateLocation(cell){
 
 GateLocation.prototype = Object.create(MapLocation.prototype);
 
-GateLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
-    if(this.isRandom && getRandomGateCount() >= 40 && !this.icon.checked){
-        this.icon.enabled = false;
-    }
-    else{
-        this.icon.enabled = true;
-    }
-
+GateLocation.prototype.recalculateBoundingBox = function(){
+    //TODO: move to correct function
+    MapLocation.prototype.recalculateBoundingBox.call(this);
     let gateCloseCell = findCell(this.cell.gateCloseLink);
     if(gateCloseCell != null && window.savedata[gateCloseCell.hive.classname][gateCloseCell.id]){
         this.icon.closed = true;
     }
     else{
         this.icon.closed = false;
+    }
+}
+
+GateLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
+    if(this.isRandom && getRandomGateCount() >= 40 && !this.icon.checked){
+        this.icon.enabled = false;
+    }
+    else{
+        this.icon.enabled = true;
     }
     MapLocation.prototype.draw.call(this, ctx, mouseLoc, currentSelection);
 }
@@ -417,28 +431,35 @@ GateLocation.prototype.onClick = function(clickPos){
         if(window.debug){
             console.log(this.cell.name + " clicked (formId "+this.cell.formId+")");
         }
-        const isDiscovered = window.savedata[this.cell.hive.classname][this.cell.id];
         let gateCloseCell = findCell(this.cell.gateCloseLink);
+        const isDiscovered = window.savedata[this.cell.hive.classname][this.cell.id];
         const isClosed = window.savedata[gateCloseCell.hive.classname][gateCloseCell.id];
-        if(!isDiscovered){
+
+        let oldState = isDiscovered<<1|isClosed
+        switch(oldState){
+        case (0)://not discovered or closed
+        case (1)://not discovered, closed(??!)
             updateChecklistProgress(null, true, null, this.cell);
             if(this.isRandom){
                 updateRandomGateCount(true);
             }
-        }
-        else{
-            //discovered == true
-            if(!isClosed){
-                updateChecklistProgress(null, true, null, gateCloseCell);
+            this.icon.checked = true;
+            this.icon.closed = false;
+            break;
+        case (2)://discovered, not closed:
+            updateChecklistProgress(null, true, null, gateCloseCell);
+            this.icon.checked = true;
+            this.icon.closed = true;
+            break;
+        case (3)://discovered and closed:  reset to default.
+            updateChecklistProgress(null, false, null, gateCloseCell);
+            updateChecklistProgress(null, false, null, this.cell);
+            if(this.isRandom){
+                updateRandomGateCount(false);
             }
-            else{
-                //discovered and closed. reset to default.
-                updateChecklistProgress(null, false, null, gateCloseCell);
-                updateChecklistProgress(null, false, null, this.cell);
-                if(this.isRandom){
-                    updateRandomGateCount(false);
-                }
-            }
+            this.icon.checked = false;
+            this.icon.closed = false;
+            break;
         }
         recalculateProgress();
         return true;

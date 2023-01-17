@@ -134,8 +134,6 @@ Overlay.prototype.createNearbyGatesLayer = function(){
             nearbyGatesLocations.push(loc);
             for(const gateid of loc.nearbyRandomGates){
                 let gate = findCell(gateid, "location");
-                console.log("found gate:");
-                console.log(gate);
                 nearbyGates.push(gate);
                 nearbyGatesLocations.push(gate);
             }
