@@ -168,13 +168,14 @@ async function uploadCurrentSave(notifyOnUpdate = true){
  * stop spectating and go back to local save data.
  */
 function stopSpectating(){
+	if(autoUpdateIntervalId != null){
+		clearInterval(autoUpdateIntervalId);
+	}
 	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
 		return;
 	}
 	console.log("stopping spectating.");
-	if(autoUpdateIntervalId != null){
-		clearInterval(autoUpdateIntervalId);
-	}
+	
 	settings.remoteShareCode = null;
 	settings.shareDownloadTimeInternal = "";
 	settings.shareDownloadTime = "";
