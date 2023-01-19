@@ -150,11 +150,11 @@ function createLinkElement(cell, linkName, format){
         linky.innerText = capitalClassName + linkName;
     }
 
-    if(format & CELL_FORMAT_NAMELINK_MAPLINK){
-        linky.title = "View on map";
-    }
     if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
         linky.title = "View on UESP"
+    }
+    if(format & CELL_FORMAT_NAMELINK_MAPLINK){
+        linky.title = "View on map";
     }
 	return linky;
 }
