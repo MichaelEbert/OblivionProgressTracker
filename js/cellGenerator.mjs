@@ -74,13 +74,13 @@ function generateLinkUrl(cell, format){
             return null;
         }
         else{
-            linkHref = "./map.html?formId="+cell.formId;
+            linkHref = "./map.html?formId=" + cell.formId;
             if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck == "on"){
                 linkHref += "&topbar=false";
             }
             else{
                 //default is too zoomed out on normal screens
-                linkHref += "&zoom=0.7";
+                linkHref += "&zoom=0.7&topbar=false";
             }
             return linkHref;
         }
