@@ -132,7 +132,7 @@
 	{"id": 130, "formId": "0x0006B3A9", "name": "Calvin", "tspId": 129, "notes": "Along wall by tree with mushrooms."},
 	{"id": 131, "formId": "0x0006F1E2", "name": "Cole", "tspId": 117, "notes": "Across bridge on North side of island. May be hidden in grass depending on grass settings."},
 	{"id": 132, "formId": "0x0006F2E5", "name": "Drake", "tspId": 225, "notes": "NW across the water on the water's edge."},
-	{"id": 133, "formId": "0x0006DC38", "name": "Nirnroot"},
+	{"id": 133, "formId": "0x0006DC38", "name": "Nirnroot (Leyawiin)"},
 	{"id": 134, "formId": "0x0006B3B1", "name": "Chuck", "tspId": 86, "notes": "Behind gigantic rock along coastline."},
 	{"id": 135, "formId": "0x0006F1E4", "name": "Harvey", "tspId": 121, "notes": "West side of water along Leyawiin city wall."},
 	{"id": 136, "formId": "0x0006F1EC", "name": "Kevin", "tspId": 108, "notes": "Inside Fort Redman, under staircase on the left."},

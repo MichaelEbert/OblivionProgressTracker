@@ -16,6 +16,7 @@ img{
 	font-size: 1.5em;
 	border-bottom: 2px solid gray;
 	width:100%;
+	margin-bottom: 0.5em;
 }
 
 .sectionTitle:hover {
@@ -54,6 +55,7 @@ img{
 .categoryTitle{
 	font-size: 1.2em;
 	font-weight: bold;
+	margin-bottom: 0.5em;
 }
 
 .subtitle{
@@ -206,7 +208,7 @@ ol.warning{
 .glitch,
 a.screenshot{
 	color: black;
-	text-decoration: underline dotted grey; 
+	text-decoration: underline dotted grey;
 }
 
 a.screenshot::after{
