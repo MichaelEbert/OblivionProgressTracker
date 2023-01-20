@@ -86,15 +86,7 @@ function generateLinkUrl(cell, format){
         }
     }
     else{
-        const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (cell.formId != null || format & CELL_FORMAT_NAMELINK_FORCE_MINIPAGE);
-        if(useMinipage){
-            linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+cell.formId;
-            if(cell.formId == null || cell.formId > 0xFF000000){
-                linkHref +="&name="+cell.name.replace(" ","_");
-            }
-            return linkHref;
-        }
-        else if(cell.link){
+        if(cell.link){
             return cell.link;
         }
         else{
