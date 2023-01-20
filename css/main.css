@@ -76,6 +76,10 @@ kbd {
 	vertical-align: middle;
 }
 
+#questsComp {
+	text-decoration: underline darkgrey;
+}
+
 :target {
 	border: .4em solid red;
 }
