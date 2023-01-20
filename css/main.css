@@ -320,6 +320,14 @@ input[type="number"]{
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
 
+.sharingUI{
+	font-size: 1.3em;
+	margin-left: 7em;
+}
+#shareUrlCopy{
+	font-size: 0.7em;
+}
+
 /*
 the "padding" should really be margin.
 but because the map wants to be larger than the screen,

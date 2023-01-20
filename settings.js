@@ -74,3 +74,16 @@ function importProgress(eventargs){
 		alert("progress imported");
 	});
 }
+
+function copytoClipboard() {
+    var copyText = document.getElementById("myShareUrl");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+    navigator.clipboard.writeText(copyText.value);
+    copyText.setSelectionRange(0, 0); //I thought the selected text looked ugly so I made it deselect it at the end.
+    document.getElementById("shareUrlCopy").innerHTML = "✅ Copied Share URL to Clipboard!";
+}
+
+function restoreServerPath() {
+    document.getElementById("serverUrl").value = "https://ratskip.azurewebsites.net/share"; //we should eventually have this value be declared in only one place. Also in sharing.mjs
+}

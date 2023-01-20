@@ -134,6 +134,8 @@ async function downloadSave(remoteUrl){
  * we don't want remote save to replace current save. so we just set "viewing remote" and disable saving.
  */
 async function uploadCurrentSave(notifyOnUpdate = true){
+	document.getElementById("shareUrlCopy").innerHTML = ""; //for the copy link button.
+	
 	if(settings.remoteShareCode){
 		//if we're viewing remote, don't upload.
 		console.log("viewing remote data, will not upload.");
