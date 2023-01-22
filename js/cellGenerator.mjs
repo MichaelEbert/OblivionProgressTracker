@@ -75,12 +75,12 @@ function generateLinkUrl(cell, format){
         }
         else{
             linkHref = "./map.html?formId=" + cell.formId;
-            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck == "on"){
+            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck != "off"){
                 linkHref += "&topbar=false";
             }
             else{
                 //default is too zoomed out on normal screens
-                linkHref += "&zoom=0.7&topbar=false";
+                linkHref += "&zoom=0.7";
             }
             return linkHref;
         }
@@ -145,7 +145,7 @@ function createLinkElement(cell, linkName, format){
     if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
         linky.title = "View on UESP"
     }
-    if(format & CELL_FORMAT_NAMELINK_MAPLINK){
+    else if(format & CELL_FORMAT_NAMELINK_MAPLINK){
         linky.title = "View on map";
     }
 	return linky;
