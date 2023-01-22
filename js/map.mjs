@@ -28,7 +28,7 @@ export {
 import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
-import { saveCookie, saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
+import { saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_NEARBYGATES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
@@ -144,8 +144,8 @@ async function initMap(){
             mapContainer.style = "top:0;padding:2px;"
         }
     }
-    //start image loading here, we will wait for it later.
-    let images = initImgs();
+    //start map loading here, we will wait for it later.
+    let mapImgLoad = loadMapImage();
     initAutoSettings(drawFrame, drawFrame);
 
     viewport = document.getElementById("wrapper_Map");
@@ -157,7 +157,8 @@ async function initMap(){
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
 
-    
+    //icon images are needed for overlay
+    loadIconImages();
     overlay = new Overlay();
     initListeners();
     initRandomGateCount();
@@ -165,7 +166,7 @@ async function initMap(){
     screenOriginInMapCoords = new Point(0,0);
     zoomToInitialLocation();
 
-    await images;
+    await mapImgLoad;
     //previously, we may have called drawFrame() with a zoom of 1.
     //so force recalculation of bounding boxes after images have loaded.
     overlay.recalculateBoundingBox();
@@ -283,54 +284,57 @@ function moveMap(delta){
     screenOriginInMapCoords.y = Math.min(screenOriginInMapCoords.y, maxScreenOriginY);
 }
 
-async function initImgs(){
-    return new Promise((resolve, reject) =>{
-        var iconsWithUndiscovered = [
-            "Ayleid",
-            "Camp",
-            "Fort",
-            "Gate",
-            "Cave",
-            "Inn",
-            "Settlement",
-            "Mine",
-            "Landmark",
-            "Shrine",
-            "City"
-        ];
-        var iconsToInit = [
-            "Nirnroot",
-            "Check",
-            "X",
-            "POI",
-            "Wayshrine",
-            "HeavenStone",
-            "Overlay_Fixed",
-            "Overlay_No_Reroll",
-            "Overlay_Two_Fame"
-        ];
-    
-        iconsWithUndisovered.forEach(function(i){
-            icons[i] = document.createElement("IMG");
-            icons[i].src = "images/Icon_" + i + ".png";
+//synchronous becuase i don't want to async load all these individual images
+function loadIconImages(){
+    var iconsWithUndiscovered = [
+        "Ayleid",
+        "Camp",
+        "Fort",
+        "Gate",
+        "Cave",
+        "Inn",
+        "Settlement",
+        "Mine",
+        "Landmark",
+        "Shrine",
+        "City",
+        "Nirnroot",
+        "Wayshrine",
+        "HeavenStone"
+    ];
+    var iconsToInit = [
+        "Check",
+        "X",
+        "POI",
+        "Overlay_Fixed",
+        "Overlay_No_Reroll",
+        "Overlay_Two_Fame"
+    ];
+
+    iconsWithUndiscovered.forEach(function(i){
+        icons[i] = document.createElement("IMG");
+        icons[i].src = "images/Icon_" + i + ".png";
+        icons[i].width = 48;
+        icons[i].height = 48;
+        let undiscovered = i+"_Undiscovered";
+        icons[undiscovered] = document.createElement("IMG");
+        icons[undiscovered].src = "images/Icon_" + undiscovered + ".png";
+        icons[undiscovered].width = 48;
+        icons[undiscovered].height = 48;
+    });
+    iconsToInit.forEach(function(i){
+        icons[i] = document.createElement("IMG");
+        icons[i].src = "images/Icon_" + i + ".png";
+        if(i != "POI"){
+            //bad hack
             icons[i].width = 48;
             icons[i].height = 48;
-            let undiscovered = i+"_Undiscovered";
-            icons[undiscovered] = document.createElement("IMG");
-            icons[undiscovered].src = "images/Icon_" + undiscovered + ".png";
-            icons[undiscovered].width = 48;
-            icons[undiscovered].height = 48;
-        });
-        iconsToInit.forEach(function(i){
-            icons[i] = document.createElement("IMG");
-            icons[i].src = "images/Icon_" + i + ".png";
-            if(i != "POI"){
-                //bad hack
-                icons[i].width = 48;
-                icons[i].height = 48;
-            }
-        });
+        }
+    });  
+}
 
+async function loadMapImage(){
+    return new Promise((resolve, reject) =>{
         img_Map = document.createElement("img");
         img_Map.width = 3544;
         img_Map.height = 2895;
@@ -341,7 +345,7 @@ async function initImgs(){
 
         img_Map.onerror = function(){
             reject(this);
-        };  
+        };
     });
 }
 
@@ -624,25 +628,10 @@ function worldSpaceToScreenSpace(worldSpacePoint){
 
 /**Returns appropriate icon from string input.*/
 function iconSwitch(Input){
-    switch (Input) {
-        case "Ayleid":return icons.Ayleid;
-        case "Camp": return icons.Camp;
-        case "Cave": return icons.Cave;
-        case "Fort": return icons.Fort;
-        case "Gate": return icons.Gate;
-        case "Inn": return icons.Inn;
-        case "City": return icons.City;
-        case "Landmark": return icons.Landmark;
-        case "Mine": return icons.Mine;
-        case "Settlement": return icons.Settlement;
-        case "Shrine": return icons.Shrine;
-        case "Nirnroot": return icons.Nirnroot;
-        case "Wayshrine": return icons.Wayshrine;
-        case "HeavenStone": return icons.HeavenStone;
-        case "POI": return icons.POI;
-            
-        default: 
+        let maybeIcon = icons[Input];
+        if(maybeIcon == null){
             console.warn("Element has invalid iconname: " + Input + ".");
             return icons.X;
-    }
+        }
+        return maybeIcon;
 }

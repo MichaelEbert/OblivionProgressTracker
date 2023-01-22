@@ -2,7 +2,7 @@
 
 export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_CITYNIRNS, OVERLAY_LAYER_NEARBYGATES };
 
-import { MapLocation, GateLocation } from "./mapObject.mjs";
+import { MapLocation, GateLocation } from "./mapLocation.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
 import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPath.mjs";

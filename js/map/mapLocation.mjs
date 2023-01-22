@@ -9,7 +9,7 @@ import {Point} from "./point.mjs"
 import {updateChecklistProgress} from "../progressCalculation.mjs"
 import { findCell } from "../obliviondata.mjs"
 import { recalculateProgress } from "../progressCalculation.mjs"
-import { LocationIcon, GateIcon} from "./mapObject.mjs"
+import { MapObject, LocationIcon, GateIcon} from "./mapObject.mjs"
 
 /**
  * Construct a map location object from a location json cell.
@@ -36,6 +36,25 @@ function MapLocation(cell){
     this.recalculateBoundingBox();
     this.width = this.icon.width;
     this.height = this.icon.height;
+
+    // set checked/unchecked and hook in to change listeners.
+    const m_icon = this.icon;
+    function onValueUpdateFunc(cell, newCellValue){
+        m_icon.checked = newCellValue;
+    }
+    if(this.cell.id != null){
+        let currentValue = window.savedata[this.cell.hive.classname][this.cell.id]
+        onValueUpdateFunc(null, currentValue);
+        this.cell.onUpdate.push(onValueUpdateFunc);
+    }
+    else if(this.cell.ref != null){
+        let refCell = findCell(this.cell.ref);
+        if(refCell?.id != null){
+            let currentValue = window.savedata[refCell.hive.classname][refCell.id];
+            onValueUpdateFunc(null, currentValue);
+            refCell.onUpdate.push(onValueUpdateFunc);
+        }
+    }
 }
 MapLocation.prototype = Object.create(MapObject.prototype);
 
@@ -51,25 +70,7 @@ MapLocation.prototype.recalculateBoundingBox = function(){
     this.width = this.icon.width;
     this.height = this.icon.height;
     //TODO: move this to correct function
-    if(this.cell.id != null){
-        if(window.savedata[this.cell.hive.classname][this.cell.id]){
-            this.icon.checked = true;
-        }
-        else{
-            this.icon.checked = false;
-        }
-    }
-    if(this.cell.ref != null){
-        let refCell = findCell(this.cell.ref);
-        if(refCell?.id != null){
-            if(window.savedata[refCell.hive.classname][refCell.id]){
-                this.icon.checked = true;
-            }
-            else{
-                this.icon.checked = false;
-            }
-        }
-    }
+    
 }
 
 /**
@@ -177,7 +178,6 @@ MapLocation.prototype.onClick = function(clickPos){
     let wasChanged = updateChecklistProgress(null, !this.icon.checked, null, this.cell);
     
     if(wasChanged){
-        this.icon.checked = !this.icon.checked;
         recalculateProgress();
     }
     return true;
@@ -201,21 +201,44 @@ function GateLocation(cell){
     if(notes.find((x=>x == "No_Reroll"))){
         this.icon.noReroll = true;
     }
+    //we changed the icon, we need to update 
+    // set checked/unchecked and hook in to change listeners.
+    const m_icon = this.icon;
+    function onValueUpdateFunc(cell, newCellValue){
+        m_icon.checked = newCellValue;
+    }
+    if(this.cell.id != null){
+        let currentValue = window.savedata[this.cell.hive.classname][this.cell.id]
+        onValueUpdateFunc(null, currentValue);
+        //replace prev onValueUpdateFunc with this one
+        this.cell.onUpdate.pop();
+        this.cell.onUpdate.push(onValueUpdateFunc);
+    }
+    else if(this.cell.ref != null){
+        let refCell = findCell(this.cell.ref);
+        if(refCell?.id != null){
+            let currentValue = window.savedata[refCell.hive.classname][refCell.id];
+            
+            onValueUpdateFunc(null, currentValue);
+            //replace prev onValueUpdateFunc with this one
+            refCell.onUpdate.pop();
+            refCell.onUpdate.push(onValueUpdateFunc);
+        }
+    }
+    
+    // in addition to found/notfound, gates have closed/notclosed.
+    function onValueUpdateFuncClosed(cell, newCellValue){
+        m_icon.closed = newCellValue;
+    }
+    let gateCloseCell = findCell(this.cell.gateCloseLink);
+    if(gateCloseCell != null){
+        let currentValue = window.savedata[gateCloseCell.hive.classname][gateCloseCell.id]
+        onValueUpdateFuncClosed(null, currentValue);
+        gateCloseCell.onUpdate.push(onValueUpdateFuncClosed);
+    }
 }
 
 GateLocation.prototype = Object.create(MapLocation.prototype);
-
-GateLocation.prototype.recalculateBoundingBox = function(){
-    //TODO: move to correct function
-    MapLocation.prototype.recalculateBoundingBox.call(this);
-    let gateCloseCell = findCell(this.cell.gateCloseLink);
-    if(gateCloseCell != null && window.savedata[gateCloseCell.hive.classname][gateCloseCell.id]){
-        this.icon.closed = true;
-    }
-    else{
-        this.icon.closed = false;
-    }
-}
 
 GateLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
     if(this.isRandom && getRandomGateCount() >= 40 && !this.icon.checked){
@@ -244,13 +267,9 @@ GateLocation.prototype.onClick = function(clickPos){
             if(this.isRandom){
                 updateRandomGateCount(true);
             }
-            this.icon.checked = true;
-            this.icon.closed = false;
             break;
         case (2)://discovered, not closed:
             updateChecklistProgress(null, true, null, gateCloseCell);
-            this.icon.checked = true;
-            this.icon.closed = true;
             break;
         case (3)://discovered and closed:  reset to default.
             updateChecklistProgress(null, false, null, gateCloseCell);
@@ -258,8 +277,6 @@ GateLocation.prototype.onClick = function(clickPos){
             if(this.isRandom){
                 updateRandomGateCount(false);
             }
-            this.icon.checked = false;
-            this.icon.closed = false;
             break;
         }
         recalculateProgress();

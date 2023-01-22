@@ -2,18 +2,14 @@
 export {
     MapObject, 
     MapImage,
-    MapLocation,
     MapPOI,
-    GateLocation as GateIcon,
-
+    LocationIcon,
+    GateIcon,
 }
 
 import {worldSpaceToMapSpace, mapSpaceToScreenSpace, getImageScale, icons, updateRandomGateCount, getRandomGateCount} from "../map.mjs"
 import {Point} from "./point.mjs"
-import {updateChecklistProgress} from "../progressCalculation.mjs"
 import {iconSwitch} from "../map.mjs"
-import { findCell } from "../obliviondata.mjs"
-import { recalculateProgress } from "../progressCalculation.mjs"
 
 //need canvas for compositing
 const imageBuffer = document.createElement("canvas");
@@ -135,19 +131,25 @@ MapPOI.prototype.contains = function(point){
  * @param worldLocation 
  */
 function LocationIcon(iconName, imageOffsetX, imageOffsetY, worldLocation){
-    MapImage.call(this, iconName, imageOffsetX, imageOffsetY, worldLocation);
+    this.name = iconName;
+    MapImage.call(this, iconName+"_Undiscovered", imageOffsetX, imageOffsetY, worldLocation);
     this.checked = false;
 }
 
 LocationIcon.prototype = Object.create(MapImage.prototype);
 
 LocationIcon.prototype.draw = function(ctx){
+    let usingCheckedIcon = !(this.icon.src.endsWith("_Undiscovered.png"))
+    if(this.checked && !usingCheckedIcon){
+        this.icon = iconSwitch(this.name);
+    }
+    else if(!this.checked && usingCheckedIcon){
+        this.icon = iconSwitch(this.name+"_Undiscovered");
+    }
+
     //mapImage::draw sets x and y correctly
     // so we don't have to do it again
     MapImage.prototype.draw.call(this, ctx);
-    if(this.checked){
-        ctx.drawImage(icons.Check, this.x, this.y, this.width, this.height);
-    }
 }
 
 
@@ -168,6 +170,15 @@ GateIcon.prototype = Object.create(LocationIcon.prototype);
 
 GateIcon.prototype.draw = function(ctx){
     //override the default locationIcon draw because we do effects!
+    //copied from LocationIcon.draw
+    let usingCheckedIcon = !(this.icon.src.endsWith("_Undiscovered.png"))
+    if(this.checked && !usingCheckedIcon){
+        this.icon = iconSwitch(this.name);
+    }
+    else if(!this.checked && usingCheckedIcon){
+        this.icon = iconSwitch(this.name+"_Undiscovered");
+    }
+
     const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.iconOffsetPx);
     this.x = screenSpaceOrigin.x;
     this.y = screenSpaceOrigin.y;
@@ -187,16 +198,8 @@ GateIcon.prototype.draw = function(ctx){
         bufferCtx.fillStyle = "#222222";
         bufferCtx.fillRect(0,0,iWidth, iHeight);
     }
-    else if(this.closed){
-        bufferCtx.globalCompositeOperation = "color";
-        bufferCtx.fillStyle = "#FF0000";
-        bufferCtx.fillRect(0,0,iWidth, iHeight);
-    }
 
     bufferCtx.globalCompositeOperation = "source-over";
-    if(this.checked){
-        bufferCtx.drawImage(icons.Check, 0, 0, iWidth, iHeight);
-    }
 
     //draw gate icons
     if(this.fixed){
@@ -208,7 +211,11 @@ GateIcon.prototype.draw = function(ctx){
     if(this.twoFame){
         bufferCtx.drawImage(icons.Overlay_Two_Fame, 0, 0, iWidth, iHeight);
     }
-
     //finally, draw the buffer image to main.
     ctx.drawImage(imageBuffer,0,0,iWidth,iHeight, this.x, this.y, iWidth, iHeight);
+
+    if(this.closed){
+        ctx.drawImage(icons.Check, this.x, this.y, this.width, this.height);
+    }
+
 }
