@@ -320,6 +320,48 @@ input[type="number"]{
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
 
+.warning::before{
+	content: '⚠️ ';
+	font-style: normal;
+	font-size: 1.2em;
+}
+.warning{
+	text-align: center;
+	padding: 0.5em;
+	padding-bottom: 0.7em;
+	font-style: italic;
+	margin: auto;
+	width: fit-content;
+	background-color: lightcoral;
+	border-style: outset;
+	border-color: lightcoral;
+	font-size: 1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+.spectate::before{
+	content: '👁️ You are currently spectating someone else and cannot make changes. Click the X to exit spectator mode and switch back to your personal progress.';
+	font-style: normal;
+	font-size: 1.2em;
+}
+.spectate{
+	text-align: center;
+	padding: 0.5em;
+	padding-bottom: 0.7em;
+	font-style: italic;
+	margin: auto;
+	width: 75%;
+	background-color: lightgreen;
+	border-style: outset;
+	border-color: lightgreen;
+	font-size: 1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%, 0);
+	top: 55px;
+}
+
 .sharingUI{
 	font-size: 1.3em;
 	margin-left: 7em;
