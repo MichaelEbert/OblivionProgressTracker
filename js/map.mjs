@@ -285,7 +285,7 @@ function moveMap(delta){
 
 async function initImgs(){
     return new Promise((resolve, reject) =>{
-        var iconsToInit = [
+        var iconsWithUndiscovered = [
             "Ayleid",
             "Camp",
             "Fort",
@@ -296,7 +296,9 @@ async function initImgs(){
             "Mine",
             "Landmark",
             "Shrine",
-            "City",
+            "City"
+        ];
+        var iconsToInit = [
             "Nirnroot",
             "Check",
             "X",
@@ -308,6 +310,17 @@ async function initImgs(){
             "Overlay_Two_Fame"
         ];
     
+        iconsWithUndisovered.forEach(function(i){
+            icons[i] = document.createElement("IMG");
+            icons[i].src = "images/Icon_" + i + ".png";
+            icons[i].width = 48;
+            icons[i].height = 48;
+            let undiscovered = i+"_Undiscovered";
+            icons[undiscovered] = document.createElement("IMG");
+            icons[undiscovered].src = "images/Icon_" + undiscovered + ".png";
+            icons[undiscovered].width = 48;
+            icons[undiscovered].height = 48;
+        });
         iconsToInit.forEach(function(i){
             icons[i] = document.createElement("IMG");
             icons[i].src = "images/Icon_" + i + ".png";
@@ -316,8 +329,7 @@ async function initImgs(){
                 icons[i].width = 48;
                 icons[i].height = 48;
             }
-            }
-        )
+        });
 
         img_Map = document.createElement("img");
         img_Map.width = 3544;
