@@ -42,6 +42,13 @@ function init(){
     document.body.addEventListener('dragenter', ignoreEvent);
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', saveReader.parseSave);
+
+    if(settings.remoteShareCode){
+        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
+            let spectateBanner = sharing.createSpectateBanner();
+            document.getElementById("topbar")?.appendChild(spectateBanner);
+        }
+    }
 }
 
 function copyShareKeyToClipboard(){
@@ -52,6 +59,7 @@ function copySaveDataToLocal(){
     userdata.saveCookie('progress_local',userdata.loadCookie('progress'));
     sharing.stopSpectating();
     document.getElementById("copyDataLocalButton").disabled = true;
+    location.reload();
 }
 
 function exportProgress(){
