@@ -76,6 +76,10 @@ kbd {
 	vertical-align: middle;
 }
 
+#questsComp {
+	text-decoration: underline darkgrey;
+}
+
 :target {
 	border: .4em solid red;
 }
@@ -221,6 +225,7 @@ kbd {
 	column-width: 18em;
 	column-rule: 1px black solid;
 	padding: 0.5em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .categoryTitle{
@@ -296,6 +301,33 @@ input[type="number"]{
 	text-decoration:underline;
 }
 
+.info::before{
+	content: '🛈 ';
+	font-style: normal;
+	font-size: 1.2em;
+}
+.info{
+	text-align: center;
+	padding: 0.5em;
+	padding-bottom: 0.7em;
+	font-style: italic;
+	margin: auto;
+	width: fit-content;
+	background-color: lightgoldenrodyellow;
+	border-style: outset;
+	border-color: lightgoldenrodyellow;
+	font-size: 1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+.sharingUI{
+	font-size: 1.3em;
+	margin-left: 7em;
+}
+#shareUrlCopy{
+	font-size: 0.7em;
+}
+
 /*
 the "padding" should really be margin.
 but because the map wants to be larger than the screen,
@@ -332,6 +364,7 @@ I feel like there should be a way to do this but I can't figure it out right now
 
 h1{
 	margin: 0.5em;
+	margin-left: 0;
 }
 
 /*mobile/thin window CSS*/

@@ -234,11 +234,6 @@ function initSettings(){
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
 				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
-			case 3:
-				//2 to 3: reset minipage since we're not really using them
-				if(settings.minipageCheck != null){
-					settings.minipageCheck = false;
-				}
 			default:
 				//done
 				break;
@@ -250,7 +245,6 @@ function initSettings(){
 
 	//default values
 	
-	changed |= initProperty(settings, "minipageCheck", false);
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	changed |= initProperty(settings, "iframeMinWidth", 1000);
 	changed |= initProperty(settings, "iframeWidth", "45vw");

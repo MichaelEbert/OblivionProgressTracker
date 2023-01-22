@@ -74,8 +74,8 @@ function generateLinkUrl(cell, format){
             return null;
         }
         else{
-            linkHref = "./map.html?formId="+cell.formId;
-            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck == "on"){
+            linkHref = "./map.html?formId=" + cell.formId;
+            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck != "off"){
                 linkHref += "&topbar=false";
             }
             else{
@@ -86,15 +86,7 @@ function generateLinkUrl(cell, format){
         }
     }
     else{
-        const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (cell.formId != null || format & CELL_FORMAT_NAMELINK_FORCE_MINIPAGE);
-        if(useMinipage){
-            linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+cell.formId;
-            if(cell.formId == null || cell.formId > 0xFF000000){
-                linkHref +="&name="+cell.name.replace(" ","_");
-            }
-            return linkHref;
-        }
-        else if(cell.link){
+        if(cell.link){
             return cell.link;
         }
         else{
@@ -150,11 +142,11 @@ function createLinkElement(cell, linkName, format){
         linky.innerText = capitalClassName + linkName;
     }
 
-    if(format & CELL_FORMAT_NAMELINK_MAPLINK){
-        linky.title = "View on map";
-    }
     if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
         linky.title = "View on UESP"
+    }
+    else if(format & CELL_FORMAT_NAMELINK_MAPLINK){
+        linky.title = "View on map";
     }
 	return linky;
 }
