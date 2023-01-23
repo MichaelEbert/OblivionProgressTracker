@@ -99,21 +99,24 @@ function updateRandomGateCount(Found){
     else{
         randomGateCount--;
     }
-
-    if(randomGateCount >= 40){
-        randomGateDisplay.innerText = getRandomGateCount() + "✔";
-        randomGateDisplay.style = "color:green";
-    }
-    else{
-        randomGateDisplay.innerText = getRandomGateCount();    
-        randomGateDisplay.style = "color:black";
+    if(randomGateDisplay){
+        if(randomGateCount >= 40){
+            randomGateDisplay.innerText = getRandomGateCount() + "✔";
+            randomGateDisplay.style = "color:green";
+        }
+        else{
+            randomGateDisplay.innerText = getRandomGateCount();    
+            randomGateDisplay.style = "color:black";
+        }
     }
 }
 
 function clearRandomGateCount(){
     randomGateCount = 0;
-    randomGateDisplay.innerText = getRandomGateCount();    
-    randomGateDisplay.style = "color:black";
+    if(randomGateDisplay){
+        randomGateDisplay.innerText = getRandomGateCount();    
+        randomGateDisplay.style = "color:black";
+    }
 }
 
 function initRandomGateCount(){
