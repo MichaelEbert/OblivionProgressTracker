@@ -252,7 +252,9 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
             rowhtml = document.createElement("DIV");
         }
         rowhtml.classList.add(classname);
-        rowhtml.classList.add("item");
+        if(classname != "glitch"){//This was the only way I could figure out how to prevent glitches from being bold.
+            rowhtml.classList.add("item");
+        }
     }
     rowhtml.setAttribute("clid",usableId);
 
