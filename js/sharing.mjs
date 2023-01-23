@@ -214,15 +214,6 @@ var autoUpdateIntervalId = null;
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
-	if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
-		if(window.debug){
-			console.log("Attaching auto update listener");
-		}
-		autoUpdateListener = ()=>{
-			startSpectating(false, true);
-		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
-	}
 	if(window.debug){
 		console.log("spectate update");
 	}
@@ -277,6 +268,16 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			}
 			stopSpectating();
 		});
+	}
+	//AFTER everything else, attach an auto listener to update spectating.
+	if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
+		if(window.debug){
+			console.log("Attaching auto update listener");
+		}
+		autoUpdateListener = ()=>{
+			startSpectating(false, true);
+		}
+		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 	}
 }
 

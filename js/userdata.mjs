@@ -234,6 +234,9 @@ function initSettings(){
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
 				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
+			case 2:
+				//2 to 3: 
+				//deprecated
 			default:
 				//done
 				break;
@@ -244,7 +247,6 @@ function initSettings(){
 	}
 
 	//default values
-	
 	changed |= initProperty(settings, "iframeCheck", "auto");
 	changed |= initProperty(settings, "iframeMinWidth", 1000);
 	changed |= initProperty(settings, "iframeWidth", "45vw");

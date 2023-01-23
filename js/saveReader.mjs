@@ -334,7 +334,7 @@ function parseSave(e){
                     return;
                 }
                 //copy save #s over
-                if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
+                if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save).length > 0){
                     dataFromSave.save = window.savedata.save;
                 }
                 
