@@ -1,1 +1,13 @@
-<meta http-equiv="Refresh" content="0; url='/speedrun-guide.html'" />
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <script>
+        //first check is for testing with localhost since there isn't a subdirectory.
+        if(window.location.href.lastIndexOf("/") == -1){window.location.replace(window.location.href + "speedrun-guide.html")}
+        else { window.location.replace(window.location.href.substring(0, window.location.href.lastIndexOf("/") +1 ) + "speedrun-guide.html"); }
+    </script>
+  </body>
+</html>
