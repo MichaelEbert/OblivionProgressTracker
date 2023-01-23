@@ -2,7 +2,7 @@
 
 export { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_CITYNIRNS, OVERLAY_LAYER_NEARBYGATES };
 
-import { MapLocation, GateIcon } from "./mapObject.mjs";
+import { MapLocation, GateLocation } from "./mapLocation.mjs";
 import { Point } from "./point.mjs";
 import { getZoomLevel, screenSpaceToMapSpace } from "../map.mjs"
 import { TSPLocation, TSPPath, TSP_STYLE_SOLID, TSP_STYLE_DASHED } from "./tspPath.mjs";
@@ -44,7 +44,7 @@ Overlay.prototype.createLocationLayer = function(){
     runOnTree(jsondata.location, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
-            newIcon = new GateIcon(loc);
+            newIcon = new GateLocation(loc);
         }
         else{
             newIcon = new MapLocation(loc);
@@ -59,7 +59,7 @@ Overlay.prototype.createLocationLayer = function(){
     runOnTree(jsondata.locationPrediscovered, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
-            newIcon = new GateIcon(loc);
+            newIcon = new GateLocation(loc);
         }
         else{
             newIcon = new MapLocation(loc);
@@ -145,7 +145,7 @@ Overlay.prototype.createNearbyGatesLayer = function(){
     for(const loc of nearbyGatesLocations){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
-            newIcon = new GateIcon(loc);
+            newIcon = new GateLocation(loc);
         }
         else{
             newIcon = new MapLocation(loc);

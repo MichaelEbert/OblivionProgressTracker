@@ -167,13 +167,21 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 }
 
 /**
+ * @returns {boolean} is user currently spectating
+ */
+function isSpectating(){
+	return settings.remoteShareCode != null && settings.remoteShareCode != "";
+}
+
+/**
  * stop spectating and go back to local save data.
  */
 function stopSpectating(){
 	if(autoUpdateIntervalId != null){
 		clearInterval(autoUpdateIntervalId);
 	}
-	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+	//if we're already not spectating, don't do anything.
+	if(!isSpectating()){
 		return;
 	}
 	console.log("stopping spectating.");
@@ -201,6 +209,7 @@ var autoUpdateIntervalId = null;
 
 /**
  * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressLoad" event when download is complete.
+ * Must set spectate code before calling.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
@@ -261,7 +270,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		});
 	}
 	//AFTER everything else, attach an auto listener to update spectating.
-	if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
+	if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
 		if(window.debug){
 			console.log("Attaching auto update listener");
 		}
