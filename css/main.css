@@ -3,18 +3,18 @@
 	--base-color: #E5D9B9;
 	--lighter-color: #FBEFD5;
 	--lightest-color: #FFF5B5;
-	--topbar-height: 2.5em;
 }
 
 html{
 	font-family: Calibri,serif;
-	scroll-padding-top: var(--topbar-height);/*below topbar*/
 }
 
 body{
 	background-color: var(--base-color);
 	margin-top: 0;
 	font-family: Calibri;
+	display: flex;
+	flex-direction: column;
 }
 
 br{
@@ -143,7 +143,7 @@ kbd {
 .flexTopBar {
 	display: flex;
 	flex-direction: column;
-	position: fixed;
+	position: sticky;
 	width: 100%;
 	top: 0;
 	left: 0;
@@ -170,7 +170,6 @@ kbd {
 .contentContainer{
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: var(--topbar-height); /*save room for topbar*/
 }
 
 .sidebarContent{
@@ -188,7 +187,7 @@ kbd {
 .screenHeight{
 	position: sticky; /*within the .sidebar, this is the "content" container that slides up and down to stay on the page.*/
 	height: 100vh;
-	top: var(--topbar-height); /*start at very top of page (minus topbar)*/
+	top: 0; /*start at very top of page*/
 	/*the following make the height 100vh minus overlap*/
 	box-sizing:border-box;
 	padding-bottom:3.5em;
@@ -222,7 +221,7 @@ kbd {
 .main{
 	flex-shrink: 1;
 	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
-	margin-top: var(--topbar-height);
+	margin-top: 0.75em;
 }
 
 .progress{
