@@ -6,7 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
 	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
     <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
-	<script src="./settings.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -64,7 +63,7 @@
 <div class="collapsibleContent">
 	<p><i>You can share your progress with other people in real time, so anything you check off will appear on their spectator view! This is highly recommended for streamers so their viewers can follow their progress easily.</i></p>
 	<div class="sharingUI">
-		<p><b>Share: </b><button id="shareProgressButton" onclick="uploadCurrentSave()">Create Share URL*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
+		<p><b>Share: </b><button id="shareProgressButton" onclick="sharingjs.uploadCurrentSave()">Create Share URL*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="settingsjs.copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
 		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — Clicking on someone else's Share URL or entering a 6 letter code and pressing enter on this box will place your in Spectator Mode.</span>
 	</div>
 	<p><i>When you are in Spectator Mode, a Spectating button will appear at the top right. You cannot change the progress on the guide while spectating. Clicking the X to close Spectating Mode will return your personal progress and allow changing checklist values again. If you want to view someone else's progress in one window and still be able to track your own progress at the same time, using an incognito window to spectate allows for this. Perfect for racing against someone!</i></p>
@@ -104,7 +103,7 @@
 		<label><input type="checkbox" id="spectateAutoRefresh" class="autosetting"/>Auto Refresh Spectating</label> — <i>If you are Spectating, this setting automatically updates your screen to show new changes as the player updates their progress. You will generally want to leave this on.</i><br/>
 		<label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto Refresh Interval (sec)</label> — <i>If you are Spectating, this is the number of seconds between updates to your view of the player's progress.</i><br/>
 		<button id="copyShareKeyButton">Copy Share Key to Clipboard</button> — <i>Your Share Key is an internal key separate from the public 6 letter code you send to others. This key may be requested by devs if trying to debug/recover data related to your Share URL.</i><br/>
-		<label>Share Server Path: <input type="text" id="serverUrl" size="60" class="autoTextSetting"/></label><button onclick="restoreServerPath()">Restore Default Path</button> — <i>If you want to save your data to another server instead of ours, you can change that here.</i><br/>
+		<label>Share Server Path: <input type="text" id="serverUrl" size="60" class="autoTextSetting"/></label><button onclick="settingsjs.restoreServerPath()">Restore Default Path</button> — <i>If you want to save your data to another server instead of ours, you can change that here.</i><br/>
 	</div>
 </div>
 </div>
@@ -113,43 +112,27 @@
 <div class="sectionTitle">Import/Export Progress</div>
 <div class="collapsibleContent">
 	<p><i>This import/export feature is <b>not</b> for Oblivion save (.ess) files. It is for this website's progress (.save) files. Currently the primary reason to backup your interactive guide to a .save file is to make sure you don't lose your Save File numbers for Load Warping. If you do not need to recover this information, dragging your most recent .ess file onto the Checklist page is a more convenient way of restoring your progress.</i></p>
-	<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset Progress</button><br/>
-	<button id="exportProgressButton" onclick="exportProgress()">Export Guide .save File</button><br/>
+	<button id="resetbutton" onclick="userdatajs.resetProgress(true)">Reset Progress</button><br/>
+	<button id="exportProgressButton" onclick="settingsjs.exportProgress()">Export Guide .save File</button><br/>
 	<label>Import Guide Progress (.save) from File: <input type="file" id="fileinput"/></label><br/>
 </div>
 </div>
 </article>
 
 <script type="module">
-	import exportNamespace from './js/module-shim.mjs'
-	import * as userdata from './js/userdata.mjs'
-	import * as obliviondata from './js/obliviondata.mjs'
-	import * as sharing from './js/sharing.mjs'
-	import * as saveReader from './js/saveReader.mjs'
-	exportNamespace(userdata);
-	exportNamespace(obliviondata);
-	exportNamespace(sharing);
-	window.userdata = userdata;
-	window.obliviondata = obliviondata;
-	window.sharing = sharing;
-	window.saveReader = saveReader;
+	import * as settingsjs from './js/settings.mjs'
+	import * as sharingjs from './js/sharing.mjs'
+	import * as userdatajs from './js/userdata.mjs'
+	import {loadCookie} from './js/userdata.mjs'
 	(function(){
 		if(loadCookie("debug") == true){
 			window.debug = true;
 		}
-		init();
+		settingsjs.init();
+		window.settingsjs = settingsjs;
+		window.sharingjs = sharingjs;
+		window.userdatajs = userdatajs;
 	}).call(window);
-</script>
-<script>
-	let percentCompleteSoFar = localStorage.getItem("percentageDone");
-	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
-		}
-	});
 </script>
 <script src="collapsible.js"></script>
 </body>
