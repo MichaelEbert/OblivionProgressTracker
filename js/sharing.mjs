@@ -180,27 +180,26 @@ function stopSpectating(){
 	if(autoUpdateIntervalId != null){
 		clearInterval(autoUpdateIntervalId);
 	}
-	//if we're already not spectating, don't do anything.
-	if(!isSpectating()){
-		return;
-	}
 	console.log("stopping spectating.");
 	
 	settings.remoteShareCode = null;
 	settings.shareDownloadTimeInternal = "";
 	settings.shareDownloadTime = "";
 	saveCookie("settings",settings);
-	
+
+	document.getElementById("spectateBanner")?.remove();
 	var localProgress = loadCookie("progress_local");
-	saveCookie("progress",localProgress);
-	saveCookie("progress_local",{});
-	
+	if(localProgress != null && Object.keys(localProgress).length > 0){
+		if(window.debug){
+			console.log("localProgress is not null and has keys. Setting progress to local progress.");
+		}
+		saveCookie("progress",localProgress);
+		saveCookie("progress_local",{});
+	}
 	//check for function before loading because /share.html spectates, but immediately redirects
 	// instead of updating progress.
-	if(loadProgressFromCookie){
-		//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
-		loadProgressFromCookie();
-	}
+	//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
+	loadProgressFromCookie();
 }
 
 //autoupdate listener.
@@ -255,6 +254,16 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 					alert("Downloaded");
 				}
 				document.dispatchEvent(new Event("progressLoad"));
+				//AFTER everything else, attach an auto listener to update spectating.
+				if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
+					if(window.debug){
+						console.log("Attaching auto update listener");
+					}
+					autoUpdateListener = ()=>{
+						startSpectating(false, true);
+					}
+					autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+				}
 			}
 		}).catch((e)=>{
 			if(e.status == 400){
@@ -268,16 +277,6 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			}
 			stopSpectating();
 		});
-	}
-	//AFTER everything else, attach an auto listener to update spectating.
-	if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
-		if(window.debug){
-			console.log("Attaching auto update listener");
-		}
-		autoUpdateListener = ()=>{
-			startSpectating(false, true);
-		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 	}
 }
 

@@ -1,9 +1,10 @@
 import { jsondata } from "./obliviondata.mjs";
 import { classes } from "./obliviondata.mjs";
 import { loadJsonData } from "./obliviondata.mjs";
-import { runOnTree } from "./obliviondata.mjs";
-import { progressClasses } from "./obliviondata.mjs";
+import { runOnTree, progressClasses } from "./obliviondata.mjs";
 import { initShareSettings } from "./sharing.mjs";
+
+import {clearProgressCache} from './progressCalculation.mjs'
 
 //functions that save and load user progess and settings.
 export{
@@ -275,11 +276,17 @@ function loadProgressFromCookie(){
 		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();
 		}
+		//clear weight cache
+		clearProgressCache();
+		
 		document.dispatchEvent(new Event("progressLoad"));
 		return true;
 	}
 	else{
 		//could not find savedata. create new savedata.
+		if(window.debug){
+			console.log("could not find dsavedata. resetting progress.");
+		}
 		resetProgress(false);
 		return false;
 	}
@@ -293,6 +300,7 @@ function resetProgressForHive(hive){
 	const classname = hive.classname;
 	savedata[classname] = {};
 	runOnTree(hive,(cell=>{
+		cell.cache = null;
 		if(cell.id == null){
 			//this cell doesn't have a sequential ID, so we can't save it.
 			return;
@@ -311,7 +319,11 @@ function resetProgressForHive(hive){
  */
 function resetProgress(shouldConfirm=false){
 	if(jsondata == null){
-		loadJsonData('..');
+		loadJsonData('..').then(()=>{
+			console.assert(jsondata != null);
+			resetProgress(shouldConfirm);
+		});
+		return;
 	}
 	var execute = true;
 	if(shouldConfirm){

@@ -1,9 +1,8 @@
-"use strict"
 //This file contains functions that load static data, both reference data from Oblivion
 // and guide-specific things, like UESP links and notes.
 // This file also contains utility functions for navigating through this data.
 
-export {totalweight, jsondata, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
+export {totalweight, jsondata, getJsonData, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
 
 var jsondata = null
 
@@ -66,6 +65,10 @@ const classes = [
 	new JsonClass("birthsign", false)
 ];
 
+function getJsonData(){
+	return jsondata;
+}
+
 /**
  * only classes that contribute to progress
  */
@@ -77,7 +80,7 @@ const progressClasses = classes.filter(c=>c.containsUserProgress);
  * @param {object} basedir base path to look for hive data in
  * @param {(x:JsonClass)=> boolean} classFilter only load classes that match this filter
  */
-function loadJsonData(basedir=".",classFilter=(x=>true)){
+async function loadJsonData(basedir=".",classFilter=(x=>true)){
 	var promises = [];
 	let localJsonData = {};
 	for(var klass of classes){
@@ -303,9 +306,10 @@ function findOnTree(root,findfunc){
 /**
  * run a function on leaves in a tree and sum the results.
  * @param {*} rootNode root node to run on
- * @param {(x:object)=>boolean} runFunc function to run on leaves
+ * @param {(x:object)=>boolean} runFunc function to run on nodes
  * @param {*} startVal starting value of result
- * @param {(x:object)=>boolean} isLeafFunc function to determine if leaf. default is elements prop null or undefined.
+ * @param {(x:object)=>boolean} isLeafFunc function to determine if func should be run on this node. default is elements prop null or undefined.
+ * @param skipLeafs everything under the "isLeafFunc" nodes be skipped?
  */
 function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull, skipLeafs = false){
 	var newval = startVal;
