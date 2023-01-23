@@ -29,6 +29,7 @@ function MapLocation(cell){
 
     if(this.cell.hive.classname=="locationPrediscovered"){
         this.prediscovered = true;
+        this.icon.checked=true;
     }
     else{
         this.prediscovered = false;
