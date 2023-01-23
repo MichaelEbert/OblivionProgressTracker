@@ -91,7 +91,6 @@ kbd {
 	align-items: stretch;
 	width: 100%;
 	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
-	position: fixed;
 	background-color: var(--base-color);
 	padding: 0.3em;
 	box-sizing: border-box;
@@ -141,9 +140,31 @@ kbd {
 	display: block;
 }
 
+.flexTopBar {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
+}
+
+.spectateBanner::before{
+	content: "👁️ ";
+	font-style: normal;
+}
 .spectateBanner{
 	background-color: #90FF90;
 	cursor: pointer;
+	flex: 0 0 100%;
+	text-align: center;
+	font-style: italic;
+	background-color: lightgreen;
+	border-style: outset;
+	border-color: lightgreen;
+	font-size: 1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
 
 .contentContainer{
@@ -337,29 +358,6 @@ input[type="number"]{
 	border-color: lightcoral;
 	font-size: 1em;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
-}
-
-.spectate::before{
-	content: '👁️ You are currently spectating someone else and cannot make changes. Click the X to exit spectator mode and switch back to your personal progress.';
-	font-style: normal;
-	font-size: 1.2em;
-}
-.spectate{
-	text-align: center;
-	padding: 0.5em;
-	padding-bottom: 0.7em;
-	font-style: italic;
-	margin: auto;
-	width: 75%;
-	background-color: lightgreen;
-	border-style: outset;
-	border-color: lightgreen;
-	font-size: 1em;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
-	position: fixed;
-	left: 50%;
-	transform: translate(-50%, 0);
-	top: 55px;
 }
 
 .sharingUI{

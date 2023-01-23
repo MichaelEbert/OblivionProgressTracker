@@ -42,6 +42,13 @@ function init(){
     document.body.addEventListener('dragenter', ignoreEvent);
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', saveReader.parseSave);
+
+    if(settings.remoteShareCode){
+        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
+            let spectateBanner = sharing.createSpectateBanner();
+            document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
+        }
+    }
 }
 
 function copyShareKeyToClipboard(){

@@ -289,7 +289,7 @@ function setRemoteUrl(event)
  */
 function createSpectateBanner(){
 	let spectateBanner = document.createElement("SPAN");
-	spectateBanner.innerText = "Spectating ⟳";
+	spectateBanner.innerText = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
 	spectateBanner.id = "spectateBanner";
 	spectateBanner.classList.add("spectateBanner");
 	spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh."
@@ -297,7 +297,7 @@ function createSpectateBanner(){
 		// childNodes[0] because that's the #text fragment. can't do innerText because the cancel button is there as well.
 		spectateBanner.childNodes[0].nodeValue = "Reloading...";
 		startSpectating(false, true).then(()=>{
-			spectateBanner.childNodes[0].nodeValue = "Spectating ⟳";
+			spectateBanner.childNodes[0].nodeValue = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
 			spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh.";
 		});
 	});

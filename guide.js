@@ -18,7 +18,8 @@ function init(){
 		if(settings.remoteShareCode){
 			if(!document.getElementById("spectateBanner")){
 				let spectateBanner = sharing.createSpectateBanner();
-				document.getElementById("topbar").appendChild(spectateBanner);
+				document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
+				//document.getElementById("topbar").insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
 			}
 		}
 		replaceElements();
