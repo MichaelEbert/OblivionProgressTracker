@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="../favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/guide.css"/>
+	<script src="../js/obliviondata.mjs"></script>
+	<script src="./potionstacking.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Potion Stacking Calculator</title>
+</head>
+<body>
+<!-- begin topbar-->
+	<div id="topbar" class="topbar">
+		<a href="tools.html" class="topbarSection">Back to Tools</a>
+	</div>
+<!-- end topbar-->
+<br/><br/>
+<div class="h2">Potion Stacking Calculator</div>
+<p>Select a single positive spell effect, and get the three best potions for stacking that effect as much as possible, along with the sequence to consume the potions in. Optionally filter out certain types of ingredients.</p>
+<p><b>This tool is designed for use after reaching level 100 Alchemy and acquiring a full Master-tier set of Alchemy equipment. Your results may vary if you do not meet these requirements.</b></p>
+<div>
+	<label title="Ingredients that are only available if certain DLC is installed."><input type="checkbox" id="dlcIngredients">Show DLC Ingredients</label>
+	<label title="Ingredients that are not particularly useful due to being quest items, ingredients that run a unique script, or test items that don't appear in the game."><input type="checkbox" id="uselessIngredients">Show Quest Item/Script Effect/Test Ingredients</label>
+</div>
+<div class="section" id="potionStackSection">
+	Desired Positive Effect: <select id="positiveEffect"></select>
+	<div id="option1"></div>
+    <div id="option2"></div>
+    <div id="option3"></div>
+</div>
+<script>
+	init();
+</script>
+</body>
+</html>
