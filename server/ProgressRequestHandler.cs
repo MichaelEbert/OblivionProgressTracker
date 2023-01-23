@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.ConstrainedExecution;
 
 namespace ShareApi
 {
@@ -20,7 +25,15 @@ namespace ShareApi
                     var result = ProgressManager.Cache.Get(url, sql.SqlSaveSelect);
                     if(result != null)
                     {
-                        return Ok(result);
+                        var headers = Request.GetTypedHeaders();
+                        if (headers.IfModifiedSince.HasValue && headers.IfModifiedSince.Value > result.LastModified)
+                        {
+                            return StatusCode((int)System.Net.HttpStatusCode.NotModified);
+                        }
+                        else
+                        {
+                            return Ok(result.SaveData);
+                        }
                     }
                     else
                     {

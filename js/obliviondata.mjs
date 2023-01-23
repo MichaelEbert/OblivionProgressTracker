@@ -1,9 +1,8 @@
-"use strict"
 //This file contains functions that load static data, both reference data from Oblivion
 // and guide-specific things, like UESP links and notes.
 // This file also contains utility functions for navigating through this data.
 
-export {totalweight, jsondata, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
+export {totalweight, jsondata, getJsonData, classes, progressClasses, loadJsonData, findOnTree, runOnTree, findCell}
 
 var jsondata = null
 
@@ -60,10 +59,15 @@ const classes = [
 	new JsonClass("save",true),
 	new JsonClass("locationPrediscovered",false),
 	new JsonClass("wayshrine",false),
+	new JsonClass("glitch",false),
 	//used in class reset calculator only
 	new JsonClass("race", false),
 	new JsonClass("birthsign", false)
 ];
+
+function getJsonData(){
+	return jsondata;
+}
 
 /**
  * only classes that contribute to progress
@@ -76,18 +80,31 @@ const progressClasses = classes.filter(c=>c.containsUserProgress);
  * @param {object} basedir base path to look for hive data in
  * @param {(x:JsonClass)=> boolean} classFilter only load classes that match this filter
  */
-function loadJsonData(basedir=".",classFilter=(x=>true)){
-	jsondata = {};
+async function loadJsonData(basedir=".",classFilter=(x=>true)){
 	var promises = [];
+	let localJsonData = {};
 	for(var klass of classes){
 		if(classFilter(klass)){
 			//be sure to *execute* the function, not just generate it
-			promises.push(generatePromiseFunc(basedir,klass)());
+			promises.push(generatePromiseFunc(basedir,klass, localJsonData)().catch(e=>{
+				console.log(e);
+				debugger;
+			}));
 		}
 	}
-	return Promise.allSettled(promises).then(()=>{
+	return Promise.allSettled(promises).then((_)=>{
+		if(window.debugAsync){
+			console.log(promises);
+		}
+		window.jsondata = localJsonData;
+		jsondata = localJsonData;
+		try{
+			runOnTree(jsondata.location, linkOblivionGate);
+		}
+		catch(e){
+			console.warn("linking oblivion gates failed:"+e);
+		}
 		computeTotalWeight();
-		window.jsondata = jsondata;
 	});
 }
 
@@ -98,7 +115,7 @@ function loadJsonData(basedir=".",classFilter=(x=>true)){
  * @param {JsonClass} klass 
  * @returns {Promise<void>} promise that does the needful
  */
-function generatePromiseFunc(basedir, klass){
+function generatePromiseFunc(basedir, klass, outDataObject){
 	return async function()
 	{
 		let baseFile = fetch(basedir+"/data/"+klass.name+".json")
@@ -120,10 +137,9 @@ function generatePromiseFunc(basedir, klass){
 				console.error(e);
 			}));
 		let hive = await mergeData(baseFile, customFile);
-		if(window.debugAsync){
-			console.log("setting "+hive.classname+" jsondata");
-		}
-		jsondata[klass.name] = hive;
+		hive.class = klass;
+		outDataObject[klass.name] = hive;
+		console.log("set "+hive.classname+" jsondata");
 	};
 }
 
@@ -203,7 +219,9 @@ async function mergeData(hivePromise, customdataPromise){
 			if(customData != null){
 				runOnTree(hive, mergeCell(customData));
 			}
-			console.log("merged "+hive.classname);
+			if(window.debugAsync){
+				console.log("merged "+hive.classname);
+			}
 		}
 		catch(ex){
 			if(window.debugAsync){
@@ -214,10 +232,10 @@ async function mergeData(hivePromise, customdataPromise){
 	}
 	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
-	if(hive.classname == "location"){
-		runOnTree(hive, linkOblivionGate);
-	}
 	addParentLinks(hive, null);
+	if(window.debugAsync?.class==hive?.classname){
+		debugger;
+	}
 	return hive;
 }
 
@@ -232,7 +250,7 @@ function computeTotalWeight(){
 			if(hive == null){
 				// class data not loaded
 				if(window.debugAsync){
-					console.log(klass.name + "is not loaded!");
+					console.log(klass.name + " is not loaded!");
 				}
 				continue;
 			}
@@ -288,9 +306,10 @@ function findOnTree(root,findfunc){
 /**
  * run a function on leaves in a tree and sum the results.
  * @param {*} rootNode root node to run on
- * @param {(x:object)=>boolean} runFunc function to run on leaves
+ * @param {(x:object)=>boolean} runFunc function to run on nodes
  * @param {*} startVal starting value of result
- * @param {(x:object)=>boolean} isLeafFunc function to determine if leaf. default is elements prop null or undefined.
+ * @param {(x:object)=>boolean} isLeafFunc function to determine if func should be run on this node. default is elements prop null or undefined.
+ * @param skipLeafs everything under the "isLeafFunc" nodes be skipped?
  */
 function runOnTree(rootNode, runFunc, startVal, isLeafFunc=elementsUndefinedOrNull, skipLeafs = false){
 	var newval = startVal;

@@ -1,12 +1,12 @@
 {"version":4, "name":"Wayshrines and Heaven Stones","weight":0, "classname":"wayshrine", "elements":[
 	{"name":"Heaven Stones","elements":[
-		{"name":"Jone Stone","formId":"0x0018A229","powerFormId":"0006b69e","renown":10,"x":-74616,"y":38561,"z":9202,"icon":"HeavenStone"},
-		{"name":"Aetherius Stone","formId":"0x0018A2F9","powerFormId":"0006b69d","renown":20,"x":-77183,"y":20192,"z":6537,"icon":"HeavenStone"},
-		{"name":"Jode Stone","formId":"0x0018A2D1","powerFormId":"0006b69f","renown":30,"x":-153410,"y":-41624,"z":3814,"icon":"HeavenStone"},
-		{"name":"Sithian Stone","formId":"0x0018A321","powerFormId":"0006b6a0","renown":40,"x":-137063,"y":21485,"z":7178,"icon":"HeavenStone"},
-		{"name":"Magnus Stone","formId":"0x0018A1D0","powerFormId":"0006b6a1","renown":50,"x":140601,"y":-84837,"z":2198,"icon":"HeavenStone"},
-		{"name":"Shezarr Stone","formId":"0x0018A135","powerFormId":"0006b6a2","renown":60,"x":78144,"y":-128099,"z":1431,"icon":"HeavenStone"},
-		{"name":"Dragon Stone","formId":"0x0018A038","powerFormId":"0006b6a3","renown":70,"x":114056,"y":119578,"z":12554,"icon":"HeavenStone"}
+		{"name":"Jone Stone","formId":"0x0018A229","renown":10,"x":-74616,"y":38561,"z":9202,"icon":"HeavenStone"},
+		{"name":"Aetherius Stone","formId":"0x0018A2F9","renown":20,"x":-77183,"y":20192,"z":6537,"icon":"HeavenStone"},
+		{"name":"Jode Stone","formId":"0x0018A2D1","renown":30,"x":-153410,"y":-41624,"z":3814,"icon":"HeavenStone"},
+		{"name":"Sithian Stone","formId":"0x0018A321","renown":40,"x":-137063,"y":21485,"z":7178,"icon":"HeavenStone"},
+		{"name":"Magnus Stone","formId":"0x0018A1D0","renown":50,"x":140601,"y":-84837,"z":2198,"icon":"HeavenStone"},
+		{"name":"Shezarr Stone","formId":"0x0018A135","renown":60,"x":78144,"y":-128099,"z":1431,"icon":"HeavenStone"},
+		{"name":"Dragon Stone","formId":"0x0018A038","renown":70,"x":114056,"y":119578,"z":12554,"icon":"HeavenStone"}
 	]},
 	{"name":"Wayshrines","elements":[
 		{"name":"Akatosh","variant":"1","formId":"0x0017605B","x":122385,"y":85012,"z":7182,"icon":"Wayshrine"},

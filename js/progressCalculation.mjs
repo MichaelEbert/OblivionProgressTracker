@@ -1,4 +1,3 @@
-"use strict"
 //=========================
 //Progress percentage updates and helper functions
 //=========================
@@ -7,11 +6,13 @@ export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems
+	sumCompletionItems,
+	clearProgressCache
 }
 
-import { totalweight, jsondata, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
+import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
+import {uploadCurrentSave} from './sharing.mjs';
 
 /**
  * Update save progress for the specified element.
@@ -19,13 +20,14 @@ import {saveProgressToCookie} from './userdata.mjs';
  * @param {Element} inputElement HTML input element with the new value 
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
+ * @returns was value changed
  */
 function updateChecklistProgressFromInputElement(formId, inputElement, classHint = null, cellHint = null){
 	//lets extract the value from the input elemeent.
 	if(inputElement.tagName != "INPUT"){
 		debugger;
 		console.error("input elmeent does not have type INPUT");
-		return;
+		return false;
 	}
 
 	let newValue = null;
@@ -46,6 +48,7 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  * @param {*} classHint optional. classname of hive to search for this cell in.
  * @param {*} cellHint optional. the cell to update save data for.
  * @param {boolean} skipSave optional. Should we skip saving this value. Useful for loading from file.
+ * @returns was value changed
  */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, skipSave = false){
 	let cell = null;
@@ -59,7 +62,21 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			throw "Element not found to save progress on."
 		}
 	}
+	if(cell.ref && cell.forwardInput){
+		cell = findCell(cell.ref);
+	}
 
+	return updateChecklistProgressInternal(cell, newValue, skipSave);
+}
+
+/**
+ * Update save progress for the specified cell.
+ * @param {*} formId formid of the cell to update save data for.
+ * @param {*} value new value
+ * @param {boolean} skipSave optional. Should we skip saving this value. Useful for loading from file.
+ * @returns was value changed
+ */
+function updateChecklistProgressInternal(cell, newValue, skipSave){
 	let valueAsCorrectType;
 	if(cell.type == "number"){
 		switch(typeof(newValue)){
@@ -76,7 +93,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
-				return;
+				return false;
 		}
 	}
 	else{
@@ -99,7 +116,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 			default:
 				debugger;
 				console.error("unexpected input type "+typeof(newValue)+" for cell "+cell.name);
-				return;
+				return false;
 		}
 	}
 	//mark cached value as invalid
@@ -109,14 +126,14 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 		cellObj = cellObj.parent;
 	}
 
-	if(cell.id == null){
+	if(cell.id == null || !cell.hive.class.containsUserProgress){
 		//we don't need to save this
 		if(cell.onUpdate != null && cell.onUpdate.length != 0 ){
 			for(const fn of cell.onUpdate){
 				fn(cell, valueAsCorrectType);
 			}
 		}
-		return true;
+		return false;
 	}
 	else{
 		if(!skipSave){
@@ -146,8 +163,17 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 		}
 		if(!skipSave){
 			saveProgressToCookie();
+			if(settings.autoUploadCheck){
+				uploadCurrentSave(false);
+			}
 		}
 		return true;
+	}
+}
+
+function clearProgressCache(){
+	for(const klass of progressClasses){
+		runOnTree(jsondata[klass.name], (cell)=>cell.cache = null, 0, (node)=>true);
 	}
 }
 
@@ -158,7 +184,7 @@ function updateChecklistProgress(formId, newValue, classHint = null, cellHint = 
 function recalculateProgress(){
 	//we have to recalculate hives that are updated because of refs to other hives.
 	var calculator = new ProgressCalculator();
-	const percentCompleteSoFar = calculator.calculateProgress(progressClasses, jsondata);
+	const percentCompleteSoFar = calculator.calculateProgress(progressClasses, getJsonData());
 
 	let progress = (percentCompleteSoFar * 100).toFixed(2);
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
@@ -240,6 +266,10 @@ ProgressCalculator.prototype.getSubtotalCompletion = function(subtotalJsonNode){
 	if(maybeItem){
 		//add this to correct subtotal slot
 		maybeItem.innerText = items.toString() + "/" + total.toString();
+	}
+	
+	for(const item of document.getElementsByClassName(overviewId)){
+		item.innerText = items.toString() + "/" + total.toString();
 	}
 	
 	// and finally, return weighted progress for total progress.

@@ -2,8 +2,9 @@
 // Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+import { resetProgress } from "./userdata.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
-import { decompressSaveData } from "./userdata.mjs";
+import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
@@ -102,13 +103,21 @@ async function downloadSave(remoteUrl){
 		req.open("GET", remoteUrl, true);
 		req.setRequestHeader("Accept","application/json;odata=nometadata");
 		req.setRequestHeader("Content-Type","application/json");
+		if(settings.shareDownloadTimeInternal != null && settings.shareDownloadTimeInternal != ""){
+			req.setRequestHeader("If-Modified-Since",settings.shareDownloadTimeInternal);
+		}
 		
 		req.onload = function(){
 			if(this.status == 200){
 				//yay
 				resolve(JSON.parse(this.response));
 			}
+			else if(this.status == 304){
+				//unchanged
+				resolve();
+			}
 			else{
+
 				reject(this);
 			}
 		}
@@ -124,7 +133,9 @@ async function downloadSave(remoteUrl){
  * Upload current save to server. If currently spectating, does nothing.
  * we don't want remote save to replace current save. so we just set "viewing remote" and disable saving.
  */
-async function uploadCurrentSave(){
+async function uploadCurrentSave(notifyOnUpdate = true){
+	document.getElementById("shareUrlCopy").innerHTML = ""; //for the copy link button.
+	
 	if(settings.remoteShareCode){
 		//if we're viewing remote, don't upload.
 		console.log("viewing remote data, will not upload.");
@@ -144,31 +155,51 @@ async function uploadCurrentSave(){
 			}
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
-			alert("Progress Shared");
+			if(window.debug){
+				console.log("progress shared: "+result);
+			}
+			if(notifyOnUpdate){
+				//?????
+				alert("Progress Shared");
+			}
 		}
 	});
+}
+
+/**
+ * @returns {boolean} is user currently spectating
+ */
+function isSpectating(){
+	return settings.remoteShareCode != null && settings.remoteShareCode != "";
 }
 
 /**
  * stop spectating and go back to local save data.
  */
 function stopSpectating(){
-	console.log("stopping spectating.");
-	settings.remoteShareCode = null;
-	saveCookie("settings",settings);
-	
-	var localProgress = loadCookie("progress_local");
-	if(localProgress?.version > 0){
-		saveCookie("progress",localProgress);
+	if(autoUpdateIntervalId != null){
+		clearInterval(autoUpdateIntervalId);
 	}
-	saveCookie("progress_local",{});
+	console.log("stopping spectating.");
 	
+	settings.remoteShareCode = null;
+	settings.shareDownloadTimeInternal = "";
+	settings.shareDownloadTime = "";
+	saveCookie("settings",settings);
+
+	document.getElementById("spectateBanner")?.remove();
+	var localProgress = loadCookie("progress_local");
+	if(localProgress != null && Object.keys(localProgress).length > 0){
+		if(window.debug){
+			console.log("localProgress is not null and has keys. Setting progress to local progress.");
+		}
+		saveCookie("progress",localProgress);
+		saveCookie("progress_local",{});
+	}
 	//check for function before loading because /share.html spectates, but immediately redirects
 	// instead of updating progress.
-	if(loadProgressFromCookie){
-		//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
-		loadProgressFromCookie();
-	}
+	//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
+	loadProgressFromCookie();
 }
 
 //autoupdate listener.
@@ -177,19 +208,11 @@ var autoUpdateIntervalId = null;
 
 /**
  * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressLoad" event when download is complete.
+ * Must set spectate code before calling.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
-	if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
-		if(window.debug){
-			console.log("Attaching auto update listener");
-		}
-		autoUpdateListener = ()=>{
-			startSpectating(false, true);
-		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 3000));
-	}
 	if(window.debug){
 		console.log("spectate update");
 	}
@@ -199,7 +222,12 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 	}
 	else{
 		//TODO: move this if block. i dont think it belongs here.
-		let progressLocal = loadCookie("progress_local");
+		let progressLocal = null;
+		try{
+			progressLocal = loadCookie("progress_local");
+		}
+		catch{}
+		
 		if(progressLocal == null || Object.keys(progressLocal).length == 0){
 			//we don't have progress_local, so we can assume that the current value of 'progress' is local progress,
 			//so save it before we overwrite it with the remote data.
@@ -212,6 +240,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			if(dl){
 				//we can't serialize the date object so we convert it to a pretty print string here
 				let dlTime = new Date();
+				settings.shareDownloadTimeInternal = dlTime.toUTCString();
 				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 				saveCookie("settings",settings);
 
@@ -225,6 +254,16 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 					alert("Downloaded");
 				}
 				document.dispatchEvent(new Event("progressLoad"));
+				//AFTER everything else, attach an auto listener to update spectating.
+				if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
+					if(window.debug){
+						console.log("Attaching auto update listener");
+					}
+					autoUpdateListener = ()=>{
+						startSpectating(false, true);
+					}
+					autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+				}
 			}
 		}).catch((e)=>{
 			if(e.status == 400){

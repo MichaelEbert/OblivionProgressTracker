@@ -9,6 +9,7 @@ export {
     mapSpaceToWorldSpace, 
     mapSpaceToScreenSpace, 
     screenSpaceToMapSpace,
+    worldSpaceToScreenSpace,
     getImageScale,
     ICON_NATIVE_HEIGHT, 
     iconSwitch, 
@@ -27,8 +28,8 @@ export {
 import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
 import { sumCompletionItems } from "./progressCalculation.mjs";
-import { saveCookie, saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
-import { Overlay, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES } from "./map/overlay.mjs";
+import { saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
+import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_NEARBYGATES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
 import { resetProgressForHive } from "./userdata.mjs";
 
@@ -98,21 +99,24 @@ function updateRandomGateCount(Found){
     else{
         randomGateCount--;
     }
-
-    if(randomGateCount >= 40){
-        randomGateDisplay.innerText = getRandomGateCount() + "✔";
-        randomGateDisplay.style = "color:green";
-    }
-    else{
-        randomGateDisplay.innerText = getRandomGateCount();    
-        randomGateDisplay.style = "color:black";
+    if(randomGateDisplay){
+        if(randomGateCount >= 40){
+            randomGateDisplay.innerText = getRandomGateCount() + "✔";
+            randomGateDisplay.style = "color:green";
+        }
+        else{
+            randomGateDisplay.innerText = getRandomGateCount();    
+            randomGateDisplay.style = "color:black";
+        }
     }
 }
 
 function clearRandomGateCount(){
     randomGateCount = 0;
-    randomGateDisplay.innerText = getRandomGateCount();    
-    randomGateDisplay.style = "color:black";
+    if(randomGateDisplay){
+        randomGateDisplay.innerText = getRandomGateCount();    
+        randomGateDisplay.style = "color:black";
+    }
 }
 
 function initRandomGateCount(){
@@ -143,8 +147,8 @@ async function initMap(){
             mapContainer.style = "top:0;padding:2px;"
         }
     }
-    //start image loading here, we will wait for it later.
-    let images = initImgs();
+    //start map loading here, we will wait for it later.
+    let mapImgLoad = loadMapImage();
     initAutoSettings(drawFrame, drawFrame);
 
     viewport = document.getElementById("wrapper_Map");
@@ -156,7 +160,8 @@ async function initMap(){
     viewport.appendChild(canvas);
     ctx = canvas.getContext("2d");
 
-    
+    //icon images are needed for overlay
+    loadIconImages();
     overlay = new Overlay();
     initListeners();
     initRandomGateCount();
@@ -164,7 +169,7 @@ async function initMap(){
     screenOriginInMapCoords = new Point(0,0);
     zoomToInitialLocation();
 
-    await images;
+    await mapImgLoad;
     //previously, we may have called drawFrame() with a zoom of 1.
     //so force recalculation of bounding boxes after images have loaded.
     overlay.recalculateBoundingBox();
@@ -231,7 +236,7 @@ function zoomToFormId(formid){
     }
     if(targetCell.hive.classname == "nirnroot"){
         document.getElementById("button_Nirnroot").checked = true;
-        overlay.addActiveLayer(OVERLAY_LAYER_NIRNROOTS); 
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS, true); 
     }
 
     overlay.setCurrentLocationByFormId(formid);
@@ -282,42 +287,57 @@ function moveMap(delta){
     screenOriginInMapCoords.y = Math.min(screenOriginInMapCoords.y, maxScreenOriginY);
 }
 
-async function initImgs(){
-    return new Promise((resolve, reject) =>{
-        var iconsToInit = [
-            "Ayleid",
-            "Camp",
-            "Fort",
-            "Gate",
-            "Cave",
-            "Inn",
-            "Settlement",
-            "Mine",
-            "Landmark",
-            "Shrine",
-            "City",
-            "Nirnroot",
-            "Check",
-            "X",
-            "POI",
-            "Wayshrine",
-            "HeavenStone",
-            "Overlay_Fixed",
-            "Overlay_No_Reroll",
-            "Overlay_Two_Fame"
-        ];
-    
-        iconsToInit.forEach(function(i){
-            icons[i] = document.createElement("IMG");
-            icons[i].src = "images/Icon_" + i + ".png";
-            if(i != "POI"){
-                //bad hack
-                icons[i].width = 48;
-                icons[i].height = 48;
-            }
-            }
-        )
+//synchronous becuase i don't want to async load all these individual images
+function loadIconImages(){
+    var iconsWithUndiscovered = [
+        "Ayleid",
+        "Camp",
+        "Fort",
+        "Gate",
+        "Cave",
+        "Inn",
+        "Settlement",
+        "Mine",
+        "Landmark",
+        "Shrine",
+        "City",
+        "Nirnroot",
+        "Wayshrine",
+        "HeavenStone"
+    ];
+    var iconsToInit = [
+        "Check",
+        "X",
+        "POI",
+        "Overlay_Fixed",
+        "Overlay_No_Reroll",
+        "Overlay_Two_Fame"
+    ];
 
+    iconsWithUndiscovered.forEach(function(i){
+        icons[i] = document.createElement("IMG");
+        icons[i].src = "images/Icon_" + i + ".png";
+        icons[i].width = 48;
+        icons[i].height = 48;
+        let undiscovered = i+"_Undiscovered";
+        icons[undiscovered] = document.createElement("IMG");
+        icons[undiscovered].src = "images/Icon_" + undiscovered + ".png";
+        icons[undiscovered].width = 48;
+        icons[undiscovered].height = 48;
+    });
+    iconsToInit.forEach(function(i){
+        icons[i] = document.createElement("IMG");
+        icons[i].src = "images/Icon_" + i + ".png";
+        if(i != "POI"){
+            //bad hack
+            icons[i].width = 48;
+            icons[i].height = 48;
+        }
+    });  
+}
+
+async function loadMapImage(){
+    return new Promise((resolve, reject) =>{
         img_Map = document.createElement("img");
         img_Map.width = 3544;
         img_Map.height = 2895;
@@ -328,7 +348,7 @@ async function initImgs(){
 
         img_Map.onerror = function(){
             reject(this);
-        };  
+        };
     });
 }
 
@@ -446,41 +466,40 @@ function initListeners(){
     const button_location = document.getElementById("button_Location");
     const button_nirnroot = document.getElementById("button_Nirnroot");
     const button_wayshrine = document.getElementById("button_Wayshrine");
+    const button_nearbyGates = document.getElementById("button_NearbyGates");
+
     const button_tspNone = document.getElementById("button_tspNone");
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
+
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
     var displaySettingsFunc = function(){
-        let activeLayers = 0;
-        let activeTsp = 0;
-        if(button_location.checked){
-            activeLayers |= OVERLAY_LAYER_LOCATIONS;
-        }
-        if(button_nirnroot.checked){
-            activeLayers |= OVERLAY_LAYER_NIRNROOTS;
-        }
-        if(button_wayshrine.checked){
-            activeLayers |= OVERLAY_LAYER_WAYSHRINES;
-        }
+        overlay.setActiveLayer(OVERLAY_LAYER_LOCATIONS, button_location.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_NIRNROOTS, button_nirnroot.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_WAYSHRINES, button_wayshrine.checked);
+        //overlay.setActiveLayer(OVERLAY_LAYER_CITYNIRNS, button_cityNirns.checked);
+        overlay.setActiveLayer(OVERLAY_LAYER_NEARBYGATES, button_nearbyGates.checked);
+
         if(button_tspNone.checked){
-            activeTsp = 0;
+            overlay.setActiveTsp(OVERLAY_LAYER_NONE);
         }
-        if(button_tspLocation.checked){
-            activeTsp = OVERLAY_LAYER_LOCATIONS;
+        else if(button_tspLocation.checked){
+            overlay.setActiveTsp(OVERLAY_LAYER_LOCATIONS);
         }
-        if(button_tspNirnroot.checked){
-            activeTsp = OVERLAY_LAYER_NIRNROOTS;
+        else if(button_tspNirnroot.checked){
+            overlay.setActiveTsp(OVERLAY_LAYER_NIRNROOTS);
         }
-        overlay.setActiveLayers(activeLayers);
-        overlay.setActiveTsp(activeTsp);
+        
         drawFrame();
     }
 
     button_location.addEventListener("change", displaySettingsFunc);
     button_nirnroot.addEventListener("change", displaySettingsFunc);
     button_wayshrine.addEventListener("change", displaySettingsFunc);
+    button_nearbyGates.addEventListener("change", displaySettingsFunc);
+
     button_tspNone.addEventListener("change", displaySettingsFunc);
     button_tspLocation.addEventListener("change", displaySettingsFunc);
     button_tspNirnroot.addEventListener("change", displaySettingsFunc);
@@ -495,6 +514,8 @@ function initListeners(){
             location.reload();
         }
     });
+
+    document.addEventListener("progressLoad",()=>overlay.recalculateBoundingBox());
 }
 
 function updateZoom(deltaZ, zoomPoint){
@@ -599,27 +620,21 @@ function screenSpaceToMapSpace(screenSpacePoint){
     return screenSpacePoint.add(screenOriginInMapCoords);
 }
 
+/**
+ * Convert a point in world space to a point in screen space.
+ * @param {Point} worldSpacePoint 
+ * @returns {Point} screen space point
+ */
+function worldSpaceToScreenSpace(worldSpacePoint){
+    return mapSpaceToScreenSpace(worldSpaceToMapSpace(worldSpacePoint));
+}
+
 /**Returns appropriate icon from string input.*/
 function iconSwitch(Input){
-    switch (Input) {
-        case "Ayleid":return icons.Ayleid;
-        case "Camp": return icons.Camp;
-        case "Cave": return icons.Cave;
-        case "Fort": return icons.Fort;
-        case "Gate": return icons.Gate;
-        case "Inn": return icons.Inn;
-        case "City": return icons.City;
-        case "Landmark": return icons.Landmark;
-        case "Mine": return icons.Mine;
-        case "Settlement": return icons.Settlement;
-        case "Shrine": return icons.Shrine;
-        case "Nirnroot": return icons.Nirnroot;
-        case "Wayshrine": return icons.Wayshrine;
-        case "HeavenStone": return icons.HeavenStone;
-        case "POI": return icons.POI;
-            
-        default: 
+        let maybeIcon = icons[Input];
+        if(maybeIcon == null){
             console.warn("Element has invalid iconname: " + Input + ".");
             return icons.X;
-    }
+        }
+        return maybeIcon;
 }

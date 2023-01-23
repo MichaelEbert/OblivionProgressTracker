@@ -2,7 +2,7 @@
 
 import { updateChecklistProgress } from "./progressCalculation.mjs";
 import { findCell } from "./obliviondata.mjs"
-//common layout functions used by both main.js and guide.js
+//common layout functions used by both checklist.js and guide.js
 
 
 export {
@@ -74,8 +74,8 @@ function generateLinkUrl(cell, format){
             return null;
         }
         else{
-            linkHref = "./map.html?formId="+cell.formId;
-            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck == "on"){
+            linkHref = "./map.html?formId=" + cell.formId;
+            if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck != "off"){
                 linkHref += "&topbar=false";
             }
             else{
@@ -86,15 +86,7 @@ function generateLinkUrl(cell, format){
         }
     }
     else{
-        const useMinipage = window.settings.minipageCheck && (classname == "book" || classname == "npc") && (cell.formId != null || format & CELL_FORMAT_NAMELINK_FORCE_MINIPAGE);
-        if(useMinipage){
-            linkHref ="./data/minipages/"+classname+"/"+classname+".html?id="+cell.formId;
-            if(cell.formId == null || cell.formId > 0xFF000000){
-                linkHref +="&name="+cell.name.replace(" ","_");
-            }
-            return linkHref;
-        }
-        else if(cell.link){
+        if(cell.link){
             return cell.link;
         }
         else{
@@ -150,11 +142,11 @@ function createLinkElement(cell, linkName, format){
         linky.innerText = capitalClassName + linkName;
     }
 
-    if(format & CELL_FORMAT_NAMELINK_MAPLINK){
-        linky.title = "View on map";
-    }
     if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
         linky.title = "View on UESP"
+    }
+    else if(format & CELL_FORMAT_NAMELINK_MAPLINK){
+        linky.title = "View on map";
     }
 	return linky;
 }
@@ -168,9 +160,11 @@ function createLinkElement(cell, linkName, format){
 function adjustFormatting(cell, defaultFormatting){
     if(cell.ref != null){
         defaultFormatting |= CELL_FORMAT_INDIRECT;
-        defaultFormatting |= CELL_FORMAT_DISABLE_CHECKBOX;
-        defaultFormatting &= ~CELL_FORMAT_SET_ROW_ONCLICK; //row onclick disabled because the entire element is disabled.
         defaultFormatting &= ~CELL_FORMAT_NAMELINK_ENABLE;
+        if(!cell.forwardInput){
+            defaultFormatting |= CELL_FORMAT_DISABLE_CHECKBOX;
+            defaultFormatting &= ~CELL_FORMAT_SET_ROW_ONCLICK; //row onclick disabled because the entire element is disabled.
+        }
     }
 
     const classname = cell.hive.classname;
@@ -180,6 +174,11 @@ function adjustFormatting(cell, defaultFormatting){
 
     if(classname == "save"){
         defaultFormatting &= ~CELL_FORMAT_NAMELINK_ENABLE;
+    }
+
+    if(!cell.hive.class.containsUserProgress){
+        defaultFormatting &= ~CELL_FORMAT_SHOW_CHECKBOX;
+        defaultFormatting &= ~CELL_FORMAT_NAMELINK_SEPARATE_HELP;
     }
 
     return defaultFormatting
@@ -366,9 +365,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //map icon
     if(format & CELL_FORMAT_SHOW_MAPICON)
     {
-        if(cell.formId == "0x000615EB"){
-            debugger;
-        }
         let usableCell = cell;
         if(cell.ref != null &&( cell.x == null || cell.y == null)){
             usableCell = refCell;
@@ -424,7 +420,12 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //update the UI on progress update
     cell.onUpdate.push(function(cell, newValue){
         if(cell.type == "number"){
-            rcheck.value = newValue;
+            if(newValue == undefined){
+                rcheck.value = "";//js represents empty box contents as empty string, not undefined
+            }
+            else{
+                rcheck.value = newValue;
+            }
         }
         else{
             rcheck.checked = newValue;

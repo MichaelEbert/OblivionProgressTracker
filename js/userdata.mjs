@@ -1,9 +1,10 @@
 import { jsondata } from "./obliviondata.mjs";
 import { classes } from "./obliviondata.mjs";
 import { loadJsonData } from "./obliviondata.mjs";
-import { runOnTree } from "./obliviondata.mjs";
-import { progressClasses } from "./obliviondata.mjs";
+import { runOnTree, progressClasses } from "./obliviondata.mjs";
 import { initShareSettings } from "./sharing.mjs";
+
+import {clearProgressCache} from './progressCalculation.mjs'
 
 //functions that save and load user progess and settings.
 export{
@@ -68,6 +69,12 @@ window.migrate = function(){
  * Attempt to upgrade the save data stored in `savedata` to the most recent version.
  */
 function upgradeSaveData(shouldConfirm){
+	if(savedata.version == null){
+		let reset = confirm("Save data is invalid or corrupted. Reset progress?");
+		if(reset){
+			resetProgress();
+		}
+	}
 	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
 	if(!(savedata.version >= 5)){
 		//tell user we can't upgrade.
@@ -173,6 +180,11 @@ function decompressSaveData(compressedSaveData){
  * Save the user's progress.
  */
 function saveProgressToCookie(){
+	if(settings.remoteShareCode != null && settings.remoteShareCode != ""){
+		//user tried to save while spectating. Load progress instead to reset whatever they did.
+		loadProgressFromCookie();
+		return;
+	}
 	saveCookie("progress",compressSaveData(savedata));
 }
 
@@ -209,7 +221,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version < SETTINGS_VERSION)
+	if(settings.version < SETTINGS_VERSION || settings.version == null)
 	{
 		switch(settings.version){
 			case null:
@@ -222,12 +234,10 @@ function initSettings(){
 			case 1:
 				//1 to 2: set auto refresh and auto refresh time.
 				changed |= initProperty(settings, "spectateAutoRefresh", true);
-				changed |= initProperty(settings, "spectateAutoRefreshInterval", 30);
-			case 3:
-				//2 to 3: reset minipage since we're not really using them
-				if(settings.minipageCheck != null){
-					settings.minipageCheck = false;
-				}
+				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
+			case 2:
+				//2 to 3: 
+				//deprecated
 			default:
 				//done
 				break;
@@ -238,10 +248,8 @@ function initSettings(){
 	}
 
 	//default values
-	
-	changed |= initProperty(settings, "minipageCheck", false);
 	changed |= initProperty(settings, "iframeCheck", "auto");
-	changed |= initProperty(settings, "iframeMinWidth", 600);
+	changed |= initProperty(settings, "iframeMinWidth", 1000);
 	changed |= initProperty(settings, "iframeWidth", "45vw");
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
@@ -263,16 +271,22 @@ function loadProgressFromCookie(){
 	loadSettingsFromCookie();	
 	var compressed = loadCookie("progress");
 	
-	if(compressed){
+	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
 		savedata = decompressSaveData(compressed);
 		if(savedata.version != SAVEDATA_VERSION){
 			upgradeSaveData();
 		}
+		//clear weight cache
+		clearProgressCache();
+		
 		document.dispatchEvent(new Event("progressLoad"));
 		return true;
 	}
 	else{
 		//could not find savedata. create new savedata.
+		if(window.debug){
+			console.log("could not find dsavedata. resetting progress.");
+		}
 		resetProgress(false);
 		return false;
 	}
@@ -286,6 +300,7 @@ function resetProgressForHive(hive){
 	const classname = hive.classname;
 	savedata[classname] = {};
 	runOnTree(hive,(cell=>{
+		cell.cache = null;
 		if(cell.id == null){
 			//this cell doesn't have a sequential ID, so we can't save it.
 			return;
@@ -304,7 +319,11 @@ function resetProgressForHive(hive){
  */
 function resetProgress(shouldConfirm=false){
 	if(jsondata == null){
-		loadJsonData('..');
+		loadJsonData('..').then(()=>{
+			console.assert(jsondata != null);
+			resetProgress(shouldConfirm);
+		});
+		return;
 	}
 	var execute = true;
 	if(shouldConfirm){

@@ -196,9 +196,10 @@ function UpdateRank(savedata, saveFile)
 {
     return (cell) =>
     {
-        let record = saveFile.records.find((e) => e.formId === parseInt(cell.formId));
+        var record = saveFile.records.find((e) => e.formId===0x7);
         if (record) {
-            if (record.flags) {
+            let rank = (record.subRecord.factions?.find(f=>saveFile.formIds[f.faction]===parseInt(cell.formId))?.factionRank);
+            if(rank === cell.maxRank){
                 savedata.misc[cell.id] = true;
                 return;
             }
@@ -333,7 +334,7 @@ function parseSave(e){
                     return;
                 }
                 //copy save #s over
-                if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save) > 0){
+                if(Object.keys(dataFromSave.save).length == 0 && Object.keys(window.savedata.save).length > 0){
                     dataFromSave.save = window.savedata.save;
                 }
                 

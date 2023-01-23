@@ -2,26 +2,30 @@
 <html><head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="../favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="../main.css"/>
-	<link rel="stylesheet" type="text/css" href="../guide.css"/>
-	<script src="../obliviondata.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/guide.css"/>
+	<script src="../js/obliviondata.mjs"></script>
 	<script src="./chairlookup.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nearest Chair</title>
+	<title>Nearest Chair Lookup</title>
 </head>
 <body>
+<!-- begin topbar-->
 	<div id="topbar" class="topbar">
 		<a href="tools.html" class="topbarSection">Back to tools</a>
 	</div>
+<!-- end topbar-->
 <br/><br/>
-<div class="h2">Nearest Chair</div>
-<p>Get the nearest chairs. Based on data by <a href="https://fdh.one/Oblivion/#chair-searcher">FromDarkHell</a></p>
-
-
+<div class="h2">Nearest Chair Lookup</div>
+<p>This page is for finding the nearest chair to a desired coordinate position across all cells in the game. This is used to figure out new <a href="https://prclive.run/wiki/Oblivion:Saddling" target="_blank">Saddle</a> locations for routing. Based on data by <a href="https://fdh.one/Oblivion/#chair-searcher">FromDarkHell</a></p>
+<div>
+	<label title="Chairs that are only available if certain DLC is installed."><input type="checkbox" id="dlcChairs">Show DLC Chairs</label>
+	<label title="Chairs that are in unreachable test cells."><input type="checkbox" id="testCellChairs">Show Test Cell Chairs</label>
+</div>
 <div class="section" id="distanceCalcSection">
-	X<input type="number" id="xIn"/>
-	Y<input type="number" id="yIn"/>
-	Z<input type="number" id="zIn"/>
+	X <input type="number" id="xIn"/>
+	Y <input type="number" id="yIn"/>
+	Z <input type="number" id="zIn"/></br></br>
 	<div id="table"></div>
 </div>
 <script>

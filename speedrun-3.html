@@ -2,8 +2,8 @@
 <html lang="en-US"><head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="main.css"/>
-	<link rel="stylesheet" type="text/css" href="guide.css"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
 	<script src="guide.js"></script>
 	<script src="autoread.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,17 +22,16 @@
 			<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
 		</div>
 	</div>
-	<a href="./index.html" class="topbarSection">Home</a>
-	<a href="./main.html" class="topbarSection">Checklist</a>
-	
 	<div class="topbarSection">
-		<a href="./speedrun-4.html">Guide</a>
+		<a href="./speedrun-guide.html">Guide</a>
 		<div class="topbarSublist">
-			<a href="./speedrun-4.html">Speedrun Guide (V4)</a>
-			<a href="./speedrun-3.html">Casual Guide (Coming Soon)</a>
+			<a href="./speedrun-guide.html">Speedrun Guide</a>
+			<a href="./casual.html">Casual Guide</a>
 			<a href="./speedrun-archive.html">Archive</a>
 		</div>
 	</div>
+
+	<a href="./checklist.html" class="topbarSection">Checklist</a>
 
 	<div class="topbarSection">
 		<a href="./map.html">Map</a>
@@ -51,7 +50,7 @@
 		</div>
 	</div>
 
-	<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;">⚙️</a>
+	<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
 
 	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
 </nav>
@@ -95,8 +94,8 @@ set to 1 hour. <b>If the game crashes at any point, enter the <code>sdt 12</code
 <ol>
 <li>Click continue on the quest pop-up to start the run. Press caps lock to always be sprinting, and press <kbd>F3</kbd> to bring up the spell menu.</li>
 <li>Hotkey <span class="spellname">Flare</span> and equip <span class="spellname">Adrenaline Rush</span>.</li>
-<li>Cast <span class="spellname">Adrenaline Rush</span> and <a href="./glitches.html#saveclip" target="_blank">Save Clip</a><a class="screenshot" href="images/saveclips/SC_Tutorial_1.webp" target="_blank"></a> through the right front edge of the NE archway.</li>
-<li>When you clip through the wall, run to the east until you spawn back in bounds. This is called <a href="./glitches.html#voidwarp" target="_blank">Void Warping</a>. If the clip doesn’t work, try setting the quicksave up again and loading again.</li>
+<li>Cast <span class="spellname">Adrenaline Rush</span> and <span class="glitch">Save Clip</span><a class="screenshot" href="images/saveclips/SC_Tutorial_1.webp" target="_blank"></a> through the right front edge of the NE archway.</li>
+<li>When you clip through the wall, run to the east until you spawn back in bounds. This is called <span class="glitch" clid="glitchvoidwarp">Void Warping</span>. If the clip doesn’t work, try setting the quicksave up again and loading again.</li>
 <li>Jump up into the east archway and Save Clip through the seam between the two walls. Continue to run east after you clip until the black box is off the top of the screen, then wait until you Void Warp.</li>
 <li>Take the Chameleon and Flash Bolt scrolls, as well as the lockpicks and Iron Key off the Goblin corpse. Make a save. Make sure to write down the number of the save. It will be referred to as <span class="save" clid="savepermakey">PermaKey_Save</span> later.
 <li>Open the door so that the popup shows up about using the Iron Key, and press escape to load the <span class="save" clid="savepermakey" disabled="true">PermaKey_Save</span> you just made. This glitches the game into allowing you to open most doors without needing to pick the lock.

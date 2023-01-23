@@ -9,7 +9,6 @@ function init(){
 		//populate sections with json data.
 		//only display stuff that user can change.
 		const base = document.getElementById("main");
-		console.log("should be loaded now!!");
 		for(const klass of obliviondata.progressClasses){
 			const hive = obliviondata.jsondata[klass.name];
 			initMulti(hive, base,0);
@@ -18,6 +17,7 @@ function init(){
 		try{
 			document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
 			document.getElementById("main_misc_Oblivion_Gates_Shut_40_Random_Gates").children[0].style = "break-inside:unset";
+			document.getElementById("main_save").children[0].style = "break-inside:unset";
 		}
 		catch{
 			debugger;
@@ -244,10 +244,6 @@ function userInputData(htmlRowId, checkboxElement){
 	}
 	
 	recalculateProgressAndUpdateProgressUI();
-	window.userdata.saveProgressToCookie();
-	if(settings.autoUploadCheck){
-		window.sharing.uploadCurrentSave();
-	}
 }
 
 function checkboxClicked(event){
