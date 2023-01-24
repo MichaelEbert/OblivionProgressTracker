@@ -58,17 +58,23 @@
 </div>
 <!-- end topbar-->
 <div class="contentContainer" id="contentContainer">
-<div class="sidebar" id="sidebar">
-	<div class="screenHeight">
-	<div id="sidebarContent" class="sidebarContent resizableWidthContainer ">
+<div class="guideFrame">
+<article id="guide" class="main mainPanel">
+	<h1>The Casual Guide will be available soon! In the meantime, the <a href="https://prclive.run/wiki/Main_Page">wiki</a> can help you learn about specific objectives in the run.</h1>
+</article>
+
+<div class="resizer" id="dragMe"></div>
+
+<div class="sidePanel" id="sidebar">
+	<div id="sidebarContent" class="sidebarContent">
 		<div id="sidebarLinks">
+			<a href="./help.html" target="_blank" title="Help Page">🛈</a>
 			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
 		</div>
-	</div></div>
+	</div>
 </div>
-<article>
-<h1>The Casual Guide will be available soon! In the meantime, the <a href="https://prclive.run/wiki/Main_Page">wiki</a> can help you learn about specific objectives in the run.</h1>
-</article>
+</div>
+<script src="dragging.js"></script>
 </div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'

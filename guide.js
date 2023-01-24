@@ -19,7 +19,6 @@ function init(){
 			if(!document.getElementById("spectateBanner")){
 				let spectateBanner = sharing.createSpectateBanner();
 				document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
-				//document.getElementById("topbar").insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
 			}
 		}
 		replaceElements();
@@ -317,26 +316,6 @@ function updateIframe(visible){
 			else{
 				document.body.prepend(iframeContainer);
 			}
-			if(settings?.iframeWidth){
-				sidebar.style.width = settings.iframeWidth;
-			}
-
-			const widthWindow = document.querySelector(".resizableWidthContainer");
-			widthWindow.addEventListener('mouseup',(event)=>{
-				//we need to convert px to vw.
-				let widthInPx = /(\d*)px/.exec(event.target.style.width);
-				if(widthInPx?.length > 1){
-					const newWidthPx = parseInt(widthInPx[1]);
-					const documentWidthPx = window.innerWidth;
-					let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
-					event.target.style.width = newWidthEm;
-					if(settings.iframeWidth != newWidthEm){
-						settings.iframeWidth = newWidthEm;
-						saveCookie("settings",settings);
-					}
-				}
-				
-			});
 		}
 		
 		//update all _blank links to open in iframe

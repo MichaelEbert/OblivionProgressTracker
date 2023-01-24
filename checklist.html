@@ -58,6 +58,7 @@
 	</nav>
 </div>
 <!-- end topbar-->
+<div class="mainPanel">
 <article id="main" class="main">
 <div class="info">You can drag and drop your Oblivion save file (.ess) into this checklist to see your progress! Saves are typically located in User\Documents\My Games\Oblivion\Saves.</div>
 <div id="overview" class="section">
@@ -81,9 +82,9 @@
 		<tr><td><img class="overviewIcon" src="images/Icon_HeavenStone.png" draggable="false">Greater Powers</td><td><span id="overview_greater_powers"></span></td></tr>
 	</table>
 </div>
-
 </article>
 <button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
+</div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
 	import * as obliviondata from './js/obliviondata.mjs'

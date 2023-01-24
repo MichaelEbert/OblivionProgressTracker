@@ -7,14 +7,22 @@
 
 html{
 	font-family: Calibri,serif;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
 }
 
 body{
 	background-color: var(--base-color);
-	margin-top: 0;
+	margin: 0;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
 	font-family: Calibri;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
+	width: calc(100vw - 1em);
+	height: 100vh;
 }
 
 br{
@@ -143,7 +151,6 @@ kbd {
 .flexTopBar {
 	display: flex;
 	flex-direction: column;
-	position: sticky;
 	width: 100%;
 	top: 0;
 	left: 0;
@@ -157,7 +164,8 @@ kbd {
 .spectateBanner{
 	background-color: #90FF90;
 	cursor: pointer;
-	flex: 0 0 100%;
+	flex: 0 0 35%;
+	width: 99.5%; /* I think this is due to a padding issue or something? */
 	text-align: center;
 	font-style: italic;
 	background-color: lightgreen;
@@ -169,59 +177,52 @@ kbd {
 
 .contentContainer{
 	display: flex;
-	flex-direction: row-reverse;
+	height: 100%;
+}
+
+.sidebar{
+	margin-left: 1em;
 }
 
 .sidebarContent{
-	width: 500px;
 	display: flex;
 	flex-direction: column;
 	height:100%;
+	overflow: hidden; /* Sidebar links should not scroll with rest of page. */
+}
+#sidebarLinks{
+	padding-left: 0.5em;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+	background: var(--highlight-color);
+	border-bottom: groove;
+	border-width: 2px;
+	border-color: dimgray;
 }
 #sidebarLinks a{
 	text-decoration: none;
 	color: black;
 }
 
-/*this can't be applied to the same as resizableContainer because box-sizing causes the resize widget to be below teh screen.*/
-.screenHeight{
-	position: sticky; /*within the .sidebar, this is the "content" container that slides up and down to stay on the page.*/
-	height: 100vh;
-	top: 0; /*start at very top of page*/
-	/*the following make the height 100vh minus overlap*/
-	box-sizing:border-box;
-	padding-bottom:3.5em;
-}
-
-/*you can't resize iframes, so we use this to give it a nice resizable handle*/
-.resizableContainer{
-	resize: both;
-	overflow: hidden;
-}
-
-.resizableWidthContainer{
-	resize: horizontal;
-	overflow: hidden;
-}
-
 .iframeContainer{
-	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
-	flex-grow:1;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
 }
 
 .iframe{
 	background-color: var(--lighter-color);
-	border: 1px solid gray;
+	border: none;
 	width: calc( 100% - 2px);
-	height: 100%
+	height: 100%;
 }
 
 .main{
 	flex-shrink: 1;
 	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
-	margin-top: 0.75em;
 }
 
 .progress{
@@ -379,20 +380,18 @@ and we don't want the map to expand down past screen.
 I feel like there should be a way to do this but I can't figure it out right now
 */
 .mapContainer{
-	position: fixed;
 	display: flex;
 	flex-direction: column;
-	padding:1em;
 	width: 100%;
 	height: 100%;
-	top: 0.5em;
+	top: 0;
 	left: 0;
 	box-sizing:border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
 	touch-action: none;/*we want touch to scroll, not select or anything.*/
 }
 
 .mapButtonBar{
-	margin: 0.5em;
+	padding-bottom: 0.5em;
 }
 
 .mapWrapper{
@@ -419,4 +418,39 @@ h1{
 	.topbarSection:hover .topbarSublist{
 		display: none;/*no more crazy links for mobile*/
 	}
+}
+
+/* Overall flexbox frame stuff */
+.guideFrame{
+	display: flex;
+}
+.resizer{
+	background-color: black;
+	cursor: ew-resize;
+	height: 100%;
+	padding: 2px;
+}
+.mainPanel{
+	min-width: 10%;
+	overflow-y: scroll; /* Changing this to auto crashes things :/ */
+	overflow-x: hidden;
+}
+.sidePanel{
+	flex: 1 1 0%;
+	min-width: 10%;
+	overflow: hidden; /* Don't want the sidebar banner to scroll with everything. */
+}
+
+/* Scroll bar stuff to make them less obnoxiously large */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

@@ -160,6 +160,9 @@ ol.warning{
 	font-weight: bold;
 	border-bottom: none;
 }
+.itemGlitch{
+	font-weight: normal;
+}
 
 .check{
 	float: none;
