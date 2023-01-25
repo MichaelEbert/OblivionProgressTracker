@@ -147,6 +147,22 @@ async function initMap(){
             mapContainer.style = "top:0;padding:2px;"
         }
     }
+    //Setting parameters
+    let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
+    for(let para of settingsArray){
+        if(windowParams.get(para.toLowerCase()) == "true"){
+            document.getElementById("button_" + para).checked = true;
+        }
+        if(windowParams.get(para.toLowerCase()) == "false"){//can't do else for these since it would override user settings.
+            document.getElementById("button_" + para).checked = false;
+        }
+    }
+    //Prediscovered appears to be tied to settings, so I can't figure out how to make that one changable. Most people won't turn it off anyway.
+    let tspSetting = windowParams.get("tsp")
+    if(tspSetting == "none" || tspSetting == "location" || tspSetting == "nirnroot"){
+        document.getElementById("button_tsp" + tspSetting.charAt(0).toUpperCase() + tspSetting.slice(1)).checked = true;
+    }
+
     //start map loading here, we will wait for it later.
     let mapImgLoad = loadMapImage();
     initAutoSettings(drawFrame, drawFrame);
