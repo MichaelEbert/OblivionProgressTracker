@@ -32,7 +32,6 @@ const mouseDownHandler = function (e) {
 resizer.addEventListener('mousedown', mouseDownHandler);
 
 const mouseMoveHandler = function (e) {
-	console.log("bazinga");
     // How far the mouse has been moved
     const dx = e.clientX - x;
     const dy = e.clientY - y;

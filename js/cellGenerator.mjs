@@ -116,8 +116,13 @@ function createLinkElement(cell, linkName, format){
             return linky;
         }
         linky.href = linkHref;	
-        if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME) && window.settings.iframeCheck != "off"){
-            linky.target="myframe";
+        if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME)){
+            if(window.settings.iframeCheck == "window"){ //link goes to consistent external window
+                linky.target = "externalSecondWindow";
+            }
+            else{//link goes to iframe
+                linky.target = "myframe";
+            }
         }
         else{
             linky.target="_blank";
