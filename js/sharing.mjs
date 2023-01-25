@@ -345,15 +345,7 @@ function initSharingFeature(){
 
 	if(!document.getElementById("spectateBanner")){
 		let spectateBanner = createSpectateBanner();
-		document.getElementById("sharingBanner")?.replaceWith(spectateBanner);
-		let maybeSidebarContent = document.getElementById("sidebarContent");
-		if(maybeSidebarContent != null){
-			//insert spacer
-			let sidebarSpacer = document.createElement("DIV");
-			sidebarSpacer.id = "sidebarSpacer";
-			sidebarSpacer.style.height="1em";//TODO FIX
-			maybeSidebarContent.insertAdjacentElement("beforebegin", sidebarSpacer);
-		}
+		document.getElementById("topbarNav")?.appendChild(spectateBanner);
 	}
 	if(settings.spectateAutoRefresh == true){
 		startSpectating(false, true);
