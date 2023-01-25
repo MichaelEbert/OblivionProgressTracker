@@ -274,7 +274,12 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         }
 
         if(cell.icon){
-            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            if(cell.icon == "Nirnroot" || cell.icon == "Wayshrine"){ //These have different markings.
+                htmlIcon.src = "images/Icon_" + cell.icon + "_Undiscovered.png";
+            }
+            else {
+                htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            }
         }
         else{
             htmlIcon.src = "";
