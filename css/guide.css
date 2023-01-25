@@ -164,6 +164,10 @@ ol.warning{
 	font-weight: normal;
 }
 
+.item > [type="checkbox"]:disabled{
+	display: none;
+}
+
 .check{
 	float: none;
 }
