@@ -78,36 +78,44 @@
 		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
 		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
 		<br/>
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting" checked>Show prediscovered locations</label>
 		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
 		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
 		<br/>
 		<button id="resetMapButton">Reset Map</button>
 	</div>
-	<div id="help" style="display:none">
-		<h2>FAQ</h2>
-		<h3>How to use?</h3>
-		<p>Click on an icon to toggle its state between discovered/undiscovered. right-click to select.</p>
-		<h3>Oblivion gate key</h3>
-		<p>Oblivion gates have 3 states: Undiscovered, Discovered (checked), and Closed (red).</p>
-		<p>Oblivion gates may have up to 3 letters on their icon. Here is what they mean:
+	<div id="help" style="display:none; height: 350vh; overflow: scroll; overflow-x: hidden;">
+		<h2>Help</h2>
+		<h3>How to Use the Map</h3>
+		<p>Click on undiscovered (light icon) places to mark them as discovered (dark icon). Hover over a location to see its name. You can use the mouse wheel to zoom in/out, and click to drag the map around while viewing it.</p>
+		<p>There are several other objectives tracked by this map:</p>
 		<ul>
-		<li><img style="float:unset" height="24" src="images/Icon_Overlay_Fixed.png">Fixed location (gate will always appear here)</li>
-		<li><img style="float:unset" height="24" src="images/Icon_Overlay_No_Reroll.png">No reroll (Oblivion layout is fixed and cannot be rerolled)</li>
-		<li><img style="float:unset" height="24" src="images/Icon_Overlay_Two_Fame.png">Get 2 fame for closing this gate</li>
-		</ul></p>
+			<li><b>Oblivion Gates</b> can be discovered, but also need to be closed. Left clicking again on a discovered gate will give it a checkmark to indicate it is closed. See the next section for more info on how gates work.</li>
+			<li><b>Nirnroots</b> need to be harvested. Click on them to give them a checkmark indicating you have harvested them. For this task, the Nirnroute version of the map in the dropdown for the Map page is highly recommended.</li>
+			<li><b>Wayshrine</b> blessings need to be obtained by activating a Wayshrine when you have at least 1 Fame. There are several copies of each Wayshrine around the map, but you only need each blessing from one copy, so clicking on one copy will check all of that Wayshrine off.</li>
+			<li><b>Heaven Stones</b> each give you a Greater Power when activated between 6pm and 6am when your combined Fame and Infamy is high enough. Click on a Heaven Stone to give it a checkmark to indicate you have received that stone's Greater Power.</li>
+		</ul>
+		<p><i>For routers, right-clicking will select a location and highlight it green. Hovering a different location while another is selected will display the distance between those locations as long as the "Show distance between locations" box is checked.</i></p>
+
+		<h3>Oblivion Gates</h3>
+		<p>Oblivion Gates need to be discovered and also closed. Click on an already discovered gate to mark it as closed with a checkmark.</p>
+		<p>Oblivion Gates may have up to 3 letters on their icon. Here is what they mean:</p>
+		<ul>
+		<li><img style="float:unset" height="24" src="images/Icon_Overlay_Fixed.png"> — These gates are <b>Fixed</b>, meaning they will always appear in that location every playthrough.</li>
+		<li><img style="float:unset" height="24" src="images/Icon_Overlay_No_Reroll.png"> — These gates have the same layout (<b>No Re-roll</b>) every time you enter them instead of being randomly generated.</li>
+		<li><img style="float:unset" height="24" src="images/Icon_Overlay_Two_Fame.png"> — These gates give <b>2 Fame</b> instead of one.</li>
+		</ul>
+		<h4>Gate Closing Strategy</h4>
+		<p>Gates that are not Fixed are <b>Random Gates</b>, which start appearing more and more frequently as you go through the main quest. Of all the locations on the map, only <b>40 Random Gates</b> can be discovered before they stop appearing, at which point this map will grey out the remaining icons. The Fixed Gates each appear after a specific main quest has been completed.</p>
+		<p>In general, <b>this is the best strategy for casual players:</b></p>
+		<ol>
+			<li>Complete the Dagon Shrine main quest. Random Gates will now appear as often as possible, and all but 2 Fixed Gates will appear.</li>
+			<li>Discover/close all 40 Random Gates, and every Fixed Gate except for the Bruma Fixed Gate, and the Great Gate (not on the map).</li>
+			<li>As you complete the main quest, you will get the two remaining gates during the Bruma Gate and Great Gate quests respectively.</li>
+		</ol>
+
 		<h3>What is TSP?</h3>
-		<p>The Traveling Salesman Path (TSP) is a calculated fastest route between each icon,
-			 it doesn't have to be done in order and it loops so you can start anywhere, and as long as you only go one direction, you will get everything on the path.</p>
-
-		<h3>Why are the icon positions different from in-game?</h3>
-		<p>On this web map, the icons are centered on the exact locations that they are in the oblivion world. 
-			In other words, if you go to the center of the icon on this map, you'll be at the exact location of the marker.</p>
-		<p>When you are plaing Oblivion in-game, all icons are offset slightly to the right, which is confusing.</p>
-
-		<h3>How do random gates work?</h3>
-		<p>You need to only discover 40 random oblivion gates. 
-			Once you discover 40, the map will automatically grey out the remaining random gate locations on the map, but not on the checklist.</p>
+		<p>Located via the "Show Settings" button, The Traveling Salesman Path (TSP) is mathematically optimized to be the fastest route to discover all the places. The path loops, so you can start anywhere. As long as you only go one direction, you will get everything on the path. <b>The Location TSP is primarily for speedrunners and doesn't include most Oblivion Gates and other side objectives as result of route logic.</b></p>
 	</div>
 
 	<div id="wrapper_Map" class="mapWrapper"></div>

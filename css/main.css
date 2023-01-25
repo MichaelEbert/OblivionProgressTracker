@@ -316,6 +316,24 @@ input[type="number"]{
 	background-color: lightgoldenrodyellow;
 	border-style: outset;
 	border-color: lightgoldenrodyellow;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+.warning::before{
+	content: '⚠️ ';
+	font-style: normal;
+	font-size: 1.2em;
+}
+.warning{
+	text-align: center;
+	padding: 0.5em;
+	padding-bottom: 0.7em;
+	font-style: italic;
+	margin: auto;
+	width: fit-content;
+	background-color: lightcoral;
+	border-style: outset;
+	border-color: lightcoral;
 	font-size: 1em;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }

@@ -77,26 +77,26 @@
 	<div class="category">
 		<div class="categoryTitle">Guide</div>
 		<!--When you add a setting here, also add it in userdata.mjs so it will be populated for new users.-->
-		<label><input type="checkbox" id="classnameCheck" class="autosetting"/>Show [Quest], [Book], etc. tags for interactive terms. — <b>Advanced players should turn this setting off to improve guide readability.</b></label><br/>
-		Info Box Sizing/Link Behavior: <label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
+		<label><input type="checkbox" id="classnameCheck" class="autosetting"/>Show [Quest], [Book], etc. tags for interactive terms</label> — <b>Advanced players should turn this setting off to improve guide readability.</b><br/>
+		<label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
 			<option value="auto" title="Recommended. Shows/hides the Info Box based on the width of the browser window, opening links in the Info Box if it is visible, or in a new tab if it is not.">Auto</option>
 			<option value="on" title="The Info Box is always on screen and links always open inside the Info Box.">Always On</option>
 			<option value="off" title="Disables the Info Box entirely, opening links in another tab.">Always Off</option>
 			<option value="window" title="Disables the Info Box, opening links in another window. This is useful if you want to cast links to a second monitor while keeping the guide on the original one.">Other Window</option>
-		</select> — <i>Hover over each option in the drop down menu for an explanation of what it does.</i></label><br/>
-		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide. <i>(Only works if above setting is Auto.)</i></label><br/>
+		</select> Info Box Sizing/Link Behavior</label> — <i>Hover over each option in the drop down menu for an explanation of what it does.</i><br/>
+		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide.</label> <i>(Only works if above setting is Auto.)</i><br/>
 		<label><input type="text" id="iframeWidth" class="autoTextSetting"/> Width of the Info Box to the right of the guide.</label><br/>
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Map</div>
 		<p><i>These map settings can also be found on the map page by clicking the "Show Settings" button.</i></p>
-		<label><input name="aaa" type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations. — <i>These are locations that are "discovered" from the start of the game that do not count towards your progress.</i></label><br/>
-		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations. — <i>This is mostly useful for estimating fast travel times while routing.</i></label><br/>
-		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formIDs on map. — <i>This is mostly useful for debugging and routing.</i></label><br/>
+		<label><input name="aaa" type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label> — <i>These are locations that are "discovered" from the start of the game that do not count towards your progress.</i><br/>
+		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label> — <i>This is mostly useful for estimating fast travel times while routing.</i><br/>
+		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formIDs on map</label> — <i>This is mostly useful for debugging and routing.</i><br/>
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Advanced Sharing</div>
-		<div class="info">These settings are for advanced users only and can break the sharing feature if used incorrectly. <b>Do not change these settings unless you are absolutely sure what you are doing.</b></div>
+		<div class="warning">These settings are for advanced users only and can break the sharing feature if used incorrectly. <b>Do not change these settings unless you are absolutely sure that you know what you are doing.</b></div>
 		</br>
 		<button id="copyDataLocalButton" disabled>Copy Spectator Progress to Local Progress</button> — <i>Overwrites your local data with the data of the person you are currently spectating.</i><br/>
 		<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i><br/>
@@ -114,7 +114,7 @@
 	<p><i>This import/export feature is <b>not</b> for Oblivion save (.ess) files. It is for this website's progress (.save) files. Currently the primary reason to backup your interactive guide to a .save file is to make sure you don't lose your Save File numbers for Load Warping. If you do not need to recover this information, dragging your most recent .ess file onto the Checklist page is a more convenient way of restoring your progress.</i></p>
 	<button id="resetbutton" onclick="userdatajs.resetProgress(true)">Reset Progress</button><br/>
 	<button id="exportProgressButton" onclick="settingsjs.exportProgress()">Export Guide .save File</button><br/>
-	<label>Import Guide Progress (.save) from File: <input type="file" id="fileinput"/></label><br/>
+	Import Guide Progress (.save) from File: <label><input type="file" id="fileinput"/></label><br/>
 </div>
 </div>
 </article>

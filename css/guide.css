@@ -161,6 +161,10 @@ ol.warning{
 	border-bottom: none;
 }
 
+.item > [type="checkbox"]:disabled{
+	display: none;
+}
+
 .check{
 	float: none;
 }
@@ -209,6 +213,10 @@ ol.warning{
 a.screenshot{
 	color: black;
 	text-decoration: underline dotted grey;
+}
+
+.item.glitch{
+	font-weight: normal;
 }
 
 a.screenshot::after{
