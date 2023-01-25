@@ -120,11 +120,14 @@ function createLinkElement(cell, linkName, format){
             if(window.settings.iframeCheck == "window"){ //link goes to consistent external window
                 linky.target = "externalSecondWindow";
             }
-            else{//link goes to iframe
+            if(window.settings.iframeCheck == "on"){//link goes to iframe.
                 linky.target = "myframe";
             }
+            else{//link goes to new tab. iframeCheck == "off"
+                linky.target="_blank";
+            }
         }
-        else{
+        else{//if somehow all else fails, default to this.
             linky.target="_blank";
         }
     }
