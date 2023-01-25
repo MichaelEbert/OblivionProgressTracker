@@ -160,9 +160,6 @@ ol.warning{
 	font-weight: bold;
 	border-bottom: none;
 }
-.itemGlitch{
-	font-weight: normal;
-}
 
 .item > [type="checkbox"]:disabled{
 	display: none;
@@ -216,6 +213,10 @@ ol.warning{
 a.screenshot{
 	color: black;
 	text-decoration: underline dotted grey;
+}
+
+.item.glitch{
+	font-weight: normal;
 }
 
 a.screenshot::after{

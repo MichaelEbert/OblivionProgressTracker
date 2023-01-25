@@ -253,9 +253,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         }
         rowhtml.classList.add(classname);
         rowhtml.classList.add("item");
-        if(classname == "glitch"){//This was the only way I could figure out how to prevent glitches from being bold.
-            rowhtml.classList.add("itemGlitch");
-        }
     }
     rowhtml.setAttribute("clid",usableId);
 
@@ -272,8 +269,8 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         else{
             htmlIcon = rowhtml.children[indices.ICON];
         }
-
         if(cell.icon){
+            //TODO: make icons uniform again so we don't need this additional check.
             if(cell.icon == "Nirnroot" || cell.icon == "Wayshrine"){ //These have different markings.
                 htmlIcon.src = "images/Icon_" + cell.icon + "_Undiscovered.png";
             }
