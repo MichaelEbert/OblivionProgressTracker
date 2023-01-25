@@ -15,16 +15,8 @@ function init(){
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
-		if(settings.remoteShareCode){
-			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = sharing.createSpectateBanner();
-				document.getElementById("topbar").appendChild(spectateBanner);
-			}
-		}
+		sharing.initSharingFeature();
 		replaceElements();
-		if(settings.spectateAutoRefresh == true){
-			sharing.startSpectating(false, true);
-		}
 	});
 }
 

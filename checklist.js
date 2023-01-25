@@ -26,15 +26,7 @@ function init(){
 		if(userdata.loadProgressFromCookie() == false){
 			userdata.resetProgress();
 		}
-		if(settings.remoteShareCode){
-			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = sharing.createSpectateBanner();
-				document.getElementById("topbar").appendChild(spectateBanner);
-			}
-			if(settings.spectateAutoRefresh == true){
-				sharing.startSpectating(false, true);
-			}
-		}
+		sharing.initSharingFeature();
 		const ignoreEvent = (e) => {
 			e.preventDefault();
 			e.stopPropagation();

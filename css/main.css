@@ -89,7 +89,6 @@ kbd {
 	width: 100%;
 	position: fixed;
 	background-color: var(--base-color);
-	padding: 0.3em;
 	box-sizing: border-box;
 	top: 0; /* hug the top of the window instead of having a buffer */
 	left: 0;
@@ -97,6 +96,7 @@ kbd {
 }
 
 .topbarNav{
+	padding: 0.3em;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
@@ -148,6 +148,8 @@ kbd {
 .spectateBanner{
 	background-color: #90FF90;
 	cursor: pointer;
+	text-align:center;
+	display:block;
 }
 
 .contentContainer{
