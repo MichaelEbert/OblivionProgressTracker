@@ -221,11 +221,6 @@ kbd {
 	height: 100%;
 }
 
-.main{
-	flex-shrink: 1;
-	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
-}
-
 .progress{
 	font-size: min(3em,12vw); /* on mobile, 3em is obnoxious so we decrease it */
 	font-weight: bold;

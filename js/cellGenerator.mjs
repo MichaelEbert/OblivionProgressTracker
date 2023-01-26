@@ -116,18 +116,14 @@ function createLinkElement(cell, linkName, format){
             return linky;
         }
         linky.href = linkHref;	
-        if((format & CELL_FORMAT_NAMELINK_OPEN_IN_IFRAME)){
-            if(window.settings.iframeCheck == "window"){ //link goes to consistent external window
-                linky.target = "externalSecondWindow";
-            }
-            if(window.settings.iframeCheck == "on"){//link goes to iframe.
-                linky.target = "myframe";
-            }
-            else{//link goes to new tab. iframeCheck == "off"
-                linky.target="_blank";
-            }
+        //Check settings to see what initial link target to generate.
+        if(window.settings.iframeCheck == "window"){ //link goes to consistent external window
+            linky.target = "externalSecondWindow";
         }
-        else{//if somehow all else fails, default to this.
+        else if(window.settings.iframeCheck == "on" || window.settings.iframeCheck == "auto"){//link goes to iframe.
+            linky.target = "myframe";
+        }
+        else{//link goes to new tab. iframeCheck == "off"
             linky.target="_blank";
         }
     }

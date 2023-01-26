@@ -15,6 +15,8 @@ let y = 0;
 // Width of left side
 let leftWidth = 0;
 
+leftSide.style.width = optimizeWidth();
+
 // Handle the mousedown event
 // that's triggered when user drags the resizer
 const mouseDownHandler = function (e) {
@@ -63,3 +65,9 @@ const mouseUpHandler = function () {
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
 };
+
+//takes the user's screen dimensions and type of page (guide or nirnroute currently) and generates the best starting width.
+//NEEDS TO RETURN A STRING.
+function optimizeWidth(){
+    return "50%";
+}

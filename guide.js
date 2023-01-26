@@ -9,6 +9,7 @@ function LinkedElement(element, classname, id){
 }
 
 function init(){
+	loadSettingsFromCookie();
 	//initialize sidebar container, which we will hide situationally but only need to build once.
 	let sidebarPanel = document.getElementById("sidebar");
 	let sidebarContent = document.getElementById("sidebarContent");
@@ -28,12 +29,10 @@ function init(){
 		//Place the myframe in the iframeContainer, then place the whole payload into the sidebarContent
 		iframeContainer.appendChild(myframe);
 		sidebarContent.appendChild(iframeContainer);
+		//Run an update to the page now that things are initialized.
+		checkIframeSize(); 
 	}
-	//Have to sacrifice load time to wait for settings to load prior to updating the page.
-	window.settings = async function f() {
-		await loadCookie("settings");
-		checkIframeSize(); //Run an update to the page now that things are initialized.
-	}
+	
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
