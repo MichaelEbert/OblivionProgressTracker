@@ -15,6 +15,7 @@ import {loadJsonData} from './obliviondata.mjs'
 import { setRemoteUrl, createSpectateBanner } from './sharing.mjs'
 import {recalculateProgress} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
+import { initSharingFeature } from './sharing.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
 function updateShareUrl(){
@@ -30,12 +31,7 @@ function init(){
     loadSettingsFromCookie();
     
     initAutoSettings();
-    if(settings.remoteShareCode){
-        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-            let spectateBanner = createSpectateBanner();
-            document.getElementById("topbar")?.appendChild(spectateBanner);
-        }
-    }
+    initSharingFeature();
     
     //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);
@@ -70,13 +66,6 @@ function init(){
     document.body.addEventListener('dragenter', ignoreEvent);
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', parseSave);
-
-    if(settings.remoteShareCode){
-        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-            let spectateBanner = createSpectateBanner();
-            document.getElementById("topbar")?.appendChild(spectateBanner);
-        }
-    }
 
     document.addEventListener("progressLoad",()=>{
         let percentCompleteSoFar;

@@ -8,7 +8,18 @@ import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
-export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl, createSpectateBanner};
+export {
+	initShareSettings,
+	generateSaveKey,
+	uploadSave,
+	downloadSave,
+	uploadCurrentSave,
+	startSpectating,
+	stopSpectating,
+	setRemoteUrl,
+	createSpectateBanner,
+	initSharingFeature
+};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -188,6 +199,7 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 
 	document.getElementById("spectateBanner")?.remove();
+	document.getElementById("sidebarSpacer")?.remove();
 	var localProgress = loadCookie("progress_local");
 	if(localProgress != null && Object.keys(localProgress).length > 0){
 		if(window.debug){
@@ -321,5 +333,22 @@ function createSpectateBanner(){
 	spectateBanner.appendChild(spectateCancelButton);
 
 	return spectateBanner;
+}
+
+/**
+ * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
+ */
+function initSharingFeature(){
+	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+		return;
+	}
+
+	if(!document.getElementById("spectateBanner")){
+		let spectateBanner = createSpectateBanner();
+		document.getElementById("topbarNav")?.appendChild(spectateBanner);
+	}
+	if(settings.spectateAutoRefresh == true){
+		startSpectating(false, true);
+	}
 }
 

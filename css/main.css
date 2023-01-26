@@ -84,20 +84,24 @@ kbd {
 	border: .4em solid red;
 }
 
+
 .topbar{
+	width: 100%;
+	position: fixed;
+	background-color: var(--base-color);
+	top: 0; /* hug the top of the window instead of having a buffer */
+	left: 0;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
+}
+
+.topbarNav{
+	padding: 0.3em;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
 	align-items: stretch;
-	width: 100%;
-	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
-	position: fixed;
-	background-color: var(--base-color);
-	padding: 0.3em;
 	box-sizing: border-box;
-	top: 0; /* hug the top of the window instead of having a buffer */
-	left: 0;
-	z-index: 1;/*Lets topbar render ontop of iframe*/
+	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
 }
 
 .topbarSection{
@@ -144,6 +148,7 @@ kbd {
 .spectateBanner{
 	background-color: #90FF90;
 	cursor: pointer;
+	text-align:center;
 }
 
 .contentContainer{
@@ -387,7 +392,7 @@ h1{
 
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait){
-	.topbar{
+	.topbarNav{
 		flex-wrap: wrap;
 		max-height: 4em;
 	}
