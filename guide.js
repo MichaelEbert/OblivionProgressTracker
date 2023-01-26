@@ -406,7 +406,6 @@ function onWindowResize(event){
 
 //Checks the window size and pass a true/false to the updateIframe function to indicate if the iframe should be turned on/off.
 function checkIframeSize(event){
-	console.log(window.settings);
 	windowResizeId = null;
 	if(settings?.iframeCheck == "on" || 
 	(settings?.iframeCheck == "auto" && !window.matchMedia("(max-width: " + settings.iframeMinWidth + "px)").matches)){ //if iframe setting is on or set to auto and window is larger than setting for min width.
