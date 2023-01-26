@@ -308,7 +308,7 @@ function updateIframe(visible){
 		let sidebar = document.getElementById("sidebar");
 		let divider = document.getElementById("dragMe");
 
-		if(sidebar != null && divider != null && mainPanel != null){
+		if(sidebar != null && divider != null){
 			sidebar.style.display = "";
 			divider.style.display = "";
 		}

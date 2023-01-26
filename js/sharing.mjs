@@ -199,7 +199,6 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 
 	document.getElementById("spectateBanner")?.remove();
-	document.getElementById("sidebarSpacer")?.remove();
 	var localProgress = loadCookie("progress_local");
 	if(localProgress != null && Object.keys(localProgress).length > 0){
 		if(window.debug){
