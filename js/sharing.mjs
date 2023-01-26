@@ -345,7 +345,7 @@ function initSharingFeature(){
 
 	if(!document.getElementById("spectateBanner")){
 		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbarNav")?.appendChild(spectateBanner);
+		document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
 	}
 	if(settings.spectateAutoRefresh == true){
 		startSpectating(false, true);
