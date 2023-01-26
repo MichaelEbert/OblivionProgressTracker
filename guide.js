@@ -315,12 +315,10 @@ function updateIframe(visible){
 		//iframe going from off to on
 		let sidebar = document.getElementById("sidebar");
 		let divider = document.getElementById("dragMe");
-		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage.
 
 		if(sidebar != null && divider != null && mainPanel != null){
 			sidebar.style.display = "";
 			divider.style.display = "";
-			mainPanel.style.width = "auto";
 		}
 		else{
 			console.error("Could not find all elements required to enable the iframe.");
@@ -368,7 +366,7 @@ function updateIframe(visible){
 		if(sidebar != null && divider != null && mainPanel != null){
 			sidebar.style.display = "none";
 			divider.style.display = "none";
-			mainPanel.style.width = "100%";
+			mainPanel.style.width = "100%"; //Want this to be 100% width since draggable will set it assuming there is a sidePanel even if there isn't.
 		}
 		//update links to redirect to desired place based on settings.
 		if(settings.iframeCheck == "window"){ //If the user wants links to redirect to a second window.
