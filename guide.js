@@ -317,7 +317,7 @@ function updateIframe(visible){
 		}
 		
 		//update all _blank links to open in iframe
-		var links = document.getElementsByClassName("guideFrame")[0].getElementsByTagName("A");
+		var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 		for(var lnk of links){
 			if(lnk.target == "_blank" || lnk.target == "externalSecondWindow"){
 				lnk.target = "myframe";
@@ -354,7 +354,7 @@ function updateIframe(visible){
 		//just hide the entire side panel because if we go back to large, we don't want to have to reload the iframe.
 		let sidebar = document.getElementById("sidebar");
 		let divider = document.getElementById("dragMe");
-		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage.
+		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage. //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 		if(sidebar != null && divider != null && mainPanel != null){
 			sidebar.style.display = "none";
 			divider.style.display = "none";
@@ -362,7 +362,7 @@ function updateIframe(visible){
 		}
 		//update links to redirect to desired place based on settings.
 		if(settings.iframeCheck == "window"){ //If the user wants links to redirect to a second window.
-			var links = document.getElementsByClassName("guideFrame")[0].getElementsByTagName("A");
+			var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 			for(var lnk of links){
 				if(lnk.target == "_blank" || lnk.target == "myframe"){
 					lnk.target = "externalSecondWindow";
@@ -370,7 +370,7 @@ function updateIframe(visible){
 			}
 		}
 		else{//iframeCheck setting is "off" and the user doesn't specfically want it to open in a second window, so we do new tab.
-			var links = document.getElementsByClassName("guideFrame")[0].getElementsByTagName("A");
+			var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 			for(var lnk of links){
 				if(lnk.target == "myframe" || lnk.target == "externalSecondWindow"){
 					lnk.target = "_blank";

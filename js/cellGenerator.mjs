@@ -257,9 +257,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         }
         rowhtml.classList.add(classname);
         rowhtml.classList.add("item");
-        if(classname == "glitch"){//This was the only way I could figure out how to prevent glitches from being bold.
-            rowhtml.classList.add("itemGlitch");
-        }
     }
     rowhtml.setAttribute("clid",usableId);
 
