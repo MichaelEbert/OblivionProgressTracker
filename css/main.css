@@ -181,8 +181,8 @@ kbd {
 	height: 100%;
 }
 
-.sidebar{
-	margin-left: 1em;
+.sidebarNirnroute{
+	margin-left: 0.5em;
 }
 
 .sidebarContent{
@@ -455,4 +455,8 @@ h1{
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.noScroll { /* TODO: Fix the overflow: auto crashing issue in mainPanel so we don't need this. */
+	overflow: hidden;
 }
