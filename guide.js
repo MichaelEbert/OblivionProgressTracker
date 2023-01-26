@@ -9,32 +9,31 @@ function LinkedElement(element, classname, id){
 }
 
 function init(){
-	//preload settings so we can get iframe loaded fast
-	window.settings = loadCookie("settings");
 	//initialize sidebar container, which we will hide situationally but only need to build once.
-	window.onload = function() {
-		let sidebarPanel = document.getElementById("sidebar");
-		let sidebarContent = document.getElementById("sidebarContent");
-		if(sidebarPanel != null && sidebarContent != null) { //if there is a sidebarPanel and sidebarContent to populate.
-			//Build an iframeContainer to add inside of the sidebarContent
-			sidebarPanel.style.display = ""; //make the sidebar visible if it isn't already.
-			let iframeContainer = document.createElement("div");
-			iframeContainer.classList.add("iframeContainer");
-			iframeContainer.id = "iframeContainer";
+	let sidebarPanel = document.getElementById("sidebar");
+	let sidebarContent = document.getElementById("sidebarContent");
+	if(sidebarPanel != null && sidebarContent != null) { //if there is a sidebarPanel and sidebarContent to populate.
+		//Build an iframeContainer to add inside of the sidebarContent
+		sidebarPanel.style.display = ""; //make the sidebar visible if it isn't already.
+		let iframeContainer = document.createElement("div");
+		iframeContainer.classList.add("iframeContainer");
+		iframeContainer.id = "iframeContainer";
 
-			var myframe = document.createElement("iframe");
-			myframe.name="myframe";
-			myframe.id="myframe";
-			myframe.classList.add("iframe");
-			myframe.src="help.html";
-			
-			//Place the myframe in the iframeContainer, then place the whole payload into the sidebarContent
-			iframeContainer.appendChild(myframe);
-			sidebarContent.appendChild(iframeContainer);
-		}
+		var myframe = document.createElement("iframe");
+		myframe.name="myframe";
+		myframe.id="myframe";
+		myframe.classList.add("iframe");
+		myframe.src="help.html";
+		
+		//Place the myframe in the iframeContainer, then place the whole payload into the sidebarContent
+		iframeContainer.appendChild(myframe);
+		sidebarContent.appendChild(iframeContainer);
+	}
+	//Have to sacrifice load time to wait for settings to load prior to updating the page.
+	window.settings = async function f() {
+		await loadCookie("settings");
 		checkIframeSize(); //Run an update to the page now that things are initialized.
 	}
-	
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
@@ -407,6 +406,7 @@ function onWindowResize(event){
 
 //Checks the window size and pass a true/false to the updateIframe function to indicate if the iframe should be turned on/off.
 function checkIframeSize(event){
+	console.log(window.settings);
 	windowResizeId = null;
 	if(settings?.iframeCheck == "on" || 
 	(settings?.iframeCheck == "auto" && !window.matchMedia("(max-width: " + settings.iframeMinWidth + "px)").matches)){ //if iframe setting is on or set to auto and window is larger than setting for min width.
