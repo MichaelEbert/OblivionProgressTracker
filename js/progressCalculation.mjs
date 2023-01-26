@@ -1,4 +1,3 @@
-"use strict"
 //=========================
 //Progress percentage updates and helper functions
 //=========================
@@ -7,10 +6,11 @@ export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems
+	sumCompletionItems,
+	clearProgressCache
 }
 
-import { totalweight, jsondata, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
+import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
 import {uploadCurrentSave} from './sharing.mjs';
 
@@ -171,6 +171,12 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 	}
 }
 
+function clearProgressCache(){
+	for(const klass of progressClasses){
+		runOnTree(jsondata[klass.name], (cell)=>cell.cache = null, 0, (node)=>true);
+	}
+}
+
 /**
  * Recalculate progress. Also updates UI.
  * @returns {Number} progress
@@ -178,7 +184,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 function recalculateProgress(){
 	//we have to recalculate hives that are updated because of refs to other hives.
 	var calculator = new ProgressCalculator();
-	const percentCompleteSoFar = calculator.calculateProgress(progressClasses, jsondata);
+	const percentCompleteSoFar = calculator.calculateProgress(progressClasses, getJsonData());
 
 	let progress = (percentCompleteSoFar * 100).toFixed(2);
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {

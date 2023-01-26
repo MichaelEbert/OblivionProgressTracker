@@ -276,9 +276,14 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         else{
             htmlIcon = rowhtml.children[indices.ICON];
         }
-
         if(cell.icon){
-            htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            //TODO: make icons uniform again so we don't need this additional check.
+            if(cell.icon == "Nirnroot" || cell.icon == "Wayshrine"){ //These have different markings.
+                htmlIcon.src = "images/Icon_" + cell.icon + "_Undiscovered.png";
+            }
+            else {
+                htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+            }
         }
         else{
             htmlIcon.src = "";

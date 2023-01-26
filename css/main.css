@@ -92,7 +92,18 @@ kbd {
 	border: .4em solid red;
 }
 
+
 .topbar{
+	width: 100%;
+	position: fixed;
+	background-color: var(--base-color);
+	top: 0; /* hug the top of the window instead of having a buffer */
+	left: 0;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
+}
+
+.topbarNav{
+	padding: 0.3em;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
@@ -102,9 +113,7 @@ kbd {
 	background-color: var(--base-color);
 	padding: 0.3em;
 	box-sizing: border-box;
-	top: 0; /* hug the top of the window instead of having a buffer */
-	left: 0;
-	z-index: 1;/*Lets topbar render ontop of iframe*/
+	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
 }
 
 .topbarSection{
@@ -333,6 +342,24 @@ input[type="number"]{
 	background-color: lightgoldenrodyellow;
 	border-style: outset;
 	border-color: lightgoldenrodyellow;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+.warning::before{
+	content: '⚠️ ';
+	font-style: normal;
+	font-size: 1.2em;
+}
+.warning{
+	text-align: center;
+	padding: 0.5em;
+	padding-bottom: 0.7em;
+	font-style: italic;
+	margin: auto;
+	width: fit-content;
+	background-color: lightcoral;
+	border-style: outset;
+	border-color: lightcoral;
 	font-size: 1em;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
@@ -403,7 +430,7 @@ h1{
 
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait){
-	.topbar{
+	.topbarNav{
 		flex-wrap: wrap;
 		max-height: 4em;
 	}

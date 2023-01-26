@@ -8,7 +8,18 @@ import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
-export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl, createSpectateBanner};
+export {
+	initShareSettings,
+	generateSaveKey,
+	uploadSave,
+	downloadSave,
+	uploadCurrentSave,
+	startSpectating,
+	stopSpectating,
+	setRemoteUrl,
+	createSpectateBanner,
+	initSharingFeature
+};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -167,14 +178,18 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 }
 
 /**
+ * @returns {boolean} is user currently spectating
+ */
+function isSpectating(){
+	return settings.remoteShareCode != null && settings.remoteShareCode != "";
+}
+
+/**
  * stop spectating and go back to local save data.
  */
 function stopSpectating(){
 	if(autoUpdateIntervalId != null){
 		clearInterval(autoUpdateIntervalId);
-	}
-	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
-		return;
 	}
 	console.log("stopping spectating.");
 	
@@ -182,17 +197,21 @@ function stopSpectating(){
 	settings.shareDownloadTimeInternal = "";
 	settings.shareDownloadTime = "";
 	saveCookie("settings",settings);
-	
+
+	document.getElementById("spectateBanner")?.remove();
+	document.getElementById("sidebarSpacer")?.remove();
 	var localProgress = loadCookie("progress_local");
-	saveCookie("progress",localProgress);
-	saveCookie("progress_local",{});
-	
+	if(localProgress != null && Object.keys(localProgress).length > 0){
+		if(window.debug){
+			console.log("localProgress is not null and has keys. Setting progress to local progress.");
+		}
+		saveCookie("progress",localProgress);
+		saveCookie("progress_local",{});
+	}
 	//check for function before loading because /share.html spectates, but immediately redirects
 	// instead of updating progress.
-	if(loadProgressFromCookie){
-		//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
-		loadProgressFromCookie();
-	}
+	//loadProgressFromCookie emits a progressLoad event so we don't have to manually do it.
+	loadProgressFromCookie();
 }
 
 //autoupdate listener.
@@ -201,19 +220,11 @@ var autoUpdateIntervalId = null;
 
 /**
  * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressLoad" event when download is complete.
+ * Must set spectate code before calling.
  * @param {boolean} notifyOnUpdate should we pop up dialog when we update
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
-	if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
-		if(window.debug){
-			console.log("Attaching auto update listener");
-		}
-		autoUpdateListener = ()=>{
-			startSpectating(false, true);
-		}
-		autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
-	}
 	if(window.debug){
 		console.log("spectate update");
 	}
@@ -255,6 +266,16 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 					alert("Downloaded");
 				}
 				document.dispatchEvent(new Event("progressLoad"));
+				//AFTER everything else, attach an auto listener to update spectating.
+				if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
+					if(window.debug){
+						console.log("Attaching auto update listener");
+					}
+					autoUpdateListener = ()=>{
+						startSpectating(false, true);
+					}
+					autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+				}
 			}
 		}).catch((e)=>{
 			if(e.status == 400){
@@ -312,5 +333,22 @@ function createSpectateBanner(){
 	spectateBanner.appendChild(spectateCancelButton);
 
 	return spectateBanner;
+}
+
+/**
+ * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
+ */
+function initSharingFeature(){
+	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+		return;
+	}
+
+	if(!document.getElementById("spectateBanner")){
+		let spectateBanner = createSpectateBanner();
+		document.getElementById("topbarNav")?.appendChild(spectateBanner);
+	}
+	if(settings.spectateAutoRefresh == true){
+		startSpectating(false, true);
+	}
 }
 

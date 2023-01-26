@@ -80,14 +80,14 @@
 		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
 		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
 		<br/>
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting" checked>Show prediscovered locations</label>
 		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
 		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
 		<br/>
 		<button id="resetMapButton">Reset Map</button>
 	</div>
 	<div id="help" style="display:none; height: 350vh; overflow: scroll; overflow-x: hidden;">
-		<h2>FAQ</h2>
+		<h2>Help</h2>
 		<h3>How to Use the Map</h3>
 		<p>Click on undiscovered (light icon) places to mark them as discovered (dark icon). Hover over a location to see its name. You can use the mouse wheel to zoom in/out, and click to drag the map around while viewing it.</p>
 		<p>There are several other objectives tracked by this map:</p>
@@ -179,13 +179,7 @@
 			//TODO fix. or move all this stuff into another js file.  or something.
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
 			progress.recalculateProgress();
-
-			if(settings.remoteShareCode){
-				if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-					let spectateBanner = sharing.createSpectateBanner();
-					document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
-				}
-			}
+			sharing.initSharingFeature();
 		});
 	}).call(window);
 
