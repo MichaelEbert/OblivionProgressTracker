@@ -89,59 +89,59 @@ li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. 
 }
 
 li.shop {
-	list-style-image: url("images/Icon_ShopBullet.png");
+	list-style-image: url("../images/Icon_ShopBullet.png");
 }
 li.spell{
-	list-style-image: url("images/Icon_SpellBullet.png");
+	list-style-image: url("../images/Icon_SpellBullet.png");
 }
 li.train{
-	list-style-image: url("images/Icon_TrainingBullet.png");
+	list-style-image: url("../images/Icon_TrainingBullet.png");
 }
 li.bribe{
-	list-style-image: url("images/Icon_BribeBullet.png");
+	list-style-image: url("../images/Icon_BribeBullet.png");
 }
 
 li.ayleid {
-	list-style-image: url("images/Icon_AyleidBullet.png");
+	list-style-image: url("../images/Icon_AyleidBullet.png");
 }
 li.camp {
-	list-style-image: url("images/Icon_CampBullet.png");
+	list-style-image: url("../images/Icon_CampBullet.png");
 }
 li.cave {
-	list-style-image: url("images/Icon_CaveBullet.png");
+	list-style-image: url("../images/Icon_CaveBullet.png");
 }
 li.city {
-	list-style-image: url("images/Icon_CityBullet.png");
+	list-style-image: url("../images/Icon_CityBullet.png");
 }
 li.fort {
-	list-style-image: url("images/Icon_FortBullet.png");
+	list-style-image: url("../images/Icon_FortBullet.png");
 }
 li.gate {
-	list-style-image: url("images/Icon_GateBullet.png");
+	list-style-image: url("../images/Icon_GateBullet.png");
 }
 li.heavenstone {
-	list-style-image: url("images/Icon_HeavenStoneBullet.png");
+	list-style-image: url("../images/Icon_HeavenStoneBullet.png");
 }
 li.inn {
-	list-style-image: url("images/Icon_InnBullet.png");
+	list-style-image: url("../images/Icon_InnBullet.png");
 }
 li.landmark {
-	list-style-image: url("images/Icon_LandmarkBullet.png");
+	list-style-image: url("../images/Icon_LandmarkBullet.png");
 }
 li.mine {
-	list-style-image: url("images/Icon_MineBullet.png");
+	list-style-image: url("../images/Icon_MineBullet.png");
 }
 li.nirnroot {
-	list-style-image: url("images/Icon_NirnrootBullet.png");
+	list-style-image: url("../images/Icon_NirnrootBullet.png");
 }
 li.settlement {
-	list-style-image: url("images/Icon_SettlementBullet.png");
+	list-style-image: url("../images/Icon_SettlementBullet.png");
 }
 li.shrine {
-	list-style-image: url("images/Icon_ShrineBullet.png");
+	list-style-image: url("../images/Icon_ShrineBullet.png");
 }
 li.wayshrine {
-	list-style-image: url("images/Icon_WayshrineBullet.png");
+	list-style-image: url("../images/Icon_WayshrineBullet.png");
 }
 ol.warning{
 	list-style-type: '⚠ ';
@@ -209,14 +209,15 @@ ol.warning{
 	color:#1155cc;
 }
 
-.glitch,
+.glitch{
+	color: black;
+	text-decoration: underline dotted grey;
+	font-weight: normal;
+}
+
 a.screenshot{
 	color: black;
 	text-decoration: underline dotted grey;
-}
-
-.item.glitch{
-	font-weight: normal;
 }
 
 a.screenshot::after{

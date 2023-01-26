@@ -9,8 +9,7 @@ function LinkedElement(element, classname, id){
 }
 
 function init(){
-	//preload settings so we can get iframe loaded fast
-	window.settings = loadCookie("settings");
+	loadSettingsFromCookie();
 	checkIframeSize();
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
