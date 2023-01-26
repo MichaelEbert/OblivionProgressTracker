@@ -76,11 +76,11 @@ function optimizeWidth(){
     if(page == "nirnroute.html"){
         width = "67.5%"; //Currently only good for a 1920x1080 aspect ratio, will make better later.
     }
-    else if(page == "speedrun-4.html" || page == "speedrun.html"){ //TODO: Get rid of speedrun-4 check when merged into the version with redirect pages.
+    else if(page == "speedrun-4.html" || page == "speedrun.html" || page == "casual.html"){ //TODO: Get rid of speedrun-4 check when merged into the version with redirect pages.
         width = "55%"; //Currently only good for a 1920x1080 aspect ratio, will make better later.
     }
     else {
-        width = "65%"; //a generally decent looking default.
+        width = "55%"; //a generally decent looking default. Eventually want to programmatically determine if a page is a "guide" page or "map" page.
     }
     return width;
 }

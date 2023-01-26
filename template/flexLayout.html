@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
+	<script src="guide.js"></script>
+	<script src="autoread.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
+</head>
+<body>
+<!-- Topbar Start (see navbar.html and replace.ps1)-->
+<div id="flexTopBar" class="flexTopBar"><!-- etc... --></div>
+<!-- Topbar End -->
+
+<div class="contentContainer">
+<div class="guideFrame"> <!-- This frame sits around the entire section below the navbar. -->
+
+<article class="mainPanel">
+<!-- Main page content if no divider, left section if using a divider -->
+<!-- Footer Goes Here -->
+</article>
+
+<div class="resizer" id="dragMe"></div> <!-- The draggable divider between the sides. Only need if using two panels. -->
+
+<div class="sidePanel" id="sidebar">
+    <!-- sidePanel is the right side of the page, for example this iframe from the guide.-->
+	<div id="sidebarContent" class="sidebarContent">
+		<div id="sidebarLinks">
+			<a href="./help.html" target="_blank" title="Help Page">🛈</a>
+			<a href="./toc-3.html" target="_blank" title="Table of Contents">📄</a>
+			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
+		</div>
+	</div>
+</div>
+
+</div> <!-- contentContainer div end -->
+</div> <!-- guideFrame div end -->
+
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as common from './js/cellGenerator.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs';
+	exportNamespace(common);
+	exportNamespace(progress);
+	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
+	window.sharing = sharing;
+	window.progress = progress;
+	window.userdata = userdata;
+
+	(function(){
+		if(loadCookie("debug") == true){
+			window.debug = true;
+		}
+		init();
+	}).call(window);
+</script>
+<script src="collapsible.js"></script>
+<script src="dragging.js"></script> <!-- Only need this if using the draggable divider. -->
+</body>
