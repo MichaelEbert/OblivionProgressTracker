@@ -374,7 +374,7 @@ h1{
 
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait){
-	.topbar{
+	.topbarNav{
 		flex-wrap: wrap;
 		max-height: 4em;
 	}
