@@ -60,16 +60,6 @@
 
 <div class="contentContainer">
 
-<div class="sidebar" id="sidebar">
-	<div id="sidebarContent" class="sidebarContent">
-		<div id="sidebarLinks">
-			<a href="./help.html" target="_blank">🛈</a>
-			<a href="./toc-3.html" target="_blank">📄</a>
-			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
-		</div>
-	</div>
-</div>
-<!-- margin-top 0 em because contentContainer already has a margin-top.-->
 <article id="guide" class="main mainPanel" style="margin-top:0em">
 <div class="warning">This was a developer test page that converted the V3 guide content into an interactive version. This version is completely untested and is not intended to be used in an actual speedrun.</div>
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
@@ -4740,6 +4730,20 @@ You have completed the 100% run!
 </footer>
 <!-- END FOOTER-->
 </article><!-- main end-->
+
+<div class="resizer" id="dragMe"></div>
+
+<div class="sidePanel" id="sidebar">
+	<div id="sidebarContent" class="sidebarContent">
+		<div id="sidebarLinks">
+			<a href="./help.html" target="_blank">🛈</a>
+			<a href="./toc-3.html" target="_blank">📄</a>
+			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
+		</div>
+	</div>
+</div>
+</div>
+<script src="dragging.js"></script>
 </div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
