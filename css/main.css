@@ -87,7 +87,7 @@ kbd {
 
 .topbar{
 	width: 100%;
-	position: fixed;
+	position: sticky;
 	background-color: var(--base-color);
 	top: 0; /* hug the top of the window instead of having a buffer */
 	left: 0;
@@ -154,7 +154,7 @@ kbd {
 .contentContainer{
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: var(--topbar-height); /*save room for topbar*/
+	/*margin-top: var(--topbar-height); /*save room for topbar*/
 }
 
 .sidebarContent{
@@ -206,7 +206,7 @@ kbd {
 .main{
 	flex-shrink: 1;
 	min-width: 0;/* flex has its own nonzero min-width; to allow for mobile, we have to manually set this */
-	margin-top: var(--topbar-height);
+	margin-top:1em;/*only needs margin-top because there's stuff up there. left, right, bot are 0 because body margin takes care of it.*/
 }
 
 .progress{
