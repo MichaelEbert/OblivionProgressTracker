@@ -76,8 +76,6 @@ function initEventListeners(){
 
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
-    
-    mapContainer.style.width = "100%"; //always want the map to fill the entire width underneath the sidebar layer.
 }
 
 
