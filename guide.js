@@ -397,7 +397,7 @@ function onWindowResize(event){
 function checkIframeSize(event){
 	windowResizeId = null;
 	if(settings?.iframeCheck == "on" || 
-	(settings?.iframeCheck == "auto" && !window.matchMedia("(max-width: " + settings.iframeMinWidth + "px)").matches)){ //if iframe setting is on or set to auto and window is larger than setting for min width.
+	(settings?.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){ //if iframe setting is on or set to auto and window is larger than setting for min width.
 		updateIframe(true);
 	}
 	else{

@@ -1,3 +1,18 @@
+<!--
+	This is a template page to show how each page of the website is laid out. Note that specific pages may require different scripts to be loaded in than the example ones shown.
+	To summarize:
+	The <body> contains a flexTopBar and a contentContainer, which each take up the entire width of the window and stack in a column using flex.
+		- The flexTopBar's height takes up as much space as needed, with the contentContainer taking up the rest.
+		- The flexTopBar contains primarily the topbar, which is set up in the template/navbar.html and added via the template/replace.ps1
+		- The spectateBanner (and other future alerts if we want) get pushed to the flexTopBar as the first children of the flexTopBar so they appear above the topbar.
+	The contentContainer holds the guideFrame, which holds the mainPanel, resizer, and sidePanel in a row using flex.
+		- The guideFrame width is set by dragging the resizer via dragging.js (declared later). The resizer has a static width. The sidePanel fills the remaining width of the page.
+		- The mainPanel is intended to be the primary content of any page, so it is usually set as the class of the <article>.
+		- If you want a page to have a single panel, the mainPanel is the only thing you need.
+		- If you want a page to have two panels, you need the mainPanel, followed by the resizer, and finally the sidePanel, all within the guideFrame.
+		- Additionally, a two panel page will need the dragging.js script tag added at the bottom of the document as shown, so that it runs after the page has loaded.
+-->
+
 <!DOCTYPE html>
 <html lang="en-US"><head>
 	<meta charset="UTF-8"/>
