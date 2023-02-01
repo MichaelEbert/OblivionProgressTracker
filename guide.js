@@ -309,7 +309,7 @@ function updateIframe(visible){
 		let divider = document.getElementById("dragMe");
 		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage. //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 
-		if(sidebar != null && divider != null){
+		if(sidebar != null && divider != null && mainPanel != null){
 			sidebar.style.display = "";
 			divider.style.display = "";
 			mainPanel.style.width = "55%"; //Makes the sidepanel less tiny when it reappears.
