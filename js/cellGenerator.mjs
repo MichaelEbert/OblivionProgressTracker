@@ -141,7 +141,11 @@ function createLinkElement(cell, linkName, format){
         //capitalize classname
         let capitalClassName = "";
         if(format & CELL_FORMAT_NAMELINK_SHOW_CLASSNAME){
-            capitalClassName = "[" + classname[0].toUpperCase() + classname.substring(1) + "] ";
+            let tempName = classname[0].toUpperCase() + classname.substring(1);
+            if(tempName == "Npc"){ //Special case for Npc to look like NPC
+                tempName = tempName.toUpperCase();
+            }
+            capitalClassName = "[" + tempName + "] ";
         }
         linky.innerText = capitalClassName + linkName;
     }

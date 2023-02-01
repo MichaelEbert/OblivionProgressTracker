@@ -408,7 +408,8 @@ h1{
 /* Overall flexbox frame stuff */
 .guideFrame{
 	display: flex;
-	height: 100%;
+	min-width: 0;
+	min-height: 0;
 }
 .resizer{
 	background-color: black;
