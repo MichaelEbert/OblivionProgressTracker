@@ -146,6 +146,7 @@ kbd {
 
 .flexTopBar {
 	display: flex;
+	flex-direction: column;
 	margin: 0 0.5em;
 	flex-basis: auto;
 	z-index: 1;/*Lets topbar render ontop of iframe*/
@@ -371,7 +372,6 @@ I feel like there should be a way to do this but I can't figure it out right now
 	height: 100%;
 	box-sizing:border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
 	touch-action: none;/*we want touch to scroll, not select or anything.*/
-	
 }
 
 .mapButtonBar{
