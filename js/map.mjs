@@ -140,12 +140,7 @@ async function initMap(){
     //load map cord data
     let windowParams = new URLSearchParams(window.location.search);
     if(windowParams.get("topbar") == "false"){
-        //TODO: put this in css files
         document.getElementById("flexTopBar").remove();
-        let mapContainer = document.getElementById("mapContainer");
-        if(mapContainer != null){
-            mapContainer.style = "top:0;padding:2px;"
-        }
     }
     //Setting parameters
     let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
