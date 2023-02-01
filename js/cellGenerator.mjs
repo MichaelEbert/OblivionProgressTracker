@@ -117,13 +117,13 @@ function createLinkElement(cell, linkName, format){
         }
         linky.href = linkHref;	
         //Check settings to see what initial link target to generate.
-        if(window.settings.iframeCheck == "window"){ //link goes to consistent external window
+        if(window.settings.iframeCheck == "window"){ //link goes to consistent external window.
             linky.target = "externalSecondWindow";
         }
-        else if(window.settings.iframeCheck == "on" || window.settings.iframeCheck == "auto"){//link goes to iframe.
+        else if((window.settings.iframeCheck == "on" || window.settings.iframeCheck == "auto") && window.innerWidth >= settings.iframeMinWidth){//link goes to iframe and iframe is visible.
             linky.target = "myframe";
         }
-        else{//link goes to new tab. iframeCheck == "off"
+        else{//link goes to new tab. iframeCheck == "off" or window is hidden.
             linky.target="_blank";
         }
     }

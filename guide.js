@@ -307,10 +307,12 @@ function updateIframe(visible){
 		//iframe going from off to on
 		let sidebar = document.getElementById("sidebar");
 		let divider = document.getElementById("dragMe");
+		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage. //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 
 		if(sidebar != null && divider != null){
 			sidebar.style.display = "";
 			divider.style.display = "";
+			mainPanel.style.width = "55%"; //Makes the sidepanel less tiny when it reappears.
 		}
 		else{
 			console.error("Could not find all elements required to enable the iframe.");
