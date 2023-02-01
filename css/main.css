@@ -376,6 +376,7 @@ I feel like there should be a way to do this but I can't figure it out right now
 
 .mapButtonBar{
 	padding-bottom: 0.5em;
+	user-select: none;
 }
 
 .mapWrapper{
