@@ -114,7 +114,7 @@ kbd {
 .topbarSection.icon{
 	flex: 1 1 0%;
 }
-.topbarSection.leftmost{ /* The leftmost topbar choice doesn't have a black line so this adds it in. Having existing classes do this makes double thickness lines on other topbar options. */
+.topbarSection.leftBorder{ /* The leftmost topbar choice doesn't have a black line so this adds it in. Having existing classes do this makes double thickness lines on other topbar options. */
 	border-left: 1px solid black;
 }
 .topbarSection img{
@@ -419,10 +419,11 @@ h1{
 	margin-left: 0.5em; /* To put space between scroll bar of main panel and this bar to avoid accidental scrolling. */
 }
 .mainPanel{
-	margin: 0 0 0 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
-	padding: 0.5em 0 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
+	margin: 0;
+	margin-left: 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
+	padding: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
 	min-width: 10%;
-	overflow-y: auto; /* Changing this to auto crashes things :/ */
+	overflow-y: auto;
 	overflow-x: hidden;
 }
 .sidePanel{

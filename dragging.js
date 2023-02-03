@@ -14,7 +14,6 @@ let y = 0;
 
 // Width of left side
 let leftWidth = 0;
-//leftSide.style.width = optimizeWidth(); //Set a good looking default width each time the page loads.
 
 // Handle the mousedown event
 // that's triggered when user drags the resizer
@@ -64,25 +63,3 @@ const mouseUpHandler = function () {
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
 };
-
-/*
-//takes the user's screen dimensions and type of page (guide or nirnroute currently) and generates the best starting width.
-//NEEDS TO RETURN A STRING.
-function optimizeWidth(){
-    let page = location.pathname.split("/").slice(-1);
-    let width = "";
-    //We can add a check in here to skip the automatic optimizations if iframeWidth setting has a value now.
-
-    //Automatic widths if no settings for iframeWidth exist.
-    if(page == "nirnroute.html"){
-        width = "67.2%"; //Currently only good for a 1920x1080 aspect ratio, will make better later.
-    }
-    else if(page == "speedrun-4.html" || page == "speedrun.html" || page == "casual.html"){ //TODO: Get rid of speedrun-4 check when merged into the version with redirect pages.
-        width = "55%"; //Currently only good for a 1920x1080 aspect ratio, will make better later.
-    }
-    else {
-        width = "55%"; //a generally decent looking default. Eventually want to programmatically determine if a page is a "guide" page or "map" page.
-    }
-    return width;
-}
-*/
