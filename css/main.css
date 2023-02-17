@@ -208,12 +208,6 @@ kbd {
 	height: 100%;
 }
 
-.main{
-	flex-shrink: 1;
-	min-width: 0;
-	margin-top: 1em;
-}
-
 .progress{
 	font-size: min(3em,12vw); /* on mobile, 3em is obnoxious so we decrease it */
 	font-weight: bold;
@@ -388,7 +382,7 @@ h1{
 }
 
 /*mobile/thin window CSS*/
-@media only screen and (orientation: portrait){
+@media only screen and (orientation: portrait) and (max-width: 800px){
 	.topbarNav{
 		flex-wrap: wrap;
 		max-height: 4em;
