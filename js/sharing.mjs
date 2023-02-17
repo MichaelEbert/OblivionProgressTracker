@@ -345,7 +345,7 @@ function initSharingFeature(){
 
 	if(!document.getElementById("spectateBanner")){
 		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbar").insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+		document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
 	}
 	if(settings.spectateAutoRefresh == true){
 		startSpectating(false, true);
