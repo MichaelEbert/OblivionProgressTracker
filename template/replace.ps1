@@ -36,6 +36,7 @@ Process{
 		#TODO make generic
 		if($relPath.startsWith("..\tools")){
 			$replacementText = [Regex]::replace($replacementTextBase,"href=`"\./","href=`"../");
+			$replacementText = [Regex]::replace($replacementTextBase,"src=`"\./","src=`"../");
 		}
 
 		write-verbose "Replacing in $relPath" 
