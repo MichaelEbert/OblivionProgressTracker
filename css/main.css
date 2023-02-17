@@ -180,14 +180,16 @@ kbd {
 	height:100%;
 	overflow: hidden; /* Sidebar links should not scroll with rest of page. */
 }
+
 #sidebarLinks{
-	padding: 0.25em 0 0.25em 0.5em;
-	background: var(--highlight-color);
+	padding: 0.25em;
+	background: var(--lighter-color);
 	border-bottom: groove;
 	border-top: groove;
 	border-width: 2px;
 	border-color: dimgray;
 }
+
 #sidebarLinks a{
 	text-decoration: none;
 	color: black;
@@ -354,22 +356,20 @@ input[type="number"]{
 
 /*required outide of mapContainer for Reasons*/
 .mapContainerOuter{
-	position:relative;
+	position: relative;
 	width: 100%;
 	height: 100%;
 }
 
 .mapContainer{
 	/*set height/width to parent element, but take up entire box.*/
-	position:absolute;
+	position: absolute;
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
 	/*inner display stuff*/
 	display: flex;
 	flex-direction: column;
-	padding: 0.5em;/*should really be margin but fullscreen stuff */
-	padding-top: 0em;/*if this was margin, the 1em default would collapse with the topbar. since its padding we get to do it manually.*/
 	touch-action: none;/*we want touch to scroll, not select or anything.*/
 }
 

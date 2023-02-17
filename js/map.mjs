@@ -141,11 +141,6 @@ async function initMap(){
     let windowParams = new URLSearchParams(window.location.search);
     if(windowParams.get("topbar") == "false"){
         document.getElementById("topbar").remove();
-        //TODO: put this in css files
-        let mapContainer = document.getElementById("mapContainer");
-        if(mapContainer != null){
-            mapContainer.style = "top:0;padding:2px;"
-        }
     }
     //Setting parameters
     let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
