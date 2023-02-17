@@ -11,11 +11,10 @@
 </head>
 <body>
 	<!-- begin topbar-->
-<div id="topbar" class="topbar">
-	<div id="sharingBanner"></div>
-	<nav id="topbarNav" class="topbarNav">
-		<div class="topbarSection icon">
-			<a href="https://prclive.run/"><img src="images/prcbanner.png" style="width: 90px;"></a>
+<div id="flexTopBar" class="flexTopBar">
+	<nav id="topbar" class="topbar">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -59,18 +58,33 @@
 </div>
 <!-- end topbar-->
 <div class="contentContainer" id="contentContainer">
-<div class="sidebar" id="sidebar">
-	<div class="screenHeight">
-	<div id="sidebarContent" class="sidebarContent resizableWidthContainer ">
-		<div id="sidebarLinks">
-			<a href="./help.html" target="_blank">🛈</a>
-			<a href="./map.html?topbar=false" target="_blank" title="Show Map">🗺️</a>
-		</div>
-	</div></div>
-</div>
-<article>
-<h1>The Casual Guide will be available soon! In the meantime, the <a href="https://prclive.run/wiki/Main_Page">wiki</a> can help you learn about specific objectives in the run.</h1>
+<div class="guideFrame">
+<article id="guide" class="mainPanel" style="width: 55%;">
+	<div class="info">The Casual Guide will be available soon! In the meantime, the <a href="https://prclive.run/wiki/Main_Page">wiki</a> can help you learn about specific objectives in the run.</div>
+
+	<!-- BEGIN FOOTER-->
+<footer>
+<hr/>
+<p>Licensed under GPLv3.
+ <a href="https://github.com/MichaelEbert/OblivionProgressTracker">Contribute</a>
+ PRCLive twitch
+ </p>
+</footer>
+<!-- END FOOTER-->
 </article>
+
+<div class="resizer" id="dragMe"></div>
+
+<div class="sidePanel" id="sidebar">
+	<div id="sidebarContent" class="sidebarContent">
+		<div id="sidebarLinks">
+			<a href="./help.html" target="myframe" title="Help Page">🛈</a>
+			<a href="./map.html?topbar=false" target="myframe" title="Show Map">🗺️</a>
+		</div>
+	</div>
+</div>
+
+</div>
 </div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
@@ -96,4 +110,5 @@
 	}).call(window);
 </script>
 <script src="collapsible.js"></script>
+<script src="dragging.js"></script>
 </body>

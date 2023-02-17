@@ -9,11 +9,10 @@
 </head>
 <body>
 	<!-- begin topbar-->
-<div id="topbar" class="topbar">
-	<div id="sharingBanner"></div>
-	<nav id="topbarNav" class="topbarNav">
-		<div class="topbarSection icon">
-			<a href="https://prclive.run/"><img src="images/prcbanner.png" style="width: 90px;"></a>
+<div id="flexTopBar" class="flexTopBar">
+	<nav id="topbar" class="topbar">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -57,7 +56,7 @@
 </div>
 <!-- end topbar-->
 <div class="contentContainer">
-<div class="mapContainer" id="mapContainer">
+<div class="mapContainer mainPanel" id="mapContainer" style="margin-right: 0.5em;">
 	<div class="mapButtonBar">
 		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
 		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
@@ -76,7 +75,7 @@
 
 		
 	</div>
-	<div id="mapSettingsContainer" style="display:none">
+	<div id="mapSettingsContainer" style="display:none; user-select: none;">
 		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location" checked/>No TSP</label>
 		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
 		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
@@ -99,7 +98,7 @@
 			<li><b>Heaven Stones</b> each give you a Greater Power when activated between 6pm and 6am when your combined Fame and Infamy is high enough. Click on a Heaven Stone to give it a checkmark to indicate you have received that stone's Greater Power.</li>
 		</ul>
 		<p><i>For routers, right-clicking will select a location and highlight it green. Hovering a different location while another is selected will display the distance between those locations as long as the "Show distance between locations" box is checked.</i></p>
-
+		
 		<h3>Oblivion Gates</h3>
 		<p>Oblivion Gates need to be discovered and also closed. Click on an already discovered gate to mark it as closed with a checkmark.</p>
 		<p>Oblivion Gates may have up to 3 letters on their icon. Here is what they mean:</p>

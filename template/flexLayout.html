@@ -1,0 +1,81 @@
+<!--
+	This is a template page to show how each page of the website is laid out. Note that specific pages may require different scripts to be loaded in than the example ones shown.
+	To summarize:
+	The <body> contains a flexTopBar and a contentContainer, which each take up the entire width of the window and stack in a column using flex.
+		- The flexTopBar's height takes up as much space as needed, with the contentContainer taking up the rest.
+		- The flexTopBar contains primarily the topbar, which is set up in the template/navbar.html and added via the template/replace.ps1
+		- The spectateBanner (and other future alerts if we want) get pushed to the flexTopBar as the first children of the flexTopBar so they appear above the topbar.
+	The contentContainer holds the guideFrame, which holds the mainPanel, resizer, and sidePanel in a row using flex.
+		- The guideFrame width is set by dragging the resizer via dragging.js (declared later). The resizer has a static width. The sidePanel fills the remaining width of the page.
+		- The mainPanel is intended to be the primary content of any page, so it is usually set as the class of the <article>.
+		- If you want a page to have a single panel, the mainPanel is the only thing you need.
+		- If you want a page to have two panels, you need the mainPanel, followed by the resizer, and finally the sidePanel, all within the guideFrame.
+		- Additionally, a two panel page will need the dragging.js script tag added at the bottom of the document as shown, so that it runs after the page has loaded.
+-->
+
+<!DOCTYPE html>
+<html lang="en-US"><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
+	<script src="guide.js"></script>
+	<script src="autoread.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
+</head>
+<body>
+<!-- Topbar Start (see navbar.html and replace.ps1)-->
+<div id="flexTopBar" class="flexTopBar"><!-- etc... --></div>
+<!-- Topbar End -->
+
+<div class="contentContainer">
+<div class="guideFrame"> <!-- This frame sits around the entire section below the navbar. -->
+
+<article class="mainPanel">
+<!-- Main page content if no divider, left section if using a divider -->
+<!-- Footer Goes Here -->
+</article>
+
+<div class="resizer" id="dragMe"></div> <!-- The draggable divider between the sides. Only need if using two panels. -->
+
+<div class="sidePanel" id="sidebar">
+    <!-- sidePanel is the right side of the page, for example this iframe from the guide.-->
+	<div id="sidebarContent" class="sidebarContent">
+		<div id="sidebarLinks">
+			<a href="./help.html" target="myframe" title="Help Page">🛈</a>
+			<a href="./toc-3.html" target="myframe" title="Table of Contents">📄</a>
+			<a href="./map.html?topbar=false" target="myframe" title="Show Map">🗺️</a>
+		</div>
+	</div>
+</div>
+
+</div> <!-- guideFrame div end -->
+</div> <!-- contentContainer div end -->
+
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as common from './js/cellGenerator.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs';
+	exportNamespace(common);
+	exportNamespace(progress);
+	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
+	window.sharing = sharing;
+	window.progress = progress;
+	window.userdata = userdata;
+
+	(function(){
+		if(loadCookie("debug") == true){
+			window.debug = true;
+		}
+		init();
+	}).call(window);
+</script>
+<script src="collapsible.js"></script>
+<script src="dragging.js"></script> <!-- Only need this if using the draggable divider. -->
+</body>

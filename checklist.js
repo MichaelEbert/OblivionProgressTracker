@@ -26,7 +26,9 @@ function init(){
 		if(userdata.loadProgressFromCookie() == false){
 			userdata.resetProgress();
 		}
+
 		sharing.initSharingFeature();
+
 		const ignoreEvent = (e) => {
 			e.preventDefault();
 			e.stopPropagation();

@@ -76,26 +76,6 @@ function initEventListeners(){
 
     document.getElementById("farImage").addEventListener('error',fallbackIngameImage);
     document.getElementById("closeImage").addEventListener('error',fallbackIngameImage);
-
-    const mapContainer = document.getElementById("mapContainer");
-    mapContainer.style.width = window.settings.iframeWidth;
-    mapContainer.addEventListener('mouseup',(event)=>{
-        if(window.debug){
-            console.log("mouseup");
-        }
-        //we need to convert px to vw.
-        let widthInPx = /(\d*)px/.exec(event.target.style.width);
-        if(widthInPx?.length > 1){
-            const newWidthPx = parseInt(widthInPx[1]);
-            const documentWidthPx = window.innerWidth;
-            let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
-            event.target.style.width = newWidthEm;
-            if(settings.iframeWidth != newWidthEm){
-                settings.iframeWidth = newWidthEm;
-                saveCookie("settings",settings);
-            }
-        }
-    });
 }
 
 

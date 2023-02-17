@@ -10,7 +10,29 @@ function LinkedElement(element, classname, id){
 
 function init(){
 	loadSettingsFromCookie();
-	checkIframeSize();
+	//initialize sidebar container, which we will hide situationally but only need to build once.
+	let sidebarPanel = document.getElementById("sidebar");
+	let sidebarContent = document.getElementById("sidebarContent");
+	if(sidebarPanel != null && sidebarContent != null) { //if there is a sidebarPanel and sidebarContent to populate.
+		//Build an iframeContainer to add inside of the sidebarContent
+		sidebarPanel.style.display = ""; //make the sidebar visible if it isn't already.
+		let iframeContainer = document.createElement("div");
+		iframeContainer.classList.add("iframeContainer");
+		iframeContainer.id = "iframeContainer";
+
+		var myframe = document.createElement("iframe");
+		myframe.name="myframe";
+		myframe.id="myframe";
+		myframe.classList.add("iframe");
+		myframe.src="help.html";
+		
+		//Place the myframe in the iframeContainer, then place the whole payload into the sidebarContent
+		iframeContainer.appendChild(myframe);
+		sidebarContent.appendChild(iframeContainer);
+		//Run an update to the page now that things are initialized.
+		checkIframeSize(); 
+	}
+	
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
@@ -264,15 +286,17 @@ function userInputData(rowHtml, checkboxElement){
 	recalculateProgressAndUpdateProgressUI();
 }
 
-
+//These variables are used to make sure we don't run a ton of refresh code constantly.
 var __displayingIframe = null;
+var __linkFormatType = null; //if for example the iframe was already off and we now have it set to window, the window link rewrite code wouldn't run without checking this.
 /**
- * Update iframe visibility
+ * Update iframe visibility and where guide links will appear.
  * @param {boolean} visible should iframe be visible
  */
+//TODO: Split the link updating and iFrame updating into two separate functions for even less redundancy.
 function updateIframe(visible){
-	//if we're not changing the visibility of the iframe, do nothing.
-	if(visible == __displayingIframe){
+	//If no settings are changing, exit this script to avoid tons of redundant updating.
+	if(visible == __displayingIframe && settings.iframeCheck == __linkFormatType){
 		return;
 	}
 	if(window.debug){
@@ -281,64 +305,30 @@ function updateIframe(visible){
 	}
 	if(visible){
 		//iframe going from off to on
-		const sidebar = document.getElementById("sidebarContent");
-		if(sidebar == null){
-			console.error("Could not find sidebar.");
+		let sidebar = document.getElementById("sidebar");
+		let divider = document.getElementById("dragMe");
+		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage. //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
+
+		if(sidebar != null && divider != null && mainPanel != null){
+			sidebar.style.display = "";
+			divider.style.display = "";
+			mainPanel.style.width = "55%"; //Makes the sidepanel less tiny when it reappears.
 		}
-
-		sidebar.style.display = "";
-		let iframeContainer = document.getElementById("iframeContainer");
-		if(iframeContainer == null){
-			iframeContainer = document.createElement("div");
-			iframeContainer.classList.add("iframeContainer");
-			iframeContainer.id = "iframeContainer";
-
-			var myframe = document.createElement("iframe");
-			myframe.name="myframe";
-			myframe.id="myframe";
-			myframe.classList.add("iframe");
-			myframe.src="help.html";
-			
-			iframeContainer.appendChild(myframe);
-			
-			if(sidebar != null){
-				sidebar.append(iframeContainer);
-			}
-			else{
-				document.body.prepend(iframeContainer);
-			}
-			if(settings?.iframeWidth){
-				sidebar.style.width = settings.iframeWidth;
-			}
-
-			const widthWindow = document.querySelector(".resizableWidthContainer");
-			widthWindow.addEventListener('mouseup',(event)=>{
-				//we need to convert px to vw.
-				let widthInPx = /(\d*)px/.exec(event.target.style.width);
-				if(widthInPx?.length > 1){
-					const newWidthPx = parseInt(widthInPx[1]);
-					const documentWidthPx = window.innerWidth;
-					let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
-					event.target.style.width = newWidthEm;
-					if(settings.iframeWidth != newWidthEm){
-						settings.iframeWidth = newWidthEm;
-						saveCookie("settings",settings);
-					}
-				}
-				
-			});
+		else{
+			console.error("Could not find all elements required to enable the iframe.");
 		}
 		
 		//update all _blank links to open in iframe
-		var links = document.getElementsByTagName("A");
+		var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 		for(var lnk of links){
-			if(lnk.target == "_blank"){
+			if(lnk.target == "_blank" || lnk.target == "externalSecondWindow"){
 				lnk.target = "myframe";
 			}
 		}
 		if(navigator.userAgent.includes("Chrome") ){
 			//Chrome doesn't resize images in iframes so we get to do it ourselves.
 			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
+			let myframe = document.getElementById("myframe");
 			myframe.onload = (evt)=>{
 				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
 				if(img == null || img.tagName != "IMG"){
@@ -363,47 +353,53 @@ function updateIframe(visible){
 	}
 	else{
 		//iframe going from on to off
-		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		let sidebar= document.getElementById("sidebarContent");
-		if(sidebar != null){
+		//just hide the entire side panel because if we go back to large, we don't want to have to reload the iframe.
+		let sidebar = document.getElementById("sidebar");
+		let divider = document.getElementById("dragMe");
+		let mainPanel = document.getElementsByClassName("mainPanel")[0]; //TODO: homogenize the id for this div on each webpage. //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
+		if(sidebar != null && divider != null && mainPanel != null){
 			sidebar.style.display = "none";
+			divider.style.display = "none";
+			mainPanel.style.width = "100%"; //Want this to be 100% width since draggable will set it assuming there is a sidePanel even if there isn't.
 		}
-
-		if(settings.iframeCheck == "window"){
-			var links = document.getElementsByTagName("A");
+		//update links to redirect to desired place based on settings.
+		if(settings.iframeCheck == "window"){ //If the user wants links to redirect to a second window.
+			var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 			for(var lnk of links){
-				if(lnk.target == "_blank"){
-					lnk.target = "myframe";
+				if(lnk.target == "_blank" || lnk.target == "myframe"){
+					lnk.target = "externalSecondWindow";
 				}
 			}
 		}
-		else{
-			//reset links to open in new tab, otherwise it looks like they're doing nothing.
-			var links = document.getElementsByTagName("A");
+		else{//iframeCheck setting is "off" and the user doesn't specfically want it to open in a second window, so we do new tab.
+			var links = document.getElementsByClassName("mainPanel")[0].getElementsByTagName("A"); //DOES THIS GRAB OTHER GUIDE FRAMES FROM WITHIN THE IFRAME? LOWER SCOPE TO A GUIDE ID?
 			for(var lnk of links){
-				if(lnk.target == "myframe"){
+				if(lnk.target == "myframe" || lnk.target == "externalSecondWindow"){
 					lnk.target = "_blank";
 				}
 			}
 		}
 		__displayingIframe = false;
 	}
+	__linkFormatType = settings.iframeCheck;
 }
 
+//The root function of the iframe resizing settings, runs each time the window size changes.
 var windowResizeId = null;
 function onWindowResize(event){
 	//on window resize, we may want to hide sidebar.
-	//only resize after being still for 50ms
+	//only resize after being still for 10ms
 	if(windowResizeId != null){
 		clearTimeout(windowResizeId);
 	}
-	windowResizeId = setTimeout(checkIframeSize,50,event);
+	windowResizeId = setTimeout(checkIframeSize,10,event);
 }
 
+//Checks the window size and pass a true/false to the updateIframe function to indicate if the iframe should be turned on/off.
 function checkIframeSize(event){
 	windowResizeId = null;
 	if(settings?.iframeCheck == "on" || 
-	(settings?.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){
+	(settings?.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){ //if iframe setting is on or set to auto and window is larger than setting for min width.
 		updateIframe(true);
 	}
 	else{

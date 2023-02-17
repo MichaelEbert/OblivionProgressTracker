@@ -12,11 +12,10 @@
 </head>
 <body>
 	<!-- begin topbar-->
-<div id="topbar" class="topbar">
-	<div id="sharingBanner"></div>
-	<nav id="topbarNav" class="topbarNav">
-		<div class="topbarSection icon">
-			<a href="https://prclive.run/"><img src="images/prcbanner.png" style="width: 90px;"></a>
+<div id="flexTopBar" class="flexTopBar">
+	<nav id="topbar" class="topbar">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -59,8 +58,9 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<article id="main" class="main">
-<div class="info">You can drag and drop your Oblivion save file (.ess) into this checklist to see your progress! Saves are typically located in User\Documents\My Games\Oblivion\Saves.</br> Checklist items with a disabled checkbox will automatically be completed after checking off a quest they are part of.</div>
+<div class="mainPanel">
+<article id="main">
+<div class="info">You can drag and drop your Oblivion save file (.ess) into this checklist to see your progress! Saves are typically located in User\Documents\My Games\Oblivion\Saves.</br>Checklist items with a disabled checkbox will automatically be completed after checking off a quest they are part of.</div>
 <div id="overview" class="section">
 	<div id="progress" class="progress">Total Progress: <span class="totalProgressPercent">0</span>%</div>
 
@@ -82,9 +82,9 @@
 		<tr><td><img class="overviewIcon" src="images/Icon_HeavenStone_Undiscovered.png" draggable="false">Greater Powers</td><td><span id="overview_greater_powers"></span></td></tr>
 	</table>
 </div>
-
 </article>
 <button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
+</div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
 	import * as obliviondata from './js/obliviondata.mjs'

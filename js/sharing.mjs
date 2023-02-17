@@ -199,7 +199,6 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 
 	document.getElementById("spectateBanner")?.remove();
-	document.getElementById("sidebarSpacer")?.remove();
 	var localProgress = loadCookie("progress_local");
 	if(localProgress != null && Object.keys(localProgress).length > 0){
 		if(window.debug){
@@ -310,7 +309,8 @@ function setRemoteUrl(event)
  */
 function createSpectateBanner(){
 	let spectateBanner = document.createElement("SPAN");
-	spectateBanner.innerText = "Spectating ⟳";
+	let bannerDefaultText = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
+	spectateBanner.innerText = bannerDefaultText;
 	spectateBanner.id = "spectateBanner";
 	spectateBanner.classList.add("spectateBanner");
 	spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh."
@@ -318,7 +318,7 @@ function createSpectateBanner(){
 		// childNodes[0] because that's the #text fragment. can't do innerText because the cancel button is there as well.
 		spectateBanner.childNodes[0].nodeValue = "Reloading...";
 		startSpectating(false, true).then(()=>{
-			spectateBanner.childNodes[0].nodeValue = "Spectating ⟳";
+			spectateBanner.childNodes[0].nodeValue = bannerDefaultText;
 			spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh.";
 		});
 	});
@@ -345,7 +345,7 @@ function initSharingFeature(){
 
 	if(!document.getElementById("spectateBanner")){
 		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbarNav")?.appendChild(spectateBanner);
+		document.getElementById("flexTopBar").insertBefore(spectateBanner, document.getElementById("flexTopBar").firstChild);
 	}
 	if(settings.spectateAutoRefresh == true){
 		startSpectating(false, true);

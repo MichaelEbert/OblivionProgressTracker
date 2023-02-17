@@ -11,11 +11,10 @@
 </head>
 <body>
 	<!-- begin topbar-->
-<div id="topbar" class="topbar">
-	<div id="sharingBanner"></div>
-	<nav id="topbarNav" class="topbarNav">
-		<div class="topbarSection icon">
-			<a href="https://prclive.run/"><img src="images/prcbanner.png" style="width: 90px;"></a>
+<div id="flexTopBar" class="flexTopBar">
+	<nav id="topbar" class="topbar">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -58,7 +57,7 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<article class="main">
+<article class="mainPanel">
 <h1>Settings</h1>
 
 <div class="section">
@@ -87,8 +86,8 @@
 			<option value="off" title="Disables the Info Box entirely, opening links in another tab.">Always Off</option>
 			<option value="window" title="Disables the Info Box, opening links in another window. This is useful if you want to cast links to a second monitor while keeping the guide on the original one.">Other Window</option>
 		</select> Info Box Sizing/Link Behavior</label> — <i>Hover over each option in the drop down menu for an explanation of what it does.</i><br/>
-		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide.</label> <i>(Only works if above setting is Auto.)</i><br/>
-		<label><input type="text" id="iframeWidth" class="autoTextSetting"/> Width of the Info Box to the right of the guide.</label><br/>
+		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide.</label> <i>(Only works if above setting is Auto.)</i>
+		<!--<label><input type="text" id="iframeWidth" class="autoTextSetting"/> Width of the Info Box to the right of the guide.</label><br/>-->
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Map</div>
