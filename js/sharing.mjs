@@ -308,7 +308,7 @@ function setRemoteUrl(event)
  * @returns html element to control spectating.
  */
 function createSpectateBanner(){
-	let spectateBanner = document.createElement("SPAN");
+	let spectateBanner = document.createElement("DIV");
 	let bannerDefaultText = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
 	spectateBanner.innerText = bannerDefaultText;
 	spectateBanner.id = "spectateBanner";

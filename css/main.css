@@ -151,7 +151,6 @@ kbd {
 	font-style: normal;
 }
 .spectateBanner{
-	display: block;
 	cursor: pointer;
 	text-align: center;
 	font-style: italic;
