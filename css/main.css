@@ -86,8 +86,16 @@ kbd {
 	border: .4em solid red;
 }
 
+.topbar {
+	display: flex;
+	flex-direction: column;
+	margin: 0 0.5em;
+	flex-basis: auto;
+	z-index: 1;/*Lets topbar render ontop of iframe*/
+	user-select: none;
+}
 
-.topbar{
+.topbarNav{
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
@@ -142,15 +150,6 @@ kbd {
 .topbarSection a,
 .topbarSection:hover .topbarSublist{
 	display: block;
-}
-
-.flexTopBar {
-	display: flex;
-	flex-direction: column;
-	margin: 0 0.5em;
-	flex-basis: auto;
-	z-index: 1;/*Lets topbar render ontop of iframe*/
-	user-select: none;
 }
 
 .spectateBanner::before{
