@@ -6,21 +6,23 @@ function init(){
 	document.addEventListener("progressLoad",updateUIFromSaveData);
 	obliviondata.loadJsonData().then(()=>{
 		userdata.loadSettingsFromCookie();
-		//populate sections with json data.
-		//only display stuff that user can change.
-		const base = document.getElementById("main");
-		for(const klass of obliviondata.progressClasses){
-			const hive = obliviondata.jsondata[klass.name];
-			initMulti(hive, base,0);
-		}
-		//BAD HACK to get these specific columns to wrap
-		try{
-			document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
-			document.getElementById("main_misc_Oblivion_Gates_Shut_40_Random_Gates").children[0].style = "break-inside:unset";
-			document.getElementById("main_save").children[0].style = "break-inside:unset";
-		}
-		catch{
-			debugger;
+		if(window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1).split(".")[0] != "popout"){
+			//populate sections with json data.
+			//only display stuff that user can change.
+			const base = document.getElementById("main");
+			for(const klass of obliviondata.progressClasses){
+				const hive = obliviondata.jsondata[klass.name];
+				initMulti(hive, base,0);
+			}
+			//BAD HACK to get these specific columns to wrap
+			try{
+				document.getElementById("main_nirnroot_Outdoor_Circuit").children[0].style = "break-inside:unset";
+				document.getElementById("main_misc_Oblivion_Gates_Shut_40_Random_Gates").children[0].style = "break-inside:unset";
+				document.getElementById("main_save").children[0].style = "break-inside:unset";
+			}
+			catch{
+				debugger;
+			}
 		}
 	}).then(()=>{
 		if(userdata.loadProgressFromCookie() == false){
@@ -163,7 +165,7 @@ function recalculateProgressAndUpdateProgressUI(){
 	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection"){
+		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
 			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
 		}
 	});

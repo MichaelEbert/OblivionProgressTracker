@@ -1,0 +1,36 @@
+html{
+    background-color: black;
+    color: white;
+}
+#popoutContainer {
+    background: white;
+    font-size: 1.25em;
+    height: 510px;
+    width: 475px;
+    font-weight: bold;
+}
+.popoutTopBar {
+    display: flex;
+	flex-direction: column;
+	flex-basis: auto;
+	user-select: none;
+    height: 2em;
+    line-height: 1.75em;
+}
+.popoutTopBarSection {
+    flex: 1 1 10%;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+    user-select: none;
+}
+table {
+    border-collapse: separate;
+}
+tr {
+    margin: 0;
+}
+td > span{
+    text-align: center;
+    display: block;
+}
