@@ -56,37 +56,35 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<div class="guideFrame">
-
-<div id="mapColumn" class="mainPanel" style="width: 67.2%;">
-	<div class="mapContainerOuter">
-<div class="mapContainer" id="mapContainer">
-	<div id="mapSettingsContainer" style="display:none">
-		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
-		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
-		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
-		<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
-		<br/>
-		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
-		<br/>
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
-		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
-		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
+<div class="contentContainer">
+<div id="mapColumn" class="mainPanel" style="width: 50%;">
+<div class="mapContainerOuter">
+	<div class="mapContainer" id="mapContainer">
+		<div id="mapSettingsContainer" style="display:none">
+			<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
+			<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
+			<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
+			<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
+			<br/>
+			<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
+			<br/>
+			<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+			<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
+			<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
+		</div>
+		<div id="wrapper_Map" class="mapWrapper">
+			<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+		</div>
 	</div>
-	<div id="wrapper_Map" class="mapWrapper">
-		<button id="showSettingsButton" style="position:absolute">Show Settings</button>
-	</div>
-</div>
 </div>
 </div>
 
 <div class="resizer" id="dragMe"></div>
 
 <div class="sidePanel">
-<div class="contentContainer">
-	<div class="sidebarNirnroute" id="sidebar">
+	<div id="sidebar" class="sidebarContent">
 	<!-- sidebar contains images n navigation n stuff.-->
 	<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" >Nirnroots Found: <span id="overview_nirnroot">##</span></span>
 	<br/>
@@ -100,7 +98,6 @@
 	<h2>Close image</h2>
 	<a href="" id="closeImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="closeImage" alt="close image"></a>
 	</div>
-</div>
 </div>
 </div>
 <script type="module">

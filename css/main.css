@@ -161,23 +161,58 @@ kbd {
 }
 
 .contentContainer{
+	
+	/*inner stuff*/
 	display: flex;
-	min-width: 0;
-	min-height: 0;
-	overflow: hidden;
-	flex: 1; /* contentContainer fills the remaining empty space below the flexTopBar */
+	
 }
 
-.sidebarNirnroute{
-	margin-left: 0.5em;
-	user-select: none;
+.fullscreenBody .contentContainer{
+	/* on contentContainers inside a fullscreenBody, scroll the contentContainer instead of the page.*/
+	flex: 1;
+	overflow: auto;
+}
+
+.resizer{
+	background-color: black;
+	cursor: ew-resize;
+	padding: 2px;/*actual content of resizer*/
+	margin: 0 0.5em;
+	/*on fullscreen pages, don't scroll with the rest of the content*/
+	position:sticky;
+	top:0
+}
+
+#mapColumn{
+	position:sticky;
+	top:0;
+}
+
+.mainPanel{
+	margin: 0;
+	margin-left: 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
+	padding: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
+	min-width: 10%;
+}
+
+.sidePanel{
+	flex: 1 1 0%;
+	min-width: 10%;
 }
 
 .sidebarContent{
 	display: flex;
 	flex-direction: column;
 	height:100%;
-	overflow: hidden; /* Sidebar links should not scroll with rest of page. */
+}
+
+.screenHeight{
+	position: sticky; /*within the .sidePanel, this is the "content" container that slides up and down to stay on the page.*/
+	height: 100vh;
+	top: 1.8em; /*start at very top of page (minus topbar)*/
+	/*the following make the height 100vh minus overlap*/
+	box-sizing:border-box;
+	padding-bottom:3.5em;
 }
 
 #sidebarLinks{
@@ -394,37 +429,6 @@ h1{
 	.topbarSection:hover .topbarSublist{
 		display: none;/*no more crazy links for mobile*/
 	}
-}
-
-/* Overall flexbox frame stuff */
-.guideFrame{
-	display: flex;
-	min-width: 0;
-	min-height: 0;
-}
-.resizer{
-	background-color: black;
-	cursor: ew-resize;
-	height: 100%;
-	padding: 2px;
-	margin-left: 0.5em; /* To put space between scroll bar of main panel and this bar to avoid accidental scrolling. */
-}
-
-.mainPanel{
-	margin: 0;
-	margin-left: 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
-	padding: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
-	min-width: 10%;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-
-
-.sidePanel{
-	flex: 1 1 0%;
-	min-width: 10%;
-	overflow: hidden; /* Don't want the sidebar banner to scroll with everything. */
 }
 
 /* Scroll bar stuff to make them less obnoxiously large */
