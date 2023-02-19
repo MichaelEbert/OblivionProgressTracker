@@ -161,10 +161,8 @@ kbd {
 }
 
 .contentContainer{
-	
 	/*inner stuff*/
 	display: flex;
-	
 }
 
 .fullscreenBody .contentContainer{
@@ -218,7 +216,7 @@ kbd {
 #sidebarLinks{
 	padding: 0.25em;
 	background: var(--lighter-color);
-	border-bottom: groove;
+	border-bottom: groove;/
 	border-top: groove;
 	border-width: 2px;
 	border-color: dimgray;
@@ -230,8 +228,6 @@ kbd {
 }
 
 .iframeContainer{
-	display: flex;
-	flex-direction: column;
 	width: 100%;
 	height: 100%;
 }
