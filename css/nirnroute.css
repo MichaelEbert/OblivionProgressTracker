@@ -7,4 +7,5 @@ h1{
 .sidebarContent{
 	/*don't want display:flex. just basic box html layout.*/
 	display: revert;
+	border: none;
 }

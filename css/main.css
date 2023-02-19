@@ -163,6 +163,7 @@ kbd {
 .contentContainer{
 	/*inner stuff*/
 	display: flex;
+	margin: 0 0.5em;
 }
 
 .fullscreenBody .contentContainer{
@@ -175,7 +176,7 @@ kbd {
 	background-color: black;
 	cursor: ew-resize;
 	padding: 2px;/*actual content of resizer*/
-	margin: 0 0.5em;
+	margin-left: 0.5em;
 	/*on fullscreen pages, don't scroll with the rest of the content*/
 	position:sticky;
 	top:0
@@ -187,9 +188,7 @@ kbd {
 }
 
 .mainPanel{
-	margin: 0;
-	margin-left: 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
-	padding: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
+	margin: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
 	min-width: 10%;
 }
 
@@ -202,6 +201,7 @@ kbd {
 	display: flex;
 	flex-direction: column;
 	height:100%;
+	border: 1px solid black;
 }
 
 .screenHeight{
@@ -210,13 +210,18 @@ kbd {
 	top: 1.8em; /*start at very top of page (minus topbar)*/
 	/*the following make the height 100vh minus overlap*/
 	box-sizing:border-box;
-	padding-bottom:3.5em;
+	padding-bottom:2.3em;
+}
+
+.screenHeight2{
+	top:3.6em;
+	padding-bottom:4.1em;
 }
 
 #sidebarLinks{
 	padding: 0.25em;
 	background: var(--lighter-color);
-	border-bottom: groove;/
+	border-bottom: groove;
 	border-top: groove;
 	border-width: 2px;
 	border-color: dimgray;
