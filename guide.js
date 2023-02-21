@@ -265,9 +265,9 @@ function userInputData(rowHtml, checkboxElement){
 	recalculateProgressAndUpdateProgressUI();
 }
 
-//These variables are used to make sure we don't run a ton of refresh code constantly.
-var __displayingIframe = null;
-var __linkState = null; //if for example the iframe was already off and we now have it set to window, the window link rewrite code wouldn't run without checking this.
+//used to make sure we don't run a ton of refresh code constantly.
+var __linkState = null;
+
 /**
  * Update iframe visibility and where guide links will appear.
  * @param {string} newLinkLocation should iframe be visible
@@ -444,8 +444,11 @@ function checkIframeSize(event){
 		case "on":
 			updateIframe(LINK_LOCATION_MYFRAME);
 			break;
-		case "externalsecondwindow":
+		case "window":
 			updateIframe(LINK_LOCATION_SECONDWINDOW);
+			break;
+		default:
+			console.error("unknown iframeCheck option");
 			break;
 	}
 }
