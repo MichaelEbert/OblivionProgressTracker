@@ -119,11 +119,7 @@ function importProgress(eventargs){
 }
 
 function copytoClipboard() {
-    var copyText = document.getElementById("myShareUrl");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); // For mobile devices
-    navigator.clipboard.writeText(copyText.value);
-    copyText.setSelectionRange(0, 0); //I thought the selected text looked ugly so I made it deselect it at the end.
+    navigator.clipboard.writeText(document.getElementById("myShareUrl").value);
     document.getElementById("shareUrlCopy").innerHTML = "✅ Copied Share URL to Clipboard!";
 }
 

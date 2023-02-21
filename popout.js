@@ -13,6 +13,7 @@ function initBrowserSource(){
     //generate the popout window based on settings.
     var windowParamsURL = 'popout.html?width=' + width + 'px&height=' + height + 'px&columns=' + columns;
     var windowFeaturesStr = 'toolbar=no,menubar=no,width=' + width + ',height=' + height;
+    document.getElementById("browserSourceUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/"+windowParamsURL;
     window.open(windowParamsURL, 'browserSource', windowFeaturesStr);
 }
 
@@ -25,4 +26,10 @@ function initPopoutSettings(){
     //update popout html elements based on settings.
     window.getElementById(popoutContainer).style.width = urlParams.get('width');
     window.getElementById(popoutContainer).style.height = urlParams.get('height');
+}
+
+//The copy to clipboard function for the popout tracker.
+function copyBrowserSourceToClipboard(){
+    navigator.clipboard.writeText(document.getElementById("browserSourceUrl").value);
+    document.getElementById("browserSourceCopyConfirm").innerHTML = "✅ Copied Browser Source URL to Clipboard!";
 }

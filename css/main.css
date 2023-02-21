@@ -353,6 +353,9 @@ input[type="number"]{
 #shareUrlCopy{
 	font-size: 0.7em;
 }
+#browserSourceCopyConfirm{
+	font-size: 0.9em;
+}
 
 /*
 the "padding" should really be margin.

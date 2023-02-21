@@ -78,18 +78,19 @@
 <div class="sectionTitle">Browser Source</div>
 <div class="collapsibleContent">
 	<p><i>Click the button below to generate a browser source to use in software like OBS.</i></p>
-	<p><i>In OBS add a Browser Source, then copy/paste the popout window URL into the URL field, and set the width/height to match the settings you specify below.</i></p>
+	<p><i>In OBS add a Browser Source, then copy/paste the generated URL into the URL field, and set the width/height to match the settings you specify below.</i></p>
 	<div>
 		Width: <input type="number" value="460" id="browserSourceWidth"/>
 		Height: <input type="number" value="330" id="browserSourceHeight"/>
 		Columns: 
-		<select id="browserSourceColumns">
+		<select id="browserSourceColumns" disabled>
 			<option value="2">Two Columns</option>
 			<option value="1">Single Column</option>
 		</select>
 	</div>
 	<br/>
-	<button onclick="initBrowserSource()">Generate Browser Source Tracker</button>
+	<button onclick="initBrowserSource()">Generate Browser Source Tracker</button><input type="text" id="browserSourceUrl" size="70" readonly="true"/><button onclick="copyBrowserSourceToClipboard()" class="clipboardButton">📋</button><span id="browserSourceCopyConfirm"></span>
+	<p><i>Your browser may block popup windows. In that case, copy and paste the generated link if you want to view the page outside of your stream software.</i></p>
 </div>
 </div>
 
