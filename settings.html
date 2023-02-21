@@ -68,7 +68,13 @@
 		<p><b>Share: </b><button id="shareProgressButton" onclick="sharingjs.uploadCurrentSave()">Create Share URL*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="settingsjs.copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
 		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — Clicking on someone else's Share URL or entering a 6 letter code and pressing enter on this box will place your in Spectator Mode.</span>
 	</div>
-	<p><i>When you are in Spectator Mode, a Spectating button will appear at the top right. You cannot change the progress on the guide while spectating. Clicking the X to close Spectating Mode will return your personal progress and allow changing checklist values again. If you want to view someone else's progress in one window and still be able to track your own progress at the same time, using an incognito window to spectate allows for this. Perfect for racing against someone!</i></p>
+	<i>Spectating Notes
+	<ul>
+	<li>When you are in Spectator Mode, a Spectating banner will appear at the top of the page.</li>
+	<li>You cannot change the progress on the guide while spectating. Click the "X" on the spectating banner to close Spectating Mode, returning you to your personal progress and allowing you to change checklist values again.</li>
+	<li>To view someone else's progress in one window and still be able to track your own progress at the same time, 
+		use an incognito window to open their spectating link. Perfect for racing against someone!</li>
+		</ul></i>
 </div>
 <p style="font-size: small"><i>* By creating a share URL, you agree that your progress, progress URL, IP address, and time uploaded may be stored on a server.</i></p>
 </div>
@@ -98,7 +104,7 @@
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Advanced Sharing</div>
-		<div class="warning">These settings are for advanced users only and can break the sharing feature if used incorrectly. <b>Do not change these settings unless you are absolutely sure that you know what you are doing.</b></div>
+		<div><em>These settings are for advanced users and can stop sharing from working if improperly configured.</em></div>
 		</br>
 		<button id="copyDataLocalButton" disabled>Copy Spectator Progress to Local Progress</button> — <i>Overwrites your local data with the data of the person you are currently spectating.</i><br/>
 		<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i><br/>
