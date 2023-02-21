@@ -220,7 +220,7 @@ kbd {
 
 #sidebarLinks{
 	padding: 0.25em;
-	background: var(--lighter-color);
+	background: var(--highlight-color);
 	border-bottom: groove;
 	border-top: groove;
 	border-width: 2px;
