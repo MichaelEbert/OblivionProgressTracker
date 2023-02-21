@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
 	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
     <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
+	<script src="popout.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -71,6 +72,25 @@
 	<p><i>When you are in Spectator Mode, a Spectating button will appear at the top right. You cannot change the progress on the guide while spectating. Clicking the X to close Spectating Mode will return your personal progress and allow changing checklist values again. If you want to view someone else's progress in one window and still be able to track your own progress at the same time, using an incognito window to spectate allows for this. Perfect for racing against someone!</i></p>
 </div>
 <p style="font-size: small"><i>* By creating a share URL, you agree that your progress, progress URL, IP address, and time uploaded may be stored on a server.</i></p>
+</div>
+
+<div class="section">
+<div class="sectionTitle">Browser Source</div>
+<div class="collapsibleContent">
+	<p><i>Click the button below to generate a browser source to use in software like OBS.</i></p>
+	<p><i>In OBS add a Browser Source, then copy/paste the popout window URL into the URL field, and set the width/height to match the settings you specify below.</i></p>
+	<div>
+		Width: <input type="number" value="460" id="browserSourceWidth"/>
+		Height: <input type="number" value="330" id="browserSourceHeight"/>
+		Columns: 
+		<select id="browserSourceColumns">
+			<option value="2">Two Columns</option>
+			<option value="1">Single Column</option>
+		</select>
+	</div>
+	<br/>
+	<button onclick="initBrowserSource()">Generate Browser Source Tracker</button>
+</div>
 </div>
 
 <div class="section">
