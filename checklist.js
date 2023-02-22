@@ -166,7 +166,7 @@ function recalculateProgressAndUpdateProgressUI(){
 	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
 		element.innerText = progress.toString();
 		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
 		}
 	});
 }
