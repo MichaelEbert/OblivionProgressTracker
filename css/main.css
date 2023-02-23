@@ -169,7 +169,7 @@ kbd {
 .fullscreenBody .contentContainer{
 	/* on contentContainers inside a fullscreenBody, scroll the contentContainer instead of the page.*/
 	flex: 1;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .resizer{
@@ -195,6 +195,11 @@ kbd {
 .sidePanel{
 	flex: 1 1 0%;
 	min-width: 10%;
+}
+
+/*for panels (main or side) that we want to scroll, use this style for them*/
+.scrollablePanel{
+	overflow: auto;
 }
 
 .sidebarContent{
