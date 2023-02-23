@@ -188,13 +188,13 @@ kbd {
 }
 
 .mainPanel{
-	margin: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
 	min-width: 10%;
 }
 
 .sidePanel{
 	flex: 1 1 0%;
 	min-width: 10%;
+	border: 1px solid black;
 }
 
 /*for panels (main or side) that we want to scroll, use this style for them*/
@@ -206,7 +206,6 @@ kbd {
 	display: flex;
 	flex-direction: column;
 	height:100%;
-	border: 1px solid black;
 }
 
 .screenHeight{
