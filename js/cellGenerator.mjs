@@ -120,7 +120,7 @@ function createLinkElement(cell, linkName, format){
         if(window.settings.iframeCheck == "window"){ //link goes to consistent external window.
             linky.target = "externalSecondWindow";
         }
-        else if((window.settings.iframeCheck == "on" || window.settings.iframeCheck == "auto") && window.innerWidth >= settings.iframeMinWidth){//link goes to iframe and iframe is visible.
+        else if((window.settings.iframeCheck == "auto" || window.settings.iframeCheck == "on") && window.innerWidth >= settings.iframeMinWidth){//link goes to iframe and iframe is visible.
             linky.target = "myframe";
         }
         else{//link goes to new tab. iframeCheck == "off" or window is hidden.
@@ -196,7 +196,7 @@ function adjustFormatting(cell, defaultFormatting){
 let lastCell_node = null;
 let lastCell_format = null;
 let lastCell_classname = null;
-
+let lastCell_indices = null;
 /**
  * Create a html element(with checkbox, name, etc) for the specified cell with the specified format.
  * @param cell obliviondata cell to create the html element for
@@ -211,7 +211,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     }
 
     format = adjustFormatting(cell, format);
-    let indices = new Indices(format);
+    let indices;
 
     //constants used for the rest of this function
     let refCell;
@@ -224,9 +224,20 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     let COPYING = false;
 
     if(format == lastCell_format && classname == lastCell_classname){
+        COPYING = true;
+    }
+
+    if(window.debug?.disable_node_clone){
+        COPYING = false;
+    }
+
+    if(COPYING){
         //i wonder if its faster to clone the same node again and again instead of a different node each time...
         rowhtml = lastCell_node; //we don't need to clone here because we clone when setting lastCell_node.
-        COPYING = true;
+        indices = lastCell_indices;
+    }
+    else{
+        indices = new Indices(format);
     }
 
     // get prerequisites: ID, target cell (for ref cells)
@@ -247,7 +258,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         return;
     }
 
-    if(usableId > 0xFF000000 && window.debug){
+    if(usableId > 0xFF000000 && window.debug?.obliviondata){
         console.warn("Creating element for custom formID "+usableId+"");
     }
     
@@ -452,9 +463,12 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     });
 
     //do this before miscChecklistStuff because miscChecklistStuff is all ID-specific, so it would have to be rewritten anyways.
-    lastCell_node = rowhtml.cloneNode(true);
+    if(!window.debug?.disable_node_clone){
+        lastCell_node = rowhtml.cloneNode(true);
+    }
     lastCell_classname = classname;
     lastCell_format = format;
+    lastCell_indices = indices;
 
     miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
 
