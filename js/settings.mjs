@@ -1,4 +1,4 @@
-//NOTE: this is the companion page for settings.html. the actual settings object is initialized in progress.js
+//NOTE: this is the companion page for settings.html. the actual settings object is initialized in userdata.mjs
 export{
     updateShareUrl,
     init,
