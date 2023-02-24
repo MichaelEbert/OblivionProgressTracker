@@ -23,7 +23,10 @@ function updateShareUrl(){
 }
 
 function init(){
-    loadJsonData("..").then(()=>{
+    if(!window.location.endsWith("settings.html")){
+        console.error("settings.html init() called fron non-settings page! things may break.");
+    }
+    loadJsonData(".").then(()=>{
         console.assert(jsondata != null);
         loadProgressFromCookie();
         console.log("progress loaded!");
