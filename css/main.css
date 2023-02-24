@@ -163,7 +163,7 @@ kbd {
 .contentContainer{
 	/*inner stuff*/
 	display: flex;
-	margin: 0 0.5em;
+	margin: 0;
 }
 
 .fullscreenBody .contentContainer{
