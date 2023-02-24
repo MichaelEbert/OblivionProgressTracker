@@ -6,7 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
 	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
     <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
-	<script src="popout.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings — Interactive Oblivion Checklist</title>
 </head>
@@ -75,9 +74,9 @@
 </div>
 
 <div class="section">
-<div class="sectionTitle">Browser Source</div>
+<div class="sectionTitle">Stream Widget</div>
 <div class="collapsibleContent">
-	<p><i>Click the button below to generate a browser source to use in software like OBS.</i></p>
+	<p><i>Click the button below to generate a Stream Widget browser source to use in software like OBS.</i></p>
 	<p><i>In OBS add a Browser Source, then copy/paste the generated URL into the URL field, and set the width/height to match the settings you specify below.</i></p>
 	<div>
 		Width: <input type="number" value="460" id="browserSourceWidth"/>
@@ -89,8 +88,8 @@
 		</select>
 	</div>
 	<br/>
-	<button onclick="initBrowserSource()">Generate Browser Source Tracker</button><input type="text" id="browserSourceUrl" size="70" readonly="true"/><button onclick="copyBrowserSourceToClipboard()" class="clipboardButton">📋</button><span id="browserSourceCopyConfirm"></span>
-	<p><i>Your browser may block popup windows. In that case, copy and paste the generated link if you want to view the page outside of your stream software.</i></p>
+	<button onclick="popout.initBrowserSource()">Generate Browser Source Tracker</button><input type="text" id="browserSourceUrl" size="70" readonly="true"/><button onclick="popout.copyBrowserSourceToClipboard()" class="clipboardButton">📋</button><span id="browserSourceCopyConfirm"></span>
+	<p><i>Copy and paste the generated link into your address bar if you want to view the tracker outside of your stream software.</i></p>
 </div>
 </div>
 
@@ -146,6 +145,7 @@
 	import * as settingsjs from './js/settings.mjs'
 	import * as sharingjs from './js/sharing.mjs'
 	import * as userdatajs from './js/userdata.mjs'
+	import * as popout from './js/popout.mjs'
 	import {loadCookie} from './js/userdata.mjs'
 	(function(){
 		if(loadCookie("debug") == true){
@@ -155,6 +155,7 @@
 		window.settingsjs = settingsjs;
 		window.sharingjs = sharingjs;
 		window.userdatajs = userdatajs;
+		window.popout = popout;
 	}).call(window);
 </script>
 <script src="collapsible.js"></script>

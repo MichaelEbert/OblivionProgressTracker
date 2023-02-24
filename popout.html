@@ -5,14 +5,11 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	<link rel="stylesheet" type="text/css" href="css/popout.css"/>
 	<script src="./js/module-shim.mjs" type="module"></script>
-	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
-    <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
 	<script src="checklist.js"></script>
-	<script src="popout.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Interactive Oblivion Checklist</title>
 </head>
-<body id="popoutContainer" onload="initPopoutSettings()">
+<body id="popoutContainer" onload="popout.initPopoutSettings()">
 <div id="popoutTopBar" class="popoutTopBar">
 	<div class="popoutTopBarSection"><span class="totalProgressPercent">0</span>%</div> 
 </div>
@@ -33,11 +30,13 @@
 	import * as userdata from './js/userdata.mjs'
 	import * as sharing from './js/sharing.mjs'
 	import * as saveReader from './js/saveReader.mjs'
+	import * as popout from './js/popout.mjs'
 	window.common = common;
 	window.progress = progress;
 	window.userdata = userdata;
 	window.obliviondata = obliviondata;
 	window.sharing = sharing;
+	window.popout = popout;
 	window.saveReader = saveReader;
 	(function(){
 		window.debug = window.userdata.loadCookie("debug");

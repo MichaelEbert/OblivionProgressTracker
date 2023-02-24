@@ -1,3 +1,9 @@
+export{
+    initBrowserSource,
+    initPopoutSettings,
+    copyBrowserSourceToClipboard
+}
+
 //Runs in the settings.html page when the user clicks the "Generate Browser Source Tracker" button. Generates a popout window and passes params.
 function initBrowserSource(){
     //default settings
@@ -14,7 +20,7 @@ function initBrowserSource(){
     var windowParamsURL = 'popout.html?width=' + width + 'px&height=' + height + 'px&columns=' + columns;
     var windowFeaturesStr = 'toolbar=no,menubar=no,width=' + width + ',height=' + height;
     document.getElementById("browserSourceUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/"+windowParamsURL;
-    window.open(windowParamsURL, 'browserSource', windowFeaturesStr);
+    //window.open(windowParamsURL, 'browserSource', windowFeaturesStr); //For now, disabling this because popups don't work on all browsers.
 }
 
 //Runs in the popout.html page. Takes the window parameters generated in the previous function and modifies html elements to fit these parameters.
