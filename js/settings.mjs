@@ -16,10 +16,12 @@ import { setRemoteUrl, createSpectateBanner } from './sharing.mjs'
 import {recalculateProgress} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
 import { initSharingFeature } from './sharing.mjs'
+import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
 function updateShareUrl(){
 	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
+    setPopoutShareCode();
 }
 
 function init(){

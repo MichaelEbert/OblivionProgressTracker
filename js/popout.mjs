@@ -1,7 +1,18 @@
 export{
+    setPopoutShareCode,
     initBrowserSource,
     initPopoutSettings,
     copyBrowserSourceToClipboard
+}
+
+//Automatically sets the share code setting to be the user's current code by default.
+function setPopoutShareCode(){
+    var shareUrl = document.getElementById("myShareUrl").value;
+    var shareCode = "";
+    if(shareUrl != null){
+        shareCode = shareUrl.split('?code=').pop();
+        document.getElementById("popoutShareCode").value = shareCode;
+    }
 }
 
 //Runs in the settings.html page when the user clicks the "Generate Browser Source Tracker" button. Generates a popout window and passes params.
@@ -10,17 +21,24 @@ function initBrowserSource(){
     var width = 460;
     var height = 330;
     var columns = 2;
+    var shareCode = "";
+    var finalUrl = "";
 
     //Override settings with user preferences if applicable
     width = document.getElementById("browserSourceWidth").value ?? 0;
     height = document.getElementById("browserSourceHeight").value ?? 0;
     columns = document.getElementById("browserSourceColumns").value ?? 0;
-
-    //generate the popout window based on settings.
-    var windowParamsURL = 'popout.html?width=' + width + 'px&height=' + height + 'px&columns=' + columns;
-    var windowFeaturesStr = 'toolbar=no,menubar=no,width=' + width + ',height=' + height;
-    document.getElementById("browserSourceUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/"+windowParamsURL;
-    //window.open(windowParamsURL, 'browserSource', windowFeaturesStr); //For now, disabling this because popups don't work on all browsers.
+    shareCode = document.getElementById("popoutShareCode").value ?? 0;
+    
+    if(shareCode == null || shareCode == "" || shareCode.length < 6){
+        finalUrl = "Please enter a valid share code."
+    }
+    else{
+        //generate the popout window url based on settings.
+        var windowParamsURL = 'popout.html?code=' + shareCode + '&width=' + width + 'px&height=' + height + 'px&columns=' + columns;
+        finalUrl = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/"+windowParamsURL;
+    }
+    document.getElementById("browserSourceUrl").value = finalUrl;
 }
 
 //Runs in the popout.html page. Takes the window parameters generated in the previous function and modifies html elements to fit these parameters.
