@@ -58,8 +58,7 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<div class="mainPanel">
-<article id="main">
+<article id="main" class="mainPanel">
 <div class="info">You can drag and drop your Oblivion save file (.ess) into this checklist to see your progress! Saves are typically located in User\Documents\My Games\Oblivion\Saves.</br>Checklist items with a disabled checkbox will automatically be completed after checking off a quest they are part of.</div>
 <div id="overview" class="section">
 	<div id="progress" class="progress">Total Progress: <span class="totalProgressPercent">0</span>%</div>
@@ -83,7 +82,8 @@
 	</table>
 </div>
 </article>
-<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
+<div id="resetPanel" class="section">
+	<button id="resetbutton" onclick="userdata.resetProgress(true)">Clear all progress</button>
 </div>
 <script type="module">
 	import exportNamespace from './js/module-shim.mjs'
