@@ -5,7 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	<link rel="stylesheet" type="text/css" href="css/popout.css"/>
 	<script src="./js/module-shim.mjs" type="module"></script>
-	<script src="checklist.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Interactive Oblivion Checklist</title>
 </head>
@@ -23,25 +22,13 @@
 	<tr><td><img class="overviewIcon" src="images/Icon_Settlement.png" draggable="false">Houses</td><td><span id="overview_houses_owned"></span></td></tr>
 </table>
 <script type="module">
-	import exportNamespace from './js/module-shim.mjs'
-	import * as obliviondata from './js/obliviondata.mjs'
-	import * as common from './js/cellGenerator.mjs';
-	import * as progress from './js/progressCalculation.mjs'
-	import * as userdata from './js/userdata.mjs'
-	import * as sharing from './js/sharing.mjs'
-	import * as saveReader from './js/saveReader.mjs'
 	import * as popout from './js/popout.mjs'
-	window.common = common;
-	window.progress = progress;
-	window.userdata = userdata;
-	window.obliviondata = obliviondata;
-	window.sharing = sharing;
+	import {loadCookie} from './js/userdata.mjs'
 	window.popout = popout;
-	window.saveReader = saveReader;
 	(function(){
-		window.debug = window.userdata.loadCookie("debug");
-		window.debugAsync = window.userdata.loadCookie("debugAsync");
-		init();
+		window.debug = loadCookie("debug");
+		window.debugAsync = loadCookie("debugAsync");
+		popout.init();
 	}).call(window);
 </script>
 </body></html>

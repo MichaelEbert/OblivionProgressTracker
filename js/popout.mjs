@@ -2,8 +2,13 @@ export{
     setPopoutShareCode,
     initBrowserSource,
     initPopoutSettings,
-    copyBrowserSourceToClipboard
+    copyBrowserSourceToClipboard,
+    init
 }
+
+import {recalculateProgress} from './progressCalculation.mjs'
+import * as obliviondata from './obliviondata.mjs'
+import * as userdata from './userdata.mjs'
 
 //Automatically sets the share code setting to be the user's current code by default.
 function setPopoutShareCode(){
@@ -48,12 +53,36 @@ function initPopoutSettings(){
     const urlParams = new URLSearchParams(windowParams);
 
     //update popout html elements based on settings.
-    window.getElementById(popoutContainer).style.width = urlParams.get('width');
-    window.getElementById(popoutContainer).style.height = urlParams.get('height');
+    //window.getElementById(popoutContainer).style.width = urlParams.get('width');
+    //window.getElementById(popoutContainer).style.height = urlParams.get('height');
 }
 
 //The copy to clipboard function for the popout tracker.
 function copyBrowserSourceToClipboard(){
     navigator.clipboard.writeText(document.getElementById("browserSourceUrl").value);
     document.getElementById("browserSourceCopyConfirm").innerHTML = "✅ Copied Browser Source URL to Clipboard!";
+}
+
+function init(){
+    document.addEventListener("progressLoad",recalculateProgressAndUpdateProgressUI);
+	obliviondata.loadJsonData().then(()=>{
+        userdata.loadSettingsFromCookie();
+        userdata.loadProgressFromCookie();
+    });
+}
+
+/**
+ * Recalculate the total progress, and update UI elements.
+ */
+function recalculateProgressAndUpdateProgressUI(){
+	let percentCompleteSoFar = recalculateProgress();
+	
+	//round progress to 2 decimal places
+	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+		element.innerText = progress.toString();
+		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
+		}
+	});
 }
