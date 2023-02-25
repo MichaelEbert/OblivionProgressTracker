@@ -313,7 +313,6 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
             if(!COPYING){
                 htmlIcon = document.createElement("img");
                 htmlIcon.classList.add("itemIcon");
-                htmlIcon.loading = "lazy";
                 htmlIcon.draggable = false;
                 rowhtml.appendChild(htmlIcon);
             }
@@ -495,7 +494,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     });
 
     //do this before miscChecklistStuff because miscChecklistStuff is all ID-specific, so it would have to be rewritten anyways.
-    if(!window.debug?.disable_node_clone){
+    if(!HYDRATING && !window.debug?.disable_node_clone){
         lastCell_node = rowhtml.cloneNode(true);
     }
     lastCell_classname = classname;
