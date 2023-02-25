@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US" ><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<script src="./js/module-shim.mjs" type="module"></script>
+	<script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.savefile.js" defer></script>
+    <script src="https://valarnin.github.io/oblivion-save-reader/dist/bundle.record.js" defer></script>
+	<script src="checklist.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Interactive Oblivion Checklist</title>
+</head>
+<body>
+	<!-- begin topbar-->
+<div id="topbar" class="topbar">
+	<nav id="topbarNav" class="topbarNav">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="./images/prcbanner.png" style="width: 90px;"></a>
+			<div class="topbarSublist">
+				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
+				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
+				<a href="https://discord.gg/eudsps7" class="topbarSection">Discord</a>
+				<a href="https://github.com/MichaelEbert/OblivionProgressTracker" class="topbarSection">GitHub</a>
+				<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
+			</div>
+		</div>
+		<div class="topbarSection">
+			<a href="./speedrun-guide.html">Guide</a>
+			<div class="topbarSublist">
+				<a href="./speedrun-guide.html">Speedrun Guide</a>
+				<a href="./casual.html">Casual Guide</a>
+				<a href="./speedrun-archive.html">Archive</a>
+			</div>
+		</div>
+
+		<a href="./checklist.html" class="topbarSection">Checklist</a>
+
+		<div class="topbarSection">
+			<a href="./map.html">Map</a>
+			<div class="topbarSublist">
+				<a href="./nirnroute.html">Nirnroute</a>
+			</div>
+		</div>
+
+		<div class="topbarSection">
+			<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Wiki/Tools</a>
+			<div class="topbarSublist">
+				<a href="https://prclive.run/wiki/Main_Page">Wiki</a>
+				<a href="./tools/tools.html">Tools</a>
+				<a href="https://prclive.run/wiki/Oblivion:Glitches/Tech">Glitches</a>
+				<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+			</div>
+		</div>
+
+		<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
+
+		<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+	</nav>
+</div>
+<!-- end topbar-->
+<div class="mainPanel">
+<article id="main">
+<div class="info">You can drag and drop your Oblivion save file (.ess) into this checklist to see your progress! Saves are typically located in User\Documents\My Games\Oblivion\Saves.</br>Checklist items with a disabled checkbox will automatically be completed after checking off a quest they are part of.</div>
+<div id="overview" class="section">
+	<div id="progress" class="progress">Total Progress: <span class="totalProgressPercent">0</span>%</div>
+
+	<table>
+		<tr><td><img class="overviewIcon" src="images/Icon_QuestGeneral.png" draggable="false"><span id="questsComp" title="Quests Completed should say 208 in-game in the Accomplishments Tab, plus 4 Journal-Filled quests that remain in your journal at the end and have been advanced as far as possible, for a total of 212.">Quests/Journal Completed</span></td><td><span id="overview_quest"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Skills.png" draggable="false">Master Skills</td><td><span id="overview_skill"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Fame.png" draggable="false">Fame</td><td><span id="overview_fame"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Landmark.png" draggable="false">Places Found</td><td><span id="overview_location"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Gate.png" draggable="false">Oblivion Gates Shut</td><td><span id="overview_oblivion_gates_shut"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Horse.png" draggable="false">Horses Owned</td><td><span id="overview_horses_owned"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Settlement.png" draggable="false">Houses Owned</td><td><span id="overview_houses_owned"></span></td></tr>
+	</table>
+	<table>
+		<tr><td><img class="overviewIcon" src="images/Icon_Shop.png" draggable="false">Stores Invested In</td><td><span id="overview_store"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Book9.png" draggable="false">Skill Books Read</td><td><span id="overview_book"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_ArtifactAzura.png" draggable="false">Artifacts Found</td><td><span id="overview_artifacts_found"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_Nirnroot_Undiscovered.png" draggable="false">Nirnroots Found</td><td><span id="overview_nirnroot"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_RankGrandChampion.png" draggable="false">Max Faction Ranks</td><td><span id="overview_max_faction_ranks"></span></td></tr>
+		<tr><td><img class="overviewIcon" src="images/Icon_HeavenStone_Undiscovered.png" draggable="false">Greater Powers</td><td><span id="overview_greater_powers"></span></td></tr>
+	</table>
+</div>
+</article>
+<button id="resetbutton" onclick="userdata.resetProgress(true)">Reset progress</button>
+</div>
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as common from './js/cellGenerator.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as sharing from './js/sharing.mjs'
+	import * as saveReader from './js/saveReader.mjs'
+	window.common = common;
+	window.progress = progress;
+	window.userdata = userdata;
+	window.obliviondata = obliviondata;
+	window.sharing = sharing;
+	window.saveReader = saveReader;
+	(function(){
+		window.debug = window.userdata.loadCookie("debug");
+		window.debugAsync = window.userdata.loadCookie("debugAsync");
+		init();
+	}).call(window);
+</script>
+</body></html>

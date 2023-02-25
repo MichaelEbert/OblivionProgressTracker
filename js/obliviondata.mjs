@@ -168,15 +168,12 @@ function addParentLinks(node, parent){
 	node.parent = parent;
 
 	//add a "hive" property that goes straight to the hive
-	Object.defineProperty(node,"hive",{
-		get: function(){
-			let root = this;
-			while(root.parent != null){
-				root = root.parent;
-			}
-			return root;
-		}
-	});
+	if(node.parent == null){
+		node.hive = node;
+	}
+	else{
+		node.hive = node.parent.hive;
+	}
 
 	if(node.elements != null){
 		for(const child of node.elements){
