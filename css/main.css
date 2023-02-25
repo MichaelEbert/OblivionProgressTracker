@@ -13,10 +13,12 @@ body{
 	background-color: var(--base-color);
 	margin: 0;
 	font-family: Calibri;
+}
+
+.fullscreenBody{
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	width: 100vw;
 	height: 100vh;
 }
 
@@ -87,12 +89,10 @@ kbd {
 }
 
 .topbar {
-	display: flex;
-	flex-direction: column;
+	position: sticky;
+	top: 0;
 	margin: 0 0.5em;
-	flex-basis: auto;
 	z-index: 1;/*Lets topbar render ontop of iframe*/
-	user-select: none;
 }
 
 .topbarNav{
@@ -100,7 +100,6 @@ kbd {
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
 	align-items: stretch;
-	width: 100%;
 	max-height: 1.8em; /* 2*padding + text height + a teeny bit of padding*/
 	background-color: var(--base-color);
 	padding: 0.3em 0;
@@ -134,11 +133,6 @@ kbd {
 	display: none;
 }
 
-.topbarSublist a{
-	display:block;
-	border: none;
-}
-
 .topbarSection:hover{
 	background-color: var(--highlight-color);
 }
@@ -158,7 +152,6 @@ kbd {
 }
 .spectateBanner{
 	cursor: pointer;
-	flex: 1;
 	text-align: center;
 	font-style: italic;
 	background-color: lightgreen;
@@ -168,40 +161,82 @@ kbd {
 }
 
 .contentContainer{
+	/*inner stuff*/
 	display: flex;
-	min-width: 0;
-	min-height: 0;
-	overflow: hidden;
-	flex: 1; /* contentContainer fills the remaining empty space below the flexTopBar */
+	margin: 0;
 }
 
-.sidebarNirnroute{
+.fullscreenBody .contentContainer{
+	/* on contentContainers inside a fullscreenBody, scroll the contentContainer instead of the page.*/
+	flex: 1;
+	overflow: hidden;
+}
+
+.resizer{
+	background-color: black;
+	cursor: ew-resize;
+	padding: 2px;/*actual content of resizer*/
 	margin-left: 0.5em;
-	user-select: none;
+	/*on fullscreen pages, don't scroll with the rest of the content*/
+	position:sticky;
+	top:0
+}
+
+#mapColumn{
+	position:sticky;
+	top:0;
+}
+
+.mainPanel{
+	min-width: 10%;
+}
+
+.sidePanel{
+	flex: 1 1 0%;
+	min-width: 10%;
+	border: 1px solid black;
+}
+
+/*for panels (main or side) that we want to scroll, use this style for them*/
+.scrollablePanel{
+	overflow: auto;
 }
 
 .sidebarContent{
 	display: flex;
 	flex-direction: column;
 	height:100%;
-	overflow: hidden; /* Sidebar links should not scroll with rest of page. */
 }
+
+.screenHeight{
+	position: sticky; /*within the .sidePanel, this is the "content" container that slides up and down to stay on the page.*/
+	height: 100vh;
+	top: 1.8em; /*start at very top of page (minus topbar)*/
+	/*the following make the height 100vh minus overlap*/
+	box-sizing:border-box;
+	padding-bottom:2.3em;
+}
+
+.screenHeight2{
+	top:3.6em;
+	padding-bottom:4.1em;
+}
+
 #sidebarLinks{
-	padding: 0.25em 0 0.25em 0.5em;
+	padding: 0.25em;
 	background: var(--highlight-color);
 	border-bottom: groove;
 	border-top: groove;
 	border-width: 2px;
 	border-color: dimgray;
 }
+
 #sidebarLinks a{
 	text-decoration: none;
 	color: black;
 }
 
 .iframeContainer{
-	display: flex;
-	flex-direction: column;
 	width: 100%;
 	height: 100%;
 }
@@ -223,7 +258,6 @@ kbd {
 	font-family: serif;
 	font-size: 2.2em;
 	font-weight: bold;
-	user-select: none;
 	/*break-after:avoid;*/
 }
 
@@ -354,29 +388,27 @@ input[type="number"]{
 	font-size: 0.7em;
 }
 
-/*
-the "padding" should really be margin.
-but because the map wants to be larger than the screen,
-we have to use weird shit like position fixed and padding
-to make it do the thing of "fill your container exactly but no more"
-
-because the html body will expand downwards as much as needed.
-and we don't want the map to expand down past screen.
-
-I feel like there should be a way to do this but I can't figure it out right now
-*/
-.mapContainer{
-	display: flex;
-	flex-direction: column;
+/*required outide of mapContainer for Reasons*/
+.mapContainerOuter{
+	position: relative;
 	width: 100%;
 	height: 100%;
-	box-sizing:border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
+}
+
+.mapContainer{
+	/*set height/width to parent element, but take up entire box.*/
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;/*we want the 1em of padding to be taken in to account in the 100% width/height*/
+	/*inner display stuff*/
+	display: flex;
+	flex-direction: column;
 	touch-action: none;/*we want touch to scroll, not select or anything.*/
 }
 
 .mapButtonBar{
 	padding-bottom: 0.5em;
-	user-select: none;
 }
 
 .mapWrapper{
@@ -391,8 +423,8 @@ h1{
 }
 
 /*mobile/thin window CSS*/
-@media only screen and (orientation: portrait){
-	.topbar{
+@media only screen and (orientation: portrait) and (max-width: 800px){
+	.topbarNav{
 		flex-wrap: wrap;
 		max-height: 4em;
 	}
@@ -403,33 +435,6 @@ h1{
 	.topbarSection:hover .topbarSublist{
 		display: none;/*no more crazy links for mobile*/
 	}
-}
-
-/* Overall flexbox frame stuff */
-.guideFrame{
-	display: flex;
-	min-width: 0;
-	min-height: 0;
-}
-.resizer{
-	background-color: black;
-	cursor: ew-resize;
-	height: 100%;
-	padding: 2px;
-	margin-left: 0.5em; /* To put space between scroll bar of main panel and this bar to avoid accidental scrolling. */
-}
-.mainPanel{
-	margin: 0;
-	margin-left: 0.5em; /* Main panel only has a margin on the left so that iframe scroll bars aren't displaced. */
-	padding: 0.5em 0; /* Content padding so we don't get that background color clipping over the top/bottom of content */
-	min-width: 10%;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-.sidePanel{
-	flex: 1 1 0%;
-	min-width: 10%;
-	overflow: hidden; /* Don't want the sidebar banner to scroll with everything. */
 }
 
 /* Scroll bar stuff to make them less obnoxiously large */

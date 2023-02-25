@@ -140,7 +140,7 @@ async function initMap(){
     //load map cord data
     let windowParams = new URLSearchParams(window.location.search);
     if(windowParams.get("topbar") == "false"){
-        document.getElementById("flexTopBar").remove();
+        document.getElementById("topbar").remove();
     }
     //Setting parameters
     let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
@@ -483,6 +483,7 @@ function initListeners(){
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
+    const showNonGates = document.getElementById("mapShowNonGates");
 
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
@@ -502,6 +503,8 @@ function initListeners(){
         else if(button_tspNirnroot.checked){
             overlay.setActiveTsp(OVERLAY_LAYER_NIRNROOTS);
         }
+
+        overlay.layers.get(OVERLAY_LAYER_LOCATIONS).layers.get("nonGates").visible = showNonGates.checked;
         
         drawFrame();
     }
@@ -514,6 +517,8 @@ function initListeners(){
     button_tspNone.addEventListener("change", displaySettingsFunc);
     button_tspLocation.addEventListener("change", displaySettingsFunc);
     button_tspNirnroot.addEventListener("change", displaySettingsFunc);
+
+    showNonGates.addEventListener("change", displaySettingsFunc);
     displaySettingsFunc();
 
     document.getElementById("resetMapButton")?.addEventListener('click', (e)=>{

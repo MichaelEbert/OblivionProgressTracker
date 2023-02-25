@@ -199,6 +199,7 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 
 	document.getElementById("spectateBanner")?.remove();
+	document.getElementById("sidebarFloaty")?.classList.remove("screenHeight2");
 	var localProgress = loadCookie("progress_local");
 	if(localProgress != null && Object.keys(localProgress).length > 0){
 		if(window.debug){
@@ -308,7 +309,7 @@ function setRemoteUrl(event)
  * @returns html element to control spectating.
  */
 function createSpectateBanner(){
-	let spectateBanner = document.createElement("SPAN");
+	let spectateBanner = document.createElement("DIV");
 	let bannerDefaultText = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
 	spectateBanner.innerText = bannerDefaultText;
 	spectateBanner.id = "spectateBanner";
@@ -345,7 +346,8 @@ function initSharingFeature(){
 
 	if(!document.getElementById("spectateBanner")){
 		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbar").insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+		document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+		document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
 	}
 	if(settings.spectateAutoRefresh == true){
 		startSpectating(false, true);
