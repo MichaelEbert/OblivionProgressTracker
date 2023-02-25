@@ -23,7 +23,7 @@ function updateShareUrl(){
 }
 
 function init(){
-    if(!window.location.endsWith("settings.html")){
+    if(!window.location.toString().endsWith("settings.html")){
         console.error("settings.html init() called fron non-settings page! things may break.");
     }
     loadJsonData(".").then(()=>{
