@@ -99,7 +99,7 @@ OverlayLayer.prototype.doubleClick = function(clickLoc){
             }
         }
         for(const layer of this.layers.values()){
-            if(this.doubleClick(clickLoc)){
+            if(layer.doubleClick(clickLoc)){
                 return true;
             }
         }
