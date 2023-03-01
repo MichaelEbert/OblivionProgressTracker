@@ -93,7 +93,7 @@ async function loadJsonData(basedir=".",classFilter=(x=>true)){
 		}
 	}
 	return Promise.allSettled(promises).then((_)=>{
-		if(window.debugAsync){
+		if(window.debug?.async){
 			console.log(promises);
 		}
 		window.jsondata = localJsonData;
@@ -139,7 +139,9 @@ function generatePromiseFunc(basedir, klass, outDataObject){
 		let hive = await mergeData(baseFile, customFile);
 		hive.class = klass;
 		outDataObject[klass.name] = hive;
-		console.log("set "+hive.classname+" jsondata");
+		if(window.debug?.async){
+			console.log("set "+hive.classname+" jsondata");
+		}
 	};
 }
 
@@ -201,7 +203,7 @@ function linkOblivionGate(cell){
  */
 async function mergeData(hivePromise, customdataPromise){
 	let hive = await hivePromise;
-	if(window.debugAsync){
+	if(window.debug?.async){
 		console.log("merging "+hive.name+" with version "+hive.version);
 	}
 
@@ -216,12 +218,12 @@ async function mergeData(hivePromise, customdataPromise){
 			if(customData != null){
 				runOnTree(hive, mergeCell(customData));
 			}
-			if(window.debugAsync){
+			if(window.debug?.async){
 				console.log("merged "+hive.classname);
 			}
 		}
 		catch(ex){
-			if(window.debugAsync){
+			if(window.debug?.async){
 				console.error("error when merging custom data for "+hive.classname);
 				console.error(ex);
 			}
@@ -230,7 +232,7 @@ async function mergeData(hivePromise, customdataPromise){
 	//all leaf cells will be used, so set their onUpdate to empty array.
 	runOnTree(hive, (cell)=>cell.onUpdate = []);
 	addParentLinks(hive, null);
-	if(window.debugAsync?.class==hive?.classname){
+	if(window.debug?.async?.class==hive?.classname){
 		debugger;
 	}
 	return hive;
@@ -246,7 +248,7 @@ function computeTotalWeight(){
 			const hive = jsondata[klass.name];
 			if(hive == null){
 				// class data not loaded
-				if(window.debugAsync){
+				if(window.debug?.async){
 					console.log(klass.name + " is not loaded!");
 				}
 				continue;

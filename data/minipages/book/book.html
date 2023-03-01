@@ -46,15 +46,10 @@
 	window.sharing = sharing;
 	console.log("AAAA");
 	(function(){
-		if(window.userdata.loadCookie("debug") == true){
-			window.debug = true;
-		}
-		if(window.userdata.loadCookie("debugAsync") == true){
-		window.debugAsync = true;
-	}
-	document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
-	var id = new URLSearchParams(window.location.search).get("id")
-	window.obliviondata.loadJsonData("../../..",(x=>x.name=="book")).then(()=>generateBookPage(id));
+		window.debug = window.userdata.loadCookie("debug");
+		document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
+		var id = new URLSearchParams(window.location.search).get("id")
+		window.obliviondata.loadJsonData("../../..",(x=>x.name=="book")).then(()=>generateBookPage(id));
 	}).call(window);
 </script>
 
