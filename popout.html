@@ -23,12 +23,25 @@
 </table>
 <script type="module">
 	import * as popout from './js/popout.mjs'
-	import {loadCookie} from './js/userdata.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as sharing from './js/sharing.mjs'
+
+	window.userdata = userdata;
+	window.sharing = sharing;
 	window.popout = popout;
 	(function(){
-		window.debug = loadCookie("debug");
-		window.debugAsync = loadCookie("debugAsync");
+		window.debug = userdata.loadCookie("debug");
+		window.debugAsync = userdata.loadCookie("debugAsync");
 		popout.init();
+
+		let shareCode = new URLSearchParams(window.location.search).get("code");
+        if(shareCode != null && shareCode != ""){
+            userdata.loadSettingsFromCookie();
+
+            settings.remoteShareCode = shareCode;
+            userdata.saveCookie("settings",settings);
+            sharing.startSpectating(false,true);
+        }
 	}).call(window);
 </script>
 </body></html>

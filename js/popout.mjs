@@ -53,8 +53,10 @@ function initPopoutSettings(){
     const urlParams = new URLSearchParams(windowParams);
 
     //update popout html elements based on settings.
-    //window.getElementById(popoutContainer).style.width = urlParams.get('width');
-    //window.getElementById(popoutContainer).style.height = urlParams.get('height');
+    document.getElementById("popoutContainer").style.width = urlParams.get('width');
+    document.getElementById("popoutContainer").style.height = urlParams.get('height');
+    //column formatting code will go here once I figure it out.
+
 }
 
 //The copy to clipboard function for the popout tracker.
