@@ -112,13 +112,8 @@
 	import * as sharing from './js/sharing.mjs';
 	import * as progress from './js/progressCalculation.mjs';
 
-	if(userdata.loadCookie("debug") == true){
-		window.debug = true;
-	}
-	if(userdata.loadCookie("debugAsync") == true){
-		window.debugAsync = true;
-	}
-
+	window.debug = userdata.loadCookie("debug");
+	
 	var additionalSettingsShown = false;
 
 	window.showHideMapSettings = function(){
