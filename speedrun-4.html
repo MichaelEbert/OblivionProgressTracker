@@ -9,12 +9,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
 </head>
-<body>
+<body class="fullscreenBody">
 <!-- begin topbar-->
-<div id="flexTopBar" class="flexTopBar">
-	<nav id="topbar" class="topbar">
+<div id="topbar" class="topbar">
+	<nav id="topbarNav" class="topbarNav">
 		<div class="topbarSection icon leftBorder">
-			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
+			<a href="https://prclive.run/"><img src="./images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -59,9 +59,8 @@
 <!-- end topbar-->
 
 <div class="contentContainer">
-<div class="guideFrame">
 
-<article id="guide" class="mainPanel" style="width: 55%;">
+<article id="guide" class="mainPanel scrollablePanel" style="width: 55%;">
 <div class="warning">This page is currently being used for testing and is not intended to be used for an actual run.</div>
 
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
@@ -4719,7 +4718,7 @@ Time stops as soon as the Quest Completed message appears for this quest.
 		<li>You should now have all 208 Quests Completed.</li>
 	</ol></li>
 </ol>
-</div>
+
 </div></div><!-- imperial dragon armor end-->
 You have completed the 100% run!
 <!-- BEGIN FOOTER-->
@@ -4735,7 +4734,7 @@ You have completed the 100% run!
 
 <div class="resizer" id="dragMe"></div>
 
-<div class="sidePanel" id="sidebar">
+<div id="sidebar" class="sidePanel" >
 	<div id="sidebarContent" class="sidebarContent">
 		<div id="sidebarLinks">
 			<a href="./help.html" target="myframe" title="Help Page">🛈</a>

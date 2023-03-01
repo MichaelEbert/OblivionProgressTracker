@@ -120,7 +120,7 @@ function createLinkElement(cell, linkName, format){
         if(window.settings.iframeCheck == "window"){ //link goes to consistent external window.
             linky.target = "externalSecondWindow";
         }
-        else if((window.settings.iframeCheck == "on" || window.settings.iframeCheck == "auto") && window.innerWidth >= settings.iframeMinWidth){//link goes to iframe and iframe is visible.
+        else if((window.settings.iframeCheck == "auto" || window.settings.iframeCheck == "on") && window.innerWidth >= settings.iframeMinWidth){//link goes to iframe and iframe is visible.
             linky.target = "myframe";
         }
         else{//link goes to new tab. iframeCheck == "off" or window is hidden.
@@ -196,14 +196,14 @@ function adjustFormatting(cell, defaultFormatting){
 let lastCell_node = null;
 let lastCell_format = null;
 let lastCell_classname = null;
-
+let lastCell_indices = null;
 /**
  * Create a html element(with checkbox, name, etc) for the specified cell with the specified format.
  * @param cell obliviondata cell to create the html element for
  * @param extraColumnName 
  * @param format if format == 0, then regular cell. format == 1 then 
  */
-function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, customName = null){
+function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, customName = null, HYDRATING = false){
     const classname = cell.hive.classname;
     if(cell == null){
 		console.error("null cell data for class"+classname);
@@ -211,7 +211,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     }
 
     format = adjustFormatting(cell, format);
-    let indices = new Indices(format);
+    let indices;
 
     //constants used for the rest of this function
     let refCell;
@@ -220,13 +220,22 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     //end html element
     var rowhtml;
 
+    //checkbox element
+    var rcheck = null;
+
     //are we copying from prev element?
     let COPYING = false;
 
     if(format == lastCell_format && classname == lastCell_classname){
-        //i wonder if its faster to clone the same node again and again instead of a different node each time...
-        rowhtml = lastCell_node; //we don't need to clone here because we clone when setting lastCell_node.
         COPYING = true;
+    }
+
+    if(window.debug?.disable_node_clone){
+        COPYING = false;
+    }
+
+    if(window.debug?.disable_hydration){
+        HYDRATING = false;
     }
 
     // get prerequisites: ID, target cell (for ref cells)
@@ -239,6 +248,7 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     }
 
     usableId = cell.formId ?? cell.id;
+
     if(format & CELL_FORMAT_INDIRECT){
         usableId = refCell.formId;
     }
@@ -247,160 +257,192 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
         return;
     }
 
-    if(usableId > 0xFF000000 && window.debug){
+    if(usableId > 0xFF000000 && window.debug?.obliviondata){
         console.warn("Creating element for custom formID "+usableId+"");
     }
-    
-    //start the actual html
-    if(!COPYING){
-        if(format & CELL_FORMAT_USE_SPAN){
-            rowhtml = document.createElement("SPAN");
-        }
-        else{
-            rowhtml = document.createElement("DIV");
-        }
-        rowhtml.classList.add(classname);
-        rowhtml.classList.add("item");
-    }
-    rowhtml.setAttribute("clid",usableId);
 
-    //img before name
-    if(format & CELL_FORMAT_SHOW_ICON){
-        let htmlIcon;
-        if(!COPYING){
-            htmlIcon = document.createElement("img");
-            htmlIcon.classList.add("itemIcon");
-            htmlIcon.loading = "lazy";
-            htmlIcon.draggable = false;
-            rowhtml.appendChild(htmlIcon);
-        }
-        else{
-            htmlIcon = rowhtml.children[indices.ICON];
-        }
-        if(cell.icon){
-            //TODO: make icons uniform again so we don't need this additional check.
-            if(cell.icon == "Nirnroot" || cell.icon == "Wayshrine"){ //These have different markings.
-                htmlIcon.src = "images/Icon_" + cell.icon + "_Undiscovered.png";
-            }
-            else {
-                htmlIcon.src = "images/Icon_" + cell.icon + ".png";
-            }
-        }
-        else{
-            htmlIcon.src = "";
-        }
-    }
+    //html id for this row.
+    const rowid = classname+(usableId?.toString()??"noid");
 
-    //name
-    let usableName = customName ?? cell.name ?? refCell?.name ?? classname + usableId;
-    let nameFormat = format;
-    if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
-        nameFormat &= ~CELL_FORMAT_NAMELINK_SEPARATE_HELP;
-        nameFormat &= ~CELL_FORMAT_NAMELINK_ENABLE;
-    }
-    let nameElement = createLinkElement(cell, usableName, nameFormat);
-    if(nameElement == null){
-        debugger;
+    //prerequisites done!
+
+    if(COPYING){
+        //i wonder if its faster to clone the same node again and again instead of a different node each time...
+        rowhtml = lastCell_node; //we don't need to clone here because we clone when setting lastCell_node.
+        indices = lastCell_indices;
     }
     else{
-        nameElement.classList.add(classname+"Name");
-        if(format & CELL_FORMAT_PUSH_REFERENCES){
-            nameElement.addEventListener('click',window.pushNpcReferencesToMinipage);
-        }
-        if(format & CELL_FORMAT_SHOW_CHECKBOX && format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
-            nameElement.classList.add("defaultCursor");
-        }
-        if(COPYING){
-            rowhtml.replaceChild(nameElement, rowhtml.children[indices.NAME]);
-        }
-        else{
-            rowhtml.appendChild(nameElement);
-        }
+        indices = new Indices(format);
     }
 
-    //checkbox
-    var rcheck = null;
-    if(format & CELL_FORMAT_SHOW_CHECKBOX){
-        if(!COPYING){
-            rcheck = document.createElement("input");
-        }
-        else{
+    if(HYDRATING){
+        rowhtml = document.getElementById(rowid);
+        //checkbox
+        if(format & CELL_FORMAT_SHOW_CHECKBOX){
             rcheck = rowhtml.children[indices.CHECKBOX];
-        }
-        let usableCell = cell;
-        if(format & CELL_FORMAT_INDIRECT){
-            usableCell = refCell;
-        }
-        if(usableCell.type){
-            if(!COPYING || rcheck.type != usableCell.type){
-                rcheck.type= usableCell.type;
-                rcheck.size=4;
-                if(usableCell.max){
-                    rcheck.max = usableCell.max;
-                }
+            let usableCell = cell;
+            if(format & CELL_FORMAT_INDIRECT){
+                usableCell = refCell;
             }
-            rcheck.addEventListener('change',checkboxClicked);
-        }
-        else{
-            if(!COPYING || rcheck.type != "checkbox"){
-                rcheck.type="checkbox";
-            }
-            rcheck.addEventListener('click',checkboxClicked);
-        }
-        if(!COPYING){
-            rcheck.classList.add(classname+"Check");
-            rcheck.classList.add("check"); 
-
-            if(format & CELL_FORMAT_DISABLE_CHECKBOX){
-                rcheck.disabled = true;
-            }
-            rowhtml.appendChild(rcheck);
-        }
-    }
-
-    //help icon
-    if((format & CELL_FORMAT_NAMELINK_SEPARATE_HELP) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
-        let htmlHelp;
-
-        let linky = createLinkElement(cell, "❔", format);
-        if(!COPYING){
-            rowhtml.appendChild(linky);
-        }
-        else{
-            htmlHelp = rowhtml.children[indices.HELP];
-            if(htmlHelp == null){
-                debugger;
-            }
-            htmlHelp.replaceWith(linky);
-        }
-    }
-
-    //map icon
-    if(format & CELL_FORMAT_SHOW_MAPICON)
-    {
-        let usableCell = cell;
-        if(cell.ref != null &&( cell.x == null || cell.y == null)){
-            usableCell = refCell;
-        }
-        if(usableCell.location != null){
-            usableCell = usableCell.location;
-        }
-        if(usableCell.x != null && usableCell.y != null && (usableCell.cell == "Outdoors" || usableCell.cell == null)){
-            let mapLink = createLinkElement(usableCell, "🗺️", format | CELL_FORMAT_NAMELINK_MAPLINK);
-
-            if(!COPYING){
-                rowhtml.appendChild(mapLink);
-            }
-            else if(rowhtml.children[indices.MAP] == null){
-                rowhtml.appendChild(mapLink);
+            if(usableCell.type){
+                rcheck.addEventListener('change',checkboxClicked);
             }
             else{
-                rowhtml.children[indices.MAP].replaceWith(mapLink);
+                rcheck.addEventListener('click',checkboxClicked);
             }
         }
+    }
+    else{
+        //start the actual html
+        if(!COPYING){
+            if(format & CELL_FORMAT_USE_SPAN){
+                rowhtml = document.createElement("SPAN");
+            }
+            else{
+                rowhtml = document.createElement("DIV");
+            }
+            rowhtml.classList.add(classname);
+            rowhtml.classList.add("item");
+        }
+
+        rowhtml.setAttribute("clid",usableId);
+        
+        //img before name
+        if(format & CELL_FORMAT_SHOW_ICON){
+            let htmlIcon;
+            if(!COPYING){
+                htmlIcon = document.createElement("img");
+                htmlIcon.classList.add("itemIcon");
+                htmlIcon.draggable = false;
+                rowhtml.appendChild(htmlIcon);
+            }
+            else{
+                htmlIcon = rowhtml.children[indices.ICON];
+            }
+            if(cell.icon){
+                //TODO: make icons uniform again so we don't need this additional check.
+                if(cell.icon == "Nirnroot" || cell.icon == "Wayshrine"){ //These have different markings.
+                    htmlIcon.src = "images/Icon_" + cell.icon + "_Undiscovered.png";
+                }
+                else {
+                    htmlIcon.src = "images/Icon_" + cell.icon + ".png";
+                }
+            }
+            else{
+                htmlIcon.src = "";
+            }
+        }
+
+        //name
+        let usableName = customName ?? cell.name ?? refCell?.name ?? classname + usableId;
+        let nameFormat = format;
+        if(format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
+            nameFormat &= ~CELL_FORMAT_NAMELINK_SEPARATE_HELP;
+            nameFormat &= ~CELL_FORMAT_NAMELINK_ENABLE;
+        }
+        let nameElement = createLinkElement(cell, usableName, nameFormat);
+        if(nameElement == null){
+            debugger;
+        }
         else{
-            if(rowhtml.children[indices.MAP] != null){
-                rowhtml.children[indices.MAP].remove();
+            nameElement.classList.add(classname+"Name");
+            if(format & CELL_FORMAT_PUSH_REFERENCES){
+                nameElement.addEventListener('click',window.pushNpcReferencesToMinipage);
+            }
+            if(format & CELL_FORMAT_SHOW_CHECKBOX && format & CELL_FORMAT_NAMELINK_SEPARATE_HELP){
+                nameElement.classList.add("defaultCursor");
+            }
+            if(COPYING){
+                rowhtml.replaceChild(nameElement, rowhtml.children[indices.NAME]);
+            }
+            else{
+                rowhtml.appendChild(nameElement);
+            }
+        }
+
+        //checkbox
+        if(format & CELL_FORMAT_SHOW_CHECKBOX){
+            if(!COPYING){
+                rcheck = document.createElement("input");
+            }
+            else{
+                rcheck = rowhtml.children[indices.CHECKBOX];
+            }
+            let usableCell = cell;
+            if(format & CELL_FORMAT_INDIRECT){
+                usableCell = refCell;
+            }
+            if(usableCell.type){
+                if(!COPYING || rcheck.type != usableCell.type){
+                    rcheck.type= usableCell.type;
+                    rcheck.size=4;
+                    if(usableCell.max){
+                        rcheck.max = usableCell.max;
+                    }
+                }
+                rcheck.addEventListener('change',checkboxClicked);
+            }
+            else{
+                if(!COPYING || rcheck.type != "checkbox"){
+                    rcheck.type="checkbox";
+                }
+                rcheck.addEventListener('click',checkboxClicked);
+            }
+            if(!COPYING){
+                rcheck.classList.add(classname+"Check");
+                rcheck.classList.add("check"); 
+
+                if(format & CELL_FORMAT_DISABLE_CHECKBOX){
+                    rcheck.disabled = true;
+                }
+                rowhtml.appendChild(rcheck);
+            }
+        }
+
+        //help icon
+        if((format & CELL_FORMAT_NAMELINK_SEPARATE_HELP) && (format & CELL_FORMAT_NAMELINK_ENABLE)){
+            let htmlHelp;
+
+            let linky = createLinkElement(cell, "❔", format);
+            if(!COPYING){
+                rowhtml.appendChild(linky);
+            }
+            else{
+                htmlHelp = rowhtml.children[indices.HELP];
+                if(htmlHelp == null){
+                    debugger;
+                }
+                htmlHelp.replaceWith(linky);
+            }
+        }
+
+        //map icon
+        if(format & CELL_FORMAT_SHOW_MAPICON)
+        {
+            let usableCell = cell;
+            if(cell.ref != null &&( cell.x == null || cell.y == null)){
+                usableCell = refCell;
+            }
+            if(usableCell.location != null){
+                usableCell = usableCell.location;
+            }
+            if(usableCell.x != null && usableCell.y != null && (usableCell.cell == "Outdoors" || usableCell.cell == null)){
+                let mapLink = createLinkElement(usableCell, "🗺️", format | CELL_FORMAT_NAMELINK_MAPLINK);
+
+                if(!COPYING){
+                    rowhtml.appendChild(mapLink);
+                }
+                else if(rowhtml.children[indices.MAP] == null){
+                    rowhtml.appendChild(mapLink);
+                }
+                else{
+                    rowhtml.children[indices.MAP].replaceWith(mapLink);
+                }
+            }
+            else{
+                if(rowhtml.children[indices.MAP] != null){
+                    rowhtml.children[indices.MAP].remove();
+                }
             }
         }
     }
@@ -452,12 +494,21 @@ function initSingleCell(cell, extraColumnName, format = CELL_FORMAT_CHECKLIST, c
     });
 
     //do this before miscChecklistStuff because miscChecklistStuff is all ID-specific, so it would have to be rewritten anyways.
-    lastCell_node = rowhtml.cloneNode(true);
+    if(!HYDRATING && !window.debug?.disable_node_clone){
+        lastCell_node = rowhtml.cloneNode(true);
+    }
     lastCell_classname = classname;
     lastCell_format = format;
+    lastCell_indices = indices;
 
-    miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
-
+    if(!HYDRATING){
+        if(format & CELL_FORMAT_SET_IDS && rcheck != null){
+            rowhtml.id = rowid;
+            rcheck.id = rowid+"check";
+        }
+        
+        miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, classname, usableId, COPYING);
+    }
     if((format & CELL_FORMAT_SET_ROW_ONCLICK) && !(format & CELL_FORMAT_DISABLE_CHECKBOX)){
         rowhtml.addEventListener('click',window.rowClicked);
     }
@@ -493,11 +544,6 @@ function miscChecklistStuff(rowhtml, cell, extraColumnName, format, rcheck, clas
             extraCol.innerText = cell[extraColumnName];
             rowhtml.appendChild(extraCol);
         }
-    }
-    
-    if(format & CELL_FORMAT_SET_IDS && rcheck != null){
-        rowhtml.id = classname+usableId.toString();
-        rcheck.id = rowhtml.id+"check";
     }
 }
 

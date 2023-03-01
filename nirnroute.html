@@ -8,12 +8,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Nirnroute — Interactive Oblivion Checklist</title>
 </head>
-<body>
+<body class="fullscreenBody">
 	<!-- begin topbar-->
-<div id="flexTopBar" class="flexTopBar">
-	<nav id="topbar" class="topbar">
+<div id="topbar" class="topbar">
+	<nav id="topbarNav" class="topbarNav">
 		<div class="topbarSection icon leftBorder">
-			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
+			<a href="https://prclive.run/"><img src="./images/prcbanner.png" style="width: 90px;"></a>
 			<div class="topbarSublist">
 				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
 				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
@@ -56,37 +56,37 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<div class="guideFrame">
-
-<div id="mapColumn" class="mainPanel" style="width: 67.2%;">
-<div class="mapContainer" id="mapContainer">
-	<div id="mapSettingsContainer" style="display:none">
-		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
-		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
-		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
-		<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
-		<br/>
-		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
-		<br/>
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
-		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
-		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
-	</div>
-	<div id="wrapper_Map" class="mapWrapper">
-		<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+<div class="contentContainer">
+<div id="mapColumn" class="mainPanel" style="width: 68%;">
+<div class="mapContainerOuter">
+	<div class="mapContainer" id="mapContainer">
+		<div id="mapSettingsContainer" style="display:none">
+			<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
+			<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
+			<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
+			<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
+			<br/>
+			<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
+			<br/>
+			<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+			<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
+			<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
+		</div>
+		<div id="wrapper_Map" class="mapWrapper">
+			<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+		</div>
 	</div>
 </div>
 </div>
 
 <div class="resizer" id="dragMe"></div>
 
-<div class="sidePanel">
-<div class="contentContainer">
-	<div class="sidebarNirnroute" id="sidebar">
+<div class="sidePanel scrollablePanel">
+	<div id="sidebar" style="margin: 0.5em">
 	<!-- sidebar contains images n navigation n stuff.-->
-	<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" >Nirnroots Found: <span id="overview_nirnroot">##</span></span>
+	<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" style="float:right">Nirnroots Found: <span id="overview_nirnroot" class="nirnroot">##</span></span>
 	<br/>
 	<button id="prevButton" title="left arrow">Prev</button><button id="nextButton" title="right arrow">Next</button>&nbsp;<label>Jump to <input type="number" id="nirnIdField"/></label>
 	<br/>
@@ -98,7 +98,6 @@
 	<h2>Close image</h2>
 	<a href="" id="closeImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="closeImage" alt="close image"></a>
 	</div>
-</div>
 </div>
 </div>
 <script type="module">
@@ -113,13 +112,8 @@
 	import * as sharing from './js/sharing.mjs';
 	import * as progress from './js/progressCalculation.mjs';
 
-	if(userdata.loadCookie("debug") == true){
-		window.debug = true;
-	}
-	if(userdata.loadCookie("debugAsync") == true){
-		window.debugAsync = true;
-	}
-
+	window.debug = userdata.loadCookie("debug");
+	
 	var additionalSettingsShown = false;
 
 	window.showHideMapSettings = function(){

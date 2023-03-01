@@ -1,4 +1,4 @@
-//NOTE: this is the companion page for settings.html. the actual settings object is initialized in progress.js
+//NOTE: this is the companion page for settings.html. the actual settings object is initialized in userdata.mjs
 export{
     updateShareUrl,
     init,
@@ -25,7 +25,10 @@ function updateShareUrl(){
 }
 
 function init(){
-    loadJsonData("..").then(()=>{
+    if(!window.location.toString().endsWith("settings.html")){
+        console.error("settings.html init() called fron non-settings page! things may break.");
+    }
+    loadJsonData(".").then(()=>{
         console.assert(jsondata != null);
         loadProgressFromCookie();
         console.log("progress loaded!");

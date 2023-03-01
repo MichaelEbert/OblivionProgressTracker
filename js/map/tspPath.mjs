@@ -69,8 +69,30 @@ TSPPath.prototype.draw = function(ctx){
             ctx.setLineDash([]);
             ctx.strokeStyle="#FF0000";
         }
-        ctx.moveTo(point.x, point.y);
-        ctx.lineTo(prevPoint.x, prevPoint.y);
+        ctx.moveTo(prevPoint.x, prevPoint.y);
+        ctx.lineTo(point.x, point.y);
+        //draw arrow
+
+        const ARROW_ANGLE = 0.6981;//in rad, ±40 degrees  
+        const ARROW_LENGTH = 10;//in px
+
+        let pointDiff = prevPoint.subtract(point);
+        let lineAngle = Math.atan2(pointDiff.y, pointDiff.x);
+
+        //arrow should not be directly at the end to not overlap the icon too much
+        let arrowStartPoint = new Point(point.x + ARROW_LENGTH * Math.cos(lineAngle), point.y + ARROW_LENGTH * Math.sin(lineAngle));
+        
+        let angle1 = lineAngle + ARROW_ANGLE;
+        let arrowOffset1 = new Point(ARROW_LENGTH*Math.cos(angle1), ARROW_LENGTH*Math.sin(angle1));
+        let arrowPoint1 = arrowStartPoint.add(arrowOffset1);
+        ctx.moveTo(arrowStartPoint.x, arrowStartPoint.y);
+        ctx.lineTo(arrowPoint1.x, arrowPoint1.y);
+
+        let angle2 = lineAngle - ARROW_ANGLE;
+        let arrowOffset2 = new Point(ARROW_LENGTH*Math.cos(angle2), ARROW_LENGTH*Math.sin(angle2));
+        let arrowPoint2 = arrowStartPoint.add(arrowOffset2);
+        ctx.moveTo(arrowStartPoint.x, arrowStartPoint.y);
+        ctx.lineTo(arrowPoint2.x, arrowPoint2.y);
         ctx.stroke();
     }
 

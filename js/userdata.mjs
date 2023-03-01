@@ -254,6 +254,7 @@ function initSettings(){
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
 	changed |= initProperty(settings, "classnameCheck", true);
+	changed |= initProperty(settings, "mapShowNonGates", true);
 	
 	//TODO: fix my shit encapsulation.
 	initShareSettings();
