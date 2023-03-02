@@ -63,18 +63,40 @@
 <div class="section">
 <div class="sectionTitle">Sharing</div>
 <div class="collapsibleContent">
+	<h3>Share Code</h3>
 	<p><i>You can share your progress with other people in real time, so anything you check off will appear on their spectator view! This is highly recommended for streamers so their viewers can follow their progress easily.</i></p>
 	<div class="sharingUI">
 		<p><b>Share: </b><button id="shareProgressButton" onclick="sharingjs.uploadCurrentSave()">Create Share URL*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="settingsjs.copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
 		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — Clicking on someone else's Share URL or entering a 6 letter code and pressing enter on this box will place your in Spectator Mode.</span>
 	</div>
 	<i>Spectating Notes
-	<ul>
-	<li>When you are in Spectator Mode, a Spectating banner will appear at the top of the page.</li>
-	<li>You cannot change the progress on the guide while spectating. Click the "X" on the spectating banner to close Spectating Mode, returning you to your personal progress and allowing you to change checklist values again.</li>
-	<li>To view someone else's progress in one window and still be able to track your own progress at the same time, 
-		use an incognito window to open their spectating link. Perfect for racing against someone!</li>
-		</ul></i>
+		<ul>
+		<li>When you are in Spectator Mode, a Spectating banner will appear at the top of the page.</li>
+		<li>You cannot change the progress on the guide while spectating. Click the "X" on the spectating banner to close Spectating Mode, returning you to your personal progress and allowing you to change checklist values again.</li>
+		<li>To view someone else's progress in one window and still be able to track your own progress at the same time, 
+			use an incognito window to open their spectating link. Perfect for racing against someone!</li>
+			</ul></i>	
+	
+	<h3>Stream Widget</h3>
+	<p><i>Generate a Stream Widget browser source to use in software like OBS!</i></p>
+	<p><b>This feature only works with a share code since the OBS browser is not linked to your normal browser.</b> <i>If you want to view the tracker outside of your stream software, copy/paste the code <b>into an incognito window</b> since this feature activates spectator mode for the browser it loads into.</i></p>
+	<div>
+		Share Code: <input type="text" value="" id="popoutShareCode" maxlength="6" size="3"/>
+		Width: <input type="number" value="460" id="browserSourceWidth"/>
+		Height: <input type="number" value="330" id="browserSourceHeight"/>
+		Columns: 
+		<select id="browserSourceColumns" disabled>
+			<option value="2">Two Columns</option>
+			<option value="1">Single Column</option>
+		</select>
+	</div>
+	<br/>
+	<button onclick="popoutjs.initBrowserSource()">Generate Stream Widget</button><input type="text" id="browserSourceUrl" size="70" readonly="true"/><button onclick="popoutjs.copyBrowserSourceToClipboard()" class="clipboardButton">📋</button><span id="browserSourceCopyConfirm"></span>
+	<ol>
+		<li>Adjust the above settings to fit your desired stream layout, then click the "Generate Stream Widget" button.</li>
+		<li>In OBS (or similar software), add a new Browser Source (not a window capture).</li>
+		<li>In the settings for the OBS browser source, copy/paste the generated URL into the URL field, and set the width/height to match the settings you specified above.</li>
+	</ol>
 </div>
 <p style="font-size: small"><i>* By creating a share URL, you agree that your progress, progress URL, IP address, and time uploaded may be stored on a server.</i></p>
 </div>
@@ -132,6 +154,7 @@
 	import * as settingsjs from './js/settings.mjs'
 	import * as sharingjs from './js/sharing.mjs'
 	import * as userdatajs from './js/userdata.mjs'
+	import * as popoutjs from './js/popout.mjs'
 	import {loadCookie} from './js/userdata.mjs'
 	(function(){
 		if(loadCookie("debug") == true){
@@ -141,6 +164,8 @@
 		window.settingsjs = settingsjs;
 		window.sharingjs = sharingjs;
 		window.userdatajs = userdatajs;
+		window.popoutjs = popoutjs;
+		popoutjs.setPopoutShareCode()
 	}).call(window);
 </script>
 <script src="collapsible.js"></script>

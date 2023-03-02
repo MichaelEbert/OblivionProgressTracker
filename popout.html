@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US" ><head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/png" href="./favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/popout.css"/>
+	<script src="./js/module-shim.mjs" type="module"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Interactive Oblivion Checklist</title>
+</head>
+<body id="popoutContainer" onload="popout.initPopoutSettings()">
+<div id="popoutTopBar" class="popoutTopBar">
+	<div class="popoutTopBarSection"><span class="totalProgressPercent">0</span>%</div> 
+</div>
+<table class="popout">
+	<tr><td><img class="overviewIcon" src="images/Icon_QuestGeneral.png" draggable="false">Quests</td><td><span id="overview_quest"></span>    </td><td><img class="overviewIcon" src="images/Icon_Shop.png" draggable="false">Invests</td><td><span id="overview_store"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Skills.png" draggable="false">Skills</td><td><span id="overview_skill"></span></td>    <td><img class="overviewIcon" src="images/Icon_Book9.png" draggable="false">Skill Books</td><td><span id="overview_book"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Fame.png" draggable="false">Fame</td><td><span id="overview_fame"></span></td>    <td><img class="overviewIcon" src="images/Icon_ArtifactAzura.png" draggable="false">Artifacts</td><td><span id="overview_artifacts_found"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Landmark.png" draggable="false">Places</td><td><span id="overview_location"></span></td>    <td><img class="overviewIcon" src="images/Icon_Nirnroot_Undiscovered.png" draggable="false">Nirnroots</td><td><span id="overview_nirnroot"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Gate.png" draggable="false">Gates</td><td><span id="overview_oblivion_gates_shut"></span></td>    <td><img class="overviewIcon" src="images/Icon_RankGrandChampion.png" draggable="false">Factions</td><td><span id="overview_max_faction_ranks"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Horse.png" draggable="false">Horses</td><td><span id="overview_horses_owned"></span></td>    <td><img class="overviewIcon" src="images/Icon_HeavenStone_Undiscovered.png" draggable="false">Powers</td><td><span id="overview_greater_powers"></span></td></tr>
+	<tr><td><img class="overviewIcon" src="images/Icon_Settlement.png" draggable="false">Houses</td><td><span id="overview_houses_owned"></span></td></tr>
+</table>
+<script type="module">
+	import * as popout from './js/popout.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as sharing from './js/sharing.mjs'
+
+	window.userdata = userdata;
+	window.sharing = sharing;
+	window.popout = popout;
+	(function(){
+		window.debug = userdata.loadCookie("debug");
+		window.debugAsync = userdata.loadCookie("debugAsync");
+		popout.init();
+
+		let shareCode = new URLSearchParams(window.location.search).get("code");
+        if(shareCode != null && shareCode != ""){
+            userdata.loadSettingsFromCookie();
+
+            settings.remoteShareCode = shareCode;
+            userdata.saveCookie("settings",settings);
+            sharing.startSpectating(false,true);
+        }
+	}).call(window);
+</script>
+</body></html>

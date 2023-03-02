@@ -387,6 +387,9 @@ input[type="number"]{
 #shareUrlCopy{
 	font-size: 0.7em;
 }
+#browserSourceCopyConfirm{
+	font-size: 0.9em;
+}
 
 /*required outide of mapContainer for Reasons*/
 .mapContainerOuter{
