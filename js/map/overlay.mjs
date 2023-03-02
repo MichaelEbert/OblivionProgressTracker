@@ -290,7 +290,7 @@ Overlay.prototype.setActiveTsp = function(layer){
  */
 Overlay.prototype.getIconByFormId = function(formId){
     for(const layer of this.layers.values()){
-        let maybeLoc = layer.icons.find(x=>x.cell.formId == formId);
+        let maybeLoc = layer.getIconByFormId(formId);
         if(maybeLoc){
             return maybeLoc;
         }

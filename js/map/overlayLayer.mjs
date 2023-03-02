@@ -106,3 +106,21 @@ OverlayLayer.prototype.doubleClick = function(clickLoc){
     }
     return false;
 }
+
+/**
+ * Search for an icon by its formid.
+ * @param formId 
+ */
+OverlayLayer.prototype.getIconByFormId = function(formId){
+    let maybeLoc = this.icons.find(x=>x.cell.formId == formId);
+    if(maybeLoc){
+        return maybeLoc;
+    }
+    for(const layer of this.layers.values()){
+        maybeLoc = layer.getIconByFormId(formId);
+        if(maybeLoc){
+            return maybeLoc;
+        }
+    }
+    return null;
+}
