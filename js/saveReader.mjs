@@ -230,7 +230,7 @@ function RunMiscUpdates(miscHive, savedata, saveFile)
             case "houses owned":
                 runOnTree(child, UpdateHouse(savedata, saveFile));
                 break;
-            case "pilgrim's grace":
+            case "wayshrines":
                 runOnTree(child, UpdateWayshrine(savedata, saveFile));
                 break;
             case "arena fight fame":

@@ -9,22 +9,14 @@ function LinkedElement(element, classname, id){
 }
 
 function init(){
-	//preload settings so we can get iframe loaded fast
-	window.settings = loadCookie("settings");
-	checkIframeSize();
+	loadSettingsFromCookie();
+	checkIframeSize(); 
+	
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
 		loadProgressFromCookie();
-		if(settings.remoteShareCode){
-			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = sharing.createSpectateBanner();
-				document.getElementById("topbar").appendChild(spectateBanner);
-			}
-		}
+		sharing.initSharingFeature();
 		replaceElements();
-		if(settings.spectateAutoRefresh == true){
-			sharing.startSpectating(false, true);
-		}
 	});
 }
 
@@ -273,32 +265,39 @@ function userInputData(rowHtml, checkboxElement){
 	recalculateProgressAndUpdateProgressUI();
 }
 
+//used to make sure we don't run a ton of refresh code constantly.
+var __linkState = null;
 
-var __displayingIframe = null;
 /**
- * Update iframe visibility
- * @param {boolean} visible should iframe be visible
+ * Update iframe visibility and where guide links will appear.
+ * @param {string} newLinkLocation should iframe be visible
  */
-function updateIframe(visible){
-	//if we're not changing the visibility of the iframe, do nothing.
-	if(visible == __displayingIframe){
+//TODO: Split the link updating and iFrame updating into two separate functions for even less redundancy.
+function updateIframe(newState){
+	//If no settings are changing, exit this script to avoid tons of redundant updating.
+	if(__linkState == newState){
 		return;
 	}
 	if(window.debug){
-		let newstate = visible?"on":"off"
-		console.log("updating iframe to "+newstate);
+		console.log("updating iframe to "+newState);
 	}
-	if(visible){
+	const sidePanel = document.getElementsByClassName("sidePanel")[0];
+	const mainPanel = document.getElementsByClassName("mainPanel")[0];
+	const divider = document.getElementById("dragMe");
+	switch(newState){
+	case LINK_LOCATION_MYFRAME:
 		//iframe going from off to on
-		const sidebar = document.getElementById("sidebarContent");
-		if(sidebar == null){
-			console.error("Could not find sidebar.");
-		}
 
-		sidebar.style.display = "";
+		//initialize sidebar if we have to
 		let iframeContainer = document.getElementById("iframeContainer");
 		if(iframeContainer == null){
-			iframeContainer = document.createElement("div");
+			const sidebarContent = document.getElementById("sidebarContent");
+			if(sidebarContent == null){
+				console.error("can't find sidebarContent to insert iframe");
+				return;
+			}
+			//initialize sidebar container, which we will hide situationally but only need to build once.
+			let iframeContainer = document.createElement("DIV");
 			iframeContainer.classList.add("iframeContainer");
 			iframeContainer.id = "iframeContainer";
 
@@ -308,115 +307,149 @@ function updateIframe(visible){
 			myframe.classList.add("iframe");
 			myframe.src="help.html";
 			
+			//Place the myframe in the iframeContainer, then place the whole payload into the sidebarContent
 			iframeContainer.appendChild(myframe);
-			
-			if(sidebar != null){
-				sidebar.append(iframeContainer);
-			}
-			else{
-				document.body.prepend(iframeContainer);
-			}
-			if(settings?.iframeWidth){
-				sidebar.style.width = settings.iframeWidth;
-			}
+			sidebarContent.appendChild(iframeContainer);
 
-			const widthWindow = document.querySelector(".resizableWidthContainer");
-			widthWindow.addEventListener('mouseup',(event)=>{
-				//we need to convert px to vw.
-				let widthInPx = /(\d*)px/.exec(event.target.style.width);
-				if(widthInPx?.length > 1){
-					const newWidthPx = parseInt(widthInPx[1]);
-					const documentWidthPx = window.innerWidth;
-					let newWidthEm = (newWidthPx/documentWidthPx*100).toFixed(1) +"vw";
-					event.target.style.width = newWidthEm;
-					if(settings.iframeWidth != newWidthEm){
-						settings.iframeWidth = newWidthEm;
-						saveCookie("settings",settings);
+			if(navigator.userAgent.includes("Chrome") ){
+				//Chrome doesn't resize images in iframes so we get to do it ourselves.
+				//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
+				let myframe = document.getElementById("myframe");
+				myframe.onload = (evt)=>{
+					const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
+					if(img == null || img.tagName != "IMG"){
+						if(window.debug){
+							console.log("can't find img to resize");
+						}
+						return;
 					}
-				}
-				
-			});
+					img.style = "width:100%;cursor:zoom-in";
+					img.addEventListener('click', (evt)=>{
+						if(img.style.width == "100%"){
+							img.style = "cursor:zoom-out";
+						}
+						else{
+							img.style = "width:100%;cursor:zoom-in";
+						}
+					});
+					console.log("img loaded in second window");
+				};
+			}
 		}
-		
-		//update all _blank links to open in iframe
+
+		//make some room
+		mainPanel.style.width = "55%"//TODO use setting
+		//unhide side panels?
+		divider.style = "";
+		sidePanel.style = "";
+
+		//update links
 		var links = document.getElementsByTagName("A");
 		for(var lnk of links){
-			if(lnk.target == "_blank"){
+			if(lnk.target == "_blank" || lnk.target == "externalSecondWindow"){
 				lnk.target = "myframe";
 			}
 		}
-		if(navigator.userAgent.includes("Chrome") ){
-			//Chrome doesn't resize images in iframes so we get to do it ourselves.
-			//use onLoad instead of document.addEventListener because we only want this once and this is the easiest way to do that
-			myframe.onload = (evt)=>{
-				const img = myframe.contentDocument.children[0]?.children[1]?.children[0];
-				if(img == null || img.tagName != "IMG"){
-					if(window.debug){
-						console.log("can't find img to resize");
-					}
-					return;
-				}
-				img.style = "width:100%;cursor:zoom-in";
-				img.addEventListener('click', (evt)=>{
-					if(img.style.width == "100%"){
-						img.style = "cursor:zoom-out";
-					}
-					else{
-						img.style = "width:100%;cursor:zoom-in";
-					}
-				});
-				console.log("img loaded in second window");
-			};
+		break;
+	case LINK_LOCATION_NEWTAB:
+		//turning off iframe
+		//make some room
+		mainPanel.style.width = ""//TODO use setting
+		//hide side panels
+		if(divider != null){
+			divider.style.display = "none";
 		}
-		__displayingIframe = true;
-	}
-	else{
-		//iframe going from on to off
-		//just hide it because if we go back to large, we don't want to have to reload the iframe.
-		let sidebar= document.getElementById("sidebarContent");
-		if(sidebar != null){
-			sidebar.style.display = "none";
+		if(sidePanel != null){
+			sidePanel.style.display = "none";
 		}
 
-		if(settings.iframeCheck == "window"){
-			var links = document.getElementsByTagName("A");
-			for(var lnk of links){
-				if(lnk.target == "_blank"){
-					lnk.target = "myframe";
-				}
+		//update links
+		var links = document.getElementsByTagName("A");
+		for(var lnk of links){
+			if(lnk.target == "myframe" || lnk.target == "externalSecondWindow"){
+				lnk.target = "_blank";
 			}
 		}
-		else{
-			//reset links to open in new tab, otherwise it looks like they're doing nothing.
-			var links = document.getElementsByTagName("A");
-			for(var lnk of links){
-				if(lnk.target == "myframe"){
-					lnk.target = "_blank";
-				}
+		break;
+	case LINK_LOCATION_SECONDWINDOW:
+		//turning off iframe, move to second window
+		//make some room
+		mainPanel.style.width = ""//TODO use setting
+		//hide side panels
+		if(divider != null){
+			divider.style.display = "none";
+		}
+		if(sidePanel != null){
+			sidePanel.style.display = "none";
+		}
+
+		//update links
+		var links = document.getElementsByTagName("A");
+		for(var lnk of links){
+			if(lnk.target == "myframe" || lnk.target == "_blank"){
+				lnk.target = "externalSecondWindow";
 			}
 		}
-		__displayingIframe = false;
+		break;
+	default:
+		console.error("invalid link location. should be a constant.");
+		break;
 	}
+	__linkState == newState;
 }
 
+//The root function of the iframe resizing settings, runs each time the window size changes.
 var windowResizeId = null;
 function onWindowResize(event){
 	//on window resize, we may want to hide sidebar.
-	//only resize after being still for 50ms
+	//only resize after being still for 10ms
 	if(windowResizeId != null){
 		clearTimeout(windowResizeId);
 	}
-	windowResizeId = setTimeout(checkIframeSize,50,event);
+	windowResizeId = setTimeout(checkIframeSize,10,event);
 }
 
+const LINK_LOCATION_NEWTAB = "_blank";
+const LINK_LOCATION_MYFRAME = "myframe";
+const LINK_LOCATION_SECONDWINDOW = "externalsecondwindow";
+
+/**
+ * Update iframe and link locations to new states.
+ * @param {*} event 
+ */
 function checkIframeSize(event){
 	windowResizeId = null;
-	if(settings?.iframeCheck == "on" || 
-	(settings?.iframeCheck == "auto" && window.innerWidth >= settings.iframeMinWidth)){
-		updateIframe(true);
-	}
-	else{
-		updateIframe(false);
+	//links can be 3 states:
+	//newtab:
+	// if iframe setting is "off"
+	// iframe setting is "auto" but window is too small
+	//myframe:
+	// iframe setting is "on"
+	// iframe setting is "auto" and window is wide enough
+	//secondwindow:
+	// iframe setting is "secondwindow"
+
+	switch(settings?.iframeCheck){
+		case "off":
+			updateIframe(LINK_LOCATION_NEWTAB);
+			break;
+		case "auto":
+			if(window.innerWidth >= settings.iframeMinWidth){
+				updateIframe(LINK_LOCATION_MYFRAME);
+			}
+			else{
+				updateIframe(LINK_LOCATION_NEWTAB);
+			}
+			break;
+		case "on":
+			updateIframe(LINK_LOCATION_MYFRAME);
+			break;
+		case "window":
+			updateIframe(LINK_LOCATION_SECONDWINDOW);
+			break;
+		default:
+			console.error("unknown iframeCheck option");
+			break;
 	}
 }
 

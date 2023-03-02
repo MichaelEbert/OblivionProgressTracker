@@ -26,15 +26,9 @@ function init(){
 		if(userdata.loadProgressFromCookie() == false){
 			userdata.resetProgress();
 		}
-		if(settings.remoteShareCode){
-			if(!document.getElementById("spectateBanner")){
-				let spectateBanner = sharing.createSpectateBanner();
-				document.getElementById("topbar").appendChild(spectateBanner);
-			}
-			if(settings.spectateAutoRefresh == true){
-				sharing.startSpectating(false, true);
-			}
-		}
+
+		sharing.initSharingFeature();
+
 		const ignoreEvent = (e) => {
 			e.preventDefault();
 			e.stopPropagation();
@@ -56,7 +50,11 @@ function createLeafContainer(){
 
 function initMulti(root, parentElement, depth, extraColumnName){
 	let leafContainerPtr = {value:null};
-	initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr);
+	let hydrate = true;
+	if(debug?.disable_hydration){
+		hydrate = false;
+	}
+	initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr, hydrate);
 	if(leafContainerPtr.value != null){
 		debugger;
 		console.warning("something failed during init. orphan leaf container left over.");
@@ -69,7 +67,7 @@ function initMulti(root, parentElement, depth, extraColumnName){
  * @param {number} depth depth of this node in the tree.
  * @param {string} extraColumnName name of extra column. undefined if no extra column name.
  */
-function initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr){
+function initMultiInternal(root, parentElement, depth, extraColumnName, leafContainerPtr, hydrate){
 	if(root == null){
 		console.log(parentElement);
 		debugger;
@@ -77,74 +75,90 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 	
 	if(root.elements == null){
 		//this is a leaf node. so we just have to init this single thing.
-		let maybeElement = common.initSingleCell(root, extraColumnName, common.CELL_FORMAT_CHECKLIST);
-		if(maybeElement != null){
-			if(leafContainerPtr.value == null){
-				leafContainerPtr.value = createLeafContainer();
+		let maybeElement = common.initSingleCell(root, extraColumnName, common.CELL_FORMAT_CHECKLIST, null, hydrate);
+		if(!hydrate){
+			if(maybeElement != null){
+				if(leafContainerPtr.value == null){
+					leafContainerPtr.value = createLeafContainer();
+				}
+				leafContainerPtr.value.appendChild(maybeElement);
 			}
-			leafContainerPtr.value.appendChild(maybeElement);
 		}
 	}
 	else{
 		if(root.classname == null && root.name == null){
 			//skip this level.
 			for(const datum of root.elements) {
-				initMultiInternal(datum, parentElement, depth, extraColumnName, leafContainerPtr);
+				initMultiInternal(datum, parentElement, depth, extraColumnName, leafContainerPtr, hydrate);
 			}
 		}
 		else{
-			// not a leaf node, so create a subtree, with a title n stuff.
-			//We're starting a new subtree, so append the parent's leaves to it, if necessary.
-			if(leafContainerPtr.value != null){
-				parentElement.appendChild(leafContainerPtr.value);
-				leafContainerPtr.value = null;
+			let subtreeRoot = null;
+			if(!hydrate){
+				// not a leaf node, so create a subtree, with a title n stuff.
+				//We're starting a new subtree, so append the parent's leaves to it, if necessary.
+				if(leafContainerPtr.value != null){
+					parentElement.appendChild(leafContainerPtr.value);
+					leafContainerPtr.value = null;
+				}
+				leafContainerPtr.value = createLeafContainer();
+				let subtreeName;
+				//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
+				if(root.classname != null){
+					subtreeName = root.classname.replaceAll(" ","_");
+				}
+				else if (root.name != null){
+					subtreeName = root.name.replaceAll(" ", "_");
+				}
+				else{
+					//no name for intermediate cell. Skip in heirarchy.
+					debugger;
+				}
+				subtreeName = subtreeName.replaceAll(".","");
+				subtreeRoot = document.createElement("div");
+				subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
+				subtreeRoot.id = parentElement.id + "_" + subtreeName;
+				
+				const subtreeTitle = document.createElement("div");
+				subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
+				subtreeTitle.innerText = root.name;
+				if(root.notes != null){
+					const subtreeNotes = document.createElement("SPAN");
+					subtreeNotes.title = root.notes;
+					//there's an extra space here, only for titles, because it looks better.
+					subtreeNotes.innerText = " ⚠";
+					subtreeTitle.appendChild(subtreeNotes);
+				}
+				leafContainerPtr.value.appendChild(subtreeTitle);
+				
+				//if we need to change the extra column name, do that before initializing child elements.
+				if(root.extraColumn != null){
+					extraColumnName = root.extraColumn;
+				}
 			}
-			leafContainerPtr.value = createLeafContainer();
-			let subtreeName;
-			//use classname for root elements so we don't end up with "stores_invested_in" as a part of links
-			if(root.classname != null){
-				subtreeName = root.classname.replaceAll(" ","_");
-			}
-			else if (root.name != null){
-				subtreeName = root.name.replaceAll(" ", "_");
-			}
-			else{
-				//no name for intermediate cell. Skip in heirarchy.
-				debugger;
-			}
-			const subtreeRoot = document.createElement("div");
-			subtreeRoot.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]);
-			subtreeRoot.id = parentElement.id + "_" + subtreeName;
-			
-			const subtreeTitle = document.createElement("div");
-			subtreeTitle.classList.add(classNamesForLevels[Math.min(MAX_DEPTH, depth)]+"Title");
-			subtreeTitle.innerText = root.name;
-			if(root.notes != null){
-				const subtreeNotes = document.createElement("SPAN");
-				subtreeNotes.title = root.notes;
-				//there's an extra space here, only for titles, because it looks better.
-				subtreeNotes.innerText = " ⚠";
-				subtreeTitle.appendChild(subtreeNotes);
-			}
-			leafContainerPtr.value.appendChild(subtreeTitle);
-			
-			//if we need to change the extra column name, do that before initializing child elements.
-			if(root.extraColumn != null){
-				extraColumnName = root.extraColumn;
-			}
-
 			//fill out this element with the child elements
 			for(const datum of root.elements) {
-				initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr);
+				initMultiInternal(datum, subtreeRoot, depth+1, extraColumnName, leafContainerPtr, hydrate);
 			}
 
-			//if we had any leaf nodes, append their container to this element before we finish.
-			if(leafContainerPtr.value != null){
-				subtreeRoot.appendChild(leafContainerPtr.value);
-				leafContainerPtr.value = null;
-			}
+			if(!hydrate){
+				//if we had any leaf nodes, append their container to this element before we finish.
+				if(leafContainerPtr.value != null){
+					subtreeRoot.appendChild(leafContainerPtr.value);
+					leafContainerPtr.value = null;
+				}
 				//finally, append the fully created element to parent.
-			parentElement.appendChild(subtreeRoot);
+				
+				//first, check for existing element. this may be the case if we are on a page meant for hydration.
+				let maybeExisting = document.getElementById(subtreeRoot.id);
+				if(maybeExisting != null){
+					maybeExisting.remove();
+					if(debug.disable_hydration){
+						console.log("removing existing element with id "+subtreeRoot.id);
+					}
+				}
+				parentElement.appendChild(subtreeRoot);
+			}
 		}
 	}
 }

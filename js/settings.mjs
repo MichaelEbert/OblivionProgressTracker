@@ -1,4 +1,4 @@
-//NOTE: this is the companion page for settings.html. the actual settings object is initialized in progress.js
+//NOTE: this is the companion page for settings.html. the actual settings object is initialized in userdata.mjs
 export{
     updateShareUrl,
     init,
@@ -15,6 +15,7 @@ import {loadJsonData} from './obliviondata.mjs'
 import { setRemoteUrl, createSpectateBanner } from './sharing.mjs'
 import {recalculateProgress} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
+import { initSharingFeature } from './sharing.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
 function updateShareUrl(){
@@ -22,7 +23,10 @@ function updateShareUrl(){
 }
 
 function init(){
-    loadJsonData("..").then(()=>{
+    if(!window.location.toString().endsWith("settings.html")){
+        console.error("settings.html init() called fron non-settings page! things may break.");
+    }
+    loadJsonData(".").then(()=>{
         console.assert(jsondata != null);
         loadProgressFromCookie();
         console.log("progress loaded!");
@@ -30,12 +34,7 @@ function init(){
     loadSettingsFromCookie();
     
     initAutoSettings();
-    if(settings.remoteShareCode){
-        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-            let spectateBanner = createSpectateBanner();
-            document.getElementById("topbar")?.appendChild(spectateBanner);
-        }
-    }
+    initSharingFeature();
     
     //custom settings
     document.getElementById("fileinput").addEventListener('change',importProgress);
@@ -70,13 +69,6 @@ function init(){
     document.body.addEventListener('dragenter', ignoreEvent);
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', parseSave);
-
-    if(settings.remoteShareCode){
-        if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-            let spectateBanner = createSpectateBanner();
-            document.getElementById("topbar")?.appendChild(spectateBanner);
-        }
-    }
 
     document.addEventListener("progressLoad",()=>{
         let percentCompleteSoFar;

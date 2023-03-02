@@ -140,13 +140,24 @@ async function initMap(){
     //load map cord data
     let windowParams = new URLSearchParams(window.location.search);
     if(windowParams.get("topbar") == "false"){
-        //TODO: put this in css files
         document.getElementById("topbar").remove();
-        let mapContainer = document.getElementById("mapContainer");
-        if(mapContainer != null){
-            mapContainer.style = "top:0;padding:2px;"
+    }
+    //Setting parameters
+    let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
+    for(let para of settingsArray){
+        if(windowParams.get(para.toLowerCase()) == "true"){
+            document.getElementById("button_" + para).checked = true;
+        }
+        if(windowParams.get(para.toLowerCase()) == "false"){//can't do else for these since it would override user settings.
+            document.getElementById("button_" + para).checked = false;
         }
     }
+    //Prediscovered appears to be tied to settings, so I can't figure out how to make that one changable. Most people won't turn it off anyway.
+    let tspSetting = windowParams.get("tsp")
+    if(tspSetting == "none" || tspSetting == "location" || tspSetting == "nirnroot"){
+        document.getElementById("button_tsp" + tspSetting.charAt(0).toUpperCase() + tspSetting.slice(1)).checked = true;
+    }
+
     //start map loading here, we will wait for it later.
     let mapImgLoad = loadMapImage();
     initAutoSettings(drawFrame, drawFrame);
@@ -472,6 +483,7 @@ function initListeners(){
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
+    const showNonGates = document.getElementById("mapShowNonGates");
 
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
@@ -491,6 +503,8 @@ function initListeners(){
         else if(button_tspNirnroot.checked){
             overlay.setActiveTsp(OVERLAY_LAYER_NIRNROOTS);
         }
+
+        overlay.layers.get(OVERLAY_LAYER_LOCATIONS).layers.get("nonGates").visible = showNonGates.checked;
         
         drawFrame();
     }
@@ -503,6 +517,8 @@ function initListeners(){
     button_tspNone.addEventListener("change", displaySettingsFunc);
     button_tspLocation.addEventListener("change", displaySettingsFunc);
     button_tspNirnroot.addEventListener("change", displaySettingsFunc);
+
+    showNonGates.addEventListener("change", displaySettingsFunc);
     displaySettingsFunc();
 
     document.getElementById("resetMapButton")?.addEventListener('click', (e)=>{
