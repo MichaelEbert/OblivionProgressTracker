@@ -8,7 +8,18 @@ import { compressSaveData, decompressSaveData } from "./userdata.mjs";
 import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
 
 // ==============
-export {initShareSettings, generateSaveKey, uploadSave, downloadSave, uploadCurrentSave, startSpectating, stopSpectating, setRemoteUrl, createSpectateBanner};
+export {
+	initShareSettings,
+	generateSaveKey,
+	uploadSave,
+	downloadSave,
+	uploadCurrentSave,
+	startSpectating,
+	stopSpectating,
+	setRemoteUrl,
+	createSpectateBanner,
+	initSharingFeature
+};
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -133,9 +144,7 @@ async function downloadSave(remoteUrl){
  * Upload current save to server. If currently spectating, does nothing.
  * we don't want remote save to replace current save. so we just set "viewing remote" and disable saving.
  */
-async function uploadCurrentSave(notifyOnUpdate = true){
-	document.getElementById("shareUrlCopy").innerHTML = ""; //for the copy link button.
-	
+async function uploadCurrentSave(notifyOnUpdate = true){	
 	if(settings.remoteShareCode){
 		//if we're viewing remote, don't upload.
 		console.log("viewing remote data, will not upload.");
@@ -188,6 +197,7 @@ function stopSpectating(){
 	saveCookie("settings",settings);
 
 	document.getElementById("spectateBanner")?.remove();
+	document.getElementById("sidebarFloaty")?.classList.remove("screenHeight2");
 	var localProgress = loadCookie("progress_local");
 	if(localProgress != null && Object.keys(localProgress).length > 0){
 		if(window.debug){
@@ -254,16 +264,22 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 					alert("Downloaded");
 				}
 				document.dispatchEvent(new Event("progressLoad"));
-				//AFTER everything else, attach an auto listener to update spectating.
-				if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
-					if(window.debug){
-						console.log("Attaching auto update listener");
-					}
-					autoUpdateListener = ()=>{
-						startSpectating(false, true);
-					}
-					autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+			}
+			else{
+				if(window.debug){
+					console.log("304 content unchanged");
 				}
+			}
+
+			//AFTER everything else, attach an auto listener to update spectating.
+			if(autoUpdateListener == null && settings.spectateAutoRefresh == true && isSpectating()){
+				if(window.debug){
+					console.log("Attaching auto update listener");
+				}
+				autoUpdateListener = ()=>{
+					startSpectating(false, true);
+				}
+				autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 			}
 		}).catch((e)=>{
 			if(e.status == 400){
@@ -297,8 +313,9 @@ function setRemoteUrl(event)
  * @returns html element to control spectating.
  */
 function createSpectateBanner(){
-	let spectateBanner = document.createElement("SPAN");
-	spectateBanner.innerText = "Spectating ⟳";
+	let spectateBanner = document.createElement("DIV");
+	let bannerDefaultText = "You are currently spectating someone else and cannot make changes. Exit spectator mode to switch back to your personal progress. ⟳";
+	spectateBanner.innerText = bannerDefaultText;
 	spectateBanner.id = "spectateBanner";
 	spectateBanner.classList.add("spectateBanner");
 	spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh."
@@ -306,7 +323,7 @@ function createSpectateBanner(){
 		// childNodes[0] because that's the #text fragment. can't do innerText because the cancel button is there as well.
 		spectateBanner.childNodes[0].nodeValue = "Reloading...";
 		startSpectating(false, true).then(()=>{
-			spectateBanner.childNodes[0].nodeValue = "Spectating ⟳";
+			spectateBanner.childNodes[0].nodeValue = bannerDefaultText;
 			spectateBanner.title = "Last updated "+settings.shareDownloadTime+". Click to refresh.";
 		});
 	});
@@ -321,5 +338,23 @@ function createSpectateBanner(){
 	spectateBanner.appendChild(spectateCancelButton);
 
 	return spectateBanner;
+}
+
+/**
+ * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
+ */
+function initSharingFeature(){
+	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+		return;
+	}
+
+	if(!document.getElementById("spectateBanner")){
+		let spectateBanner = createSpectateBanner();
+		document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+		document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
+	}
+	if(settings.spectateAutoRefresh == true){
+		startSpectating(false, true);
+	}
 }
 

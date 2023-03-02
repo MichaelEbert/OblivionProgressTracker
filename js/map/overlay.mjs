@@ -39,38 +39,51 @@ function Overlay(){
 }
 
 Overlay.prototype.createLocationLayer = function(){
+
     let locTspArr = [];
-    let locationArr = [];
+    let nonGates = [];
+    let gates = [];
     runOnTree(jsondata.location, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
             newIcon = new GateLocation(loc);
+            gates.push(newIcon);
         }
         else{
             newIcon = new MapLocation(loc);
+            nonGates.push(newIcon);
         }
-        locationArr.push(newIcon);
         
         if(loc.tspId != null){
             locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
         }
     });
 
+
     runOnTree(jsondata.locationPrediscovered, function(loc){
         let newIcon = null;
         if(loc.name.includes("Oblivion Gate")){
             newIcon = new GateLocation(loc);
+            gates.push(newIcon);
         }
         else{
             newIcon = new MapLocation(loc);
+            nonGates.push(newIcon);
         }
-        locationArr.push(newIcon);
         
         if(loc.tspId != null){
             locTspArr.push(new TSPLocation(loc.x, loc.y, loc.tspId));
         }
     });
-    this.layers.set(OVERLAY_LAYER_LOCATIONS,new OverlayLayer(locationArr, locTspArr));
+
+    let nonGatesLayer = {name: "nonGates", value: new OverlayLayer(nonGates, null)};
+    let gatesLayer = {name: "gates", value: new OverlayLayer(gates, null)};
+
+    //visibility will be controlled by OVERLAY_LAYER_LOCATIONS, not these individually
+    nonGatesLayer.value.visible = true;
+    gatesLayer.value.visible = true;
+
+    this.layers.set(OVERLAY_LAYER_LOCATIONS,new OverlayLayer([], locTspArr, [nonGatesLayer, gatesLayer]));
 }
 
 Overlay.prototype.createNirnrootLayer = function(){

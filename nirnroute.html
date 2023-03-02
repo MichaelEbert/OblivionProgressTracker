@@ -8,89 +8,97 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Nirnroute — Interactive Oblivion Checklist</title>
 </head>
-<body>
+<body class="fullscreenBody">
 	<!-- begin topbar-->
-<nav id="topbar" class="topbar">
-	<div class="topbarSection icon">
-		<a href="https://prclive.run/"><img src="images/prcbanner.png" style="width: 90px;"></a>
-		<div class="topbarSublist">
-			<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
-			<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
-			<a href="https://discord.gg/eudsps7" class="topbarSection">Discord</a>
-			<a href="https://github.com/MichaelEbert/OblivionProgressTracker" class="topbarSection">GitHub</a>
-			<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
+<div id="topbar" class="topbar">
+	<nav id="topbarNav" class="topbarNav">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="./images/prcbanner.png" style="width: 90px;"></a>
+			<div class="topbarSublist">
+				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
+				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
+				<a href="https://discord.gg/eudsps7" class="topbarSection">Discord</a>
+				<a href="https://github.com/MichaelEbert/OblivionProgressTracker" class="topbarSection">GitHub</a>
+				<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
+			</div>
 		</div>
-	</div>
-	<div class="topbarSection">
-		<a href="./speedrun-guide.html">Guide</a>
-		<div class="topbarSublist">
-			<a href="./speedrun-guide.html">Speedrun Guide</a>
-			<a href="./casual.html">Casual Guide</a>
-			<a href="./speedrun-archive.html">Archive</a>
+		<div class="topbarSection">
+			<a href="./speedrun-guide.html">Guide</a>
+			<div class="topbarSublist">
+				<a href="./speedrun-guide.html">Speedrun Guide</a>
+				<a href="./casual.html">Casual Guide</a>
+				<a href="./speedrun-archive.html">Archive</a>
+			</div>
 		</div>
-	</div>
 
-	<a href="./checklist.html" class="topbarSection">Checklist</a>
+		<a href="./checklist.html" class="topbarSection">Checklist</a>
 
-	<div class="topbarSection">
-		<a href="./map.html">Map</a>
-		<div class="topbarSublist">
-			<a href="./nirnroute.html">Nirnroute</a>
+		<div class="topbarSection">
+			<a href="./map.html">Map</a>
+			<div class="topbarSublist">
+				<a href="./nirnroute.html">Nirnroute</a>
+			</div>
 		</div>
-	</div>
 
-	<div class="topbarSection">
-		<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Wiki/Tools</a>
-		<div class="topbarSublist">
-			<a href="https://prclive.run/wiki/Main_Page">Wiki</a>
-			<a href="./tools/tools.html">Tools</a>
-			<a href="https://prclive.run/wiki/Oblivion:Glitches/Tech">Glitches</a>
-			<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+		<div class="topbarSection">
+			<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Wiki/Tools</a>
+			<div class="topbarSublist">
+				<a href="https://prclive.run/wiki/Main_Page">Wiki</a>
+				<a href="./tools/tools.html">Tools</a>
+				<a href="https://prclive.run/wiki/Oblivion:Glitches/Tech">Glitches</a>
+				<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+			</div>
 		</div>
-	</div>
 
-	<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
+		<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
 
-	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
-</nav>
+		<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+	</nav>
+</div>
 <!-- end topbar-->
 <div class="contentContainer">
-<div class="sidebar" id="sidebar">
-<!-- sidebar contains images n navigation n stuff.-->
-<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" >Nirnroots Found: <span id="overview_nirnroot">##</span></span>
-<br/>
-<button id="prevButton" title="left arrow">Prev</button><button id="nextButton" title="right arrow">Next</button>&nbsp;&nbsp;<label>Jump to <input type="number" id="nirnIdField"/></label>
-<br/>
-<span id="closeTo"></span>
-<br/>
-<span id="instructions"></span>
-<h2>Far image</h2>
-<a href="" id="farImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="farImage" alt="far image"></a>
-<h2>Close image</h2>
-<a href="" id="closeImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="closeImage" alt="close image"></a>
-</div>
-<div id="mapColumn">
-<div class="mapContainer resizableWidthContainer" id="mapContainer">
-	<div id="mapSettingsContainer" style="display:none">
-		<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
-		<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
-		<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
-		<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
-		<br/>
-		<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
-		<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
-		<br/>
-		<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
-		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
-		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
-	</div>
-	<div id="wrapper_Map" class="mapWrapper">
-		<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+<div id="mapColumn" class="mainPanel" style="width: 68%;">
+<div class="mapContainerOuter">
+	<div class="mapContainer" id="mapContainer">
+		<div id="mapSettingsContainer" style="display:none">
+			<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
+			<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
+			<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
+			<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
+			<br/>
+			<label><input type="radio" name="tsp_selection" id="button_tspNone" title="The fastest way to visit each location"/>No TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspLocation" title="The fastest way to visit each location"/>Location TSP</label>
+			<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
+			<br/>
+			<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label>
+			<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
+			<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
+		</div>
+		<div id="wrapper_Map" class="mapWrapper">
+			<button id="showSettingsButton" style="position:absolute">Show Settings</button>
+		</div>
 	</div>
 </div>
 </div>
 
+<div class="resizer" id="dragMe"></div>
+
+<div class="sidePanel scrollablePanel">
+	<div id="sidebar" style="margin: 0.5em">
+	<!-- sidebar contains images n navigation n stuff.-->
+	<h1 id="nirnName">Nirnroot Title</h1> <span class= "h3" style="float:right">Nirnroots Found: <span id="overview_nirnroot" class="nirnroot">##</span></span>
+	<br/>
+	<button id="prevButton" title="left arrow">Prev</button><button id="nextButton" title="right arrow">Next</button>&nbsp;<label>Jump to <input type="number" id="nirnIdField"/></label>
+	<br/>
+	<span id="closeTo"></span>
+	<br/>
+	<span id="instructions"></span>
+	<h2>Far image</h2>
+	<a href="" id="farImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="farImage" alt="far image"></a>
+	<h2>Close image</h2>
+	<a href="" id="closeImageHyperlink"><img src="./data/minipages/in-game-placeholder.png" id="closeImage" alt="close image"></a>
+	</div>
+</div>
 </div>
 <script type="module">
 	//normally, we can't call module code from non-module code.
@@ -104,13 +112,8 @@
 	import * as sharing from './js/sharing.mjs';
 	import * as progress from './js/progressCalculation.mjs';
 
-	if(userdata.loadCookie("debug") == true){
-		window.debug = true;
-	}
-	if(userdata.loadCookie("debugAsync") == true){
-		window.debugAsync = true;
-	}
-
+	window.debug = userdata.loadCookie("debug");
+	
 	var additionalSettingsShown = false;
 
 	window.showHideMapSettings = function(){
@@ -135,15 +138,10 @@
 			nirn.init();
 			document.getElementById("mapShowPrediscovered").addEventListener('change',()=>{map.draw();});
 			progress.recalculateProgress();
-
-			if(settings.remoteShareCode){
-				if(!document.getElementById("spectateBanner") && document.getElementById("topbar") != null){
-					let spectateBanner = sharing.createSpectateBanner();
-					document.getElementById("topbar")?.appendChild(spectateBanner);
-				}
-			}
+			sharing.initSharingFeature();
 		});
 	}).call(window);
 </script>
+<script src="dragging.js"></script>
 </body>
 </html>

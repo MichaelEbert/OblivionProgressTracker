@@ -1,11 +1,13 @@
-.mapContainer{
-	position: sticky;
-	height:95vh;
-	padding-top:0.5em; /*1 em leaves a huge gap at the top*/
-}
 img{
 	max-width:100%;
 }
 h1{
 	display: inline; /* we want to put nirns found next to title*/
+}
+
+.sidebarContent{
+	/*don't want display:flex. just basic box html layout.*/
+	display: revert;
+	/*unlike main page, sidebar here isn't an iframe so we have to implement our own margin*/
+	margin: 0.5em;
 }
