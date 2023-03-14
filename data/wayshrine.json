@@ -1,0 +1,43 @@
+{"version":4, "name":"Wayshrines and Heaven Stones","weight":0, "classname":"wayshrine", "elements":[
+	{"name":"Heaven Stones","elements":[
+		{"name":"Jone Stone","formId":"0x0018A229","renown":10,"x":-74616,"y":38561,"z":9202,"icon":"HeavenStone"},
+		{"name":"Aetherius Stone","formId":"0x0018A2F9","renown":20,"x":-77183,"y":20192,"z":6537,"icon":"HeavenStone"},
+		{"name":"Jode Stone","formId":"0x0018A2D1","renown":30,"x":-153410,"y":-41624,"z":3814,"icon":"HeavenStone"},
+		{"name":"Sithian Stone","formId":"0x0018A321","renown":40,"x":-137063,"y":21485,"z":7178,"icon":"HeavenStone"},
+		{"name":"Magnus Stone","formId":"0x0018A1D0","renown":50,"x":140601,"y":-84837,"z":2198,"icon":"HeavenStone"},
+		{"name":"Shezarr Stone","formId":"0x0018A135","renown":60,"x":78144,"y":-128099,"z":1431,"icon":"HeavenStone"},
+		{"name":"Dragon Stone","formId":"0x0018A038","renown":70,"x":114056,"y":119578,"z":12554,"icon":"HeavenStone"}
+	]},
+	{"name":"Wayshrines","elements":[
+		{"name":"Akatosh","variant":"1","formId":"0x0017605B","x":122385,"y":85012,"z":7182,"icon":"Wayshrine"},
+		{"name":"Akatosh","variant":"2","formId":"0x00175F14","x":-172446,"y":-29277,"z":4228,"icon":"Wayshrine"},
+		{"name":"Akatosh","variant":"3","formId":"0x00175DD9","x":22491,"y":134520,"z":21297,"icon":"Wayshrine"},
+		{"name":"Akatosh","variant":"4","formId":"0x00175EEA","x":-30314,"y":-14060,"z":5260,"icon":"Wayshrine"},
+		{"name":"Arkay","variant":"1","formId":"0x00175DBF","x":-42783,"y":-25676,"z":8862,"icon":"Wayshrine"},
+		{"name":"Arkay","variant":"2","formId":"0x00175F0D","x":-183348,"y":587,"z":6682,"icon":"Wayshrine"},
+		{"name":"Arkay","variant":"3","formId":"0x00176025","x":-78358,"y":-5672,"z":8408,"icon":"Wayshrine"},
+		{"name":"Dibella","variant":"1","formId":"0x00175E3F","x":-1688,"y":39834,"z":1236,"icon":"Wayshrine"},
+		{"name":"Dibella","variant":"2","formId":"0x00175E19","x":132415,"y":-95185,"z":4575,"icon":"Wayshrine"},
+		{"name":"Dibella","variant":"3","formId":"0x00176043","x":-59411,"y":74160,"z":10999,"icon":"Wayshrine"},
+		{"name":"Julianos","variant":"1","formId":"0x00175EA5","x":-79629,"y":51318,"z":9712,"icon":"Wayshrine"},
+		{"name":"Julianos","variant":"2","formId":"0x00175EB3","x":132227,"y":110151,"z":13470,"icon":"Wayshrine"},
+		{"name":"Julianos","variant":"3","formId":"0x00175DE5","x":79931,"y":34170,"z":2181,"icon":"Wayshrine"},
+		{"name":"Julianos","variant":"4","formId":"0x00176027","x":13372,"y":70786,"z":590,"icon":"Wayshrine"},
+		{"name":"Kynareth","variant":"1","formId":"0x00175EB6","x":146372,"y":936,"z":3040,"icon":"Wayshrine"},
+		{"name":"Kynareth","variant":"2","formId":"0x00175F24","x":-91803,"y":50071,"z":9986,"icon":"Wayshrine"},
+		{"name":"Kynareth","variant":"3.1","formId":"0x0017601D","x":-50750,"y":2371,"z":8267,"icon":"Wayshrine","notes":"Replaced by 3.2 after completing Dagon Shrine."},
+		{"name":"Kynareth","variant":"3.2","formId":"0x0006457F","x":-50919,"y":2376,"z":7916,"icon":"Wayshrine","notes":"Can still be used despite visibly being damaged."},
+		{"name":"Mara","variant":"1","formId":"0x00175E37","x":-88725,"y":10588,"z":6424,"icon":"Wayshrine"},
+		{"name":"Mara","variant":"2","formId":"0x00175ECB","x":121910,"y":-108593,"z":3078,"icon":"Wayshrine"},
+		{"name":"Mara","variant":"3","formId":"0x00176061","x":-202684,"y":-22563,"z":2248,"icon":"Wayshrine","notes":"Removed after completing Dagon Shrine."},
+		{"name":"Stendarr","variant":"1","formId":"0x00175F02","x":-128961,"y":60436,"z":16585,"icon":"Wayshrine"},
+		{"name":"Stendarr","variant":"2","formId":"0x00175E13","x":84420,"y":-91657,"z":1078,"icon":"Wayshrine"},
+		{"name":"Stendarr","variant":"3","formId":"0x00175DC7","x":52684,"y":67365,"z":320,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"1","formId":"0x00175E85","x":-102951,"y":2196,"z":7181,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"2","formId":"0x00175DF1","x":40163,"y":-5004,"z":5453,"icon":"Wayshrine"},
+		{"name":"Tiber Septim","variant":"3","formId":"0x00175EF4","x":51214,"y":7604,"z":1942,"icon":"Wayshrine"},
+		{"name":"Zenithar","variant":"1","formId":"0x00175E90","x":-156364,"y":-17096,"z":9224,"icon":"Wayshrine"},
+		{"name":"Zenithar","variant":"2","formId":"0x00175E7A","x":22799,"y":-1978,"z":1825,"icon":"Wayshrine"},
+		{"name":"Zenithar","variant":"3","formId":"0x0017606D","x":66282,"y":-17387,"z":1758,"icon":"Wayshrine"}
+	]}
+]}

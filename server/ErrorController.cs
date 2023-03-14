@@ -14,6 +14,12 @@ namespace ShareApi
     [ApiController]
     public class ErrorController : ControllerBase
     {
+        /// <summary>
+        /// Called when we throw an exception.
+        /// if it's a sql exception, we throw a 503 unavailable. This was mainly from when we were using an on-demand database,
+        /// so it would take time to spin up. Shouldn't be an issue now.
+        /// </summary>
+        /// <returns></returns>
         [Route("/error")]
         public IActionResult Error()
         {

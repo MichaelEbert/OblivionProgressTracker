@@ -1,87 +1,68 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-US"><head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bree%20Serif"/>
-	<link rel="stylesheet" type="text/css" href="main.css"/>
-	<link rel="stylesheet" type="text/css" href="guide.css"/>
-	<script src="obliviondata.js"></script>
-	<script src="base64ArrayBuffer.js"></script>
-	<script src="progress.js"></script>
-	<script src="sharing.js"></script>
-	<script src="injection.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
+	<script src="guide.js"></script>
 	<script src="autoread.js"></script>
-	<script src="collapsible.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Speedrun v3 — Interactive Oblivion Checklist</title>
 </head>
 <body>
+	<!-- begin topbar-->
 <div id="topbar" class="topbar">
-	<a href="./index.html" class="topbarSection"> Checklist</a>
-	
-	<div class="topbarSection">
-		<a href="./glitches.html">Glitches</a>
-		<div class="topbarSublist">
-			<a href="./glitches.html#permakey">Perma Key</a>
-			<a href="./glitches.html#boostjump">Boost Jump</a>
-			<a href="./glitches.html#duping">Dupe/Duping</a>
-			<a href="./glitches.html#qsqldeaggro">QSQL De-Aggro</a>
-			<a href="./glitches.html#saveclip">Save Clip</a>
-			<a href="./glitches.html#voidwarp">Void Warp</a>
-			<a href="./glitches.html#yieldglitch">Yield Glitch</a>
-			<a href="./glitches.html#eightpotionglitch">8 Potion Glitch</a>
+	<nav id="topbarNav" class="topbarNav">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="./images/prcbanner.png" style="width: 90px;"></a>
+			<div class="topbarSublist">
+				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
+				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
+				<a href="https://discord.gg/eudsps7" class="topbarSection">Discord</a>
+				<a href="https://github.com/MichaelEbert/OblivionProgressTracker" class="topbarSection">GitHub</a>
+				<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
+			</div>
 		</div>
-	</div>
-
-	<div class="topbarSection">
-		<a href="./casual.html">Casual Guide</a>
-		<div class="topbarSublist">
-			<a href="./casual.html#top">item1</a>
+		<div class="topbarSection">
+			<a href="./speedrun-guide.html">Guide</a>
+			<div class="topbarSublist">
+				<a href="./speedrun-guide.html">Speedrun Guide</a>
+				<a href="./casual.html">Casual Guide</a>
+				<a href="./speedrun-archive.html">Archive</a>
+			</div>
 		</div>
-	</div>
-	
-	<div class="topbarSection">
-		<a href="./speedrun-3.html">Speedrun Guide (v3)</a>
-		<div class="topbarSublist">
-            <a href="./speedrun-3.html#guide_Pregame">Pregame</a>
-            <a href="./speedrun-3.html#guide_Tutorial">Tutorial</a>
-            <a href="./speedrun-3.html#guide_ImperialCityMarketDistrict">Imperial City Market District</a>
-            <a href="./speedrun-3.html#guide_MagesGuildPt1">Mages Guild Pt1</a>
-            <a href="./speedrun-3.html#guide_GoldFarming">Gold Farming/Arcane University</a>
-            <a href="./speedrun-3.html#guide_InvestingCircuit">Investing Circuit</a>
-            <a href="./speedrun-3.html#guide_MagesGuildPt2">Mages Guild Pt2</a>
-            <a href="./speedrun-3.html#guide_MainQuestPt1">Main Quest Pt1</a>
-            <a href="./speedrun-3.html#guide_MapExploration">Map Exploration</a>
-            <a href="./speedrun-3.html#guide_TheNirnroute">The Nirnroute</a>
-            <a href="./speedrun-3.html#guide_MainQuestPt2">Main Quest Pt2</a>
-            <a href="./speedrun-3.html#guide_FightersGuild">Fighters Guild</a>
-            <a href="./speedrun-3.html#guide_TheArena">The Arena</a>
-            <a href="./speedrun-3.html#guide_SideQuests">Side Quests</a>
-            <a href="./speedrun-3.html#guide_DarkBrotherhood">Dark Brotherhood</a>
-            <a href="./speedrun-3.html#guide_PowerLeveling">Power Leveling</a>
-            <a href="./speedrun-3.html#guide_ThievesGuild">Thieves Guild</a>
-            <a href="./speedrun-3.html#guide_DaedricShrines">Daedric Shrines</a>
-            <a href="./speedrun-3.html#guide_HeavenStoneGreaterPowers">Heaven Stone Greater Powers</a>
-            <a href="./speedrun-3.html#guide_RandomSkillBooks">Random Skill Books</a>
-            <a href="./speedrun-3.html#guide_TheGreatSkillGrind">The Great Skill Grind</a>
-            <a href="./speedrun-3.html#guide_AnUnexpectedVoyage">An Unexpected Voyage</a>
-            <a href="./speedrun-3.html#guide_ImperialDragonArmor">Imperial Dragon Armor</a>
-        </div>
-	</div>
-	
-	<a href="./settings.html" class="topbarSection"> Settings</a>
 
-	<a href="./map.html" class="topbarSection"> Map</a>
-	
-	<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+		<a href="./checklist.html" class="topbarSection">Checklist</a>
+
+		<div class="topbarSection">
+			<a href="./map.html">Map</a>
+			<div class="topbarSublist">
+				<a href="./nirnroute.html">Nirnroute</a>
+			</div>
+		</div>
+
+		<div class="topbarSection">
+			<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Wiki/Tools</a>
+			<div class="topbarSublist">
+				<a href="https://prclive.run/wiki/Main_Page">Wiki</a>
+				<a href="./tools/tools.html">Tools</a>
+				<a href="https://prclive.run/wiki/Oblivion:Glitches/Tech">Glitches</a>
+				<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+			</div>
+		</div>
+
+		<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
+
+		<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+	</nav>
 </div>
+<!-- end topbar-->
 
-<br/>
 <div class="contentContainer">
+<div class="guideFrame">
 
-<div class="sidebar" id="sidebar"></div>
-
-<article id="guide" class="main">
+<article id="guide" class="mainPanel" style="width: 55%;">
+<div class="warning">This was a developer test page that converted the V3 guide content into an interactive version. This version is completely untested and is not intended to be used in an actual speedrun.</div>
 <h1>Oblivion 100% Speedrun Route (V3)</h1>
 <h3>Made by Ben Songster (MeemawHustlin) with help from the PRCLive community.</h3>
 <button onclick="initSpeak()" id="enable_speech_btn">Enable speech</button>
@@ -90,8 +71,8 @@
 <div class="sectionTitle">Pregame</div>
 <div class="collapsibleContent">
 <ol>
-<li>Enter the console commands “sdt 12” and “tdt” before the run starts, and make sure your wait timer is
-set to 1 hour. <b>If the game crashes at any point, enter the “sdt 12” and “tdt” console commands again.</b></li>
+<li>Enter the console commands <code>sdt 12</code> and <code>tdt</code> before the run starts, and make sure your wait timer is
+set to 1 hour. <b>If the game crashes at any point, enter the <code>sdt 12</code> and <code>tdt</code> console commands again.</b></li>
 <li>Move the difficulty slider to the easiest setting (all the way left)</li>
 <li>Make your character a Male Redguard.</li>
 <li>Time starts as soon as you click "Continue" on the first tutorial box that appears. You are not allowed to move before that happens.</li>
@@ -104,10 +85,10 @@ set to 1 hour. <b>If the game crashes at any point, enter the “sdt 12” and �
 <div class="sectionTitle">Tutorial</div>
 <div class="collapsibleContent">
 <ol>
-<li>Click continue on the quest pop-up to start the run. Press caps lock to always be sprinting, and press F3 to bring up the spell menu.</li>
+<li>Click continue on the quest pop-up to start the run. Press caps lock to always be sprinting, and press <kbd>F3</kbd> to bring up the spell menu.</li>
 <li>Hotkey <span class="spellname">Flare</span> and equip <span class="spellname">Adrenaline Rush</span>.</li>
-<li>Cast <span class="spellname">Adrenaline Rush</span> and <a href="./glitches.html#saveclip" target="_blank">Save Clip</a> through the right front edge of the NE archway.</li>
-<li>When you clip through the wall, run to the east until you spawn back in bounds. This is called <a href="./glitches.html#voidwarp" target="_blank">Void Warping</a>. If the clip doesn’t work, try setting the quicksave up again and loading again.</li>
+<li>Cast <span class="spellname">Adrenaline Rush</span> and <span class="glitch">Save Clip</span><a class="screenshot" href="images/saveclips/SC_Tutorial_1.webp" target="_blank"></a> through the right front edge of the NE archway.</li>
+<li>When you clip through the wall, run to the east until you spawn back in bounds. This is called <span class="glitch" clid="glitchvoidwarp">Void Warping</span>. If the clip doesn’t work, try setting the quicksave up again and loading again.</li>
 <li>Jump up into the east archway and Save Clip through the seam between the two walls. Continue to run east after you clip until the black box is off the top of the screen, then wait until you Void Warp.</li>
 <li>Take the Chameleon and Flash Bolt scrolls, as well as the lockpicks and Iron Key off the Goblin corpse. Make a save. Make sure to write down the number of the save. It will be referred to as <span class="save" clid="savepermakey">PermaKey_Save</span> later.
 <li>Open the door so that the popup shows up about using the Iron Key, and press escape to load the <span class="save" clid="savepermakey" disabled="true">PermaKey_Save</span> you just made. This glitches the game into allowing you to open most doors without needing to pick the lock.
@@ -130,13 +111,13 @@ c. Advance all predetermined dialogue.
 <li>In the next area, hug the right wall and jump to the ledge across the gap. Save Clip facing west through the door. As soon as you clip through, curve around to the left and run SE until you Void Warp.</li>
 <li>Head SE down the hall and <span class="spellname">Flare</span> the Mythic Dawn Agent.</li>
 <li>Head back and go through the Iron Gate and talk to <span class="npc">Baurus</span>.
-<ol><li>Advance predetermined dialogue.</li>
+<ol class="dialogue"><li class="advpre">Advance predetermined dialogue.</li>
 <li>Make a custom class with the following:
 i. Specialization: Magic
 ii. Favored Attributes: Strength and Speed
 iii. Major skills: Acrobatics, Alteration, Conjuration, Destruction, Illusion, Mysticism, and
 Restoration</li>
-<li>Advance predetermined dialogue.</li></ol></li>
+<li class="advpre">Advance predetermined dialogue.</li></ol>
 <li>Continue linearly through the rest of the tutorial, going back through the Iron Gate you opened.</li>
 <li><b>When you exit the sewer, change your race to a Female High Elf.</b></li>
 <li><span class="quest" clid="quest0">tutorial</span> is now complete.</li>
@@ -173,33 +154,31 @@ Restoration</li>
 	<ul><li>Use the <a href="./glitches.html#eightpotionglitch" target="_blank">8 potions glitch</a> to increase your movement speed everywhere you go</li>
 		<li>Be careful not to lose much of your fatigue bar when farming Acrobatics. If you pass out, wait an hour.</li></ul></li>
 <li>Head SW towards the Mages Guild. Stop at the Chapel on your way.</li>
-<li>In the Chapel Hall downstairs, read <span class="book" clid="book91">2920, Rain’s Hand (v4) [Restoration]</span> on the left shelf, and take the <span class="nirnroot">Nirnroot</span> from the south room.</li>
+<li>In the Chapel Hall downstairs, read <span class="book" clid="book91">2920, Rain’s Hand (v4) [Restoration]</span> on the left shelf, and take the <span class="nirnroot" clid="0x0006F0F5">Nirnroot</span> from the south room.</li>
 <li>Go to the Mages Guild, wait until 9am, and talk to <span class="npc">Kud-Ei</span>.
-	<div class="dialogue">
-	<ol><li>Dialogue: Join the Mages Guild.</li>
-	<li>Dialogue: Yes, I want to join the guild. (This starts <span class="quest" clid="0x0002CD10">Join the Mages Guild</span>)</li>
+	<ol class="dialogue"><li>Dialogue: Join the Mages Guild.</li>
+	<li class="train">Dialogue: Yes, I want to join the guild. (This starts <span class="quest" clid="0x0002CD10" disabled="true">Join the Mages Guild</span>)</li>
 	<li>Dialogue: Recommendation.</li>
 	<li>Dialogue: I’m ready.</li>
 	<li>Dialogue: Varon Vamori.</li>
 	<li>Dialogue: Mage’s Staff.</li></ol>
-	</div></li>
+</li>
 <li>Activate this quest in your journal.</li>
 <li>Follow Quest Marker to talk to <span class="npc">Varon Vamori</span>.
-	<ol><li>Bribe to 65+ disposition.
+	<ol class="dialogue"><li class="bribe">Bribe to 65+ disposition.</li>
 	<li>Dialogue: Ardaline.
-	<li>Dialogue: Mage’s Staff.</li></ol></li>
+	<li>Dialogue: Mage’s Staff.</li></ol>
 <li>Buy <span class="spellname">Spark</span> from <span class="npc">Delphine Jend</span>.</li>
 <li>Take at least 4 Cheap Wine near the east corner of the ground floor.</li>
 <li>Take the Lesser Soul Gem from the SW bookshelf behind the back counter.</li>
 <li>Fast travel to Imperial City Talos Plaza District.</li>
 <li>Head NE, second door on the right to get to Soris Arenim’s House.</li>
 <li>Talk to <span class="npc">Soris Arenim</span>.
-	<div class="dialogue">
-	<ol><li>Bribe to 70+ disposition.</li>
+	<ol class="dialogue"><li class="bribe">Bribe to 70+ disposition.</li>
 	<li>Dialogue: Mage’s Staff.</li>
-	<li>Dialogue: It’s a deal.</li></ol></div></li>
+	<li>Dialogue: It’s a deal.</li></ol></li>
 <li>Fast travel to Quest Marker to talk to <span class="npc">Kud-Ei</span>.
-	<ol><li>Dialogue: Mage’s Staff.</li></ol></li>
+	<ol class="dialogue"><li>Dialogue: Mage’s Staff.</li></ol></li>
 <li><span class="quest" clid="quest88">[quest] Bravil Mages Guild</span> is now complete.</li>
 </ol>
 </div>
@@ -210,21 +189,21 @@ Restoration</li>
 <ol>
 <li>Fast travel to Anvil Main Gate.</li>
 <li>Head south to the Mages Guild and talk to <span class="npc">Carahil</span>.
-	<ol><li>Dialogue: Recommendation.
+	<ol class="dialogue"><li>Dialogue: Recommendation.
 	<li>Dialogue: Yes, I’m ready.
 	<li>Dialogue: Go on.</li></ol></li>
 <li>Fast travel to Horse Whisperer Stables and make your way to the Quest Marker to talk to <span class="npc">Arielle Jurard</span>.
 <li>Follow Quest Marker to talk to <span class="npc">Christophe Marane</span>.
-	<ol><li>Dialogue: Bed.
+	<ol class="dialogue"><li>Dialogue: Bed.
 	<li>Dialogue: I’m a merchant.
 	<li>Dialogue: I’ll take it.</li></ol></li>
 <li>You will automatically be approached by <span class="npc">Caminalda</span>.
-	<ol><li>Dialogue: Yes, that’s right.</li></ol></li>
+	<ol class="dialogue"><li>Dialogue: Yes, that’s right.</li></ol></li>
 <li>Go upstairs to your bed and wait 1 hour. <span class="npc">Arielle Jurard</span> will appear. Talk to her.</li>
 <li>Sleep in the bed for 1 hour.</li>
 <li>Heads towards the Quest Marker until <span class="npc">Caminalda</span> approaches you.</li>
 <li>Kill <span class="npc">Caminalda</span> and fast travel to Quest Marker to talk to <span class="npc">Carahil</span>.
-	<ol><li>Dialogue: Rogue Mage.</li></ol></li>
+	<ol class="dialogue"><li>Dialogue: Rogue Mage.</li></ol></li>
 <li><span class="quest" clid="quest95">[quest] Anvil Mages Guild</span> is now complete.</li>
 <li>Retrieve the Dragon’s Tongue and Nightshade in the upstairs library. The ingredients are on a table through the door in the NW corner of the library.</li>
 </ol>
@@ -245,13 +224,13 @@ Restoration</li>
 <li>Head west and open the locked door, then open the locked drawers and take the Black Soul Gems.
 <ol><li>If this door does not open, load <span class="save" clid="savepermakey" disabled="true">the PermaKey_Save</span> and do the Perma Key glitch.</li></ol></li>
 <li>Talk to <span class="npc">Falcar</span>. He may be anywhere in the building and is wearing black.
-<ol><li>Dialogue: Recommendation.
+<ol class="dialogue"><li>Dialogue: Recommendation.
 	<li>Dialogue: Yes, I’m ready.</li></ol></li>
 <li>Wait for the quest to update and find and talk to <span class="npc">Deetsan</span>. She is Argonian.
-<ol><li>Dialogue: Recommendation.</li></ol></li>
+<ol class="dialogue"><li>Dialogue: Recommendation.</li></ol></li>
 <li>Wait for the quest to update and talk to <span class="npc">Deetsan</span> again. Drop the Ring of Burden.</li>
 <li><span class="quest" clid="quest90">[quest] Cheydinhal Mages Guild</span> is now complete.</li>
-<li>After finishing the quest, follow the map below to get to the Mage Stone between 6pm-6am. Start from the stable outside of Cheydinhal, and make sure to discover Vahtacen, the cave SE past Harlun’s Watch on your way there.<br/><a href="images/mageStoneLocationMap.png" target="_blank"><a href="images/mageStoneLocationMap.png" target="_blank"><img src="images/mageStoneLocationMap.png" width=200/></a></a></li>
+<li>After finishing the quest, follow the map below to get to the Mage Stone between 6pm-6am. Start from the stable outside of Cheydinhal, and make sure to discover <span class="location">Vahtacen</span>, the cave SE past Harlun’s Watch on your way there.<br/><a href="images/mageStoneLocationMap.png" target="_blank"><a href="images/mageStoneLocationMap.png" target="_blank"><img src="images/mageStoneLocationMap.png" width=200/></a></a></li>
 </ol>
 </div>
 
@@ -1301,7 +1280,7 @@ Do the following additional tasks at various peoples’ stores/homes:
 		<li>Dialogue: No tales. Where can I find the Tears?</li>
 		<li>Advance predetermined dialogue. (This progresses another quest.)</li>
 	</ol></li>
-	<li>Go into the Arch-Mage’s Quarters and get the Imp Gall that is under the baskets by the bed, as well as the <span class="nirnroot">Nirnroot</span>.</li>
+	<li>Go into the Arch-Mage’s Quarters and get the Imp Gall that is under the baskets by the bed, as well as the <span class="nirnroot" clid="0x0006D979">Nirnroot</span>.</li>
 </ol>
 </div>
 
@@ -1349,7 +1328,7 @@ Do the following additional tasks at various peoples’ stores/homes:
 	</ol></li>
 	<li>Talk to <span class="npc">Savlian Matius</span>. You may need to leave and enter the chapel again to spawn him in. He will exit dialogue with you automatically, so you should talk to him a second time.
 	<ol>
-		<li>Dialogue: Yes, let’s go. (This completes <span class="quest">Breaking the Siege of Kvatch</span> and starts <span class="quest" disabled="true">The Battle for Castle Kvatch</span>.)</li>
+		<li>Dialogue: Yes, let’s go. (This completes <span class="quest">Breaking the Siege of Kvatch</span> and starts <span class="quest" clid="0x00028C72" disabled="true">The Battle for Castle Kvatch</span>.)</li>
 	</ol></li>
 	<li>Exit out the north chapel door, making sure that <span class="npc">Savlian</span> properly spawns in the next area.</li>
 	<li>Kill all enemies in the area and wait near the gate entrance for <span class="npc">Savlian</span> to talk to you automatically.
@@ -1515,6 +1494,7 @@ Do the following additional tasks at various peoples’ stores/homes:
 	<li>You will receive a bonus +2 Acrobatics later in the run so make sure to account for this when farming Acrobatics as you get closer to 90. The value to stop at will be 100 minus unread skill books minus 2.</li>
 	<li>Farm all magic skills to 75 first, then prioritize Destruction and Conjuration. The highest any magic skill should be farmed is 100 minus the total skill books left to read for that skill.</li>
 </ul></b>
+<a href="./map.html?topbar=false" target="_blank">Open Map</a>
 <ul><li>Discover <b>366 of the 367 places</b>. (The Bruma Gate appears later.)
 		<ul><li>Blue circled locations have additional objectives, which are listed below the map.</li></ul></li>
 	<li>Activate each of the <b>9 Wayshrines</b>, shown as cyan triangles on the map.
@@ -1522,17 +1502,22 @@ Do the following additional tasks at various peoples’ stores/homes:
 	<li>Close <b>58 of the 60 Oblivion Gates</b>. (The Bruma Gate and Great Gate appear later.)
 		<ul><li>The Kvatch Gate was closed earlier, so there are 57 more to close.</li>
 		<li>There are 40 random gates, which could be at any of the non-highlighted locations.</li>
-		<li>Pink circled gates will always appear on the map in those fixed locations.</li>
-		<li>Gates with a green + symbol award 2 Fame each, and are checked off separately.</li>
-		<li>Gates with a blue ∗ symbol have a set Oblivion realm that you cannot reroll.</li>
+		<li>Gates with a pink "F" (<img src="./images/Icon_Overlay_Fixed.png" width="20" style="float:none;vertical-align:bottom"/>) will always appear on the map in those fixed locations.</li>
+		<li>Gates with a green "2" (<img src="./images/Icon_Overlay_Two_Fame.png" width="20" style="float:none;vertical-align:bottom"/>) award 2 Fame each, and are checked off separately.</li>
+		<li>Gates with a blue "N" (<img src="./images/Icon_Overlay_No_Reroll.png" width="20" style="float:none;vertical-align:bottom"/>) have a set Oblivion realm that you cannot reroll.</li>
 		<li>Every random gate should be rerolled until you get one of the Oblivion realms shown below. You do this by quicksaving right before entering the gate and quickloading if you did not get a realm that matches one of the screenshots.</li>
 		<li>Gates can appear in areas you’ve already checked if you re-enter the loading zone, so be sure to make special note of locations gates did not appear at so you can check them at the end if you are still missing some gates. It is fastest to enter and exit a dungeon near the gate to reroll it repeatedly.</li></ul></li>
 </ul>
+<a href="./images/obliviongate_good_A.jpg" target="_blank"><img src="./images/obliviongate_good_A.jpg" style="float:none" width="200"></a>  
+<a href="./images/obliviongate_good_B.jpg" target="_blank"><img src="./images/obliviongate_good_B.jpg" style="float:none" width="200"></a>
+<a href="./images/obliviongate_good_C.jpg" target="_blank"><img src="./images/obliviongate_good_C.jpg" style="float:none" width="200"></a>  
+<a href="./images/obliviongate_good_D.jpg" target="_blank"><img src="./images/obliviongate_good_D.jpg" style="float:none" width="200"></a>  
+<a href="./images/obliviongate_good_E.jpg" target="_blank"><img src="./images/obliviongate_good_E.jpg" style="float:none" width="200"></a> <br/> 
 As you explore, do the following tasks at these locations (Ayleid statues are listed at the end):
 <ul>
-<li><span class="place tent">Aerin’s Camp</span> - Talk to <span class="npc">Torbern</span> about Training to complete the <span class="quest">Acrobatics Training</span> quest.</p>
-<li><span class="place">Brina Cross Inn </span> Invest in <span class="npc">Christophe Marane</span> using the <span class="spellname">B_Mercantile</span> spell.</li>
-<li><span class="place">Cheydinhal Oblivion Gate </span><span class="quest"></span> Partially complete <span class="quest">The Wayward Knight</span> quest:</li>
+<li><span class="location" clid="0x0017CF9C">Aerin’s Camp</span> - Talk to <span class="npc">Torbern</span> about Training to complete the <span class="quest">Acrobatics Training</span> quest.</p>
+<li><span class="location">Brina Cross Inn </span> Invest in <span class="npc">Christophe Marane</span> using the <span class="spellname">B_Mercantile</span> spell.</li>
+<li><span class="location" clid="0x0000CEF8">Cheydinhal Oblivion Gate </span>Partially complete <span class="quest" disabled="true">The Wayward Knight</span> quest:</li>
 <ol>
 	<li>To complete this quest with optimal fame, <span class="npc">Farwil Indarys</span> must stay alive. Do not talk to him and he will not move. He is at the beginning of the bridge at the bottom of the mountain.</li>
 	<li>You can jump ENE off the rocks and quickly get out of the lava to get to the bottom quickly. After that, make your way around the right side of the bridge where you can jump across lava to skip opening the gates.</li>
@@ -1540,24 +1525,24 @@ As you explore, do the following tasks at these locations (Ayleid statues are li
 	<li>Talk to <span class="npc">Farwil Indarys</span> outside. If he is not here, you will have to reload and do the quest again.</li>
 	<li>This quest is not complete yet, it is completed in a later section.</li>
 </ol>
-<li><span class="place">Fieldhouse Cave </span> Read <span class="book">Way of the Exposed Palm [Hand to Hand]</span> by hugging the right wall in the first zone, then in the second zonetaking the first two lefts and going through the SSE door in the next clearing. The book is under the big mushroom.</li>
-<li><span class="place">Fort Carmala </span> Stay right until you find a Wooden Chest with 2 Shadowbanish Wine.</li>
-<li><span class="place">Fort Cedrian </span> Hug the left wall to find <span class="nirnroot">Nirnroot</span> in the first zone at the edge of the water.</li>
-<li><span class="place">Fort Cuptor </span> Read <span class="book">Souls, Black and White [Mysticism]</span> by hugging the right wall in the first zone, then hugging the left wall and goingthrough a big door to find the book next to a bed at the top of the stairs.</li>
+<li><span class="location">Fieldhouse Cave </span> Read <span class="book">Way of the Exposed Palm [Hand to Hand]</span> by hugging the right wall in the first zone, then in the second zonetaking the first two lefts and going through the SSE door in the next clearing. The book is under the big mushroom.</li>
+<li><span class="location">Fort Carmala </span> Stay right until you find a Wooden Chest with 2 Shadowbanish Wine.</li>
+<li><span class="location">Fort Cedrian </span> Hug the left wall to find <span class="nirnroot">Nirnroot</span> in the first zone at the edge of the water.</li>
+<li><span class="location">Fort Cuptor </span> Read <span class="book">Souls, Black and White [Mysticism]</span> by hugging the right wall in the first zone, then hugging the left wall and goingthrough a big door to find the book next to a bed at the top of the stairs.</li>
 <ul>
 	<li>Mysticism can now be safely maxed out since all skill books for it have now been read.</li>
 </ul>
-<li><span class="place">Fort Dirich </span></li>
+<li><span class="location">Fort Dirich </span></li>
 <ol>
 	<li>Find 2 Shadowbanish Wine by hugging the left wall until you find a flat-topped wooden chest.</li>
 	<li>Leave the fort and activate the <span class="quest">Destruction Training</span> quest and follow the Quest Marker to find and kill <span class="npc">Bralsa Andaren</span> to complete the quest.</li>
 </ol>
-<li><span class="place">Fort Roebeck </span> Hug the left wall until you go through a gate and a locked door, then follow the path until you see <span class="nirnroot">Nirnroot</span> in the firstzone at the edge of the water.</li>
-<li><span class="place">Goblin Jim’s Cave </span> Read <span class="book">Night Falls on Sentinel [Blunt]</span> in the first zone by taking the first left, then heading NW through the tunnelsto find an area with shelves.</li>
-<li><span class="place">Imperial City Sewers - North Exit </span> Go past the gate on your right to activate the turn wheel, then go back through the gate that opens toget the <span class="nirnroot">Nirnroot</span> in the water at the north end of the room.</li>
-<li><span class="place">Pell’s Gate </span> Invest in <span class="npc">Candice Corgine</span> at The Sleeping Mare using the <span class="spellname">B_Mercantile</span> spell.</li>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Get the <span class="nirnroot">Nirnroot</span> in Shafaye’s House.</p>
-<li><span class="place">Shardrock </span>&nbsp;</li>
+<li><span class="location">Fort Roebeck</span> Hug the left wall until you go through a gate and a locked door, then follow the path until you see <span class="nirnroot">Nirnroot</span> in the firstzone at the edge of the water.</li>
+<li><span class="location" clid="0x00015A27">Goblin Jim’s Cave </span> Read <span class="book">Night Falls on Sentinel [Blunt]</span> in the first zone by taking the first left, then heading NW through the tunnelsto find an area with shelves.</li>
+<li><span class="location">Imperial City Sewers - North Exit </span> Go past the gate on your right to activate the turn wheel, then go back through the gate that opens toget the <span class="nirnroot">Nirnroot</span> in the water at the north end of the room.</li>
+<li><span class="location" clid="0x000177AE">Pell’s Gate </span> Invest in <span class="npc">Candice Corgine</span> at The Sleeping Mare using the <span class="spellname">B_Mercantile</span> spell.</li>
+<p>Get the <span class="nirnroot">Nirnroot</span> in Shafaye’s House.</p>
+<li><span class="location">Shardrock </span></li>
 <ol>
 	<li>Talk to <span class="npc">Thorley Aethelred</span>.
 	<ol>
@@ -1570,61 +1555,55 @@ As you explore, do the following tasks at these locations (Ayleid statues are li
 	</ol></li>
 	<li>Reload if the skill book you receive is <span class="book">Battle of Sancre Tor</span> or <span class="book">The Warp in the West</span>. These are both books you can easily find elsewhere. Keep reloading until you get a different book you do not already have. Read the book. (This completes the <span class="quest">Bear Season</span> quest.)</li>
 </ol>
-<li><span class="place">Smuggler’s Cave </span> (This is not a discoverable location) Get the <span class="nirnroot">Nirnroot</span> to the left of the ramp. Get and read <span class="book">The Locked Room [Security]</span> in a chest in the upper ESE corner of the same area.</li>
-<li><span class="place">Troll Candle Camp </span> Kill <span class="npc">Alawen</span> to complete the <span class="quest">Marksman Training</span> quest. Activate the quest if you cannot find her.</li>
-<li><span class="place">Veyond Cave </span> Go linearly through the first zone and go through the door above the water. Get the <span class="nirnroot">Nirnroot</span> in the second zone taking a right and heading straight to the back. Don’t go too deep into the water at any point.<img src="images/Ayleid_Culotte.png" name="Image17" width="205" height="188" border="0" align="bottom"></li>
+<li><span class="location">Smuggler’s Cave </span> (This is not a discoverable location) Get the <span class="nirnroot" clid="0x0006F0CF">Nirnroot</span> to the left of the ramp. Get and read <span class="book">The Locked Room [Security]</span> in a chest in the upper ESE corner of the same area.</li>
+<li><span class="location">Troll Candle Camp </span> Kill <span class="npc">Alawen</span> to complete the <span class="quest">Marksman Training</span> quest. Activate the quest if you cannot find her.</li>
+<li><span class="location">Veyond Cave </span> Go linearly through the first zone and go through the door above the water. Get the <span class="nirnroot" clid="0x0006D952">Nirnroot</span> in the second zone taking a right and heading straight to the back. Don’t go too deep into the water at any point.</li>
+</ul>
 Get the 10 Ayleid Statues from these locations:
-<p><img src="images/Icon_Ayleid.png" name="Image18" width="20" height="20" border="0" align="bottom">Culotte:&nbsp;</p>
-Go down the stairs and go straight across to the blue dot at the end of the hall. Turn around and hug the left wall to get the statue at S.
-<p><br>
-<br>
-<img src="images/Ayleid_Fanacas.png" name="Image19" width="283" height="146" border="0" align="bottom"></p>
-<p><img src="images/Icon_Ayleid.png" name="Image20" width="20" height="20" border="0" align="bottom">Fanacas:&nbsp;</p>
-Go straight, jumping across the pillars to get over the water section until you reach the statue at S.
-<p><br>
-<img src="images/Ayleid_Mackamentain.png" name="Image21" width="274" height="229" border="0" align="bottom"></p>
-<p><img src="images/Icon_Ayleid.png" name="Image22" width="20" height="20" border="0" align="bottom">Mackamentain:&nbsp;</p>
-In Z1, head straight to save clip at SC, then Void Warp to door. In Z2, go right through the gate to the statue at S.&nbsp;
-<p>Grab a Welkynd Stone in this room.</p>
-<p><br>
-<br>
-<br>
-
-</p>
-<p><img src="images/Icon_Ayleid.png" name="Image23" width="20" height="20" border="0" align="bottom">Moranda:</p>
-In Z1, hug the right wall. In Z2, hug the left wall until you get to the statue at S.
-<img src="images/Ayleid_Moranda.png" name="Image24" width="191" height="154">
-<p><img src="images/Icon_Ayleid.png" name="Image25" width="20" height="20" border="0" align="bottom">Ninendava:</p>
-Head straight until you hit a wall, then turn left. Keep going straight through gate C and get the statue at S. Backtrack the same way.
-<img src="images/Ayleid_Ninendava.png" name="Image26" width="89" height="331">
-<p><img src="images/Icon_Ayleid.png" name="Image27" width="20" height="20" border="0" align="bottom">Vilverin:&nbsp;</p>
-<p>In Z1, hug the right wall and boost jump at B up to the walkway and go in the door. In Z2, hug the right wall to get the statute at S.<img src="images/Ayleid_Viverin.png" name="Image28" width="339" height="115" border="0" align="bottom"></p>
-<p><br>
-<br>
-
-</p>
-<p><img src="images/Icon_Ayleid.png" name="Image30" width="20" height="20" border="0" align="bottom">Welke:&nbsp;<img src="images/Ayleid_Welke.png" name="Image31" width="301" height="199" border="0" align="bottom"></p>
-In Z1, take the first right, then hug the left wall to the next zone. In Z2, take the first right, next left, go straight until you hit a wall, turn right, go straight through the water until you go up some stairs, then turn right and go through the door. In Z3, get the statue at S in the middle of the room.
-<p><img src="images/Icon_Ayleid.png" name="Image32" width="20" height="20" border="0" align="bottom">Wendelbek:</p>
-<p>In Z1, hug the right wall and jump over the railing, then boost jump at B up to the walkway to get to the door. In Z2, go to the back right corridor and press the button at the blue dot, then turn around and hug the left wall to get to the door. In Z3, jump down to the statue at S.<img src="images/Ayleid_Wendelbek.png" name="Image33" width="301" height="234" border="0" align="bottom"></p>
-<p><img src="images/Icon_Ayleid.png" name="Image35" width="20" height="20" border="0" align="bottom">Wendir:</p>
-In Z1, boost jump at B up to the walkway to get to the door. In Z2, jump down to the statue at S.
-<p><br>
-<img src="images/Ayleid_Wedir.png" name="Image36" width="189" height="150" border="0" align="bottom"><br>
-<br>
-<br>
-<br>
-<br>
-
-</p>
-<p><img src="images/Icon_Ayleid.png" name="Image37" width="20" height="20" border="0" align="bottom">Wenyandawik:<img src="images/Ayleid_Wenyandawik.png" name="Image38" width="321" height="209" border="0" align="bottom"></p>
-In Z1, hug the left wall to get to the door. In Z2, hug the right wall, hitting the buttons next to each of the two gates to open them. Boost jump at B up to the walkway just past the third gate, then get the statue at S. This boost jump requires boosting off the curved edge of the path.
-<p><br>
-<br>
-
-</p>
-Drop all the Sigil Stones from the misc. tab of your inventory.&nbsp;
-<br>
+<ol>
+	<li><span class="location">Culotte</span>
+		<img src="images/Ayleid_Culotte.png" name="Image17" width="205" height="188" border="0">
+		Go down the stairs and go straight across to the blue dot at the end of the hall. Turn around and hug the left wall to get the statue at S.
+	</li>
+	<li><span class="location">Fanacas</span>
+		<img src="images/Ayleid_Fanacas.png" name="Image19" width="283" height="146" border="0">
+		Go straight, jumping across the pillars to get over the water section until you reach the statue at S.
+	</li>
+	<li><span class="location">Mackamentain</span>
+		<img src="images/Ayleid_Mackamentain.png" name="Image21" width="274" height="229" border="0">
+		In Z1, head straight to save clip at SC, then Void Warp to door. In Z2, go right through the gate to the statue at S.
+		<p>Grab a Welkynd Stone in this room.</p>
+	</li>
+	<li><span class="location">Moranda</span>
+		In Z1, hug the right wall. In Z2, hug the left wall until you get to the statue at S.
+		<img src="images/Ayleid_Moranda.png" name="Image24" width="191" height="154">
+	</li>
+	<li><span class="location">Ninendava</span>
+		Head straight until you hit a wall, then turn left. Keep going straight through gate C and get the statue at S. Backtrack the same way.
+		<img src="images/Ayleid_Ninendava.png" name="Image26" width="89" height="331">
+	</li>
+	<li><span class="location">Vilverin</span>
+		<p>In Z1, hug the right wall and boost jump at B up to the walkway and go in the door. In Z2, hug the right wall to get the statute at S.
+		<img src="images/Ayleid_Viverin.png" name="Image28" width="339" height="115" border="0" align="bottom"></p>
+	</li>
+	<li><span class="location">Welke</span>
+		<img src="images/Ayleid_Welke.png" name="Image31" width="301" height="199" border="0" align="bottom"></p>
+		In Z1, take the first right, then hug the left wall to the next zone. In Z2, take the first right, next left, go straight until you hit a wall, turn right, go straight through the water until you go up some stairs, then turn right and go through the door. In Z3, get the statue at S in the middle of the room.
+	</li>
+	<li><span class="location">Wendelbek</span>
+		In Z1, hug the right wall and jump over the railing, then boost jump at B up to the walkway to get to the door. In Z2, go to the back right corridor and press the button at the blue dot, then turn around and hug the left wall to get to the door. In Z3, jump down to the statue at S.
+		<img src="images/Ayleid_Wendelbek.png" name="Image33" width="301" height="234" border="0" align="bottom">
+	</li>
+	<li><span class="location">Wendir</span>
+		In Z1, boost jump at B up to the walkway to get to the door. In Z2, jump down to the statue at S.
+		<img src="images/Ayleid_Wedir.png" name="Image36" width="189" height="150" border="0" align="bottom">
+	</li>
+	<li><span class="location">Wenyandawik</span>
+		<img src="images/Ayleid_Wenyandawik.png" name="Image38" width="321" height="209" border="0" align="bottom">
+		In Z1, hug the left wall to get to the door. In Z2, hug the right wall, hitting the buttons next to each of the two gates to open them. Boost jump at B up to the walkway just past the third gate, then get the statue at S. This boost jump requires boosting off the curved edge of the path.
+	</li>
+</ol>
+Drop all the Sigil Stones from the misc. tab of your inventory.
 
 </div>
 </div>
@@ -1653,7 +1632,7 @@ You should have 34 before starting this section. There are 254 outdoor Nirnroot,
 <div class="sectionTitle">Main Quest Pt. 2</div>
 <div class="collapsibleContent">
 
-It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Dawn agents killing NPCs.;
+<p>It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Dawn agents killing NPCs.</p>
 <div class="category" id="guide_MainQuestPt2_Spies">
 <div class="categoryTitle">Spies/Blood of the Daedra</div>
 <ol>
@@ -1666,7 +1645,7 @@ It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Daw
 	<ol>
 		<li>Advance predetermined dialogue.</li>
 	</ol></li>
-	<li>Follow Quest Marker to talk to <span class="npc">Martin</span>. (This completes <span class="quest" clid="0x0001E729">Spies</span> and starts <span class="quest">Blood of the Daedra</span>.)
+	<li>Follow Quest Marker to talk to <span class="npc">Martin</span>. (This completes <span class="quest" clid="0x0001E729">Spies</span> and starts <span class="quest" disabled="true">Blood of the Daedra</span>.)
 	<ol>
 		<li>Dialogue: Daedric artifact.</li>
 		<li>Dialogue: Give the Masque of Clavicus Vile. (This completes <span class="quest" clid="0x0001E72A">Blood of the Daedra</span>.)</li>
@@ -1785,7 +1764,7 @@ It’s time to wrap up the Main Quest to eliminate the possibility of Mythic Daw
 		<li>Dialogue: Armor of Tiber Septim.</li>
 		<li>Advance predetermined dialogue.</li>
 	</ol></li>
-	<li>Read <span class="book" clid="book34">The Warp in the West [Block]</span>, <span class="book">The Doors of Oblivion [Conjuration]</span> and <span class="book">The Refugees [Light Armor]</span> on the tables in front of <span class="npc">Martin</span>.</li>
+	<li>Read <span class="book" clid="book34">The Warp in the West [Block]</span>, <span class="book">The Doors of Oblivion [Conjuration]</span> and <span class="book" clid="0x0002440E">The Refugees [Light Armor]</span> on the tables in front of <span class="npc">Martin</span>.</li>
 </ol>
 </div>
 
@@ -3851,7 +3830,7 @@ How to do the Yield Glitch:
 <div class="category" id="guide_ThievesGuild_AhdarjisHeirloomBloodPrice">
 <div class="categoryTitle">Ahdarji’s Heirloom + Blood Price</div>
 <ol>
-	<li>Create a <span class="save" clid="savesafetysave">new save</span> before starting this quest.&nbsp;</li>
+	<li>Create a <span class="save" clid="savesafetysave">new save</span> before starting this quest.</li>
 	<li>Fast travel to Quest Marker to talk to <span class="npc">S’Krivva</span>. Wait until around 6am for her to let you talk to her.
 	<ol>
 		<li>Dialogue: Thieves Guild special jobs.</li>
@@ -4742,12 +4721,54 @@ Time stops as soon as the Quest Completed message appears for this quest.
 </div>
 </div></div><!-- imperial dragon armor end-->
 You have completed the 100% run!
-
+<!-- BEGIN FOOTER-->
+<footer>
+<hr/>
+<p>Licensed under GPLv3.
+ <a href="https://github.com/MichaelEbert/OblivionProgressTracker">Contribute</a>
+ PRCLive twitch
+ </p>
+</footer>
+<!-- END FOOTER-->
 </article><!-- main end-->
+
+<div class="resizer" id="dragMe"></div>
+
+<div class="sidePanel" id="sidebar">
+	<div id="sidebarContent" class="sidebarContent">
+		<div id="sidebarLinks">
+			<a href="./help.html" target="myframe">🛈</a>
+			<a href="./toc-3.html" target="myframe">📄</a>
+			<a href="./map.html?topbar=false" target="myframe" title="Show Map">🗺️</a>
+		</div>
+	</div>
 </div>
 
-<script>
-init()
-makeCollapsible();
+</div>
+</div>
+<script type="module">
+	import exportNamespace from './js/module-shim.mjs'
+	import * as common from './js/cellGenerator.mjs';
+	import * as progress from './js/progressCalculation.mjs'
+	import * as userdata from './js/userdata.mjs'
+	import * as obliviondata from './js/obliviondata.mjs'
+	import * as sharing from './js/sharing.mjs';
+	exportNamespace(common);
+	exportNamespace(progress);
+	exportNamespace(userdata);
+	exportNamespace(obliviondata);
+	exportNamespace(sharing);
+	window.sharing = sharing;
+	window.progress = progress;
+	window.userdata = userdata;
+
+	(function(){
+		if(loadCookie("debug") == true){
+			window.debug = true;
+		}
+		init();
+	}).call(window);
 </script>
+<script src="collapsible.js"></script>
+<script src="dragging.js"></script>
 </body>

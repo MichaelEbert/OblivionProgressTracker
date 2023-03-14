@@ -1,0 +1,20 @@
+{"version":4, "name":"Glitches", "classname":"glitch", "elements":[
+	{"id":"saveclip","name":"Save Clip","link":"https://prclive.run/wiki/Oblivion:Save_Clipping"}
+	,{"id":"loadwarp","name":"Load Warp","link":"https://prclive.run/wiki/Oblivion:Load_Warping"}
+	,{"id":"voidwarp","name":"Void Warp","link":"https://prclive.run/wiki/Oblivion:Void_Warping"}
+	,{"id":"permakey","name":"Perma Key","link":"https://prclive.run/wiki/Oblivion:Perma_Key"}
+	,{"id":"timewarp","name":"Time Warp","link":"https://prclive.run/wiki/Oblivion:Time_Warping"}
+	,{"id":"dupe","name":"Dupe","link":"https://prclive.run/wiki/Oblivion:Scroll_Duping"}
+	,{"id":"infinitelevelup","name":"Infinite Level-Up","link":"https://prclive.run/wiki/Oblivion:Infinite_Level-Up_Glitch"}
+	,{"id":"classreset","name":"Class Reset","link":"https://prclive.run/wiki/Oblivion:Class_Reset"}
+	,{"id":"potionstack","name":"Potion Stack","link":"https://prclive.run/wiki/Oblivion:Potion_Stacking"}
+	,{"id":"earlyarcane","name":"Early Arcane University","link":"https://prclive.run/wiki/Oblivion:Early_Arcane_University_Access"}
+	,{"id":"boostjump","name":"Boost Jump","link":"https://prclive.run/wiki/Oblivion:Boost_Jump"}
+	,{"id":"permaenchanting","name":"Perma Enchanting","link":"https://prclive.run/wiki/Oblivion:Perma_Enchanting"}
+	,{"id":"spellstack","name":"Spell Stacking","link":"https://prclive.run/wiki/Oblivion:Spell_Stacking"}
+	,{"id":"stackrefresh","name":"Stack Refresh","link":"https://prclive.run/wiki/Oblivion:Stack_Refresh"}
+	,{"id":"naturalclip","name":"Natural Clip","link":"https://prclive.run/wiki/Oblivion:Natural_Clipping"}
+	,{"id":"stolenflag","name":"Stolen Flag","link":"https://prclive.run/wiki/Oblivion:Stolen_Flag"}
+	,{"id":"arenagate","name":"Arena Gate Glitch","link":"https://prclive.run/wiki/Oblivion:Perma_Arena_Gate_Lowering_Glitch"}
+	,{"id":"skillunderflow","name":"Skill Underflow","link":"https://prclive.run/wiki/Oblivion:Skill_Underflowing"}
+]}

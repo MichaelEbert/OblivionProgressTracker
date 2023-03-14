@@ -1,0 +1,228 @@
+/*overrides for guide pages*/
+img{
+	float: right;
+}
+
+.section{
+	background-color: #FBEFD5;
+	column-width: auto;
+	overflow: auto;
+}
+
+.sectionTitle{
+	background-color: #FBEFD5;
+	cursor:pointer;
+	text-align: center;
+	font-size: 1.5em;
+	border-bottom: 2px solid gray;
+	width:100%;
+	margin-bottom: 0.5em;
+}
+
+.sectionTitle:hover {
+	background-color: #cccccc;
+}
+
+.sectionTitle:after {
+	content: "➖"; /* Unicode character for "minus" sign (-) */
+	font-size: 0.75em;
+	color: white;
+	float: right;
+	margin-left: 5px;
+}
+
+/* Collapsible section content. Note: visible by default */
+.collapsibleContent {
+	display: inline;
+	overflow: hidden;
+}
+
+.toc a{
+	text-decoration: underline;
+	color: black;
+	text-decoration-color: lightgray;
+}
+
+.active:after {
+	content: "➕"; /* Unicode character for "plus" sign (+) */
+}
+
+.category{
+	margin-left: 2em;
+	overflow: auto;
+}
+
+.categoryTitle{
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+.subtitle{
+	font-weight: bold;
+}
+
+ol.dialogue {
+	list-style-type: '↳ ';
+	color: #434343;
+	font-style: italic;
+}
+.dialogue li::marker{
+	font-style: normal;
+}
+
+.dialogue .advpre {
+	font-style: normal;
+}
+
+.dialogue .shop,
+.dialogue .spell,
+.dialogue .train,
+.dialogue .bribe,
+.dialogue .inst{
+	font-style: normal;
+	color: black;
+}
+
+li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. */
+	list-style-type: circle;
+}
+
+li.shop {
+	list-style-image: url("../images/Icon_ShopBullet.png");
+}
+li.spell{
+	list-style-image: url("../images/Icon_SpellBullet.png");
+}
+li.train{
+	list-style-image: url("../images/Icon_TrainingBullet.png");
+}
+li.bribe{
+	list-style-image: url("../images/Icon_BribeBullet.png");
+}
+
+li.ayleid {
+	list-style-image: url("../images/Icon_AyleidBullet.png");
+}
+li.camp {
+	list-style-image: url("../images/Icon_CampBullet.png");
+}
+li.cave {
+	list-style-image: url("../images/Icon_CaveBullet.png");
+}
+li.city {
+	list-style-image: url("../images/Icon_CityBullet.png");
+}
+li.fort {
+	list-style-image: url("../images/Icon_FortBullet.png");
+}
+li.gate {
+	list-style-image: url("../images/Icon_GateBullet.png");
+}
+li.heavenstone {
+	list-style-image: url("../images/Icon_HeavenStoneBullet.png");
+}
+li.inn {
+	list-style-image: url("../images/Icon_InnBullet.png");
+}
+li.landmark {
+	list-style-image: url("../images/Icon_LandmarkBullet.png");
+}
+li.mine {
+	list-style-image: url("../images/Icon_MineBullet.png");
+}
+li.nirnroot {
+	list-style-image: url("../images/Icon_NirnrootBullet.png");
+}
+li.settlement {
+	list-style-image: url("../images/Icon_SettlementBullet.png");
+}
+li.shrine {
+	list-style-image: url("../images/Icon_ShrineBullet.png");
+}
+li.wayshrine {
+	list-style-image: url("../images/Icon_WayshrineBullet.png");
+}
+ol.warning{
+	list-style-type: '⚠ ';
+	color: black;
+}
+
+.objComp {
+	color: black;
+	font-style: normal;
+	font-size: 0.8em;
+}
+
+.item{
+	margin: 0em;
+	padding: 0em;
+	font-weight: bold;
+	border-bottom: none;
+}
+
+.item > [type="checkbox"]:disabled{
+	display: none;
+}
+
+.check{
+	float: none;
+}
+
+.replaceableError{
+	color: red;
+	text-decoration:underline;
+}
+
+/*on guide pages, we want links to be different colors so they stand out.*/
+.questName a,
+.bookName a,
+.storeName a,
+.nirnroot a,
+.npc a,
+.glitch a{
+	color: inherit;
+	text-decoration: inherit;
+}
+
+.book{
+	color: magenta;
+	font-style: italic;
+}
+
+.quest{
+	color: darkred;
+}
+
+.spellname{
+	font-weight: bold;
+	color: darkorange;
+}
+
+.npc{
+	font-weight: bold;
+	color: darkgreen;
+}
+
+.nirnroot{
+	font-weight: bold;
+	color:#1155cc;
+}
+
+.glitch{
+	color: black;
+	text-decoration: underline dotted grey;
+	font-weight: normal;
+}
+
+a.screenshot{
+	color: black;
+	text-decoration: underline dotted grey;
+}
+
+a.screenshot::after{
+	content: '📷';
+	font-size: 0.75em; 
+	vertical-align: super;
+	text-decoration: none;
+}

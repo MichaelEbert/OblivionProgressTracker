@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/png" href="../favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+	<script src="../js/obliviondata.mjs"></script>
+	<script src="./classResetCalculator.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Class Reset Calculator</title>
+</head>
+<body>
+<!-- begin topbar-->
+<div id="topbar" class="topbar">
+	<nav id="topbarNav" class="topbarNav">
+		<div class="topbarSection icon leftBorder">
+			<a href="https://prclive.run/"><img src="../images/prcbanner.png" style="width: 90px;"></a>
+			<div class="topbarSublist">
+				<a href="https://www.twitch.tv/prclive" class="topbarSection">Twitch</a>
+				<a href="https://www.youtube.com/c/prclive" class="topbarSection">YouTube</a>
+				<a href="https://discord.gg/eudsps7" class="topbarSection">Discord</a>
+				<a href="https://github.com/MichaelEbert/OblivionProgressTracker" class="topbarSection">GitHub</a>
+				<a href="https://twitter.com/_prclive" class="topbarSection">Twitter</a>
+			</div>
+		</div>
+		<div class="topbarSection">
+			<a href="../speedrun-guide.html">Guide</a>
+			<div class="topbarSublist">
+				<a href="../speedrun-guide.html">Speedrun Guide</a>
+				<a href="../casual.html">Casual Guide</a>
+				<a href="../speedrun-archive.html">Archive</a>
+			</div>
+		</div>
+
+		<a href="../checklist.html" class="topbarSection">Checklist</a>
+
+		<div class="topbarSection">
+			<a href="../map.html">Map</a>
+			<div class="topbarSublist">
+				<a href="../nirnroute.html">Nirnroute</a>
+			</div>
+		</div>
+
+		<div class="topbarSection">
+			<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Wiki/Tools</a>
+			<div class="topbarSublist">
+				<a href="https://prclive.run/wiki/Main_Page">Wiki</a>
+				<a href="../tools/tools.html">Tools</a>
+				<a href="https://prclive.run/wiki/Oblivion:Glitches/Tech">Glitches</a>
+				<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+			</div>
+		</div>
+
+		<a href="../settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
+
+		<div class="topbarSection"><span class="totalProgressPercent">0</span>%</div> 
+	</nav>
+</div>
+<!-- end topbar-->
+<article class="mainPanel">
+
+<h1>Class Reset Calculator</h1>
+<p>Calculate class reset stuff idk</p>
+
+<div class="section">
+    <div class="category">
+    <div class="categoryTitle">Character</div>
+	<table>
+        <tr>
+            <td>Gender</td>
+            <td><select name="gender" id="inputGender">
+                <option value="m">Male</option>
+                <option value="f">Female</option></select></td>
+        </tr>
+        <tr>
+            <td>Race</td>
+            <td><select name="inputRace" id="inputRace">
+                </select></td><!--Filled in with javascript -->
+        </tr>
+        <tr>
+            <td>Birthsign</td>
+            <td><select name="inputBirthsign" id="inputBirthsign"> <!--Filled in with javascript -->
+                </select></td>
+        </tr>
+        <tr>
+            <td>Reset Level</td>
+            <td><input type="number" id="inputResetLevel" value="1"/></td>
+        </tr>
+	<tr>
+	  <td> Cure Vampirism? </td>
+	  <td><input type="checkbox" id="cureVamp" value="false"/></td>
+	</tr>
+    </table>
+    </div>
+
+    <div class="category">
+    <div class="categoryTitle">Class</div>
+	<table>
+        <tr>
+            <td>Specialization</td>
+            <td><select name="inputSpecialization" id="inputSpecialization">
+                <option value="Combat">Combat</option>
+                <option value="Stealth">Stealth</option>
+                <option value="Magic">Magic</option></select></td>
+        </tr>
+        <tr>
+            <td>Fav. Attr. 1</td>
+            <td><select name="inputAttr1" id="inputAttr1">
+                <!-- options will be filled in in javascript-->
+                </select></td>
+        </tr>
+        <tr>
+            <td>Fav. Attr. 2</td>
+            <td><select name="inputAttr2" id="inputAttr2">
+                <!-- options will be filled in in javascript--></select></td>
+        </tr>
+        <tr>
+            <td>Major Skills (select 7)</td>
+            <!-- this will be filled in in javascript-->
+            <td id="majorSkillsCheckboxes"></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="category">
+        <div class="categoryTitle">Stats</div>
+        <table>
+            <tr>
+                <th>Stats</th>
+                <th>Base</th>
+                <th>Leveled</th>
+            </tr>
+            <tr>
+                <td>Health</td>
+                <td id="health_base">0</td>
+                <td id="health_leveled">0</td>
+            </tr>
+            <tr>
+                <td>Magicka</td>
+                <td id="magicka_base">0</td>
+                <td id="magicka_leveled">0</td>
+            </tr>
+            <tr>
+                <td>Stamina</td>
+                <td id="stamina_base">0</td>
+                <td id="stamina_leveled">0</td>
+            </tr>
+        </table>
+        <table id="attributeTable">
+            <tr>
+                <th>Attributes</th>
+                <th>Base</th>
+                <th>Leveled</th>
+                <!-- the rest of this table will be filled in in javascript-->
+            </tr>
+        </table>
+    </div>
+
+    <div class="category">
+        <div class="categoryTitle">Skills</div>
+        <table id="skillTable">
+            <tr>
+                <th>Attribute</th>
+                <th>Type</th>
+                <th>Skill</th>
+                <th>Base</th>
+                <th>Leveled</th>
+            </tr>
+                <!-- the rest of this table will be filled in in javascript-->
+        </table>
+    </div>
+</div>
+</article>
+<script>
+	init();
+</script>
+</body>
+</html>

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8"/>
-	<link rel="stylesheet" type="text/css" href="../../../main.css"/>
-	<link rel="stylesheet" type="text/css" href="../../../guide.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/guide.css"/>
 	<link rel="stylesheet" type="text/css" href="../minipage.css"/>
-	<script src="./../../../obliviondata.js"></script>
 	<script src="./../minipage.js"></script>
 	<script src="./bookpage.js"></script>
 	<title>Book — Interactive Oblivion Checklist</title>
@@ -33,10 +32,26 @@
 </div>
 
 </div>
-<script>
-document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
-var id = new URLSearchParams(window.location.search).get("id")
-loadJsonData("../../..",(x=>x.name=="book")).then(()=>generateBookPage(id));
+	<script type="module">
+	import exportNamespace from '../../../js/module-shim.mjs'
+	import * as obliviondata from '../../../js/obliviondata.mjs'
+	import * as common from '../../../js/cellGenerator.mjs';
+	import * as progress from '../../../js/progressCalculation.mjs'
+	import * as userdata from '../../../js/userdata.mjs'
+	import * as sharing from '../../../js/sharing.mjs'
+	window.common = common;
+	window.progress = progress;
+	window.userdata = userdata;
+	window.obliviondata = obliviondata;
+	window.sharing = sharing;
+	console.log("AAAA");
+	(function(){
+		window.debug = window.userdata.loadCookie("debug");
+		document.getElementById("gameImage").addEventListener('error',fallbackIngameImage);
+		var id = new URLSearchParams(window.location.search).get("id")
+		window.obliviondata.loadJsonData("../../..",(x=>x.name=="book")).then(()=>generateBookPage(id));
+	}).call(window);
 </script>
+
 </body>
 </html>

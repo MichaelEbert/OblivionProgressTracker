@@ -5,8 +5,16 @@ CREATE TABLE urls(
 	[url] char(6) NOT NULL UNIQUE
 )
 
-
+-- could probably use a foreign key...
 CREATE TABLE saves (
     [url] char(6) NOT NULL PRIMARY KEY,
-	[saveData] varchar(4096) NULL
+	[saveData] varchar(MAX) NULL,
+	[accessed] datetime NULL
 )
+
+--create role that has access to urls and saves, and can write to ips, but not read ips. (TODO: ips table)
+CREATE ROLE normalReaderWriter;
+GO;
+GRANT INSERT, SELECT, UPDATE ON [urls] TO normalReaderWriter;
+GRANT INSERT, SELECT, UPDATE ON [saves] TO normalReaderWriter;
+
