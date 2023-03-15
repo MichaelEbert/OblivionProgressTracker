@@ -31,7 +31,6 @@ namespace ShareApi
 
 
         public Dictionary<IPBytes, ValueTuple<DateTime, string>> temp = new Dictionary<IPBytes, ValueTuple<DateTime, string>>();
-        private bool active = false;
 
         private Timer updateTimer = new Timer(UPDATE_INTERVAL.TotalMilliseconds);
 
@@ -56,7 +55,7 @@ namespace ShareApi
         public void OnTimerEvent(Object source, ElapsedEventArgs e)
         {
             var now = DateTime.UtcNow;
-            var minimumTime = now.Add(VIEWER_TIMEOUT);
+            var minimumTime = now.Subtract(VIEWER_TIMEOUT);
             lock (viewers)
             {
                 lock (temp)
@@ -65,6 +64,7 @@ namespace ShareApi
                     {
                         viewers[updateItem.Key] = updateItem.Value;
                     }
+                    temp.Clear();
                 }
                 foreach (var viewer in viewers)
                 {
