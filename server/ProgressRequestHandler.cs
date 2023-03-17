@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using System.Linq;
 using System.Net;
-using System.Reflection.Metadata;
-using System.Runtime.ConstrainedExecution;
 
 namespace ShareApi
 {
@@ -23,8 +19,7 @@ namespace ShareApi
             {
                 using (ProgressManagerSql sql = new ProgressManagerSql())
                 {
-                    var result = ProgressManager.Cache.Get(url, sql.SqlSaveSelect);
-                    if(result != null)
+                    if(ProgressManager.Cache.TryGet(url, sql.SqlSaveSelect, out ReadProgress result))
                     {
                         var reqIp = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6() ?? IPAddress.IPv6None;
                         ViewCountHandler.ViewCounter.Add(reqIp, url);

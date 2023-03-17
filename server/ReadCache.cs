@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShareApi
 {
@@ -28,7 +25,7 @@ namespace ShareApi
     /// <summary>
     /// Transparent read cache 
     /// </summary>
-    public class ReadCache<T> where T:class
+    public class ReadCache<T>
     {
         const int NUM_CACHE_ENTRIES = 50;
 
@@ -42,7 +39,7 @@ namespace ShareApi
         {
         }
 
-        public T? Get(string key, Func<string, T?> readFunction)
+        public bool TryGet(string key, Func<string, T?> readFunction, out T result)
         {
             bool cacheHit = cache.TryGetValue(key, out CacheEntry<T>? maybeValue);
             if (cacheHit)
@@ -77,7 +74,8 @@ namespace ShareApi
                         SetMostRecentlyUsed(maybeValue);
                     }
                 }
-                return maybeValue.Data;
+                result = maybeValue.Data;
+                return true;
             }
             else
             {
@@ -88,7 +86,11 @@ namespace ShareApi
                 T? value = readFunction(key);
                 if (value == null)
                 {
-                    return null;
+                    #pragma warning disable CS8601 // Possible null reference assignment.
+                    //if returns false, result should not be used. So whatever value it is is OK.
+                    result = default;
+                    #pragma warning restore CS8601 // Possible null reference assignment.
+                    return false;
                 }
 
                 //now that we have data, lock and add to cache.
@@ -117,7 +119,8 @@ namespace ShareApi
                         oldest = newEntry;
                     }
                 }
-                return value;
+                result = value;
+                return true;
             }
         }
 
