@@ -9,14 +9,14 @@ namespace ShareApi
     class CacheEntry<T>
     {
         public string Key;//useful for removing itself from the cache
-        public T Data;
+        public T Value;
         public CacheEntry<T>? Prev;
         public CacheEntry<T>? Next;
 
-        public CacheEntry(string key, T data, CacheEntry<T>? prev, CacheEntry<T>? next)
+        public CacheEntry(string key, T value, CacheEntry<T>? prev, CacheEntry<T>? next)
         {
             Key = key;
-            Data = data;
+            Value = value;
             Prev = prev;
             Next = next;
         }
@@ -39,6 +39,34 @@ namespace ShareApi
         {
         }
 
+        /// <summary>
+        /// Try to get the value from cache only.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool TryGetCacheOnly(string key, out T result)
+        {
+            if(cache.TryGetValue(key, out CacheEntry<T>? maybeValue))
+            {
+                result = maybeValue.Value;
+                return true;
+            }
+            #pragma warning disable CS8601 // Possible null reference assignment.
+            //if returns false, result should not be used. So whatever value it is is OK.
+            result = default;
+            #pragma warning restore CS8601 // Possible null reference assignment.
+            return false;
+        }
+
+        /// <summary>
+        /// Get value from cache if possible, or fall back and get from readFunction if not in cache.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="readFunction"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
         public bool TryGet(string key, Func<string, T?> readFunction, out T result)
         {
             bool cacheHit = cache.TryGetValue(key, out CacheEntry<T>? maybeValue);
@@ -74,7 +102,7 @@ namespace ShareApi
                         SetMostRecentlyUsed(maybeValue);
                     }
                 }
-                result = maybeValue.Data;
+                result = maybeValue.Value;
                 return true;
             }
             else
@@ -137,7 +165,7 @@ namespace ShareApi
             {
                 lock (lockObj)
                 {
-                    cache[key].Data = value;
+                    cache[key].Value = value;
                 }
             }
             writeFunction(key, value);
