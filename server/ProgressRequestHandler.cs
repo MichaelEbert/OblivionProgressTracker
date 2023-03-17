@@ -31,11 +31,11 @@ namespace ShareApi
                     }
                 }
 
-                Debug.Assert(result != null);
+                Debug.Assert(result != null, "result returned for url is null.");
 
                 //if we get here, then url maps to a valid progress
-                var reqIp = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6() ?? IPAddress.IPv6None;
-                ViewCountHandler.ViewCounter.Add(reqIp, url);
+                var requestIp = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6() ?? IPAddress.IPv6None;
+                ViewCountHandler.ViewCounter.Add(requestIp, url);
 
                 var headers = Request.GetTypedHeaders();
                 if (headers.IfModifiedSince.HasValue && headers.IfModifiedSince.Value > result.LastModified)

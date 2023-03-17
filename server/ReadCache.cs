@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ShareApi
 {
@@ -45,7 +46,7 @@ namespace ShareApi
         /// <param name="key"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool TryGetCacheOnly(string key, out T result)
+        public bool TryGetCacheOnly(string key, [NotNullWhen(true)] out T result)
         {
             if(cache.TryGetValue(key, out CacheEntry<T>? maybeValue))
             {
@@ -67,7 +68,7 @@ namespace ShareApi
         /// <param name="result"></param>
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
-        public bool TryGet(string key, Func<string, T?> readFunction, out T result)
+        public bool TryGet(string key, Func<string, T?> readFunction, [NotNullWhen(true)] out T result)
         {
             bool cacheHit = cache.TryGetValue(key, out CacheEntry<T>? maybeValue);
             if (cacheHit)

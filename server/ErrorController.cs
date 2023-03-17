@@ -19,6 +19,11 @@ namespace ShareApi
         public IActionResult Error()
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
+            if (context == null)
+            {
+                System.Diagnostics.Trace.TraceError("ERROR: CONTEXT IS NULL");
+                return StatusCode(500);
+            }
             if(context.Error is SqlException sqlex)
             {
                 System.Diagnostics.Trace.TraceError("SQL ERROR GOT:"+ sqlex.ToString());
@@ -34,6 +39,7 @@ namespace ShareApi
             }
             System.Diagnostics.Trace.TraceError("MISC ERROR GOT:" + context.Error?.ToString());
             return StatusCode(500);
+
         }
     }
 }
