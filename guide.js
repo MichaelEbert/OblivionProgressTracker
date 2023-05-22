@@ -1,5 +1,7 @@
 "use strict"
 
+
+
 var linkedElements = [];
 
 function LinkedElement(element, classname, id){
@@ -18,6 +20,28 @@ function init(){
 		sharing.initSharingFeature();
 		replaceElements();
 	});
+
+	document.addEventListener("touchend", (e) => {
+		if (!document.documentElement.fullscreenElement) {
+			setMobileFullscreen();
+		}
+	  }, false);
+}
+
+function setMobileFullscreen(){
+	console.log(document.documentElement.requestFullscreen);
+	if(document.documentElement.requestFullscreen) {
+    	document.documentElement.requestFullscreen();     // Standard
+  	}
+  	else if (document.documentElement.mozRequestFullScreen) {
+    	document.documentElement.mozRequestFullScreen();     // Firefox
+  	}
+  	else if (document.documentElement.webkitRequestFullscreen) {
+    	document.documentElement.webkitRequestFullscreen();  // Safari
+  	}
+  	else if(document.documentElement.msRequestFullscreen) {
+    	document.documentElement.msRequestFullscreen();      // IE/Edge
+  	}
 }
 
 /**
