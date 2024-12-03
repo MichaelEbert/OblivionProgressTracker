@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace ShareApi
 {
@@ -39,7 +35,7 @@ namespace ShareApi
             }
             if(update.SaveData.Length > 40960)
             {
-                validationFailedReason = ValidationFailedReason.DATA_TOO_LONG; //not a valid cookie
+                validationFailedReason = ValidationFailedReason.DATA_TOO_LONG;
                 return false;
             }
 

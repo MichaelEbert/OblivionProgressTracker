@@ -52,7 +52,7 @@ namespace ShareApi
             }
         }
 
-        public void OnTimerEvent(Object source, ElapsedEventArgs e)
+        public void OnTimerEvent(object? source, ElapsedEventArgs e)
         {
             var now = DateTime.UtcNow;
             var minimumTime = now.Subtract(VIEWER_TIMEOUT);

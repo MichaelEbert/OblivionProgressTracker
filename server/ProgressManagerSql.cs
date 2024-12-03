@@ -1,12 +1,11 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
 
 namespace ShareApi
 {
     /// <summary>
-    /// Class that servers as a wrapper around the SQL methods that store the actual progress.
+    /// Serves as a wrapper around the SQL methods that store the actual progress.
     /// </summary>
     /// <remarks>
     /// We use a single sql connection for all sql statements in the client request.
