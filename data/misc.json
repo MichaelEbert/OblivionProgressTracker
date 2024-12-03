@@ -149,7 +149,7 @@
 		,{"ref":"0x000146AD","name":"Wabbajack","shrine":"Sheogorath","icon":"ArtifactSheogorath"}
 		,{"ref":"0x000146AE","name":"Skull of Corruption","shrine":"Vaermina","icon":"ArtifactVaermina"}
 	]}
-	,{"name":"Wayshrines","weight":0.5,"notes":"Getting all of the Wayshrines unlocks the Pilgrim's Grace Greater Power.","elements":[
+	,{"name":"Wayshrines","weight":0,"notes":"Getting all of the Wayshrines unlocks the Pilgrim's Grace Greater Power requirement. Wayshrines individually do not count for progress, but the ability to check them off is included here for convenience.","elements":[
 		{"formId":"0xFFFFFFD0","name":"Akatosh","globalIndex":51,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD1","name":"Arkay","globalIndex":49,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD2","name":"Dibella","globalIndex":50,"icon":"Wayshrine"}
@@ -160,7 +160,7 @@
 		,{"formId":"0xFFFFFFD7","name":"Tiber Septim","globalIndex":52,"icon":"Wayshrine"}
 		,{"formId":"0xFFFFFFD8","name":"Zenithar","globalIndex":53,"icon":"Wayshrine"}
 	]}
-	,{"name":"Greater Powers","weight":0.5,"extraColumn":"stone","notes":"You need varying amounts of Renown (Fame + Infamy) to acquire each power. Hover each note for values.","elements":[
+	,{"name":"Greater Powers","weight":1,"extraColumn":"stone","notes":"You need varying amounts of Renown (Fame + Infamy) to acquire each power. Hover each note for values.","elements":[
 		{"formId":"0x0006B6A3","name":"Dragon Dream","icon":"MagicFortifyMagic","stone":"Dragon Stone","notes":"70 Renown requied."}
 		,{"formId":"0x0006B69D","name":"Gates of Aetherius","icon":"MagicResist","stone":"Aetherius Stone","notes":"20 Renown requied."}
 		,{"formId":"0x0006B69F","name":"Jode's Blood","icon":"MagicFortify","stone":"Jode Stone","notes":"30 Renown requied."}

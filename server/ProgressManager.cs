@@ -2,6 +2,9 @@ using System;
 
 namespace ShareApi
 {
+    /// <summary>
+    /// Handles the creation, update, and reads of saved progress items.
+    /// </summary>
     public class ProgressManager{
         //TODO: move this to a better place
         public static ReadCache<ReadProgress> Cache = new ReadCache<ReadProgress>();

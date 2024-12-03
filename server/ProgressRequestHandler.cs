@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.ConstrainedExecution;
+using System.Diagnostics;
+using System.Net;
 
 namespace ShareApi
 {
@@ -20,26 +18,35 @@ namespace ShareApi
             }
             else
             {
-                using (ProgressManagerSql sql = new ProgressManagerSql())
+                ReadProgress result;
+                if(!ProgressManager.Cache.TryGetCacheOnly(url, out result))
                 {
-                    var result = ProgressManager.Cache.Get(url, sql.SqlSaveSelect);
-                    if(result != null)
+                    //not found in cache. Find in backing store.
+                    using (ProgressManagerSql sql = new ProgressManagerSql())
                     {
-                        var headers = Request.GetTypedHeaders();
-                        if (headers.IfModifiedSince.HasValue && headers.IfModifiedSince.Value > result.LastModified)
+                        if (!ProgressManager.Cache.TryGet(url, sql.SqlSaveSelect, out result))
                         {
-                            return StatusCode((int)System.Net.HttpStatusCode.NotModified);
+                            return NotFound();
                         }
-                        else
-                        {
-                            return Ok(result.SaveData);
-                        }
-                    }
-                    else
-                    {
-                        return NotFound();
                     }
                 }
+
+                Debug.Assert(result != null, "result returned for url is null.");
+
+                //if we get here, then url maps to a valid progress
+                var requestIp = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6() ?? IPAddress.IPv6None;
+                ViewCountHandler.ViewCounter.Add(requestIp, url);
+
+                var headers = Request.GetTypedHeaders();
+                if (headers.IfModifiedSince.HasValue && headers.IfModifiedSince.Value > result.LastModified)
+                {
+                    return StatusCode((int)System.Net.HttpStatusCode.NotModified);
+                }
+                else
+                {
+                    return Ok(result.SaveData);
+                }
+
             }
             
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShareApi
 {
@@ -12,14 +10,14 @@ namespace ShareApi
     class CacheEntry<T>
     {
         public string Key;//useful for removing itself from the cache
-        public T Data;
+        public T Value;
         public CacheEntry<T>? Prev;
         public CacheEntry<T>? Next;
 
-        public CacheEntry(string key, T data, CacheEntry<T>? prev, CacheEntry<T>? next)
+        public CacheEntry(string key, T value, CacheEntry<T>? prev, CacheEntry<T>? next)
         {
             Key = key;
-            Data = data;
+            Value = value;
             Prev = prev;
             Next = next;
         }
@@ -28,7 +26,7 @@ namespace ShareApi
     /// <summary>
     /// Transparent read cache 
     /// </summary>
-    public class ReadCache<T> where T:class
+    public class ReadCache<T>
     {
         const int NUM_CACHE_ENTRIES = 50;
 
@@ -42,7 +40,35 @@ namespace ShareApi
         {
         }
 
-        public T? Get(string key, Func<string, T?> readFunction)
+        /// <summary>
+        /// Try to get the value from cache only.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool TryGetCacheOnly(string key, [NotNullWhen(true)] out T result)
+        {
+            if(cache.TryGetValue(key, out CacheEntry<T>? maybeValue))
+            {
+                result = maybeValue.Value;
+                return true;
+            }
+            #pragma warning disable CS8601 // Possible null reference assignment.
+            //if returns false, result should not be used. So whatever value it is is OK.
+            result = default;
+            #pragma warning restore CS8601 // Possible null reference assignment.
+            return false;
+        }
+
+        /// <summary>
+        /// Get value from cache if possible, or fall back and get from readFunction if not in cache.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="readFunction"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public bool TryGet(string key, Func<string, T?> readFunction, [NotNullWhen(true)] out T result)
         {
             bool cacheHit = cache.TryGetValue(key, out CacheEntry<T>? maybeValue);
             if (cacheHit)
@@ -77,7 +103,8 @@ namespace ShareApi
                         SetMostRecentlyUsed(maybeValue);
                     }
                 }
-                return maybeValue.Data;
+                result = maybeValue.Value;
+                return true;
             }
             else
             {
@@ -88,7 +115,11 @@ namespace ShareApi
                 T? value = readFunction(key);
                 if (value == null)
                 {
-                    return null;
+                    #pragma warning disable CS8601 // Possible null reference assignment.
+                    //if returns false, result should not be used. So whatever value it is is OK.
+                    result = default;
+                    #pragma warning restore CS8601 // Possible null reference assignment.
+                    return false;
                 }
 
                 //now that we have data, lock and add to cache.
@@ -117,7 +148,8 @@ namespace ShareApi
                         oldest = newEntry;
                     }
                 }
-                return value;
+                result = value;
+                return true;
             }
         }
 
@@ -134,7 +166,7 @@ namespace ShareApi
             {
                 lock (lockObj)
                 {
-                    cache[key].Data = value;
+                    cache[key].Value = value;
                 }
             }
             writeFunction(key, value);

@@ -13,6 +13,7 @@ namespace ShareApi
         private static ProgressManager mgr = new ProgressManager();
         [HttpPost]
         public ActionResult<ProgressUpdate> HandleProgressUpdate(ProgressUpdate update){
+
             bool passed = ProgressUpdateValidator.Validate(update, out var reason);
             if (passed)
             {
