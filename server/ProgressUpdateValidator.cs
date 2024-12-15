@@ -12,6 +12,9 @@ namespace ShareApi
         SAVE_DATA_EMPTY
     }
 
+    /// <summary>
+    /// Validate an incoming progress update struct
+    /// </summary>
     public class ProgressUpdateValidator
     {
         /// <summary>

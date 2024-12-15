@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShareApi
 {
-    [Route("url/{url}/views")]
+    [Route("share/{url}/views")]
     [ApiController]
     public class ViewCountHandler : ControllerBase
     {

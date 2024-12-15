@@ -6,18 +6,33 @@ namespace ShareApi
     {
         public string ErrorMessage { get; set; } = "";
     }
+
+    /// <summary>
+    /// Handle a request to /share. This usually happens on the initial request.
+    /// </summary>
     [ApiController]
     [Route("share")]
-    public class ProgressUpdateHandler : ControllerBase
+    public class InitialUpdateController : ControllerBase
     {
-        private static ProgressManager mgr = new ProgressManager();
         [HttpPost]
         public ActionResult<ProgressUpdate> HandleProgressUpdate(ProgressUpdate update){
 
             bool passed = ProgressUpdateValidator.Validate(update, out var reason);
             if (passed)
             {
-                string? newurl = mgr.HandleUpdate(update);
+                
+                if(update.Url != null)
+                {
+                    //existing url. Should go to /share/{url}/d
+                    return RedirectToActionPermanent("HandleProgressRequest","ProgressRequestHandler", new object[] { update.Url});
+                }
+
+                //new url:
+                using (ProgressManagerSql sql = new ProgressManagerSql())
+                {
+                    var storedUrl = sql.SqlUrlSelect(update.Key);
+                }
+                string? newurl = ProgressManager.HandleUpdate(update);
                 if (newurl != null)
                 {
                     return Ok(newurl);
