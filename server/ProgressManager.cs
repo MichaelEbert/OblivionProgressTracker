@@ -72,6 +72,11 @@ namespace ShareApi
             return sql.SqlSaveMerge(url,data);
         }
 
+        public bool VerifyKey(ProgressManagerSql sql, string saveId, byte[] saveKey)
+        {
+            return sql.SqlUrlSelect(saveKey) == saveId;
+        }
+
         /// <summary>
         /// Do progress update stuff. Called if update passes validation.
         /// </summary>

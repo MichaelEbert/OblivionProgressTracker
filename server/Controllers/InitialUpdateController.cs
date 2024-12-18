@@ -25,7 +25,7 @@ namespace ShareApi
                 if(update.Url != null)
                 {
                     //existing url. Should go to /share/{url}/d
-                    return RedirectToActionPermanent("HandleProgressRequest","ProgressRequestHandler", new object[] { update.Url});
+                    return RedirectToActionPermanent("Handle", "DataController", new object[] { update.Url});
                 }
 
                 //new url:

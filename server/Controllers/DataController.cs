@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.VisualBasic;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -13,18 +14,30 @@ namespace ShareApi.Controllers
     [Route("share/{url}/d/{**jsonPath}")]
     public class DataController : Controller
     {
+
+
         [HttpGet]
-        [HttpPut]
-        public IActionResult Handle(ProgressUpdate update, string url, string? jsonPath)
+        public ActionResult<string> HandleGet(string url, string? jsonPath)
         {
-            //Request.HttpContext.Connection.RemoteIpAddress
-            ProgressUpdateValidator.Validate(update, out ValidationFailedReason validationFailedReason);
+            var saveEditor = new SaveDataEditor(url);
+            return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, null));
+        }
+
+        [HttpPut]
+        public ActionResult<string> Handle(ProgressUpdate update, string url, string? jsonPath)
+        {
+            ValidationFailedReason validationFailedReason = ValidationFailedReason.NONE;
+            ProgressUpdateValidator.Validate(update, out validationFailedReason);
             if(validationFailedReason != ValidationFailedReason.NONE)
             {
                 ModelState.AddModelError("error", validationFailedReason.ToString());
                 return BadRequest(ModelState);
             }
-            var saveEditor = new SaveDataEditor(update.Url);
+            var saveEditor = new SaveDataEditor(url, update);
+            if(saveEditor.ReadOnly)
+            {
+                return Unauthorized();
+            }
             return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, update.SaveData));
         }
     }
@@ -64,7 +77,10 @@ namespace ShareApi.Controllers
         private JsonNode? oldData;
         private string shareCode;
         private DateTime updateTime;
+        
         ProgressManagerSql sql = new ProgressManagerSql();
+
+        public bool ReadOnly { get; private set; }
 
         /// <summary>
         /// Initialize the editor and get the json data.
@@ -83,6 +99,15 @@ namespace ShareApi.Controllers
             {
                 oldData = null;
                 updateTime = DateTime.UtcNow;
+            }
+            ReadOnly = true;
+        }
+
+        public SaveDataEditor(string shareCode, ProgressUpdate userUpdate) : this(shareCode)
+        {
+            if(ProgressManager.Instance.VerifyKey(sql, shareCode, userUpdate.Key))
+            {
+                ReadOnly = false;
             }
         }
 
@@ -103,12 +128,22 @@ namespace ShareApi.Controllers
                 {
                     return node.contents;
                 }
-                else if (method == HttpMethod.Put)
+                else
                 {
-                    node.contents = newData;
-                    var newNode = node.Commit();
-                    ProgressManager.Instance.UpdateSaveData(sql, shareCode, new ReadProgress(newNode, updateTime));
-                    return newNode;
+                    if(ReadOnly)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        if (method == HttpMethod.Put)
+                        {
+                            node.contents = newData;
+                            var newNode = node.Commit();
+                            ProgressManager.Instance.UpdateSaveData(sql, shareCode, new ReadProgress(newNode, updateTime));
+                            return newNode;
+                        }
+                    }
                 }
             }
             return null;
@@ -122,13 +157,16 @@ namespace ShareApi.Controllers
         {
             if(path.Length == 0)
             {
-                return new JsonProxyNode("");
+                JsonProxyNode result = new JsonProxyNode("");
+                result.contents = root;
+                return result;
             }
-            if(path.Length == 1)
+            else if(path.Length == 1)
             {
                 JsonProxyNode result = new JsonProxyNode(path[0]);
                 result.contents = root?[result.Name];
                 result.parent = root;
+                return result;
             }
             else
             {
