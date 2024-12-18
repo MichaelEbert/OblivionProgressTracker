@@ -97,7 +97,22 @@ namespace ShareApi
             else if (path.Length == 1)
             {
                 JsonProxyNode result = new JsonProxyNode(path[0]);
-                result.contents = root?[result.Name];
+                if (root == null)
+                {
+                    result.contents = null;
+                }
+                else
+                {
+                    if (root.GetValueKind() == System.Text.Json.JsonValueKind.Object)
+                    {
+                        result.contents = root?[result.Name];
+                    }
+                    else
+                    {
+                        result.contents = root[int.Parse(result.Name)];
+                    }
+                        
+                }
                 result.parent = root;
                 return result;
             }

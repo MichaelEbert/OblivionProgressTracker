@@ -217,19 +217,32 @@ async function uploadPartialSave(partialJsonData){
 	{
 		return;
 	}
+
 	//get savedata format
 	let dataToUpload = savedata[hive.classname];
 	let uploadPath = hive.classname;
 
-	if(hive.class.standard)
+	if(partialJsonData.elements == null && partialJsonData.id != null)
 	{
-		let compressed = [];
-		for(const elementPropName in dataToUpload){
-			compressed[parseInt(elementPropName)] = dataToUpload[elementPropName] == 1 ?1:0;
+		//leaf node. we can upload just this.
+		dataToUpload = savedata[hive.classname][partialJsonData.id];
+		if(hive.class.standard)
+		{
+			//compress if we need to
+			dataToUpload = dataToUpload == 1 ? 1:0;
 		}
-		dataToUpload = compressed;
+		uploadPath = `${hive.classname}/${partialJsonData.id}`;
 	}
-	
+	else{
+		if(hive.class.standard)
+		{
+			let compressed = [];
+			for(const elementPropName in dataToUpload){
+				compressed[parseInt(elementPropName)] = dataToUpload[elementPropName] == 1 ?1:0;
+			}
+			dataToUpload = compressed;
+		}
+	}	
 
 	let fullUrl = `${settings.serverUrl}/${settings.myShareCode}/d/${uploadPath}`;
 	return uploadSave(fullUrl, dataToUpload, settings.myShareCode, settings.shareKey);

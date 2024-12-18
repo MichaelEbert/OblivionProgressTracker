@@ -61,7 +61,15 @@ namespace ShareApi.Controllers
         {
             if (parent != null)
             {
-                parent[Name] = contents;
+                if (parent.GetValueKind() == System.Text.Json.JsonValueKind.Object)
+                {
+                    parent[Name] = contents;
+                }
+                else
+                {
+                    parent[int.Parse(Name)] = contents;
+                }
+                
                 return parent.Root ?? parent;
             }
             else

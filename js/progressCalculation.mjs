@@ -167,7 +167,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 			saveProgressToCookie();
 			if(settings.autoUploadCheck){
 				// idk this might result in torn savedata
-				uploadPartialSave(cell.hive).then((result)=>{
+				uploadPartialSave(cell).then((result)=>{
 					//new data:
 					const returnedSaveData = decompressSaveData(JSON.parse(result.response));
 					const oldData = JSON.stringify(compressSaveData(savedata));
