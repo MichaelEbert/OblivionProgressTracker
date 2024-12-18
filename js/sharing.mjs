@@ -86,11 +86,21 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 		req.setRequestHeader("Content-Type","application/json");
 
 		req.onload = function () {
+			let newCode;
 			//first get url...
 			const share = "share/";
-			var start = this.responseURL.indexOf(share) + share.length;
-			var newCode = this.responseURL.substring(start);
-			newCode = newCode.substring(0, newCode.indexOf('/'));
+			var start = this.responseURL.indexOf(share);
+			if(start == -1){
+				newCode = this.response;
+			}
+			else{
+				start += share.length;
+				newCode = this.responseURL.substring(start);
+				newCode = newCode.substring(0, newCode.indexOf('/'));
+				if(newCode.length < 6){
+					newCode = this.response;
+				}
+			}
 			if(this.status == 200){
 				//yay.
 				resolve({"code": newCode, "response":this.response});
@@ -207,10 +217,19 @@ async function uploadPartialSave(partialJsonData){
 	{
 		return;
 	}
-	// uncompressed data. bleh. whatever.
 	//get savedata format
 	let dataToUpload = savedata[hive.classname];
 	let uploadPath = hive.classname;
+
+	if(hive.class.standard)
+	{
+		let compressed = [];
+		for(const elementPropName in dataToUpload){
+			compressed[parseInt(elementPropName)] = dataToUpload[elementPropName] == 1 ?1:0;
+		}
+		dataToUpload = compressed;
+	}
+	
 
 	let fullUrl = `${settings.serverUrl}/${settings.myShareCode}/d/${uploadPath}`;
 	return uploadSave(fullUrl, dataToUpload, settings.myShareCode, settings.shareKey);
