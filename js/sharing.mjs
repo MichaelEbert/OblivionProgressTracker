@@ -85,9 +85,14 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 		req.setRequestHeader("Content-Type","application/json");
 
 		req.onload = function () {
+			//first get url...
+			const share = "share/";
+			var start = this.responseURL.indexOf(share) + share.length;
+			var newCode = this.responseURL.substring(start);
+			newCode = newCode.substring(0, newCode.indexOf('/'));
 			if(this.status == 200){
 				//yay.
-				resolve(this.response);
+				resolve({"code": newCode, "response":this.response});
 			}
 			else{
 				reject(this);
@@ -157,15 +162,17 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 	return uploadSave(settings.serverUrl, compressedData, settings.myShareCode, settings.shareKey)
 	.then((result)=>{
 		if(result){
-			if(settings.myShareCode != result){
-				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result+"'");
-				settings.myShareCode = result;
+			if(settings.myShareCode != result.code){
+				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result.code+"'");
+				settings.myShareCode = result.code;
 				saveCookie("settings",settings);
 			}
+			//todo: parse new savedata?
+
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
 			if(window.debug){
-				console.log("progress shared: "+result);
+				console.log("progress shared: "+result.code);
 			}
 			if(notifyOnUpdate){
 				//?????

@@ -69,7 +69,7 @@ namespace ShareApi
                     }
                     else
                     {
-                        if (method == HttpMethod.Put)
+                        if (method == HttpMethod.Put || method == HttpMethod.Post)
                         {
                             node.contents = newData;
                             var newNode = node.Commit();

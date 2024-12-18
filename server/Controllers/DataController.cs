@@ -24,6 +24,7 @@ namespace ShareApi.Controllers
         }
 
         [HttpPut]
+        [HttpPost]
         public ActionResult<string> Handle(ProgressUpdate update, string url, string? jsonPath)
         {
             ProgressUpdateValidator.Validate(update, out ValidationFailedReason validationFailedReason);
@@ -37,7 +38,7 @@ namespace ShareApi.Controllers
             {
                 return Unauthorized();
             }
-            return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, update.SaveData));
+            return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, JsonNode.Parse(update.SaveData)));
         }
     }
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.VisualBasic;
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -69,7 +70,8 @@ namespace ShareApi
         /// <param name="data"></param>
         /// <returns></returns>
         public bool UpdateSaveData(ProgressManagerSql sql, string url, ReadProgress data){
-            return sql.SqlSaveMerge(url,data);
+            Cache.Set(url, data, (url, data) => { sql.SqlSaveMerge(url, data); });
+            return true;
         }
 
         public bool VerifyKey(ProgressManagerSql sql, string saveId, byte[] saveKey)
@@ -88,7 +90,7 @@ namespace ShareApi
 
                 //we have a valid URL.
                 Cache.Set(url, new ReadProgress(update.SaveData, DateTime.UtcNow),
-                    (url, data) => { UpdateSaveData(sql, url, data); });
+                    (url, data) => { sql.SqlSaveMerge(url, data); });
 
                 //return OK
                 return url;
