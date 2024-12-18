@@ -417,17 +417,65 @@ function createSpectateBanner(){
  * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
  */
 function initSharingFeature(){
-	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+	if(!isSpectating() && (settings.myShareCode == null || settings.myShareCode == "")){
 		return;
 	}
 
-	if(!document.getElementById("spectateBanner")){
-		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
-		document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
+	if(isSpectating())
+	{
+		if(!document.getElementById("spectateBanner")){
+			let spectateBanner = createSpectateBanner();
+			document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+			document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
+		}
+		if(settings.spectateAutoRefresh == true){
+			startSpectating(false, true);
+		}
 	}
-	if(settings.spectateAutoRefresh == true){
-		startSpectating(false, true);
+	else{
+		if(settings.spectateAutoRefresh)
+		{
+			startSync(true);
+		}
 	}
+}
+
+function startSync(updateGlobalSaveData)
+{
+	let downloadUrl = settings.serverUrl + "/" + settings.myShareCode; 
+	return downloadSave(downloadUrl)
+	.then((dl)=>{
+		if(dl){
+			//we can't serialize the date object so we convert it to a pretty print string here
+			let dlTime = new Date();
+			settings.shareDownloadTimeInternal = dlTime.toUTCString();
+			settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
+			saveCookie("settings",settings);
+
+			saveCookie("progress",dl);
+			if(updateGlobalSaveData){
+				savedata = decompressSaveData(dl);
+				upgradeSaveData(false);
+
+			}
+			document.dispatchEvent(new Event("progressLoad"));
+		}
+		else{
+			if(window.debug){
+				console.log("304 content unchanged");
+			}
+		}
+
+		//AFTER everything else, attach an auto listener to update spectating.
+		if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
+			if(window.debug){
+				console.log("Attaching auto update listener");
+			}
+			autoUpdateListener = ()=>{
+				startSync(true);
+			}
+			autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+		}
+	});
 }
 
