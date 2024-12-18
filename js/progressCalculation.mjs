@@ -14,6 +14,7 @@ import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from '
 import {saveProgressToCookie} from './userdata.mjs';
 import {uploadCurrentSave} from './sharing.mjs';
 import { uploadPartialSave } from './sharing.mjs';
+import { decompressSaveData } from './userdata.mjs';
 
 /**
  * Update save progress for the specified element.
@@ -166,7 +167,15 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 			saveProgressToCookie();
 			if(settings.autoUploadCheck){
 				// idk this might result in torn savedata
-				uploadPartialSave(cell.hive);
+				uploadPartialSave(cell.hive).then((result)=>{
+					//new data:
+					const oldData = JSON.stringify(compressSaveData(savedata));
+					const newData = JSON.stringify(compressSaveData(decompressSaveData(JSON.parse(result.response))));
+					if(oldData != newData)
+					{
+						alert("data changed on server!");
+					}
+				});
 			}
 		}
 		return true;
