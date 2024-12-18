@@ -10,12 +10,12 @@ export{
     restoreServerPath
 }
 
-import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSettingsFromCookie } from './userdata.mjs'
+import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSettingsFromCookie, saveCookie, loadCookie } from './userdata.mjs'
 import {loadJsonData} from './obliviondata.mjs'
 import { setRemoteUrl, createSpectateBanner } from './sharing.mjs'
 import {recalculateProgress} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
-import { initSharingFeature } from './sharing.mjs'
+import { initSharingFeature, stopSpectating } from './sharing.mjs'
 import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
@@ -96,8 +96,8 @@ function copyShareKeyToClipboard(){
 }
 
 function copySaveDataToLocal(){
-    userdata.saveCookie('progress_local',userdata.loadCookie('progress'));
-    sharing.stopSpectating();
+    saveCookie('progress_local',loadCookie('progress'));
+    stopSpectating();
     document.getElementById("copyDataLocalButton").disabled = true;
     location.reload();
 }
