@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json.Nodes;
 
 namespace ShareApi
 {
@@ -16,6 +17,10 @@ namespace ShareApi
         private const string saveInsertString = "INSERT INTO saves VALUES(@col1, @col2, @accesstime)";
         private const string saveUpdateString = "UPDATE saves SET saveData = @col2, accessed = @accesstime WHERE url = @col1";
         private const string saveSelectString = "SELECT saveData, accessed FROM saves WHERE url = @col1";
+        private const string saveMergeString = "MERGE INTO saves with(HOLDLOCK) USING (VALUES(@col1, @col2, @accesstime)) AS source(url, savedata, accessed) ON saves.url = @col1 " +
+            "WHEN MATCHED THEN UPDATE SET saveData = source.saveData, accessed = source.accessTime" +
+            "WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime)";
+
 
         private SqlConnection conn;
 
@@ -60,8 +65,8 @@ namespace ShareApi
         /// <param name="url"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool SqlSaveInsert(string url, ReadProgress data){
-            var cmd = new SqlCommand(saveInsertString, conn);
+        public bool SqlSaveMerge(string url, ReadProgress data){
+            var cmd = new SqlCommand(saveMergeString, conn);
             cmd.Parameters.Add("@col1",SqlDbType.Char);
             cmd.Parameters["@col1"].Value = url;
             cmd.Parameters.Add("@col2",SqlDbType.VarChar);
@@ -80,31 +85,6 @@ namespace ShareApi
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// update the save table
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public bool SqlSaveUpdate(string url, ReadProgress data) {
-            var cmd = new SqlCommand(saveUpdateString, conn);
-            cmd.Parameters.Add("@col1", SqlDbType.Char);
-            cmd.Parameters["@col1"].Value = url;
-            cmd.Parameters.Add("@col2", SqlDbType.VarChar);
-            cmd.Parameters["@col2"].Value = data.SaveData;
-            cmd.Parameters.Add("@accesstime",SqlDbType.DateTime2);
-            cmd.Parameters["@accesstime"].Value = data.LastModified;
-            try
-            {
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    reader.Close();
-                    return reader.RecordsAffected != 0;
-                }
-            }
-            catch (SqlException) { return false; }
         }
 
         public string? SqlUrlSelect(byte[] key){

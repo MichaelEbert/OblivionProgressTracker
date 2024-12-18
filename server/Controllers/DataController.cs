@@ -1,41 +1,102 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace ShareApi.Controllers
 {
     [ApiController]
-    [Route("share/{url}/d/{*tail}")]
+    [Route("share/{url}/d/{**jsonPath}")]
     public class DataController : Controller
     {
-        public IActionResult Get(string? tail)
+        [HttpGet]
+        [HttpPut]
+        public IActionResult Handle(ProgressUpdate update, string url, string? jsonPath)
         {
-            DataHandler.Instance.Route(HttpMethod.Get, tail);
+            //Request.HttpContext.Connection.RemoteIpAddress
+            ProgressUpdateValidator.Validate(update, out ValidationFailedReason validationFailedReason);
+            if(validationFailedReason != ValidationFailedReason.NONE)
+            {
+                ModelState.AddModelError("error", validationFailedReason.ToString());
+                return BadRequest(ModelState);
+            }
+            var saveEditor = new SaveDataEditor(update.Url);
+            return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, update.SaveData));
         }
     }
 
-    public class DataHandler
+    public class JsonProxyNode
     {
-        private JsonDocument? data;
+        public JsonNode? parent;
+        public string Name;
+        public JsonNode? contents;
+
+        public JsonProxyNode(string name)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
+        /// Update the json tree and return the changed tree.
+        /// </summary>
+        /// <returns></returns>
+        public JsonNode Commit()
+        {
+            if (parent != null)
+            {
+                parent[Name] = contents;
+                return parent.Root ?? parent;
+            }
+            else
+            {
+                return contents;
+            }
+            
+        }
+    }
+
+    public class SaveDataEditor
+    {
+        private JsonNode? oldData;
         private string shareCode;
+        private DateTime updateTime;
         ProgressManagerSql sql = new ProgressManagerSql();
 
-        public DataHandler(string shareCode)
+        /// <summary>
+        /// Initialize the editor and get the json data.
+        /// </summary>
+        /// <param name="shareCode"></param>
+        /// <param name="updateTime"></param>
+        public SaveDataEditor(string shareCode)
         {
             this.shareCode = shareCode;
-            ReadProgress progress;
-            if (!ProgressManager.Cache.TryGet(shareCode, sql.SqlSaveSelect, out progress))
+            if (ProgressManager.Instance.TryGetValue(shareCode, out ReadProgress? progress))
             {
-                data = null;
+                oldData = JsonNode.Parse(progress.SaveData);
+                updateTime = progress.LastModified;
             }
-            data = JsonDocument.Parse(progress.SaveData);
+            else
+            {
+                oldData = null;
+                updateTime = DateTime.UtcNow;
+            }
         }
-        public void UpdateData(HttpMethod method, string route, JsonDocument newData)
+
+        /// <summary>
+        /// Handle data get/set.
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="route"></param>
+        /// <param name="newData"></param>
+        /// <returns>Updated contents of entire tree.</returns>
+        public JsonNode? HandleData(HttpMethod method, string? route, JsonNode? newData)
         {
-            var node = GetNode(route.Split('\\'));
+            var node = GetNode(route?.Split('/') ?? new Span<string>(), oldData);
+
             if(node != null)
             {
                 if(method == HttpMethod.Get)
@@ -44,25 +105,35 @@ namespace ShareApi.Controllers
                 }
                 else if (method == HttpMethod.Put)
                 {
-                    node.contents = newData.RootElement;
-                    ReadProgress prog;
-                    //ProgressManager.HandleUpdate()
-                    return node.contents;
+                    node.contents = newData;
+                    var newNode = node.Commit();
+                    ProgressManager.Instance.UpdateSaveData(sql, shareCode, new ReadProgress(newNode, updateTime));
+                    return newNode;
                 }
             }
+            return null;
         }
 
         /// <summary>
-        /// Get node contents. returns null if **parent** isnt defined.
+        /// Get node proxy. returns null if **parent** isnt defined.
         /// </summary>
         /// <returns></returns>
-        private JsonDocument? GetNode(string[] path)
+        private JsonProxyNode? GetNode(Span<string> path, JsonNode? root)
         {
             if(path.Length == 0)
             {
-                //we have 
+                return new JsonProxyNode("");
             }
-            //data.RootElement();
+            if(path.Length == 1)
+            {
+                JsonProxyNode result = new JsonProxyNode(path[0]);
+                result.contents = root?[result.Name];
+                result.parent = root;
+            }
+            else
+            {
+                return GetNode(path.Slice(1), root?[path[0]]);
+            }
             return null;
         }
     }

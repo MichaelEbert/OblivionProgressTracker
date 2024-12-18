@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ShareApi
 {
@@ -30,16 +31,18 @@ namespace ShareApi
                 //new url:
                 using (ProgressManagerSql sql = new ProgressManagerSql())
                 {
-                    var storedUrl = sql.SqlUrlSelect(update.Key);
-                }
-                string? newurl = ProgressManager.HandleUpdate(update);
-                if (newurl != null)
-                {
-                    return Ok(newurl);
-                }
-                else
-                {
-                    return Unauthorized();
+                    string? shareCode = null ;
+                    var storedShareCode = sql.SqlUrlSelect(update.Key);
+                    if (storedShareCode == null)
+                    {
+                        //this is a new request. 
+                        shareCode = ProgressManager.Instance.GenerateNewUrlAndInsert(sql, update.Key);
+                        return RedirectToActionPermanent("HandleProgressRequest","ProgressRequestHandler", new object[] { shareCode });
+                    }
+                    else
+                    {
+                        return Ok(storedShareCode);
+                    }
                 }
             }
             else
