@@ -13,6 +13,7 @@ export{
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
 import {uploadCurrentSave} from './sharing.mjs';
+import { uploadPartialSave } from './sharing.mjs';
 
 /**
  * Update save progress for the specified element.
@@ -164,7 +165,8 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 		if(!skipSave){
 			saveProgressToCookie();
 			if(settings.autoUploadCheck){
-				uploadCurrentSave(false);
+				// idk this might result in torn savedata
+				uploadPartialSave(cell.hive);
 			}
 		}
 		return true;

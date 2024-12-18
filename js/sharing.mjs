@@ -14,6 +14,7 @@ export {
 	uploadSave,
 	downloadSave,
 	uploadCurrentSave,
+	uploadPartialSave,
 	startSpectating,
 	stopSpectating,
 	setRemoteUrl,
@@ -180,6 +181,39 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 			}
 		}
 	});
+}
+
+/**
+ * Upload partial changes to a savefile.
+ * @param partialJsonData jsondata hive to upload.
+ */
+async function uploadPartialSave(partialJsonData){
+	if(settings.remoteShareCode){
+		//if we're viewing remote, don't upload.
+		console.log("viewing remote data, will not upload.");
+		return;
+	}
+	initShareSettings();
+
+	//currently only support single element or single hive.
+	if(partialJsonData.hive == null)
+	{
+		console.error("cannot upload, no hive found.");
+	}
+
+	//hive:
+	let hive = partialJsonData.hive;
+	if(!hive.class.containsUserProgress)
+	{
+		return;
+	}
+	// uncompressed data. bleh. whatever.
+	//get savedata format
+	let dataToUpload = savedata[hive.classname];
+	let uploadPath = hive.classname;
+
+	let fullUrl = `${settings.serverUrl}/${settings.myShareCode}/d/${uploadPath}`;
+	return uploadSave(fullUrl, dataToUpload, settings.myShareCode, settings.shareKey);
 }
 
 /**

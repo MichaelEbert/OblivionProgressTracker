@@ -3,6 +3,7 @@
 export {parseSave}
 
 import { loadJsonData, jsondata, progressClasses, runOnTree, findCell } from './obliviondata.mjs'
+import { uploadCurrentSave } from './sharing.mjs';
 import { initShareSettings, stopSpectating } from './sharing.mjs';
 import { saveProgressToCookie } from './userdata.mjs';
 
@@ -340,6 +341,7 @@ function parseSave(e){
                 
                 window.savedata = dataFromSave;
                 saveProgressToCookie();
+                uploadCurrentSave();
                 window.location.reload();
             });
         }
