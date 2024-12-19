@@ -160,9 +160,14 @@ function decompressSaveData(compressedSaveData){
 			if(matchingClass != null && matchingClass.standard) {
 				decompressedSaveData[propname] = {};
 				let elements = compressedSaveData[propname];
-				for(let i = 0; i < elements.length; i++){
+				let length = elements.length;
+				if(elements.length == undefined)
+				{
+					length = Object.keys(elements).length;
+				}
+				for(let i = 0; i < length; i++){
 					if(elements[i] != null){
-						decompressedSaveData[propname][i] = (elements[i] == 1);
+						decompressedSaveData[propname][i] = (elements[i] == 1) || (elements[i] === true);
 					}
 				}
 			}

@@ -296,6 +296,10 @@ var autoUpdateIntervalId = null;
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
+	{
+		return;
+	}
 	if(window.debug){
 		console.log("spectate update");
 	}
@@ -442,6 +446,10 @@ function initSharingFeature(){
 
 function startSync(updateGlobalSaveData)
 {
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
+	{
+		return;
+	}
 	let downloadUrl = settings.serverUrl + "/" + settings.myShareCode; 
 	return downloadSave(downloadUrl)
 	.then((dl)=>{

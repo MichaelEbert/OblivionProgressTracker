@@ -153,6 +153,13 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 				}
 			}
 			else{
+				// sometimes we mess up the savedata completely.
+				// this is a recovery.
+				if(savedata[cell.hive.classname] == null)
+				{
+					console.log("savedata messed up: hive doesnt exist.");
+					savedata[cell.hive.classname] = {};
+				}
 				savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
 			}
 		}
