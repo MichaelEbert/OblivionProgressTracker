@@ -19,16 +19,9 @@ namespace ShareApi
             else
             {
                 ReadProgress result;
-                if(!ProgressManager.Cache.TryGetCacheOnly(url, out result))
+                if(!ProgressManager.Instance.TryGetValue(url, out result))
                 {
-                    //not found in cache. Find in backing store.
-                    using (ProgressManagerSql sql = new ProgressManagerSql())
-                    {
-                        if (!ProgressManager.Cache.TryGet(url, sql.SqlSaveSelect, out result))
-                        {
-                            return NotFound();
-                        }
-                    }
+                    return NotFound();
                 }
 
                 Debug.Assert(result != null, "result returned for url is null.");

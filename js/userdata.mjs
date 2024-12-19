@@ -5,6 +5,7 @@ import { runOnTree, progressClasses } from "./obliviondata.mjs";
 import { initShareSettings } from "./sharing.mjs";
 
 import {clearProgressCache} from './progressCalculation.mjs'
+import { downloadSave } from "./sharing.mjs";
 
 //functions that save and load user progess and settings.
 export{
@@ -159,9 +160,14 @@ function decompressSaveData(compressedSaveData){
 			if(matchingClass != null && matchingClass.standard) {
 				decompressedSaveData[propname] = {};
 				let elements = compressedSaveData[propname];
-				for(let i = 0; i < elements.length; i++){
+				let length = elements.length;
+				if(elements.length == undefined)
+				{
+					length = Object.keys(elements).length;
+				}
+				for(let i = 0; i < length; i++){
 					if(elements[i] != null){
-						decompressedSaveData[propname][i] = (elements[i] == 1);
+						decompressedSaveData[propname][i] = (elements[i] == 1) || (elements[i] === true);
 					}
 				}
 			}
@@ -269,7 +275,13 @@ function initSettings(){
  * @returns {boolean} true if progress was been successfully loaded. False if new savedata was created.
  */
 function loadProgressFromCookie(){
-	loadSettingsFromCookie();	
+	loadSettingsFromCookie();
+	if(settings.myShareCode != null || settings.remoteShareCode != null)
+	{
+		//TODO: try reloading from remote
+		//TODO: what if we wipe save#s tho
+		//downloadSave(...)
+	}
 	var compressed = loadCookie("progress");
 	
 	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
@@ -286,7 +298,7 @@ function loadProgressFromCookie(){
 	else{
 		//could not find savedata. create new savedata.
 		if(window.debug){
-			console.log("could not find dsavedata. resetting progress.");
+			console.log("could not find savedata. resetting progress.");
 		}
 		resetProgress(false);
 		return false;

@@ -14,6 +14,7 @@ export {
 	uploadSave,
 	downloadSave,
 	uploadCurrentSave,
+	uploadPartialSave,
 	startSpectating,
 	stopSpectating,
 	setRemoteUrl,
@@ -85,9 +86,24 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 		req.setRequestHeader("Content-Type","application/json");
 
 		req.onload = function () {
+			let newCode;
+			//first get url...
+			const share = "share/";
+			var start = this.responseURL.indexOf(share);
+			if(start == -1){
+				newCode = this.response;
+			}
+			else{
+				start += share.length;
+				newCode = this.responseURL.substring(start);
+				newCode = newCode.substring(0, newCode.indexOf('/'));
+				if(newCode.length < 6){
+					newCode = this.response;
+				}
+			}
 			if(this.status == 200){
 				//yay.
-				resolve(this.response);
+				resolve({"code": newCode, "response":this.response});
 			}
 			else{
 				reject(this);
@@ -157,15 +173,17 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 	return uploadSave(settings.serverUrl, compressedData, settings.myShareCode, settings.shareKey)
 	.then((result)=>{
 		if(result){
-			if(settings.myShareCode != result){
-				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result+"'");
-				settings.myShareCode = result;
+			if(settings.myShareCode != result.code){
+				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result.code+"'");
+				settings.myShareCode = result.code;
 				saveCookie("settings",settings);
 			}
+			//todo: parse new savedata?
+
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
 			if(window.debug){
-				console.log("progress shared: "+result);
+				console.log("progress shared: "+result.code);
 			}
 			if(notifyOnUpdate){
 				//?????
@@ -173,6 +191,61 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 			}
 		}
 	});
+}
+
+/**
+ * Upload partial changes to a savefile.
+ * @param partialJsonData jsondata hive to upload.
+ */
+async function uploadPartialSave(partialJsonData){
+	if(settings.remoteShareCode){
+		//if we're viewing remote, don't upload.
+		console.log("viewing remote data, will not upload.");
+		return;
+	}
+	initShareSettings();
+
+	//currently only support single element or single hive.
+	if(partialJsonData.hive == null)
+	{
+		console.error("cannot upload, no hive found.");
+	}
+
+	//hive:
+	let hive = partialJsonData.hive;
+	if(!hive.class.containsUserProgress)
+	{
+		return;
+	}
+
+	//get savedata format
+	let dataToUpload = savedata[hive.classname];
+	let uploadPath = hive.classname;
+
+	if(partialJsonData.elements == null && partialJsonData.id != null)
+	{
+		//leaf node. we can upload just this.
+		dataToUpload = savedata[hive.classname][partialJsonData.id];
+		if(hive.class.standard)
+		{
+			//compress if we need to
+			dataToUpload = dataToUpload == 1 ? 1:0;
+		}
+		uploadPath = `${hive.classname}/${partialJsonData.id}`;
+	}
+	else{
+		if(hive.class.standard)
+		{
+			let compressed = [];
+			for(const elementPropName in dataToUpload){
+				compressed[parseInt(elementPropName)] = dataToUpload[elementPropName] == 1 ?1:0;
+			}
+			dataToUpload = compressed;
+		}
+	}	
+
+	let fullUrl = `${settings.serverUrl}/${settings.myShareCode}/d/${uploadPath}`;
+	return uploadSave(fullUrl, dataToUpload, settings.myShareCode, settings.shareKey);
 }
 
 /**
@@ -223,6 +296,10 @@ var autoUpdateIntervalId = null;
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
+	{
+		return;
+	}
 	if(window.debug){
 		console.log("spectate update");
 	}
@@ -344,17 +421,69 @@ function createSpectateBanner(){
  * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
  */
 function initSharingFeature(){
-	if(settings.remoteShareCode == null || settings.remoteShareCode == ""){
+	if(!isSpectating() && (settings.myShareCode == null || settings.myShareCode == "")){
 		return;
 	}
 
-	if(!document.getElementById("spectateBanner")){
-		let spectateBanner = createSpectateBanner();
-		document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
-		document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
+	if(isSpectating())
+	{
+		if(!document.getElementById("spectateBanner")){
+			let spectateBanner = createSpectateBanner();
+			document.getElementById("topbar")?.insertBefore(spectateBanner, document.getElementById("topbar").firstChild);
+			document.getElementById("sidebarFloaty")?.classList.add("screenHeight2");
+		}
+		if(settings.spectateAutoRefresh == true){
+			startSpectating(false, true);
+		}
 	}
-	if(settings.spectateAutoRefresh == true){
-		startSpectating(false, true);
+	else{
+		if(settings.spectateAutoRefresh)
+		{
+			startSync(true);
+		}
 	}
+}
+
+function startSync(updateGlobalSaveData)
+{
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
+	{
+		return;
+	}
+	let downloadUrl = settings.serverUrl + "/" + settings.myShareCode; 
+	return downloadSave(downloadUrl)
+	.then((dl)=>{
+		if(dl){
+			//we can't serialize the date object so we convert it to a pretty print string here
+			let dlTime = new Date();
+			settings.shareDownloadTimeInternal = dlTime.toUTCString();
+			settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
+			saveCookie("settings",settings);
+
+			saveCookie("progress",dl);
+			if(updateGlobalSaveData){
+				savedata = decompressSaveData(dl);
+				upgradeSaveData(false);
+
+			}
+			document.dispatchEvent(new Event("progressLoad"));
+		}
+		else{
+			if(window.debug){
+				console.log("304 content unchanged");
+			}
+		}
+
+		//AFTER everything else, attach an auto listener to update spectating.
+		if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
+			if(window.debug){
+				console.log("Attaching auto update listener");
+			}
+			autoUpdateListener = ()=>{
+				startSync(true);
+			}
+			autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+		}
+	});
 }
 

@@ -8,7 +8,7 @@ CREATE TABLE urls(
 -- could probably use a foreign key...
 CREATE TABLE saves (
     [url] char(6) NOT NULL PRIMARY KEY,
-	[saveData] varchar(MAX) NULL,
+	[saveData] JSON NULL,
 	[accessed] datetime NULL
 )
 

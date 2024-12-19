@@ -13,6 +13,8 @@ export{
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import {saveProgressToCookie} from './userdata.mjs';
 import {uploadCurrentSave} from './sharing.mjs';
+import { uploadPartialSave } from './sharing.mjs';
+import { compressSaveData, decompressSaveData, saveCookie } from './userdata.mjs';
 
 /**
  * Update save progress for the specified element.
@@ -151,6 +153,13 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 				}
 			}
 			else{
+				// sometimes we mess up the savedata completely.
+				// this is a recovery.
+				if(savedata[cell.hive.classname] == null)
+				{
+					console.log("savedata messed up: hive doesnt exist.");
+					savedata[cell.hive.classname] = {};
+				}
 				savedata[cell.hive.classname][cell.id] = valueAsCorrectType;
 			}
 		}
@@ -164,7 +173,19 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 		if(!skipSave){
 			saveProgressToCookie();
 			if(settings.autoUploadCheck){
-				uploadCurrentSave(false);
+				// idk this might result in torn savedata
+				uploadPartialSave(cell).then((result)=>{
+					//new data:
+					const returnedSaveData = decompressSaveData(JSON.parse(result.response));
+					const oldData = JSON.stringify(compressSaveData(savedata));
+					const newData = JSON.stringify(compressSaveData(returnedSaveData));
+					if(oldData != newData)
+					{
+						savedata = returnedSaveData;
+						saveCookie("progress",returnedSaveData);
+						document.dispatchEvent(new Event("progressLoad"));
+					}
+				});
 			}
 		}
 		return true;
