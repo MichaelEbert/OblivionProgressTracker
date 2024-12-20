@@ -523,8 +523,8 @@ function initListeners(){
 
     document.getElementById("resetMapButton")?.addEventListener('click', (e)=>{
         if(confirm("Delete saved map progress?")){
-            resetProgressForHive(jsondata.location);
-            resetProgressForHive(jsondata.nirnroot);
+            resetProgressForHive(savedata, jsondata.location);
+            resetProgressForHive(savedata, jsondata.nirnroot);
             clearRandomGateCount();
             saveProgressToCookie();
             location.reload();

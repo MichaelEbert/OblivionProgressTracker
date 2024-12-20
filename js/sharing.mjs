@@ -2,6 +2,7 @@
 // Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
+import { updateAllProgress } from "./progressCalculation.mjs";
 import { resetProgress } from "./userdata.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
 import { compressSaveData, decompressSaveData } from "./userdata.mjs";
@@ -131,7 +132,7 @@ async function downloadSave(remoteUrl){
 		req.setRequestHeader("Accept","application/json;odata=nometadata");
 		req.setRequestHeader("Content-Type","application/json");
 		if(settings.shareDownloadTimeInternal != null && settings.shareDownloadTimeInternal != ""){
-			req.setRequestHeader("If-Modified-Since",settings.shareDownloadTimeInternal);
+			req.setRequestHeader("If-Modified-Since",settings.shareDownloadTimeInternal.toUTCString());
 		}
 		
 		req.onload = function(){
@@ -265,7 +266,7 @@ function stopSpectating(){
 	console.log("stopping spectating.");
 	
 	settings.remoteShareCode = null;
-	settings.shareDownloadTimeInternal = "";
+	settings.shareDownloadTimeInternal = null;
 	settings.shareDownloadTime = "";
 	saveCookie("settings",settings);
 
@@ -327,24 +328,18 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 			if(dl){
 				//we can't serialize the date object so we convert it to a pretty print string here
 				let dlTime = new Date();
-				settings.shareDownloadTimeInternal = dlTime.toUTCString();
-				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
+				settings.shareDownloadTimeInternal = dlTime;
+				settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);				
 				saveCookie("settings",settings);
-
-				saveCookie("progress",dl);
-				if(updateGlobalSaveData){
-					savedata = decompressSaveData(dl);
-					upgradeSaveData(notifyOnUpdate);
-
-				}
 				if(notifyOnUpdate){
 					alert("Downloaded");
 				}
-				document.dispatchEvent(new Event("progressLoad"));
+				
+				updateAllProgress(dl, true);
 			}
 			else{
 				if(window.debug){
-					console.log("304 content unchanged");
+					console.log("304 content unchanged since "+settings.shareDownloadTimeInternal);
 				}
 			}
 
@@ -456,21 +451,15 @@ function startSync(updateGlobalSaveData)
 		if(dl){
 			//we can't serialize the date object so we convert it to a pretty print string here
 			let dlTime = new Date();
-			settings.shareDownloadTimeInternal = dlTime.toUTCString();
+			settings.shareDownloadTimeInternal = dlTime;
 			settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 			saveCookie("settings",settings);
 
-			saveCookie("progress",dl);
-			if(updateGlobalSaveData){
-				savedata = decompressSaveData(dl);
-				upgradeSaveData(false);
-
-			}
-			document.dispatchEvent(new Event("progressLoad"));
+			updateAllProgress(dl, true);
 		}
 		else{
 			if(window.debug){
-				console.log("304 content unchanged");
+				console.log("304 content unchanged since "+settings.shareDownloadTimeInternal);
 			}
 		}
 

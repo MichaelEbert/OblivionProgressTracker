@@ -7,14 +7,83 @@ export{
 	updateChecklistProgress,
 	recalculateProgress,
 	sumCompletionItems,
-	clearProgressCache
+	clearProgressCache,
+	updateAllProgress,
+	updateProgressBar
 }
 
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
-import {saveProgressToCookie} from './userdata.mjs';
-import {uploadCurrentSave} from './sharing.mjs';
-import { uploadPartialSave } from './sharing.mjs';
-import { compressSaveData, decompressSaveData, saveCookie } from './userdata.mjs';
+import { uploadCurrentSave, uploadPartialSave } from './sharing.mjs';
+import { compressSaveData, decompressSaveData, saveCookie, saveProgressToCookie } from './userdata.mjs';
+
+
+function updateCellProgressFromNewSaveData(cell, newSaveData)
+{
+	if(cell.ref != null || cell.id == null){
+		return;
+	}
+	const classname = cell.hive.classname
+	if(savedata == null || savedata[classname] == null){
+		debugger;
+	}
+	if(newSaveData == null) {
+		updateChecklistProgress(null, savedata[classname][cell.id], null, cell, true);
+	}
+	else {
+		const newval = newSaveData[classname][cell.id];
+		if(newval != savedata[classname][cell.id])
+		{
+			updateChecklistProgress(null, newval, null, cell, true);
+		}
+	}
+	
+}
+
+/**
+ * Update save data to new value and update progress accordingly.
+ * @param newSaveData new save data
+ */
+function updateAllProgress(newSaveData, dispatchProgressLoad = false){
+	if(newSaveData != null) {
+		// do pre-progressLoad stuff here
+		newSaveData = decompressSaveData(newSaveData);
+		newSaveData = upgradeSaveData(newSaveData, false);
+	}
+
+	//after progressLoad:
+	for(const klass of progressClasses) {
+		const hive = getJsonData()[klass.name];
+		runOnTree(hive, (cell)=>updateCellProgressFromNewSaveData(cell, newSaveData));
+	}
+
+	//save here?
+	if(newSaveData != null)	{
+		saveProgressToCookie();
+	}
+  
+	if(dispatchProgressLoad) {
+		document.dispatchEvent(new Event("progressLoad"));
+	}
+}
+
+function updateProgressBar()
+{
+	//update progress percent
+	let percentCompleteSoFar = localStorage.getItem("percentageDone");
+	try{
+		percentCompleteSoFar = recalculateProgress();
+	} catch{
+		
+	}
+	//round progress to 2 decimal places
+	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+		element.innerText = progress.toString();
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
+		}
+	});
+}
 
 /**
  * Update save progress for the specified element.
@@ -123,7 +192,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 	}
 	//mark cached value as invalid
 	let cellObj = cell;
-	while(cellObj != null){
+	while(cellObj != null && cellObj.cache != null){
 		cellObj.cache = null;
 		cellObj = cellObj.parent;
 	}
