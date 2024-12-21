@@ -73,7 +73,7 @@ namespace ShareApi
                         {
                             node.contents = newData;
                             var newNode = node.Commit();
-                            ProgressManager.Instance.UpdateSaveData(sql, shareCode, new ReadProgress(newNode, updateTime));
+                            ProgressManager.Instance.UpdateSaveData(sql, shareCode, new ReadProgress(newNode, DateTime.UtcNow));
                             return newNode;
                         }
                     }

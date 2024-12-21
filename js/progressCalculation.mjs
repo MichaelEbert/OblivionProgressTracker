@@ -6,15 +6,89 @@ export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems,
-	clearProgressCache
+	clearProgressCache,
+	updateLocalProgress,
+	updateProgressBar,
+	sumCompletionItems
 }
 
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
-import {saveProgressToCookie} from './userdata.mjs';
-import {uploadCurrentSave} from './sharing.mjs';
-import { uploadPartialSave } from './sharing.mjs';
-import { compressSaveData, decompressSaveData, saveCookie } from './userdata.mjs';
+import { uploadCurrentSave, uploadPartialSave } from './sharing.mjs';
+import { compressSaveData, decompressSaveData, upgradeSaveData, createNewSave, saveCookie, saveProgressToCookie } from './userdata.mjs';
+
+/**
+ * Helper function for updateLocalProgress. do not call directly.
+ * @param cell 
+ * @param targetSaveData 
+ * @param differential 
+ */
+function updateCellProgressFromTargetSaveData(cell, targetSaveData, differential)
+{
+	if(cell.ref != null || cell.id == null){
+		return;
+	}
+	const classname = cell.hive.classname
+	if(savedata == null || savedata[classname] == null){
+		debugger;
+	}
+	const newval = targetSaveData[classname][cell.id];
+	if(!differential || newval != savedata[classname][cell.id]) {
+		updateChecklistProgress(null, newval, null, cell, true);
+	}
+}
+
+/**
+ * Update save data to new value and update progress accordingly.
+ * Does not send data.
+ * One of the main function here you should call.
+ * @param newSaveData new save data
+ * @param differential should we only update the cells that changed instead of updating everything
+ */
+function updateLocalProgress(newSaveData, differential = false){
+	newSaveData = decompressSaveData(newSaveData);
+	newSaveData = upgradeSaveData(newSaveData, false);
+
+	if(window.savedata == null)	{
+		// cant diff against nothing
+		differential = false;
+	}
+
+	if(!differential) {
+		clearProgressCache();
+		window.savedata = createNewSave();
+	}
+
+	//after progressLoad:
+	for(const klass of progressClasses) {
+		const hive = getJsonData()[klass.name];
+		runOnTree(hive, (cell)=>updateCellProgressFromTargetSaveData(cell, newSaveData, differential));
+	}
+	savedata = newSaveData;
+	saveProgressToCookie();
+	document.dispatchEvent(new Event("progressLoad"));
+}
+
+/**
+ * Update progress bar on all the pages. Safe to call from anywhere.
+ */
+function updateProgressBar()
+{
+	//update progress percent
+	let percentCompleteSoFar = localStorage.getItem("percentageDone");
+	try{
+		percentCompleteSoFar = recalculateProgress();
+	} catch{
+		
+	}
+	//round progress to 2 decimal places
+	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
+	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
+		element.innerText = progress.toString();
+		if(element.parentElement.className == "topbarSection"){
+			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
+		}
+	});
+}
 
 /**
  * Update save progress for the specified element.
@@ -54,8 +128,7 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, skipSave = false){
 	let cell = null;
-	if(cellHint != null)
-	{
+	if(cellHint != null) {
 		cell = cellHint;
 	}
 	else{
@@ -123,7 +196,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 	}
 	//mark cached value as invalid
 	let cellObj = cell;
-	while(cellObj != null){
+	while(cellObj != null && cellObj.cache != null){
 		cellObj.cache = null;
 		cellObj = cellObj.parent;
 	}
@@ -181,9 +254,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 					const newData = JSON.stringify(compressSaveData(returnedSaveData));
 					if(oldData != newData)
 					{
-						savedata = returnedSaveData;
-						saveCookie("progress",returnedSaveData);
-						document.dispatchEvent(new Event("progressLoad"));
+						updateLocalProgress(returnedSaveData, true);
 					}
 				});
 			}

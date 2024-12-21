@@ -3,7 +3,7 @@
 // Functions that generate the page
 //===========================
 function init(){
-	document.addEventListener("progressLoad",updateUIFromSaveData);
+	document.addEventListener("progressLoad",progress.updateProgressBar)
 	obliviondata.loadJsonData().then(()=>{
 		userdata.loadSettingsFromCookie();
 		//populate sections with json data.
@@ -168,81 +168,6 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 //===========================
 
 /**
- * Recalculate the total progress, and update UI elements.
- */
-function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = localStorage.getItem("percentageDone");
-	
-	try{
-		percentCompleteSoFar = window.progress.recalculateProgress();
-	} catch{
-		
-	}
-	
-	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
-		}
-	});
-}
-
-/**
- * helper function for updateUIFromSaveData
- * @param {} cell 
- */
-function updateHtmlElementFromSaveData(cell){
-	const classname = cell.hive.classname
-	let usableId = cell.formId;
-	if(usableId == null){
-		usableId = cell.id;
-	}
-	let checkbox = document.getElementById(classname+usableId+"check");
-	if(checkbox == null){
-		if(usableId != null && window.debug){
-			//user doesn't really need to know if this happens; it is expected for elements that don't draw.
-			console.warn("unable to find checkbox element for modifiable cell '"+classname+usableId+"' (id "+cell.id+")");
-		}
-		return;
-	}
-	let newval = null;
-	if(cell.ref == null){
-		//we call updateChecklistProgress so indirect elements will update from this
-		if(cell.id != null){
-			if(savedata[classname] == null){
-				debugger;
-			}
-			newval = savedata[classname][cell.id];
-			progress.updateChecklistProgress(null, newval, null, cell, true);
-		}
-	}
-}
-
-/**
- * When savedata is loaded, we need to bulk change all of the HTML to match the savedata state.
- * This function does that.
- */
-function updateUIFromSaveData(){
-	for(const klass of obliviondata.progressClasses){
-		const hive = obliviondata.jsondata[klass.name];
-		obliviondata.runOnTree(hive, updateHtmlElementFromSaveData);
-	}
-
-	recalculateProgressAndUpdateProgressUI();
-}
-
-function setParentChecked(checkbox){
-	if(checkbox.checked){
-		checkbox.parentElement.classList.add("checked");
-	}
-	else{
-		checkbox.parentElement.classList.remove("checked");
-	}
-}
-
-/**
  * called when user inputs data
  * @param {string} htmlRowId 
  * @param {Element} checkboxElement 
@@ -257,7 +182,7 @@ function userInputData(htmlRowId, checkboxElement){
 		}
 	}
 	
-	recalculateProgressAndUpdateProgressUI();
+	progress.updateProgressBar();
 }
 
 function checkboxClicked(event){
