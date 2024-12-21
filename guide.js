@@ -13,11 +13,11 @@ function init(){
 	checkIframeSize(); 
 	
 	window.addEventListener("resize",onWindowResize);
+	document.addEventListener("progressLoad",progress.updateProgressBar)
 	loadJsonData().then(()=>{
 		replaceElements();
 		loadProgressFromCookie();
 		sharing.initSharingFeature();
-		progress.updateProgressBar();
 	});
 }
 
@@ -168,8 +168,6 @@ function checkboxClicked(event){
 	var classname = rowHtml.classList[0];
 	updateChecklistProgressFromInputElement(parentid, event.target, classname);
 	event.stopPropagation();
-	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
-	progress.updateProgressBar();
 }
 
 function rowClicked(event){
@@ -201,7 +199,6 @@ function userInputData(rowHtml, checkboxElement){
 	var classname = rowHtml.classList[0];
 	let rowid = rowHtml.getAttribute("clid");
 	progress.updateChecklistProgressFromInputElement(rowid, checkboxElement, classname);
-	progress.updateProgressBar();
 }
 
 //used to make sure we don't run a ton of refresh code constantly.
