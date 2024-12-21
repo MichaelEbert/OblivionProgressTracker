@@ -27,7 +27,7 @@ export {
 
 import { Point } from "./map/point.mjs";
 import { MapPOI } from "./map/mapObject.mjs";
-import { sumCompletionItems } from "./progressCalculation.mjs";
+import { sumCompletionItems, updateProgressBar } from "./progressCalculation.mjs";
 import { saveProgressToCookie, initAutoSettings } from "./userdata.mjs"
 import { Overlay, OVERLAY_LAYER_NONE, OVERLAY_LAYER_LOCATIONS, OVERLAY_LAYER_NIRNROOTS, OVERLAY_LAYER_WAYSHRINES, OVERLAY_LAYER_NEARBYGATES } from "./map/overlay.mjs";
 import { findCell } from "./obliviondata.mjs";
@@ -531,7 +531,11 @@ function initListeners(){
         }
     });
 
-    document.addEventListener("progressLoad",()=>overlay.recalculateBoundingBox());
+    document.addEventListener("progressLoad",()=>{
+        updateProgressBar();
+        overlay.recalculateBoundingBox();
+        drawFrame();
+    });
 }
 
 function updateZoom(deltaZ, zoomPoint){
