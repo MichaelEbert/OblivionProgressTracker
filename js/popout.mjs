@@ -66,25 +66,9 @@ function copyBrowserSourceToClipboard(){
 }
 
 function init(){
-    document.addEventListener("progressLoad",recalculateProgressAndUpdateProgressUI);
+    document.addEventListener("progressLoad",updateProgressBar);
 	obliviondata.loadJsonData().then(()=>{
         userdata.loadSettingsFromCookie();
         userdata.loadProgressFromCookie();
     });
-}
-
-/**
- * Recalculate the total progress, and update UI elements.
- */
-function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = recalculateProgress();
-	
-	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
-		}
-	});
 }
