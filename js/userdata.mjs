@@ -19,7 +19,7 @@ export{
 }
 
 
-window.savedata = createNewSave();
+window.savedata = null;
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
