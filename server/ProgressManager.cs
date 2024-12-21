@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.VisualBasic;
 using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Nodes;
 
 namespace ShareApi
 {
@@ -6,13 +11,11 @@ namespace ShareApi
     /// Handles the creation, update, and reads of saved progress items.
     /// </summary>
     public class ProgressManager{
-        //TODO: move this to a better place
-        public static ReadCache<ReadProgress> Cache = new ReadCache<ReadProgress>();
+        public static ProgressManager Instance = new ProgressManager();
+        private ReadCache<ReadProgress> Cache = new ReadCache<ReadProgress>();
+        private Random randomGen = new Random();
 
-        Random randomGen;
-
-        public ProgressManager(){
-            randomGen = new Random();
+        private ProgressManager(){
         }
 
         /// <summary>
@@ -21,7 +24,7 @@ namespace ShareApi
         /// <param name="sql"></param>
         /// <param name="key"></param>
         /// <returns>the new url</returns>
-        private string GenerateNewUrlAndInsert(ProgressManagerSql sql, byte[] key){
+        public string GenerateNewUrlAndInsert(ProgressManagerSql sql, byte[] key){
             //6-character base64 = 6*6 = 36 bits, pad to 40 = 5 bytes
             byte[] bytes = new byte[5];
             string newUrl;
@@ -42,6 +45,23 @@ namespace ShareApi
             return newUrl;
         }
 
+        public bool TryGetValue(string shareKey, [NotNullWhen(true)] out ReadProgress? result)
+        {
+            if (!Cache.TryGetCacheOnly(shareKey, out result))
+            {
+                //not found in cache. Find in backing store.
+                using (ProgressManagerSql sql = new ProgressManagerSql())
+                {
+                    if (!Cache.TryGet(shareKey, sql.SqlSaveSelect, out result))
+                    {
+                        result = default;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// Update or insert save data.
         /// </summary>
@@ -49,15 +69,14 @@ namespace ShareApi
         /// <param name="url"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        private bool UpdateSaveData(ProgressManagerSql sql, string url, ReadProgress data){
-            var updated = sql.SqlSaveUpdate(url,data);
-            if(!updated){
-                //need to insert
-                return sql.SqlSaveInsert(url, data);
-            }
-            else{
-                return updated;
-            }
+        public bool UpdateSaveData(ProgressManagerSql sql, string url, ReadProgress data){
+            Cache.Set(url, data, (url, data) => { sql.SqlSaveMerge(url, data); });
+            return true;
+        }
+
+        public bool VerifyKey(ProgressManagerSql sql, string saveId, byte[] saveKey)
+        {
+            return sql.SqlUrlSelect(saveKey) == saveId;
         }
 
         /// <summary>
@@ -68,21 +87,10 @@ namespace ShareApi
         public string? HandleUpdate(ProgressUpdate update){
             string? url = update.Url;
             using(ProgressManagerSql sql = new ProgressManagerSql()) { 
-                var storedUrl = sql.SqlUrlSelect(update.Key);
-                if (storedUrl == null && url == null){
-                    //this is a new request. 
-                    url = GenerateNewUrlAndInsert(sql, update.Key);
-                }
-                else{
-                    if(url != storedUrl){
-                        //return 401
-                        return null;
-                    }
-                }
 
                 //we have a valid URL.
                 Cache.Set(url, new ReadProgress(update.SaveData, DateTime.UtcNow),
-                    (url, data) => { UpdateSaveData(sql, url, data); });
+                    (url, data) => { sql.SqlSaveMerge(url, data); });
 
                 //return OK
                 return url;

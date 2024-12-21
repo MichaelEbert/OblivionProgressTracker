@@ -12,6 +12,7 @@ import { saveCookie } from './userdata.mjs';
 var prevNirnroot;
 var thisNirnroot;
 var nextNirnroot;
+var thisNirnrootChecked;
 
 /**
  * Debugging function to get prev, this and next nirnroot.
@@ -56,6 +57,22 @@ function initEventListeners(){
         updateChecklistProgress(null, false, null, prevNirnroot.cell);
         recalculateProgress();
         activateNirnroot(prevNirnroot.cell.formId); 
+    });
+
+    
+	document.addEventListener("progressLoad",()=>{
+        // if after a progressLoad, the current nirn has
+        // been checked, advance to next unchecked nirn.
+        let newCheckedValue = savedata["nirnroot"][thisNirnroot.cell.id];
+        if(thisNirnrootChecked === false && newCheckedValue)
+        {
+            while(savedata["nirnroot"][thisNirnroot.cell.id] == true &&
+                nextNirnroot.cell.tspId != 0)
+            {
+                activateNirnroot(nextNirnroot.cell.formId);
+            }
+            newCheckedValue = savedata["nirnroot"][thisNirnroot.cell.id];
+        }
     });
 
     document.body.addEventListener('keyup', (evt)=>{
@@ -171,6 +188,7 @@ function activateNirnroot(nirnFormId){
     const nextToElement = document.getElementById("closeTo");
     nextToElement.innerText = getFastTravelInstructions(thisNirnroot);
 
+    thisNirnrootChecked = savedata["nirnroot"][thisNirnroot.cell.id];    
     
     map.zoomToFormId(nirnFormId);
     map.draw();

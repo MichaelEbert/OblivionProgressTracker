@@ -10,12 +10,11 @@ export{
     restoreServerPath
 }
 
-import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSettingsFromCookie } from './userdata.mjs'
+import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSettingsFromCookie, saveCookie, loadCookie } from './userdata.mjs'
 import {loadJsonData} from './obliviondata.mjs'
-import { setRemoteUrl, createSpectateBanner } from './sharing.mjs'
-import {recalculateProgress} from './progressCalculation.mjs'
+import {updateProgressBar} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
-import { initSharingFeature } from './sharing.mjs'
+import { initSharingFeature, stopSpectating, setRemoteUrl, createSpectateBanner } from './sharing.mjs'
 import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
@@ -72,23 +71,7 @@ function init(){
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', parseSave);
 
-    document.addEventListener("progressLoad",()=>{
-        let percentCompleteSoFar;
-        try{
-            percentCompleteSoFar = recalculateProgress();
-        } catch{
-            
-        }
-        
-        //round progress to 2 decimal places
-        let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-        Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-            element.innerText = progress.toString();
-            if(element.parentElement.className == "topbarSection"){
-                element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
-            }
-        });
-    });
+    document.addEventListener("progressLoad",updateProgressBar);
 }
 
 function copyShareKeyToClipboard(){
@@ -96,8 +79,8 @@ function copyShareKeyToClipboard(){
 }
 
 function copySaveDataToLocal(){
-    userdata.saveCookie('progress_local',userdata.loadCookie('progress'));
-    sharing.stopSpectating();
+    saveCookie('progress_local',loadCookie('progress'));
+    stopSpectating();
     document.getElementById("copyDataLocalButton").disabled = true;
     location.reload();
 }

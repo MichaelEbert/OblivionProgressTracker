@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Nodes;
 
 namespace ShareApi
 {
@@ -29,6 +30,12 @@ namespace ShareApi
         public ReadProgress(string saveData, DateTime lastModified)
         {
             SaveData = saveData;
+            LastModified = lastModified;
+        }
+
+        public ReadProgress(JsonNode saveData, DateTime lastModified)
+        {
+            SaveData = saveData.ToJsonString();
             LastModified = lastModified;
         }
     }

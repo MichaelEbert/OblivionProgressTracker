@@ -1,10 +1,6 @@
-import { jsondata } from "./obliviondata.mjs";
-import { classes } from "./obliviondata.mjs";
-import { loadJsonData } from "./obliviondata.mjs";
-import { runOnTree, progressClasses } from "./obliviondata.mjs";
-import { initShareSettings } from "./sharing.mjs";
-
-import {clearProgressCache} from './progressCalculation.mjs'
+import { jsondata, classes, loadJsonData, runOnTree, progressClasses } from "./obliviondata.mjs";
+import { initShareSettings, uploadCurrentSave } from "./sharing.mjs";
+import { updateLocalProgress } from "./progressCalculation.mjs";
 
 //functions that save and load user progess and settings.
 export{
@@ -17,16 +13,17 @@ export{
 	loadSettingsFromCookie,
 	loadProgressFromCookie,
 	resetProgress,
+	createNewSave,
 	resetProgressForHive,
 	initAutoSettings
 }
 
 
-window.savedata = null;
+window.savedata = createNewSave();
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
-const SETTINGS_VERSION = 3;
+const SETTINGS_VERSION = 4;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
@@ -68,24 +65,24 @@ window.migrate = function(){
 /**
  * Attempt to upgrade the save data stored in `savedata` to the most recent version.
  */
-function upgradeSaveData(shouldConfirm){
-	if(savedata.version == null){
+function upgradeSaveData(targetSaveData, shouldConfirm = true){
+	if(targetSaveData.version == null){
 		let reset = confirm("Save data is invalid or corrupted. Reset progress?");
 		if(reset){
-			resetProgress();
+			targetSaveData = createNewSave();
 		}
 	}
 	//we use ! >= so it'll handle stuff like undefined, nan, or strings.
-	if(!(savedata.version >= 5)){
+	if(!(targetSaveData.version >= 5)){
 		//tell user we can't upgrade.
 		let reset = confirm("Save data is out of date. Percentages may be wrong. Would you like to reset progress?");
 		if(reset){
-			resetProgress();
+			targetSaveData = createNewSave();
 		}
 	}
 	else{
 		var shouldAttemptUpgrade = false;
-		if(savedata.version < SAVEDATA_VERSION){
+		if(targetSaveData.version < SAVEDATA_VERSION){
 			if(shouldConfirm){
 				//ask if user wants to attempt upgrade
 				shouldAttemptUpgrade = confirm("Save data is out of date. Percentages may be wrong. Would you like to attempt upgrade?");
@@ -95,24 +92,24 @@ function upgradeSaveData(shouldConfirm){
 			}
 		}
 		if(shouldAttemptUpgrade){
-			switch(savedata.version){
+			switch(targetSaveData.version){
 				case 5:
 				case 6:
 					//from 6 to 7: 
 					//add fame class
-					savedata.fame = {};
+					targetSaveData.fame = {};
 				case 7:
-					resetProgressForHive(jsondata.fame);
+					resetProgressForHive(targetSaveData, jsondata.fame);
 				case 8:
 					//add nirnroot and locations in v9
-					savedata.nirnroot = {};
-					savedata.location = {};
-					resetProgressForHive(jsondata.nirnroot);
-					resetProgressForHive(jsondata.location);
+					targetSaveData.nirnroot = {};
+					targetSaveData.location = {};
+					resetProgressForHive(targetSaveData, jsondata.nirnroot);
+					resetProgressForHive(targetSaveData, jsondata.location);
 				case 9:
 				case 10:
 					//in 11, we just introduced the "compressed" variable.
-					savedata.version = SAVEDATA_VERSION;
+					targetSaveData.version = SAVEDATA_VERSION;
 					break;
 				default:
 					alert("error while upgrading");
@@ -120,8 +117,8 @@ function upgradeSaveData(shouldConfirm){
 			}
 			console.log("upgrade succeeded.");
 		}
-		saveProgressToCookie();
 	}
+	return targetSaveData;
 }
 
 //compress save data object for more efficient stringification
@@ -152,16 +149,19 @@ function compressSaveData(saveDataObject){
 function decompressSaveData(compressedSaveData){
 	//expand cookie data back to nice, usable form.
 	var decompressedSaveData = {};
-	if(compressedSaveData.version < 11 || compressedSaveData.compressed == true)
-	{
+	if(compressedSaveData.version < 11 || compressedSaveData.compressed == true) {
 		for(const propname in compressedSaveData){
 			const matchingClass = classes.find(x=>x.name == propname);
 			if(matchingClass != null && matchingClass.standard) {
 				decompressedSaveData[propname] = {};
 				let elements = compressedSaveData[propname];
-				for(let i = 0; i < elements.length; i++){
+				let length = elements.length;
+				if(elements.length == undefined){
+					length = Object.keys(elements).length;
+				}
+				for(let i = 0; i < length; i++){
 					if(elements[i] != null){
-						decompressedSaveData[propname][i] = (elements[i] == 1);
+						decompressedSaveData[propname][i] = (elements[i] == 1) || (elements[i] === true);
 					}
 				}
 			}
@@ -221,8 +221,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version < SETTINGS_VERSION || settings.version == null)
-	{
+	if(settings.version < SETTINGS_VERSION || settings.version == null)	{
 		switch(settings.version){
 			case null:
 			case undefined:
@@ -238,6 +237,11 @@ function initSettings(){
 			case 2:
 				//2 to 3: 
 				//deprecated
+			case 3:
+				// reset shareDownloadTimeInternal since we changed its type
+				if(settings.shareDownloadTimeInternal != undefined) {
+					settings.shareDownloadTimeInternal = null;
+				}
 			default:
 				//done
 				break;
@@ -256,6 +260,11 @@ function initSettings(){
 	changed |= initProperty(settings, "classnameCheck", true);
 	changed |= initProperty(settings, "mapShowNonGates", true);
 	
+	if(settings.shareDownloadTimeInternal != null)
+	{
+		settings.shareDownloadTimeInternal = new Date(settings.shareDownloadTimeInternal);
+	}
+
 	//TODO: fix my shit encapsulation.
 	initShareSettings();
 
@@ -269,24 +278,24 @@ function initSettings(){
  * @returns {boolean} true if progress was been successfully loaded. False if new savedata was created.
  */
 function loadProgressFromCookie(){
-	loadSettingsFromCookie();	
+	loadSettingsFromCookie();
+	if(settings.myShareCode != null || settings.remoteShareCode != null)
+	{
+		//TODO: try reloading from remote
+		//TODO: what if we wipe save#s tho
+		//downloadSave(...)
+	}
 	var compressed = loadCookie("progress");
 	
 	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
-		savedata = decompressSaveData(compressed);
-		if(savedata.version != SAVEDATA_VERSION){
-			upgradeSaveData();
-		}
-		//clear weight cache
-		clearProgressCache();
 		
-		document.dispatchEvent(new Event("progressLoad"));
+		updateLocalProgress(compressed);
 		return true;
 	}
 	else{
 		//could not find savedata. create new savedata.
 		if(window.debug){
-			console.log("could not find dsavedata. resetting progress.");
+			console.log("could not find savedata. resetting progress.");
 		}
 		resetProgress(false);
 		return false;
@@ -295,11 +304,13 @@ function loadProgressFromCookie(){
 
 /**
  * Reset savedata progress for specific hive. Helper function for resetProgress.
+ * @param {object} targetSaveData save data to reset hive in
  * @param {object} hive hive to reset
  */
-function resetProgressForHive(hive){
+function resetProgressForHive(targetSaveData, hive)
+{
 	const classname = hive.classname;
-	savedata[classname] = {};
+	targetSaveData[classname] = {};
 	runOnTree(hive,(cell=>{
 		cell.cache = null;
 		if(cell.id == null){
@@ -307,11 +318,29 @@ function resetProgressForHive(hive){
 			return;
 		}
 		if(cell.type == "number"){
-			savedata[classname][cell.id] = 0;
+			targetSaveData[classname][cell.id] = 0;
 		}
 		else{
-			savedata[classname][cell.id] = false;
+			targetSaveData[classname][cell.id] = false;
 		}}));
+}
+
+function createNewSave()
+{
+	if(jsondata == null){
+		return loadJsonData('..').then(()=>{
+			console.assert(jsondata != null);
+			return createNewSave();
+		});
+	}
+	
+	let targetSaveData = new Object();
+	targetSaveData.version = SAVEDATA_VERSION;
+	
+	for(const klass of progressClasses){
+		resetProgressForHive(targetSaveData, jsondata[klass.name]);
+	}
+	return targetSaveData;
 }
 
 /**
@@ -319,27 +348,18 @@ function resetProgressForHive(hive){
  * @param {boolean} shouldConfirm Should we confirm with the user or not
  */
 function resetProgress(shouldConfirm=false){
-	if(jsondata == null){
-		loadJsonData('..').then(()=>{
-			console.assert(jsondata != null);
-			resetProgress(shouldConfirm);
-		});
-		return;
-	}
 	var execute = true;
 	if(shouldConfirm){
 		execute = confirm("press OK to reset data");
 	}
 	if(execute){
-		savedata = new Object();
-		savedata.version = SAVEDATA_VERSION;
-		
-		for(const klass of progressClasses){
-			resetProgressForHive(jsondata[klass.name]);
+		let newdata = createNewSave();
+		updateLocalProgress(newdata);
+		if(settings.myShareCode != null)
+		{
+			uploadCurrentSave();
 		}
 	}
-	saveProgressToCookie();
-	document.dispatchEvent(new Event("progressLoad"));
 }
 
 /**

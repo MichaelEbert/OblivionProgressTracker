@@ -12,6 +12,9 @@ namespace ShareApi
         SAVE_DATA_EMPTY
     }
 
+    /// <summary>
+    /// Validate an incoming progress update struct
+    /// </summary>
     public class ProgressUpdateValidator
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace ShareApi
         /// </summary>
         /// <param name="update"></param>
         /// <param name="validationFailedReason"></param>
-        /// <returns>false if validation failed. True if sucess.</returns>
+        /// <returns>false if validation failed. True if success.</returns>
         public static bool Validate([NotNullWhen(true)] ProgressUpdate? update, out ValidationFailedReason validationFailedReason)
         {
             if (update == null)
