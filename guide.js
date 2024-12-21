@@ -14,9 +14,10 @@ function init(){
 	
 	window.addEventListener("resize",onWindowResize);
 	loadJsonData().then(()=>{
+		replaceElements();
 		loadProgressFromCookie();
 		sharing.initSharingFeature();
-		replaceElements();
+		progress.updateProgressBar();
 	});
 }
 
@@ -127,7 +128,6 @@ function replaceElements(){
 			}
 		}
 	}
-	updateUIFromSaveData();
 }
 
 
@@ -161,66 +161,6 @@ function getNpcData(npcElement){
 	return {name:npcName};
 }
 
-/**
- * Recalculate the total progress, and update UI elements.
- */
-function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar;
-	
-	try{
-		percentCompleteSoFar = window.progress.recalculateProgress();
-	} catch{
-		console.log("percentComplete got from localStorage");
-		percentCompleteSoFar = localStorage.getItem("percentageDone");
-	}
-	
-	// //round progress to 2 decimal places
-	// let progress = (percentCompleteSoFar * 100).toFixed(2);
-	// Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-	// 	element.innerText = progress.toString();
-	// 	if(element.parentElement.className == "topbarSection"){
-	// 		element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, red ${progress.toString()}%);`;
-	// 	}
-	// });
-}
-
-/**
- * helper function for updateUIFromSaveData. Does not call recalculateProgress().
- * @param {} cell 
- */
-function updateHtmlElementFromSaveData(cell){
-	const classname = cell.hive.classname
-	let usableId = cell.formId;
-	if(usableId == null){
-		usableId = cell.id;
-	}
-	let newval = null;
-	if(cell.ref == null){
-		//we call updateChecklistProgress so indirect elements will update from this
-		if(cell.id != null){
-			if(savedata[classname] == null){
-				debugger;
-			}
-			newval = savedata[classname][cell.id];
-			updateChecklistProgress(null, newval, null, cell, true);
-			//don't call recalculateProgress() because we do that in bulk in the calling function.
-		}
-	}
-}
-
-/**
- * When savedata is loaded, we need to bulk change all of the HTML to match the savedata state.
- * This function does that.
- */
-function updateUIFromSaveData(){
-	for(const klass of progressClasses){
-		const hive = jsondata[klass.name];
-		runOnTree(hive, updateHtmlElementFromSaveData);
-	}
-
-	recalculateProgressAndUpdateProgressUI();
-}
-
 function checkboxClicked(event){
 	const rowHtml = event.target.parentElement;
 
@@ -229,7 +169,7 @@ function checkboxClicked(event){
 	updateChecklistProgressFromInputElement(parentid, event.target, classname);
 	event.stopPropagation();
 	// we need to update because there might be multiple instances of the same book on this page, and we want to check them all.
-	recalculateProgressAndUpdateProgressUI();
+	progress.updateProgressBar();
 }
 
 function rowClicked(event){
@@ -261,8 +201,7 @@ function userInputData(rowHtml, checkboxElement){
 	var classname = rowHtml.classList[0];
 	let rowid = rowHtml.getAttribute("clid");
 	progress.updateChecklistProgressFromInputElement(rowid, checkboxElement, classname);
-	
-	recalculateProgressAndUpdateProgressUI();
+	progress.updateProgressBar();
 }
 
 //used to make sure we don't run a ton of refresh code constantly.

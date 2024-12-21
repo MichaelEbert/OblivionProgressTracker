@@ -167,15 +167,6 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 // Functions that deal with progress
 //===========================
 
-function setParentChecked(checkbox){
-	if(checkbox.checked){
-		checkbox.parentElement.classList.add("checked");
-	}
-	else{
-		checkbox.parentElement.classList.remove("checked");
-	}
-}
-
 /**
  * called when user inputs data
  * @param {string} htmlRowId 

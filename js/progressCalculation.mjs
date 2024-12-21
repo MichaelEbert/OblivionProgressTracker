@@ -6,17 +6,22 @@ export{
 	updateChecklistProgressFromInputElement,
 	updateChecklistProgress,
 	recalculateProgress,
-	sumCompletionItems,
 	clearProgressCache,
 	updateLocalProgress,
-	updateProgressBar
+	updateProgressBar,
+	sumCompletionItems
 }
 
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import { uploadCurrentSave, uploadPartialSave } from './sharing.mjs';
 import { compressSaveData, decompressSaveData, upgradeSaveData, createNewSave, saveCookie, saveProgressToCookie } from './userdata.mjs';
 
-
+/**
+ * Helper function for updateLocalProgress. do not call directly.
+ * @param cell 
+ * @param targetSaveData 
+ * @param differential 
+ */
 function updateCellProgressFromTargetSaveData(cell, targetSaveData, differential)
 {
 	if(cell.ref != null || cell.id == null){
@@ -30,13 +35,14 @@ function updateCellProgressFromTargetSaveData(cell, targetSaveData, differential
 	if(!differential || newval != savedata[classname][cell.id]) {
 		updateChecklistProgress(null, newval, null, cell, true);
 	}
-	
 }
 
 /**
  * Update save data to new value and update progress accordingly.
  * Does not send data.
+ * One of the main function here you should call.
  * @param newSaveData new save data
+ * @param differential should we only update the cells that changed instead of updating everything
  */
 function updateLocalProgress(newSaveData, differential = false){
 	newSaveData = decompressSaveData(newSaveData);
@@ -62,6 +68,9 @@ function updateLocalProgress(newSaveData, differential = false){
 	document.dispatchEvent(new Event("progressLoad"));
 }
 
+/**
+ * Update progress bar on all the pages. Safe to call from anywhere.
+ */
 function updateProgressBar()
 {
 	//update progress percent
@@ -119,8 +128,7 @@ function updateChecklistProgressFromInputElement(formId, inputElement, classHint
  */
 function updateChecklistProgress(formId, newValue, classHint = null, cellHint = null, skipSave = false){
 	let cell = null;
-	if(cellHint != null)
-	{
+	if(cellHint != null) {
 		cell = cellHint;
 	}
 	else{

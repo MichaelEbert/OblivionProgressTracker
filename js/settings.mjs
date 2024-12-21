@@ -71,7 +71,7 @@ function init(){
     document.body.addEventListener('dragover', ignoreEvent);
     document.body.addEventListener('drop', parseSave);
 
-    document.addEventListener("progressLoad",updateProgressBar());
+    document.addEventListener("progressLoad",updateProgressBar);
 }
 
 function copyShareKeyToClipboard(){

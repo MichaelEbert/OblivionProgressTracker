@@ -1,14 +1,6 @@
-import { jsondata } from "./obliviondata.mjs";
-import { classes } from "./obliviondata.mjs";
-import { loadJsonData } from "./obliviondata.mjs";
-import { runOnTree, progressClasses } from "./obliviondata.mjs";
-import { initShareSettings } from "./sharing.mjs";
-
-import {clearProgressCache} from './progressCalculation.mjs'
-import { downloadSave } from "./sharing.mjs";
+import { jsondata, classes, loadJsonData, runOnTree, progressClasses } from "./obliviondata.mjs";
+import { initShareSettings, uploadCurrentSave } from "./sharing.mjs";
 import { updateLocalProgress } from "./progressCalculation.mjs";
-import { initSharingFeature } from "./sharing.mjs";
-import { uploadCurrentSave } from "./sharing.mjs";
 
 //functions that save and load user progess and settings.
 export{
@@ -157,16 +149,14 @@ function compressSaveData(saveDataObject){
 function decompressSaveData(compressedSaveData){
 	//expand cookie data back to nice, usable form.
 	var decompressedSaveData = {};
-	if(compressedSaveData.version < 11 || compressedSaveData.compressed == true)
-	{
+	if(compressedSaveData.version < 11 || compressedSaveData.compressed == true) {
 		for(const propname in compressedSaveData){
 			const matchingClass = classes.find(x=>x.name == propname);
 			if(matchingClass != null && matchingClass.standard) {
 				decompressedSaveData[propname] = {};
 				let elements = compressedSaveData[propname];
 				let length = elements.length;
-				if(elements.length == undefined)
-				{
+				if(elements.length == undefined){
 					length = Object.keys(elements).length;
 				}
 				for(let i = 0; i < length; i++){
@@ -231,8 +221,7 @@ function initSettings(){
 
 	//UPGRADES:
 	//use this (and bump the settings version) when there is a breaking change in the format.
-	if(settings.version < SETTINGS_VERSION || settings.version == null)
-	{
+	if(settings.version < SETTINGS_VERSION || settings.version == null)	{
 		switch(settings.version){
 			case null:
 			case undefined:
@@ -250,8 +239,7 @@ function initSettings(){
 				//deprecated
 			case 3:
 				// reset shareDownloadTimeInternal since we changed its type
-				if(settings.shareDownloadTimeInternal != undefined)
-				{
+				if(settings.shareDownloadTimeInternal != undefined) {
 					settings.shareDownloadTimeInternal = null;
 				}
 			default:

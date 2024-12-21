@@ -3,10 +3,7 @@
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
 import { updateLocalProgress } from "./progressCalculation.mjs";
-import { resetProgress } from "./userdata.mjs";
-import { upgradeSaveData } from "./userdata.mjs";
-import { compressSaveData, decompressSaveData } from "./userdata.mjs";
-import { loadProgressFromCookie, saveCookie, loadCookie } from "./userdata.mjs";
+import { loadProgressFromCookie,	saveCookie,	loadCookie,	compressSaveData} from "./userdata.mjs";
 
 // ==============
 export {
