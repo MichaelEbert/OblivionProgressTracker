@@ -6,7 +6,9 @@ import { initShareSettings } from "./sharing.mjs";
 
 import {clearProgressCache} from './progressCalculation.mjs'
 import { downloadSave } from "./sharing.mjs";
-import { updateAllProgress } from "./progressCalculation.mjs";
+import { updateLocalProgress } from "./progressCalculation.mjs";
+import { initSharingFeature } from "./sharing.mjs";
+import { uploadCurrentSave } from "./sharing.mjs";
 
 //functions that save and load user progess and settings.
 export{
@@ -202,10 +204,6 @@ function saveProgressToCookie(){
  */
 function loadSettingsFromCookie(){
 	settings = loadCookie("settings");
-	if(settings.shareDownloadTimeInternal != null)
-	{
-		settings.shareDownloadTimeInternal = new Date(settings.shareDownloadTimeInternal);
-	}
 	initSettings();
 }
 
@@ -274,6 +272,11 @@ function initSettings(){
 	changed |= initProperty(settings, "classnameCheck", true);
 	changed |= initProperty(settings, "mapShowNonGates", true);
 	
+	if(settings.shareDownloadTimeInternal != null)
+	{
+		settings.shareDownloadTimeInternal = new Date(settings.shareDownloadTimeInternal);
+	}
+
 	//TODO: fix my shit encapsulation.
 	initShareSettings();
 
@@ -297,8 +300,8 @@ function loadProgressFromCookie(){
 	var compressed = loadCookie("progress");
 	
 	if(compressed && Object.getOwnPropertyNames(compressed).length != 0){
-		clearProgressCache();
-		updateAllProgress(compressed, true);
+		
+		updateLocalProgress(compressed);
 		return true;
 	}
 	else{
@@ -337,11 +340,10 @@ function resetProgressForHive(targetSaveData, hive)
 function createNewSave()
 {
 	if(jsondata == null){
-		loadJsonData('..').then(()=>{
+		return loadJsonData('..').then(()=>{
 			console.assert(jsondata != null);
-			createNewSave();
+			return createNewSave();
 		});
-		return;
 	}
 	
 	let targetSaveData = new Object();
@@ -364,7 +366,11 @@ function resetProgress(shouldConfirm=false){
 	}
 	if(execute){
 		let newdata = createNewSave();
-		updateAllProgress(newdata, true);
+		updateLocalProgress(newdata);
+		if(settings.myShareCode != null)
+		{
+			uploadCurrentSave();
+		}
 	}
 }
 

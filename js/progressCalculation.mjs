@@ -8,16 +8,16 @@ export{
 	recalculateProgress,
 	sumCompletionItems,
 	clearProgressCache,
-	updateAllProgress,
+	updateLocalProgress,
 	updateProgressBar
 }
 
 import { totalweight, getJsonData, findCell, runOnTree, progressClasses } from './obliviondata.mjs';
 import { uploadCurrentSave, uploadPartialSave } from './sharing.mjs';
-import { compressSaveData, decompressSaveData, saveCookie, saveProgressToCookie } from './userdata.mjs';
+import { compressSaveData, decompressSaveData, upgradeSaveData, createNewSave, saveCookie, saveProgressToCookie } from './userdata.mjs';
 
 
-function updateCellProgressFromNewSaveData(cell, newSaveData)
+function updateCellProgressFromTargetSaveData(cell, targetSaveData, differential)
 {
 	if(cell.ref != null || cell.id == null){
 		return;
@@ -26,44 +26,40 @@ function updateCellProgressFromNewSaveData(cell, newSaveData)
 	if(savedata == null || savedata[classname] == null){
 		debugger;
 	}
-	if(newSaveData == null) {
-		updateChecklistProgress(null, savedata[classname][cell.id], null, cell, true);
-	}
-	else {
-		const newval = newSaveData[classname][cell.id];
-		if(newval != savedata[classname][cell.id])
-		{
-			updateChecklistProgress(null, newval, null, cell, true);
-		}
+	const newval = targetSaveData[classname][cell.id];
+	if(!differential || newval != savedata[classname][cell.id]) {
+		updateChecklistProgress(null, newval, null, cell, true);
 	}
 	
 }
 
 /**
  * Update save data to new value and update progress accordingly.
+ * Does not send data.
  * @param newSaveData new save data
  */
-function updateAllProgress(newSaveData, dispatchProgressLoad = false){
-	if(newSaveData != null) {
-		// do pre-progressLoad stuff here
-		newSaveData = decompressSaveData(newSaveData);
-		newSaveData = upgradeSaveData(newSaveData, false);
+function updateLocalProgress(newSaveData, differential = false){
+	newSaveData = decompressSaveData(newSaveData);
+	newSaveData = upgradeSaveData(newSaveData, false);
+
+	if(window.savedata == null)	{
+		// cant diff against nothing
+		differential = false;
+	}
+
+	if(!differential) {
+		clearProgressCache();
+		window.savedata = createNewSave();
 	}
 
 	//after progressLoad:
 	for(const klass of progressClasses) {
 		const hive = getJsonData()[klass.name];
-		runOnTree(hive, (cell)=>updateCellProgressFromNewSaveData(cell, newSaveData));
+		runOnTree(hive, (cell)=>updateCellProgressFromTargetSaveData(cell, newSaveData, differential));
 	}
-
-	//save here?
-	if(newSaveData != null)	{
-		saveProgressToCookie();
-	}
-  
-	if(dispatchProgressLoad) {
-		document.dispatchEvent(new Event("progressLoad"));
-	}
+	savedata = newSaveData;
+	saveProgressToCookie();
+	document.dispatchEvent(new Event("progressLoad"));
 }
 
 function updateProgressBar()
@@ -250,9 +246,7 @@ function updateChecklistProgressInternal(cell, newValue, skipSave){
 					const newData = JSON.stringify(compressSaveData(returnedSaveData));
 					if(oldData != newData)
 					{
-						savedata = returnedSaveData;
-						saveCookie("progress",returnedSaveData);
-						document.dispatchEvent(new Event("progressLoad"));
+						updateLocalProgress(returnedSaveData, true);
 					}
 				});
 			}

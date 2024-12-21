@@ -2,7 +2,7 @@
 // Contains code for sharing progress across the network.
 
 import { base64ArrayBuffer } from "./base64ArrayBuffer.mjs";
-import { updateAllProgress } from "./progressCalculation.mjs";
+import { updateLocalProgress } from "./progressCalculation.mjs";
 import { resetProgress } from "./userdata.mjs";
 import { upgradeSaveData } from "./userdata.mjs";
 import { compressSaveData, decompressSaveData } from "./userdata.mjs";
@@ -179,7 +179,8 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 				settings.myShareCode = result.code;
 				saveCookie("settings",settings);
 			}
-			//todo: parse new savedata?
+			
+			updateLocalProgress(JSON.parse(result.response), true);
 
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
@@ -335,7 +336,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 					alert("Downloaded");
 				}
 				
-				updateAllProgress(dl, true);
+				updateLocalProgress(dl, true);
 			}
 			else{
 				if(window.debug){
@@ -455,7 +456,7 @@ function startSync(updateGlobalSaveData)
 			settings.shareDownloadTime = dlTime.toDateString() + " " + dlTime.toTimeString().substring(0,8);
 			saveCookie("settings",settings);
 
-			updateAllProgress(dl, true);
+			updateLocalProgress(dl, true);
 		}
 		else{
 			if(window.debug){

@@ -167,28 +167,6 @@ function initMultiInternal(root, parentElement, depth, extraColumnName, leafCont
 // Functions that deal with progress
 //===========================
 
-/**
- * Recalculate the total progress, and update UI elements.
- */
-function recalculateProgressAndUpdateProgressUI(){
-	let percentCompleteSoFar = localStorage.getItem("percentageDone");
-	
-	try{
-		percentCompleteSoFar = window.progress.recalculateProgress();
-	} catch{
-		
-	}
-	
-	//round progress to 2 decimal places
-	let progress = Math.round((percentCompleteSoFar * 100)*100)/100;
-	Array.of(...document.getElementsByClassName("totalProgressPercent")).forEach(element => {
-		element.innerText = progress.toString();
-		if(element.parentElement.className == "topbarSection" || element.parentElement.className == "popoutTopBarSection"){
-			element.parentElement.style = `background: linear-gradient(to right, green ${progress.toString()}%, crimson ${progress.toString()}%);`;
-		}
-	});
-}
-
 function setParentChecked(checkbox){
 	if(checkbox.checked){
 		checkbox.parentElement.classList.add("checked");
@@ -213,7 +191,7 @@ function userInputData(htmlRowId, checkboxElement){
 		}
 	}
 	
-	recalculateProgressAndUpdateProgressUI();
+	progress.updateProgressBar();
 }
 
 function checkboxClicked(event){
