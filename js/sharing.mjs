@@ -332,8 +332,13 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				if(notifyOnUpdate){
 					alert("Downloaded");
 				}
-				
-				updateLocalProgress(dl, true);
+				if(!updateGlobalSaveData) {
+					window.savedata = dl;
+					saveCookie("progress", savedata);
+				}
+				else{
+					updateLocalProgress(dl, true);
+				}
 			}
 			else{
 				if(window.debug){
