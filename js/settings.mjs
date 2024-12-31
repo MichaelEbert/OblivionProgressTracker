@@ -19,7 +19,12 @@ import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
 function updateShareUrl(){
-	document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
+    if(settings.myShareCode != null){
+        document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
+    }
+    else{
+        document.getElementById("myShareUrl").value = "";
+    }
     setPopoutShareCode();
 }
 
@@ -48,9 +53,7 @@ function init(){
         });
     document.addEventListener("progressShared",updateShareUrl);
 
-    if(settings.myShareCode){
-        updateShareUrl();
-    }
+    updateShareUrl();
 
     if(settings.remoteShareCode){
         document.getElementById("remoteShareCode").value = settings.remoteShareCode;
