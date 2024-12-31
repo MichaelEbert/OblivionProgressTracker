@@ -171,13 +171,19 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 	return uploadSave(settings.serverUrl, compressedData, settings.myShareCode, settings.shareKey)
 	.then((result)=>{
 		if(result){
+			let responseContainsNewProgress = true;
 			if(settings.myShareCode != result.code){
 				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result.code+"'");
+				if(settings.myShareCode == null){
+					responseContainsNewProgress = false;
+				}
 				settings.myShareCode = result.code;
 				saveCookie("settings",settings);
+				
 			}
-			
-			updateLocalProgress(JSON.parse(result.response), true);
+			if(responseContainsNewProgress){
+				updateLocalProgress(JSON.parse(result.response), true);
+			}
 
 			//do this every time we upload:
 			document.dispatchEvent(new Event("progressShared"));
@@ -287,7 +293,7 @@ function stopSpectating(){
 //autoupdate listener.
 var autoUpdateListener = null;
 var autoUpdateIntervalId = null;
-
+var currentRequest = null;
 /**
  * Update data from spectating, or stop spectating if remote code is now blank. Emits a "progressLoad" event when download is complete.
  * Must set spectate code before calling.
@@ -295,8 +301,10 @@ var autoUpdateIntervalId = null;
  * @param {boolean} updateGlobalSaveData Should we decompress spectating data (true) or just write it to localStorage?
  */
 async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = true){
-	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
-	{
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000)){
+		return;
+	}
+	if(currentRequest != null){
 		return;
 	}
 	if(window.debug){
@@ -321,7 +329,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 		}
 
 		let downloadUrl = settings.serverUrl + "/" + settings.remoteShareCode; 
-		return downloadSave(downloadUrl)
+		currentRequest = downloadSave(downloadUrl)
 		.then((dl)=>{
 			if(dl){
 				//we can't serialize the date object so we convert it to a pretty print string here
@@ -356,6 +364,7 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				}
 				autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 			}
+			currentRequest = null;
 		}).catch((e)=>{
 			if(e.status == 400){
 				alert("Share code '"+settings.remoteShareCode+"' isn't in correct format. It should be 6 characters.");
@@ -367,7 +376,9 @@ async function startSpectating(notifyOnUpdate = true, updateGlobalSaveData = tru
 				alert("invalid url: "+e.responseURL+" retuned with status "+e.status);
 			}
 			stopSpectating();
+			currentRequest = null;
 		});
+		return currentRequest;
 	}
 }
 
@@ -444,12 +455,14 @@ function initSharingFeature(){
 
 function startSync(updateGlobalSaveData)
 {
-	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000))
-	{
+	if((new Date() - settings.shareDownloadTimeInternal) < (settings.spectateAutoRefreshInterval*1000)){
+		return;
+	}
+	if(currentRequest != null){
 		return;
 	}
 	let downloadUrl = settings.serverUrl + "/" + settings.myShareCode; 
-	return downloadSave(downloadUrl)
+	currentRequest = downloadSave(downloadUrl)
 	.then((dl)=>{
 		if(dl){
 			//we can't serialize the date object so we convert it to a pretty print string here
@@ -476,6 +489,29 @@ function startSync(updateGlobalSaveData)
 			}
 			autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
 		}
+		currentRequest = null;
+	})
+	.catch(request=>{
+		//if 404, that just means that no progress has been shared yet,
+		//so that's OK.
+		if(request.status == 404)
+		{
+			if(window.debug){
+				console.log("no progress uploaded to server yet");
+			}
+			//AFTER everything else, attach an auto listener to update spectating.
+			if(autoUpdateListener == null && settings.spectateAutoRefresh == true){
+				if(window.debug){
+					console.log("Attaching auto update listener");
+				}
+				autoUpdateListener = ()=>{
+					startSync(true);
+				}
+				autoUpdateIntervalId = setInterval(autoUpdateListener, Math.max(settings.spectateAutoRefreshInterval*1000, 1000));
+			}
+		}
+		currentRequest = null;
 	});
+	return currentRequest;
 }
 

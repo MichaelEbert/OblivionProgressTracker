@@ -341,8 +341,7 @@ function parseSave(e){
                 
                 window.savedata = dataFromSave;
                 saveProgressToCookie();
-                uploadCurrentSave();
-                window.location.reload();
+                uploadCurrentSave().then(()=>window.location.reload());
             });
         }
     }
