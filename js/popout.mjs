@@ -6,7 +6,7 @@ export{
     init
 }
 
-import {recalculateProgress} from './progressCalculation.mjs'
+import {recalculateProgress, updateProgressBar} from './progressCalculation.mjs'
 import * as obliviondata from './obliviondata.mjs'
 import * as userdata from './userdata.mjs'
 

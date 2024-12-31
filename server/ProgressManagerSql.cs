@@ -18,8 +18,8 @@ namespace ShareApi
         private const string saveUpdateString = "UPDATE saves SET saveData = @col2, accessed = @accesstime WHERE url = @col1";
         private const string saveSelectString = "SELECT saveData, accessed FROM saves WHERE url = @col1";
         private const string saveMergeString = "MERGE INTO saves with(HOLDLOCK) USING (VALUES(@col1, @col2, @accesstime)) AS source(url, savedata, accessed) ON saves.url = @col1 " +
-            "WHEN MATCHED THEN UPDATE SET saveData = source.saveData, accessed = source.accessTime" +
-            "WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime)";
+            " WHEN MATCHED THEN UPDATE SET saveData = source.saveData, accessed = source.accessed" +
+            " WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime);";
 
 
         private SqlConnection conn;
@@ -73,17 +73,10 @@ namespace ShareApi
             cmd.Parameters["@col2"].Value = data.SaveData;
             cmd.Parameters.Add("@accesstime",SqlDbType.DateTime2);
             cmd.Parameters["@accesstime"].Value = data.LastModified;
-            try
+            using (SqlDataReader reader = cmd.ExecuteReader())
             {
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    reader.Close();
-                    return reader.RecordsAffected != 0;
-                }
-            }
-            catch (SqlException)
-            {
-                return false;
+                reader.Close();
+                return reader.RecordsAffected != 0;
             }
         }
 
