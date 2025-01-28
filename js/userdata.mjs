@@ -15,7 +15,8 @@ export{
 	resetProgress,
 	createNewSave,
 	resetProgressForHive,
-	initAutoSettings
+	initAutoSettings,
+	newShareCode
 }
 
 
@@ -155,13 +156,20 @@ function decompressSaveData(compressedSaveData){
 			if(matchingClass != null && matchingClass.standard) {
 				decompressedSaveData[propname] = {};
 				let elements = compressedSaveData[propname];
-				let length = elements.length;
 				if(elements.length == undefined){
-					length = Object.keys(elements).length;
+					//iterate by key
+					for(const [key, value] of Object.entries(elements)){
+						if(value != null){
+							decompressedSaveData[propname][key] = (value == 1) || (value === true);
+						}
+					}
 				}
-				for(let i = 0; i < length; i++){
-					if(elements[i] != null){
-						decompressedSaveData[propname][i] = (elements[i] == 1) || (elements[i] === true);
+				else{
+					//iterate by index
+					for(let i = 0; i < elements.length; i++){
+						if(elements[i] != null){
+							decompressedSaveData[propname][i] = (elements[i] == 1) || (elements[i] === true);
+						}
 					}
 				}
 			}
@@ -195,6 +203,13 @@ function saveProgressToCookie(){
 function loadSettingsFromCookie(){
 	settings = loadCookie("settings");
 	initSettings();
+}
+
+function newShareCode()
+{
+	settings.shareKey = null;
+	settings.myShareCode = null;
+	saveCookie("settings", settings);
 }
 
 /**

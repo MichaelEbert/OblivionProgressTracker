@@ -71,7 +71,7 @@ function generateSaveKey(){
  * @returns either resolve(response body) or reject(request)
  */
 async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
-	return new Promise((resolve, reject) =>{
+	currentRequest = new Promise((resolve, reject) =>{
 		let payload = {
 			saveData: JSON.stringify(saveData),
 			url: myShareCode,
@@ -99,6 +99,7 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 					newCode = this.response;
 				}
 			}
+			currentRequest = null;
 			if(this.status == 200){
 				//yay.
 				resolve({"code": newCode, "response":this.response});
@@ -109,12 +110,14 @@ async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
 		}
 
 		req.onerror = function (){
+			currentRequest = null;
 			reject(this);
 		}
 		
 		req.send(JSON.stringify(payload));
 	});
-	//TODO: if 500 error, try agin later.
+	
+	return currentRequest;
 }
 
 /**
