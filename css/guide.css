@@ -143,7 +143,11 @@ li.shrine {
 li.wayshrine {
 	list-style-image: url("../images/Icon_WayshrineBullet.png");
 }
-ol.warning{
+ol.warn{
+	list-style-type: '⚠ ';
+	color: black;
+}
+li.warn{
 	list-style-type: '⚠ ';
 	color: black;
 }
