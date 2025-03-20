@@ -1,0 +1,13 @@
+{"game":"Oblivion","elements":[
+    {"name":"Speedrun","elements":[
+		{"runner":"sh1kabanei","time":"14:24:39","route":"Custom (~V3.5)","date":"3/13/2025","link":"https://www.youtube.com/watch?v=AtKvRFZJbHc"}
+		,{"runner":"PRCLive","time":"21:47:22","route":"V3","date":"8/28/2021","link":"https://www.youtube.com/watch?v=tJFJHlHGcM8"}
+        ,{"runner":"PRCLive","time":"39:27:40","route":"V2","date":"9/25/2020","link":"https://www.youtube.com/watch?v=0qoD2x9g4Fg"}
+        ,{"runner":"PRCLive","time":"79:17:32","route":"V1","date":"7/21/2017","link":"https://www.youtube.com/watch?v=tO0YuXu2s_M"}
+	]}
+	,{"name":"Casual","elements":[
+		{"runner":"Hon_Buttthead","time":"30:15:57","route":"V3","date":"9/4/2021","link":"https://discord.com/channels/330252789374779393/644112615718780940/883927535824543804"}
+        ,{"runner":"GuyWhoLied","time":"35:32:14","route":"V3","date":"7/22/2022","link":"https://discord.com/channels/330252789374779393/644112615718780940/1000136398021603358"}
+        ,{"runner":"UltraPotassium","time":"25:41:49","route":"V4","date":"1/3/2025","link":"https://discord.com/channels/330252789374779393/644112615718780940/1324885291567419452"}
+	]}
+]}
