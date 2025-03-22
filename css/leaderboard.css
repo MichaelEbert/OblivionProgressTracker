@@ -1,0 +1,20 @@
+tr {
+    text-align:center;
+}
+
+#leaderboardOptions {
+    display:flex;
+    justify-content: center;
+}
+
+#leaderboardBox {
+    display:flex;
+    justify-content: center;
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#leaderboardTable {
+    width: 100%;
+}
