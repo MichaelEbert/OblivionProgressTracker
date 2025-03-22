@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
 	<script src="guide.js"></script>
 	<script src="autoread.js"></script>
+	<script src="./leaderboard.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Oblivion 100% Leaderboard — Interactive Oblivion Checklist</title>
 </head>
@@ -58,38 +59,25 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<div class="contentContainer">
-<article>
-	<table id="speedrun"></table>
-	<table id="casual"></table>
-</article>
-
+<br/><br/>
+<div class="h2" style="text-align:center;">Leaderboards</div>
+<i style="text-align:center;">Speedrun leaderboards are ordered by fastest time, Casual are ordered by the earliest people to complete the run.</i>
+<br/><br/>
+<div>
+	<div>
+		<label title="Select which game to see the leaderboard for."><select name="games" id="gameDrop"></select></label>
+		<label title="Select which category to view for this game."><select name="categories" id="categoryDrop">
+		</select></label>
+		<label title="Show multiple runs from same runner instead of only their best."><input type="checkbox" id="showObsolete">Show Obsolete</label>
+	</div>
+	<div class="section">
+		<table id="leaderboardTable"></table>
+	</div>
 </div>
-</div>
-<script src="./leaderboard.js"></script>
-<script type="module">
-	import exportNamespace from './js/module-shim.mjs'
-	import * as common from './js/cellGenerator.mjs';
-	import * as progress from './js/progressCalculation.mjs'
-	import * as userdata from './js/userdata.mjs'
-	import * as obliviondata from './js/obliviondata.mjs'
-	import * as sharing from './js/sharing.mjs';
-	exportNamespace(common);
-	exportNamespace(progress);
-	exportNamespace(userdata);
-	exportNamespace(obliviondata);
-	exportNamespace(sharing);
-	window.sharing = sharing;
-	window.progress = progress;
-	window.userdata = userdata;
 
-	(function(){
-		if(loadCookie("debug") == true){
-			window.debug = true;
-		}
-		init();
-	}).call(window);
+<script>
+	init();
 </script>
-<script src="collapsible.js"></script>
-<script src="dragging.js"></script>
+
 </body>
+</html>
