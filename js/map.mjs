@@ -137,19 +137,28 @@ function initRandomGateCount(){
 }
 
 async function initMap(){
+    initAutoSettings(drawFrame, drawFrame);
+    
     //load map cord data
     let windowParams = new URLSearchParams(window.location.search);
     if(windowParams.get("topbar") == "false"){
         document.getElementById("topbar").remove();
     }
     //Setting parameters
-    let settingsArray = ["Location", "Nirnroot", "Wayshrine", "NearbyGates"];
-    for(let para of settingsArray){
-        if(windowParams.get(para.toLowerCase()) == "true"){
-            document.getElementById("button_" + para).checked = true;
+    for(let paramName of windowParams.keys()){
+        let settingBox = document.getElementById("button_" + paramName);
+        if(settingBox == null)
+        {
+            settingBox = document.getElementById("mapShow" + paramName)
         }
-        if(windowParams.get(para.toLowerCase()) == "false"){//can't do else for these since it would override user settings.
-            document.getElementById("button_" + para).checked = false;
+        if(settingBox != null)
+        {
+            if(windowParams.get(paramName) == "true"){
+                settingBox.checked = true;
+            }
+            if(windowParams.get(paramName) == "false"){//can't do else for these since it would override user settings.
+                settingBox.checked = false;
+            }
         }
     }
     //Prediscovered appears to be tied to settings, so I can't figure out how to make that one changable. Most people won't turn it off anyway.
@@ -160,7 +169,6 @@ async function initMap(){
 
     //start map loading here, we will wait for it later.
     let mapImgLoad = loadMapImage();
-    initAutoSettings(drawFrame, drawFrame);
 
     viewport = document.getElementById("wrapper_Map");
 
