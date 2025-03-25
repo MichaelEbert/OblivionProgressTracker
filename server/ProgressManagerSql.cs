@@ -20,6 +20,7 @@ namespace ShareApi
         private const string saveMergeString = "MERGE INTO saves with(HOLDLOCK) USING (VALUES(@col1, @col2, @accesstime)) AS source(url, savedata, accessed) ON saves.url = @col1 " +
             " WHEN MATCHED THEN UPDATE SET saveData = source.saveData, accessed = source.accessed" +
             " WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime);";
+        private const string keySelectString = "SELECT userkey FROM urls WHERE url = @col1";
 
 
         private SqlConnection conn;
@@ -95,6 +96,26 @@ namespace ShareApi
                     return null;
                 }
                 
+            }
+        }
+
+        public string? SqlKeySelect(string url)
+        {
+            var cmd = new SqlCommand(keySelectString, conn);
+            cmd.Parameters.Add("@col1", SqlDbType.Char);
+            cmd.Parameters["@col1"].Value = url;
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    return (string)reader[0];
+                }
+                else
+                {
+                    return null;
+                }
+
             }
         }
 

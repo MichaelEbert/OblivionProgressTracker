@@ -256,7 +256,7 @@ function initSettings(){
 				// reset shareDownloadTimeInternal since we changed its type
 				if(settings.shareDownloadTimeInternal != undefined) {
 					settings.shareDownloadTimeInternal = null;
-				}
+				}				
 			default:
 				//done
 				break;
@@ -272,8 +272,9 @@ function initSettings(){
 	changed |= initProperty(settings, "iframeWidth", "45vw");
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
-	changed |= initProperty(settings, "classnameCheck", true);
+	changed |= initProperty(settings, "classnameCheck", false);
 	changed |= initProperty(settings, "mapShowNonGates", true);
+	changed |= initProperty(settings, "mapShowGates", true);
 	
 	if(settings.shareDownloadTimeInternal != null)
 	{
