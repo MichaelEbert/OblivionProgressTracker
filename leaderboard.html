@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html><head>
+<html lang="en-US">
+<head>
 	<meta charset="UTF-8"/>
 	<link rel="icon" type="image/png" href="./favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	<link rel="stylesheet" type="text/css" href="css/guide.css"/>
-	<link rel="stylesheet" type="text/css" href="css/casual.css"/>
+	<link rel="stylesheet" type="text/css" href="css/leaderboard.css"/>
 	<script src="guide.js"></script>
+	<script src="autoread.js"></script>
+	<script src="./leaderboard.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Casual — Interactive Oblivion Checklist</title>
+	<title>Oblivion 100% Leaderboard — Interactive Oblivion Checklist</title>
 </head>
-<body>
-	<!-- begin topbar-->
+<body class="fullscreenBody">
+<!-- begin topbar-->
 <div id="topbar" class="topbar">
 	<nav id="topbarNav" class="topbarNav">
 		<div class="topbarSection icon leftBorder">
@@ -50,7 +53,6 @@
 				<a href="https://prclive.run/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
 			</div>
 		</div>
-
 		<a href="./leaderboard.html" class="topbarSection icon" style="font-size: 0.85em;" title="Leaderboard">🏆</a>
 		<a href="./settings.html" class="topbarSection icon" style="font-size: 0.85em;" title="Settings">⚙️</a>
 
@@ -58,58 +60,25 @@
 	</nav>
 </div>
 <!-- end topbar-->
-<div class="contentContainer" id="contentContainer">
-<div class="guideFrame">
-<article id="guide" class="mainPanel" style="width: 55%;">
-	<div class="info">The Casual Guide will be available soon! In the meantime, the <a href="https://prclive.run/wiki/Main_Page">wiki</a> can help you learn about specific objectives in the run.</div>
-
-	<!-- BEGIN FOOTER-->
-<footer>
-<hr/>
-<p>Licensed under GPLv3.
- <a href="https://github.com/MichaelEbert/OblivionProgressTracker">Contribute</a>
- PRCLive twitch
- </p>
-</footer>
-<!-- END FOOTER-->
-</article>
-
-<div class="resizer" id="dragMe"></div>
-
-<div class="sidePanel" id="sidebar">
-	<div id="sidebarContent" class="sidebarContent">
-		<div id="sidebarLinks">
-			<a href="./help.html" target="myframe" title="Help Page">🛈</a>
-			<a href="./map.html?topbar=false" target="myframe" title="Show Map">🗺️</a>
-		</div>
+<br/><br/>
+<div class="h2" style="text-align:center;">Leaderboards</div>
+<i style="text-align:center;">Speedrun leaderboards are ordered by fastest time, Casual are ordered by the earliest people to complete the run.</i>
+<br/><br/>
+<div>
+	<div id="leaderboardOptions">
+		<label title="Select which game to see the leaderboard for."><select name="games" id="gameDrop"></select></label>
+		<label title="Select which category to view for this game."><select name="categories" id="categoryDrop">
+		</select></label>
+		<label title="Show multiple runs from same runner instead of only their best."><input type="checkbox" id="showObsolete">Show Obsolete</label>
+	</div>
+	<div class="section" id="leaderboardBox">
+		<table id="leaderboardTable"></table>
 	</div>
 </div>
 
-</div>
-</div>
-<script type="module">
-	import exportNamespace from './js/module-shim.mjs'
-	import * as common from './js/cellGenerator.mjs';
-	import * as progress from './js/progressCalculation.mjs'
-	import * as userdata from './js/userdata.mjs'
-	import * as obliviondata from './js/obliviondata.mjs'
-	import * as sharing from './js/sharing.mjs';
-	exportNamespace(common);
-	exportNamespace(progress);
-	exportNamespace(userdata);
-	exportNamespace(obliviondata);
-	exportNamespace(sharing);
-	window.sharing = sharing;
-	window.progress = progress;
-	window.userdata = userdata;
-
-	(function(){
-		if(loadCookie("debug") == true){
-			window.debug = true;
-		}
-		init();
-	}).call(window);
+<script>
+	init();
 </script>
-<script src="collapsible.js"></script>
-<script src="dragging.js"></script>
+
 </body>
+</html>
