@@ -484,6 +484,7 @@ function initListeners(){
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
     const showNonGates = document.getElementById("mapShowNonGates");
+    const showGates = document.getElementById("mapShowGates");
 
     let settings = document.getElementsByClassName("autosetting");
     //create display settings function to keep all these captures.
@@ -505,6 +506,7 @@ function initListeners(){
         }
 
         overlay.layers.get(OVERLAY_LAYER_LOCATIONS).layers.get("nonGates").visible = showNonGates.checked;
+        overlay.layers.get(OVERLAY_LAYER_LOCATIONS).layers.get("gates").visible = showGates.checked;
         
         drawFrame();
     }
@@ -519,6 +521,7 @@ function initListeners(){
     button_tspNirnroot.addEventListener("change", displaySettingsFunc);
 
     showNonGates.addEventListener("change", displaySettingsFunc);
+    showGates.addEventListener("change", displaySettingsFunc);
     displaySettingsFunc();
 
     document.getElementById("resetMapButton")?.addEventListener('click', (e)=>{
