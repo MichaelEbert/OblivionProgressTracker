@@ -14,7 +14,7 @@ import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSet
 import {loadJsonData} from './obliviondata.mjs'
 import {updateProgressBar} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
-import { initSharingFeature, stopSpectating, setRemoteUrl, createSpectateBanner } from './sharing.mjs'
+import { initSharingFeature, stopSpectating, setRemoteUrl, createSpectateBanner, isSpectating } from './sharing.mjs'
 import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar

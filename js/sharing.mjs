@@ -153,8 +153,7 @@ async function downloadSave(remoteUrl){
 			reject(this);
 		}
 		req.send();
-	})
-		
+	});
 }
 
 /**
@@ -516,5 +515,39 @@ function startSync(updateGlobalSaveData)
 		currentRequest = null;
 	});
 	return currentRequest;
+}
+
+function SyncShareCode(event)
+{
+    event.currentTarget.style.cursor = "wait"
+    if(isSpectating())
+    {
+        let url = settings.serverUrl + "/" + settings.remoteShareCode + "/sync"
+        await new Promise((resolve, reject)=>{
+            var req = new XMLHttpRequest();
+            req.open("GET", url, true);
+            req.setRequestHeader("Accept","application/json;odata=nometadata");
+            req.setRequestHeader("Content-Type","application/json");
+            req.send();
+        }).then((response)=>{
+			console.log(response);
+			event.currentTarget.style.cursor = "";
+		})
+
+    }
+    else{
+		let url = settings.serverUrl + "/" + settings.myShareCode + "/sync"
+		var req = new XMLHttpRequest();
+        await new Promise((resolve, reject)=>{
+            var req = new XMLHttpRequest();
+            req.open("POST", url, true);
+            req.setRequestHeader("Accept","application/json;odata=nometadata");
+            req.setRequestHeader("Content-Type","application/json");
+            req.send(JSON.stringify(myShareKey));
+        }).then(()=>{
+			event.currentTarget.style.cursor = "";
+		})
+    }
+    
 }
 
