@@ -17,7 +17,9 @@ export {
 	stopSpectating,
 	setRemoteUrl,
 	createSpectateBanner,
-	initSharingFeature
+	initSharingFeature,
+	isSpectating,
+	syncShareCode
 };
 
 /**
@@ -66,15 +68,15 @@ function generateSaveKey(){
  * internal method to upload specified save data. 
  * @param {string} uploadUrl URL endpoint to POST save data to.
  * @param {object} saveData save data object to POST.
- * @param {string} myShareCode share code to upload to.
+ * @param {string} shareCode share code to upload to.
  * @param {string} myShareKey private 'password' for share code. Must be exactly 64 bytes, base64-encoded.
  * @returns either resolve(response body) or reject(request)
  */
-async function uploadSave(uploadUrl, saveData, myShareCode, myShareKey){
+async function uploadSave(uploadUrl, saveData, shareCode, myShareKey){
 	currentRequest = new Promise((resolve, reject) =>{
 		let payload = {
 			saveData: JSON.stringify(saveData),
-			url: myShareCode,
+			url: shareCode,
 			key: myShareKey
 		};
 
@@ -170,16 +172,16 @@ async function uploadCurrentSave(notifyOnUpdate = true){
 	initShareSettings();
 	let compressedData = compressSaveData(savedata);
 	
-	return uploadSave(settings.serverUrl, compressedData, settings.myShareCode, settings.shareKey)
+	return uploadSave(settings.serverUrl, compressedData, settings.shareCode, settings.shareKey)
 	.then((result)=>{
 		if(result){
 			let responseContainsNewProgress = true;
-			if(settings.myShareCode != result.code){
-				console.log("my share code changed from '"+settings.myShareCode+"' to '"+result.code+"'");
-				if(settings.myShareCode == null){
+			if(settings.shareCode != result.code){
+				console.log("my share code changed from '"+settings.shareCode+"' to '"+result.code+"'");
+				if(settings.shareCode == null){
 					responseContainsNewProgress = false;
 				}
-				settings.myShareCode = result.code;
+				settings.shareCode = result.code;
 				saveCookie("settings",settings);
 				
 			}
@@ -251,8 +253,8 @@ async function uploadPartialSave(partialJsonData){
 		}
 	}	
 
-	let fullUrl = `${settings.serverUrl}/${settings.myShareCode}/d/${uploadPath}`;
-	return uploadSave(fullUrl, dataToUpload, settings.myShareCode, settings.shareKey);
+	let fullUrl = `${settings.serverUrl}/${settings.shareCode}/d/${uploadPath}`;
+	return uploadSave(fullUrl, dataToUpload, settings.shareCode, settings.shareKey);
 }
 
 /**
@@ -432,7 +434,7 @@ function createSpectateBanner(){
  * Call this on a page to do all the sharing stuff. Create topbar, start autorefresh, etc.
  */
 function initSharingFeature(){
-	if(!isSpectating() && (settings.myShareCode == null || settings.myShareCode == "")){
+	if(!isSpectating() && (settings.shareCode == null || settings.shareCode == "")){
 		return;
 	}
 
@@ -463,7 +465,7 @@ function startSync(updateGlobalSaveData)
 	if(currentRequest != null){
 		return;
 	}
-	let downloadUrl = settings.serverUrl + "/" + settings.myShareCode; 
+	let downloadUrl = settings.serverUrl + "/" + settings.shareCode; 
 	currentRequest = downloadSave(downloadUrl)
 	.then((dl)=>{
 		if(dl){
@@ -517,37 +519,81 @@ function startSync(updateGlobalSaveData)
 	return currentRequest;
 }
 
-function SyncShareCode(event)
+function syncShareCode(event)
 {
-    event.currentTarget.style.cursor = "wait"
+	let target = event.currentTarget;
+    target.style.cursor = "wait"
     if(isSpectating())
     {
         let url = settings.serverUrl + "/" + settings.remoteShareCode + "/sync"
-        await new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
             var req = new XMLHttpRequest();
             req.open("GET", url, true);
             req.setRequestHeader("Accept","application/json;odata=nometadata");
-            req.setRequestHeader("Content-Type","application/json");
+			req.setRequestHeader("Content-Type","application/json");
+			req.onload = function () {
+				if(this.status == 200){
+					//yay.
+					resolve(JSON.parse(this.response));
+				}
+				else{
+					reject(this);
+				}
+			}
+	
+			req.onerror = function (){
+				reject(this);
+			}
             req.send();
         }).then((response)=>{
 			console.log(response);
-			event.currentTarget.style.cursor = "";
-		})
-
+			if(response != "")
+			{
+				//success! we got share key.
+				saveCookie('progress_local',loadCookie('progress'));
+				let remoteCode = settings.remoteShareCode;
+				stopSpectating();
+				settings.shareKey = response;
+				settings.shareCode = remoteCode;
+				saveCookie('settings',settings);
+				location.reload();
+			}
+			target.style.cursor = "";
+		}).catch(()=>{
+			target.style.cursor = "";
+		});
     }
     else{
-		let url = settings.serverUrl + "/" + settings.myShareCode + "/sync"
-		var req = new XMLHttpRequest();
-        await new Promise((resolve, reject)=>{
+		let url = settings.serverUrl + "/" + settings.shareCode + "/sync"
+        return new Promise((resolve, reject)=>{
             var req = new XMLHttpRequest();
             req.open("POST", url, true);
             req.setRequestHeader("Accept","application/json;odata=nometadata");
-            req.setRequestHeader("Content-Type","application/json");
-            req.send(JSON.stringify(myShareKey));
-        }).then(()=>{
-			event.currentTarget.style.cursor = "";
-		})
+			req.setRequestHeader("Content-Type","application/json");
+			req.onload = function () {
+				if(this.status == 200){
+					//yay.
+					resolve(this.response);
+				}
+				else{
+					reject(this);
+				}
+			}
+	
+			req.onerror = function (){
+				reject(this);
+			}
+			if(settings.shareKey == null)
+			{
+				alert("shareKey is blank! cannot share");
+			}
+            req.send(JSON.stringify(settings.shareKey));
+        }).then((result)=>{
+			console.log("sync result: "+result);
+			target.style.cursor = "";
+		}).catch(()=>{
+			target.style.cursor = "";
+		});
     }
-    
 }
 

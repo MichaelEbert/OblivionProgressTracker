@@ -24,7 +24,7 @@ window.savedata = null;
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
-const SETTINGS_VERSION = 4;
+const SETTINGS_VERSION = 5;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
@@ -208,7 +208,7 @@ function loadSettingsFromCookie(){
 function newShareCode()
 {
 	settings.shareKey = null;
-	settings.myShareCode = null;
+	settings.shareCode = null;
 	saveCookie("settings", settings);
 }
 
@@ -256,7 +256,12 @@ function initSettings(){
 				// reset shareDownloadTimeInternal since we changed its type
 				if(settings.shareDownloadTimeInternal != undefined) {
 					settings.shareDownloadTimeInternal = null;
-				}				
+				}
+			case 4:
+				// renamed myShareCode to shareCode
+				if(settings.myShareCode != null){
+					settings.shareCode = settings.myShareCode;
+				}		
 			default:
 				//done
 				break;
@@ -295,7 +300,7 @@ function initSettings(){
  */
 function loadProgressFromCookie(){
 	loadSettingsFromCookie();
-	if(settings.myShareCode != null || settings.remoteShareCode != null)
+	if(settings.shareCode != null || settings.remoteShareCode != null)
 	{
 		//TODO: try reloading from remote
 		//TODO: what if we wipe save#s tho
@@ -371,7 +376,7 @@ function resetProgress(shouldConfirm=false){
 	if(execute){
 		let newdata = createNewSave();
 		updateLocalProgress(newdata);
-		if(settings.myShareCode != null)
+		if(settings.shareCode != null)
 		{
 			uploadCurrentSave();
 		}

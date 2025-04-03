@@ -14,13 +14,13 @@ import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSet
 import {loadJsonData} from './obliviondata.mjs'
 import {updateProgressBar} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
-import { initSharingFeature, stopSpectating, setRemoteUrl, createSpectateBanner, isSpectating } from './sharing.mjs'
+import { initSharingFeature, stopSpectating, setRemoteUrl, syncShareCode } from './sharing.mjs'
 import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
 function updateShareUrl(){
-    if(settings.myShareCode != null){
-        document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.myShareCode;
+    if(settings.shareCode != null){
+        document.getElementById("myShareUrl").value = window.location.href.substring(0,window.location.href.lastIndexOf("/"))+"/share.html?code=" + settings.shareCode;
     }
     else{
         document.getElementById("myShareUrl").value = "";
@@ -64,6 +64,7 @@ function init(){
     if(settings.remoteShareCode){
         document.getElementById("copyDataLocalButton").disabled = false;
     }
+    document.getElementById("syncShareKeyButton").addEventListener('click',syncShareCode);
 
     const ignoreEvent = (e) => {
         e.preventDefault();
