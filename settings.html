@@ -126,6 +126,7 @@
 		<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label> — <i>This is mostly useful for estimating fast travel times while routing.</i><br/>
 		<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formIDs on map</label> — <i>This is mostly useful for debugging and routing.</i><br/>
 		<label><input type="checkbox" id="mapShowNonGates" class="autosetting">Show non-gate locations</label> — <i>Useful for figuring out what gate you missed</i><br/>
+		<label><input type="checkbox" id="mapShowGates" class="autosetting">Show gate locations</label> — <i>Useful for figuring out what map exploration locations you missed</i><br/>
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Advanced Sharing</div>
@@ -135,7 +136,8 @@
 		<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i><br/>
 		<label><input type="checkbox" id="spectateAutoRefresh" class="autosetting"/>Auto Refresh Spectating</label> — <i>If you are Spectating, this setting automatically updates your screen to show new changes as the player updates their progress. You will generally want to leave this on.</i><br/>
 		<label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto Refresh Interval (sec)</label> — <i>If you are Spectating, this is the number of seconds between updates to your view of the player's progress.</i><br/>
-		<button id="copyShareKeyButton">Copy Share Key to Clipboard</button> — <i>Your Share Key is an internal key separate from the public 6 letter code you send to others. This key may be requested by devs if trying to debug/recover data related to your Share URL.</i><br/>
+		<button id="syncShareKeyButton">Connect to Desktop</button> — <i>Allow writes from desktop app or another browser.</i><br/>
+		<button id="copyShareKeyButton">Copy Share Key to Clipboard</button> — <i>Your Share Key is your "password" allowing you to upload to a specific URL.</i><br/>
 		<label>Share Server Path: <input type="text" id="serverUrl" size="60" class="autoTextSetting"/></label><button onclick="settingsjs.restoreServerPath()">Restore Default Path</button> — <i>If you want to save your data to another server instead of ours, you can change that here.</i><br/>
 	</div>
 </div>

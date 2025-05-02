@@ -99,7 +99,7 @@ namespace ShareApi
             }
         }
 
-        public string? SqlKeySelect(string url)
+        public byte[]? SqlKeySelect(string url)
         {
             var cmd = new SqlCommand(keySelectString, conn);
             cmd.Parameters.Add("@col1", SqlDbType.Char);
@@ -109,7 +109,7 @@ namespace ShareApi
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return (string)reader[0];
+                    return reader[0] as byte[];
                 }
                 else
                 {
