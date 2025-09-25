@@ -1,8 +1,10 @@
 :root{
 	--highlight-color: #66666640;
-	--base-color: #E5D9B9;
-	--lighter-color: #FBEFD5;
-	--lightest-color: #FFF5B5;
+	--base-color: light-dark(#E5D9B9,#6D5E52);
+	--lighter-color: light-dark(#FBEFD5,#423831);
+	--lightest-color: light-dark(#FFF5B5,#666148);
+	--warning-color: light-dark(lightgoldenrodyellow, #8E6619);
+	color-scheme: light dark;
 }
 
 html{
@@ -53,7 +55,7 @@ td{
 }
 
 code{
-	background-color: whitesmoke;
+	background-color: light-dark(whitesmoke,#262626);
 }
 
 kbd {
@@ -112,11 +114,9 @@ kbd {
 	background-color: var(--lighter-color);
 	border-right: 1px solid black;
 	text-decoration: none;
-	color: black;
 }
 .topbarSection a{
 	text-decoration: none;
-	color: black;
 }
 .topbarSection.icon{
 	flex: 1 1 0%;
@@ -323,6 +323,7 @@ kbd {
 
 .checked{
 	background-color: lightgreen;
+	color:black;
 }
 
 .check{
@@ -356,9 +357,9 @@ input[type="number"]{
 	font-style: italic;
 	margin: auto;
 	width: fit-content;
-	background-color: lightgoldenrodyellow;
+	background-color: var(--warning-color);
 	border-style: outset;
-	border-color: lightgoldenrodyellow;
+	border-color: var(--warning-color);
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
 
@@ -374,9 +375,9 @@ input[type="number"]{
 	font-style: italic;
 	margin: auto;
 	width: fit-content;
-	background-color: lightcoral;
+	background-color: var(--warning-color);
 	border-style: outset;
-	border-color: lightcoral;
+	border-color: var(--warning-color);
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
 }
 
