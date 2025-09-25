@@ -4,13 +4,13 @@ img{
 }
 
 .section{
-	background-color: #FBEFD5;
+	background-color: var(--lighter-color);
 	column-width: auto;
 	overflow: auto;
 }
 
 .sectionTitle{
-	background-color: #FBEFD5;
+	background-color: var(--lighter-color);
 	cursor:pointer;
 	text-align: center;
 	font-size: 1.5em;
@@ -20,7 +20,7 @@ img{
 }
 
 .sectionTitle:hover {
-	background-color: #cccccc;
+	background-color: var(--highlight-color);
 }
 
 .sectionTitle:after {
@@ -40,7 +40,7 @@ img{
 .toc a{
 	text-decoration: underline;
 	color: black;
-	text-decoration-color: lightgray;
+	text-decoration-color: light-dark(lightgray,dimgrey);
 }
 
 .active:after {
@@ -64,7 +64,7 @@ img{
 
 ol.dialogue {
 	list-style-type: '↳ ';
-	color: #434343;
+	color: light-dark(#434343,#BFBFBF);
 	font-style: italic;
 }
 .dialogue li::marker{
@@ -81,7 +81,6 @@ ol.dialogue {
 .dialogue .bribe,
 .dialogue .inst{
 	font-style: normal;
-	color: black;
 }
 
 li.inst{ /* rarely used. A bullet point in the middle of numbered instructions. */
@@ -153,7 +152,6 @@ li.warn{
 }
 
 .objComp {
-	color: black;
 	font-style: normal;
 	font-size: 0.8em;
 }
@@ -195,7 +193,7 @@ li.warn{
 }
 
 .quest{
-	color: darkred;
+	color: light-dark(darkred,lightred);
 }
 
 .spellname{
@@ -205,23 +203,22 @@ li.warn{
 
 .npc{
 	font-weight: bold;
-	color: darkgreen;
+	color: light-dark(darkgreen,green);
 }
 
 .nirnroot{
 	font-weight: bold;
-	color:#1155cc;
+	color:light-dark(#1155cc,#3D71CC);
 }
 
 .glitch{
-	color: black;
-	text-decoration: underline dotted grey;
+	text-decoration: underline dotted light-dark(grey,lightgrey);
 	font-weight: normal;
 }
 
 a.screenshot{
-	color: black;
-	text-decoration: underline dotted grey;
+	color: inherit;
+	text-decoration: underline dotted light-dark(grey,lightgrey);
 }
 
 a.screenshot::after{
