@@ -454,3 +454,7 @@ h1{
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+:fullscreen, ::backdrop {
+    background-color: var(--base-color);
+}
