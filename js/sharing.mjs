@@ -19,8 +19,11 @@ export {
 	createSpectateBanner,
 	initSharingFeature,
 	isSpectating,
-	syncShareCode
+	syncShareCode,
+	defaultShareUrl
 };
+
+const defaultShareUrl = "https://oblivion.azuriteforest.net/share"
 
 /**
  * checks to make sure that the global settings object has required properties for sharing.
@@ -45,7 +48,7 @@ function initShareSettings(){
 	}
 
 	if(settings.serverUrl == null || settings.serverUrl.length == 0){
-		settings.serverUrl = "https://ratskip.azurewebsites.net/share";
+		settings.serverUrl = defaultShareUrl;
 		changed = true;
 	}
 
