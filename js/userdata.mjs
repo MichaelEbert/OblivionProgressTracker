@@ -1,5 +1,5 @@
 import { jsondata, classes, loadJsonData, runOnTree, progressClasses } from "./obliviondata.mjs";
-import { initShareSettings, uploadCurrentSave } from "./sharing.mjs";
+import { initShareSettings, uploadCurrentSave, defaultShareUrl } from "./sharing.mjs";
 import { updateLocalProgress } from "./progressCalculation.mjs";
 
 //functions that save and load user progess and settings.
@@ -24,7 +24,7 @@ window.savedata = null;
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
-const SETTINGS_VERSION = 5;
+const SETTINGS_VERSION = 6;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
@@ -261,7 +261,13 @@ function initSettings(){
 				// renamed myShareCode to shareCode
 				if(settings.myShareCode != null){
 					settings.shareCode = settings.myShareCode;
-				}		
+				}
+			case 5:
+				//update to new share server
+				if(settings.serverUrl == "https://ratskip.azurewebsites.net/share")
+				{
+					settings.serverUrl = defaultShareUrl;
+				}
 			default:
 				//done
 				break;

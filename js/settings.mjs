@@ -14,7 +14,7 @@ import { loadProgressFromCookie, saveProgressToCookie, initAutoSettings, loadSet
 import {loadJsonData} from './obliviondata.mjs'
 import {updateProgressBar} from './progressCalculation.mjs'
 import { parseSave } from './saveReader.mjs'
-import { initSharingFeature, stopSpectating, setRemoteUrl, syncShareCode } from './sharing.mjs'
+import { initSharingFeature, stopSpectating, setRemoteUrl, syncShareCode, defaultShareUrl } from './sharing.mjs'
 import { setPopoutShareCode } from './popout.mjs'
 
 //updateUIFromSaveData(); //this updates the %complete in topbar
@@ -116,5 +116,5 @@ function copytoClipboard() {
 }
 
 function restoreServerPath() {
-    document.getElementById("serverUrl").value = "https://ratskip.azurewebsites.net/share"; //we should eventually have this value be declared in only one place. Also in sharing.mjs
+    document.getElementById("serverUrl").value = defaultShareUrl;
 }
