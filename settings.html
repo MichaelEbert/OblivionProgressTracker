@@ -69,18 +69,19 @@
 	<p><i>You can share your progress with other people in real time, so anything you check off will appear on their spectator view! This is highly recommended for streamers so their viewers can follow their progress easily.</i></p>
 	<div class="sharingUI">
 		<p><b>Share: </b><button id="shareProgressButton" onclick="sharingjs.uploadCurrentSave()">Share Progress*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="settingsjs.copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
-		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — Clicking on someone else's Share URL or entering a 6 letter code and pressing enter on this box will place your in Spectator Mode.</span>
+		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — enter a 6 letter code and press <kbd>enter</kbd> to enter Spectator Mode.</span>
 	</div>
-	<i>Spectating Notes
+	<p><label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i></p>
+	<p><button id="syncShareKeyButton">Connect to Desktop</button> — <i>Allow writes from desktop app or another browser.</i></p>
+	<p><i>Spectating Notes
 		<ul>
 		<li>When you are in Spectator Mode, a Spectating banner will appear at the top of the page.</li>
 		<li>You cannot change the progress on the guide while spectating. Click the "X" on the spectating banner to close Spectating Mode, returning you to your personal progress and allowing you to change checklist values again.</li>
 		<li>To view someone else's progress in one window and still be able to track your own progress at the same time, 
 			use an incognito window to open their spectating link. Perfect for racing against someone!</li>
-			</ul></i>
-			<button id="getNewCode" onclick="userdatajs.newShareCode()">New Share Code</button> Get a new share code<br/>
-
-<p style="font-size: small">* By creating a share URL, you agree that your progress, progress URL, IP address, and time uploaded may be stored on a server.<br>To remove your data, please send an email to <a href="mailto:removemydata@azuriteforest.net?subject=remove my data">removemydata@azuriteforest.net</a> with the subject "remove my data" and your share key (can be found below) in the body.</p>	
+			</ul></i></p>
+	<p><button id="getNewCode" onclick="userdatajs.newShareCode()">New Share Code</button> Get a new share code</p>
+	<p style="font-size: small">* By creating a share URL, you agree that your progress, progress URL, IP address, and time uploaded may be stored on a server.<br>To remove your data, please send an email to <a href="mailto:removemydata@azuriteforest.net?subject=remove my data">removemydata@azuriteforest.net</a> with the subject "remove my data" and your share key (can be found below) in the body.</p>	
 </div>
 </div>
 <div class="section">
@@ -114,41 +115,40 @@
 	<div class="category">
 		<div class="categoryTitle">Guide</div>
 		<!--When you add a setting here, also add it in userdata.mjs so it will be populated for new users.-->
-		<label><input type="checkbox" id="classnameCheck" class="autosetting"/>Show [Quest], [Book], etc. tags for interactive terms</label> — <b>Advanced players should turn this setting off to improve guide readability.</b><br/>
-		<label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
+		<p><label><input type="checkbox" id="classnameCheck" class="autosetting"/>Show [Quest], [Book], etc. tags for interactive terms</label> — <b>Advanced players should turn this setting off to improve guide readability.</b></p>
+		<p><label><select name="iframeCheck" id="iframeCheck" class="autoTextSetting">
 			<option value="auto" title="Recommended. Shows/hides the Info Box based on the width of the browser window, opening links in the Info Box if it is visible, or in a new tab if it is not.">Auto</option>
 			<option value="on" title="The Info Box is always on screen and links always open inside the Info Box.">Always On</option>
 			<option value="off" title="Disables the Info Box entirely, opening links in another tab.">Always Off</option>
 			<option value="window" title="Disables the Info Box, opening links in another window. This is useful if you want to cast links to a second monitor while keeping the guide on the original one.">Other Window</option>
-		</select> Info Box Sizing/Link Behavior</label> — <i>Hover over each option in the drop down menu for an explanation of what it does.</i><br/>
-		<label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide.</label> <i>(Only works if above setting is Auto.)</i>
+		</select> Info Box Sizing/Link Behavior</label> — <i>Hover over each option in the drop down menu for an explanation of what it does.</i></p>
+		<p><label><input type="number" id="iframeMinWidth" class="autoTextSetting"/> Minimum browser width to show Info Box to the right of the guide.</label> <i>(Only works if above setting is Auto.)</i></p>
 		<!--<label><input type="text" id="iframeWidth" class="autoTextSetting"/> Width of the Info Box to the right of the guide.</label><br/>-->
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Map</div>
 		<p><i>These map settings can also be found on the map page by clicking the "Show Settings" button.</i></p>
-		<label><input name="aaa" type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label> — <i>These are locations that are "discovered" from the start of the game that do not count towards your progress.</i><br/>
-		<label><input type="checkbox" id="mapShowNongates" class="autosetting">Show non-gate locations</label> — <i>Useful for figuring out what gate you missed</i><br/>
-		<label><input type="checkbox" id="mapShowGates" class="autosetting">Show gate locations</label> — <i>Useful for figuring out what map exploration locations you missed</i><br/>
-		<div class="extraSetting"><label><input type="checkbox" id="mapShowDistancecheck" class="autosetting">Show distance between locations</label> — <i>This is mostly useful for estimating fast travel times while routing.</i><br/></div>
-		<div class="extraSetting"><label><input type="checkbox" id="mapShowFormid" class="autosetting">Show formIDs on map</label> — <i>This is mostly useful for debugging and routing.</i><br/></div>
+		<br/>
+		<p><label><input name="aaa" type="checkbox" id="mapShowPrediscovered" class="autosetting">Show prediscovered locations</label> — <i>These are locations that are "discovered" from the start of the game that do not count towards your progress.</i></p>
+		<p><label><input type="checkbox" id="mapShowNongates" class="autosetting">Show non-gate locations</label> — <i>Useful for figuring out what gate you missed</i></p>
+		<p><label><input type="checkbox" id="mapShowGates" class="autosetting">Show gate locations</label> — <i>Useful for figuring out what map exploration locations you missed</i></p>
+		<p class="extraSetting"><label><input type="checkbox" id="mapShowDistancecheck" class="autosetting">Show distance between locations</label> — <i>This is mostly useful for estimating fast travel times while routing.</i></p>
+		<p class="extraSetting"><label><input type="checkbox" id="mapShowFormid" class="autosetting">Show formIDs on map</label> — <i>This is mostly useful for debugging and routing.</i></p>
 		
 	</div>
 	<div class="category">
 		<div class="categoryTitle">Advanced Sharing</div>
-		<div><em>These settings are for advanced users and can stop sharing from working if improperly configured.</em></div>
-		</br>
-		<button id="copyDataLocalButton" disabled>Copy Spectator Progress to Local Progress</button> — <i>Overwrites your local data with the data of the person you are currently spectating.</i><br/>
-		<label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i><br/>
-		<label><input type="checkbox" id="spectateAutoRefresh" class="autosetting"/>Auto Refresh Spectating</label> — <i>If you are Spectating, this setting automatically updates your screen to show new changes as the player updates their progress. You will generally want to leave this on.</i><br/>
-		<label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto Refresh Interval (sec)</label> — <i>If you are Spectating, this is the number of seconds between updates to your view of the player's progress.</i><br/>
-		<button id="syncShareKeyButton">Connect to Desktop</button> — <i>Allow writes from desktop app or another browser.</i><br/>
-		<button id="copyShareKeyButton">Copy Share Key to Clipboard</button> — <i>Your Share Key is your "password" allowing you to upload to a specific URL.</i><br/>
-		<label>Share Server Path: <input type="text" id="serverUrl" size="60" class="autoTextSetting"/></label><button onclick="settingsjs.restoreServerPath()">Restore Default Path</button> — <i>If you want to save your data to another server instead of ours, you can change that here.</i><br/>
+		<p><em>These settings are for advanced users and can stop sharing from working if improperly configured.</em></p>
+		<br/>
+		<p><button id="copyDataLocalButton" disabled>Copy Spectator Progress to Local Progress</button> — <i>Overwrites your local data with the data of the person you are currently spectating.</i></p>
+		<p><label><input type="checkbox" id="spectateAutoRefresh" class="autosetting"/>Auto Refresh Spectating</label> — <i>If you are Spectating, this setting automatically updates your screen to show new changes as the player updates their progress. You will generally want to leave this on.</i></p>
+		<p><label><input type="number" id="spectateAutoRefreshInterval" class="autoTextSetting"/>Auto Refresh Interval (sec)</label> — <i>If you are Spectating, this is the number of seconds between updates to your view of the player's progress.</i></p>
+		<p><button id="copyShareKeyButton">Copy Share Key to Clipboard</button> — <i>Your Share Key is your "password" allowing you to upload to a specific URL.</i></p>
+		<p><label>Share Server Path: <input type="text" id="serverUrl" size="60" class="autoTextSetting"/></label><button onclick="settingsjs.restoreServerPath()">Restore Default Path</button> — <i>If you want to save your data to another server instead of ours, you can change that here.</i></p>
 	</div>
 </div>
 </div>
-
+<!--
 <div class="section">
 <div class="sectionTitle">Import/Export Progress</div>
 <div class="collapsibleContent">
@@ -158,6 +158,7 @@
 	Import Guide Progress (.save) from File: <label><input type="file" id="fileinput"/></label><br/>
 </div>
 </div>
+-->
 </article>
 
 <script type="module">

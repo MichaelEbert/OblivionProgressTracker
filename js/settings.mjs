@@ -43,7 +43,7 @@ function init(){
     initSharingFeature();
     
     //custom settings
-    document.getElementById("fileinput").addEventListener('change',importProgress);
+    //document.getElementById("fileinput").addEventListener('change',importProgress);
     document.getElementById("remoteShareCode").addEventListener('change',setRemoteUrl);
     document.getElementById("clearRemoteButton").addEventListener('click',function(){
         let sharecode = document.getElementById("remoteShareCode"); 

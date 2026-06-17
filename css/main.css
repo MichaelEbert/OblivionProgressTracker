@@ -15,6 +15,7 @@ body{
 	background-color: var(--base-color);
 	margin: 0;
 	font-family: Calibri;
+	text-indent: 2em hanging;
 }
 
 .fullscreenBody{
@@ -271,6 +272,10 @@ kbd {
 	contain: content;
 }
 
+.category{
+	margin-top: 2em;
+}
+
 .categoryTitle{
 	font-family: serif;
 	font-size: 1.5em;
@@ -283,8 +288,8 @@ kbd {
 	font-style: italic;
 	color: grey;
 	padding-top: 0.2em;
-	padding-left:1em;
-	font-size:1.1em;
+	padding-left: 1em;
+	font-size: 1.1em;
 }
 
 .itemContainer{
@@ -424,6 +429,11 @@ input[type="number"]{
 h1{
 	margin: 0.5em;
 	margin-left: 0;
+}
+
+p{
+	margin-top:0.5em;
+	margin-bottom:0.5em;
 }
 
 /*mobile/thin window CSS*/
