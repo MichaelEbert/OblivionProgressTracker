@@ -499,13 +499,13 @@ function initListeners(){
     const button_location = document.getElementById("button_Location");
     const button_nirnroot = document.getElementById("button_Nirnroot");
     const button_wayshrine = document.getElementById("button_Wayshrine");
-    const button_nearbyGates = document.getElementById("button_NearbyGates");
+    const button_nearbyGates = document.getElementById("button_Nearbygates");
 
     const button_tspNone = document.getElementById("button_tspNone");
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
-    const showNonGates = document.getElementById("mapShowNonGates");
+    const showNonGates = document.getElementById("mapShowNongates");
     const showGates = document.getElementById("mapShowGates");
 
     let settings = document.getElementsByClassName("autosetting");

@@ -161,9 +161,7 @@
 	import * as popoutjs from './js/popout.mjs'
 	import {loadCookie} from './js/userdata.mjs'
 	(function(){
-		if(loadCookie("debug") == true){
-			window.debug = true;
-		}
+		window.debug = userdatajs.loadCookie("debug");
 		settingsjs.init();
 		window.settingsjs = settingsjs;
 		window.sharingjs = sharingjs;

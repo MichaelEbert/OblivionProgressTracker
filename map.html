@@ -138,10 +138,12 @@
 	import * as progress from './js/progressCalculation.mjs';
 	
 	window.mapjs = map;
-
-	if(userdata.loadCookie("debug") == true){
-		window.debug = true;
+	let dbg = userdata.loadCookie("debug");
+	if(dbg != null)
+	{
+		window.debug = dbg;
 	}
+
 	document.getElementById("helpButton").addEventListener('click',function (){
 		const button = document.getElementById("helpButton");
 		const helpWindow = document.getElementById("help");
