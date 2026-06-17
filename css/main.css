@@ -441,6 +441,12 @@ h1{
 	}
 }
 
+/* advanced settings not used by most users.*/
+.extraSetting{
+	color:light-dark(grey,lightgrey);
+	font-size: smaller;
+}
+
 /* Scroll bar stuff to make them less obnoxiously large */
 ::-webkit-scrollbar {
   width: 10px;

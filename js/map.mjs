@@ -92,8 +92,8 @@ let icons = {};
 
 const randomGateDisplay = document.getElementById("randomGateCount");
 
-function updateRandomGateCount(Found){
-    if(Found){
+function updateRandomGateCount(found){
+    if(found){
         randomGateCount++;
     }
     else{
@@ -138,6 +138,10 @@ function initRandomGateCount(){
 
 function normalizeCase(urlParam)
 {
+    if(urlParam == null || urlParam.length < 1)
+    {
+        return null;
+    }
     return urlParam[0].toUpperCase() + urlParam.substring(1).toLowerCase();
 }
 
@@ -175,9 +179,9 @@ async function initMap(){
         }
     }
     //Prediscovered appears to be tied to settings, so I can't figure out how to make that one changable. Most people won't turn it off anyway.
-    let tspSetting = windowParams.get("tsp")
-    if(tspSetting == "none" || tspSetting == "location" || tspSetting == "nirnroot"){
-        document.getElementById("button_tsp" + tspSetting.charAt(0).toUpperCase() + tspSetting.slice(1)).checked = true;
+    let tspSetting = normalizeCase(windowParams.get("tsp"))
+    if(tspSetting == "None" || tspSetting == "Location" || tspSetting == "Nirnroot"){
+        document.getElementById("button_tsp" + tspSetting).checked = true;
     }
 
     //start map loading here, we will wait for it later.
