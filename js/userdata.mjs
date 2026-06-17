@@ -24,11 +24,11 @@ window.savedata = null;
 window.settings = null;
 
 const SAVEDATA_VERSION = 11;
-const SETTINGS_VERSION = 6;
+const SETTINGS_VERSION = 7;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
-	if(window.debugSaving)
+	if(window.debug?.saving)
 	{
 		console.log("saving "+name+" with value:"+stringValue);
 	}
@@ -36,7 +36,7 @@ function saveCookie(name,valu){
 }
 
 function loadCookie(name){
-	if(window.debugSaving)
+	if(window.debug?.saving)
 	{
 		console.log("loading "+name);
 	}
@@ -177,6 +177,7 @@ function decompressSaveData(compressedSaveData){
 				decompressedSaveData[propname] = compressedSaveData[propname];
 			}
 		}
+		decompressedSaveData.compressed = false;
 	}
 	else{
 		decompressedSaveData = compressedSaveData;
@@ -244,11 +245,10 @@ function initSettings(){
 				if(settings.iframeCheck != null){
 					settings.iframeCheck = "auto";
 				}
-				changed = true;
 			case 1:
 				//1 to 2: set auto refresh and auto refresh time.
-				changed |= initProperty(settings, "spectateAutoRefresh", true);
-				changed |= initProperty(settings, "spectateAutoRefreshInterval", 5);
+				initProperty(settings, "spectateAutoRefresh", true);
+				initProperty(settings, "spectateAutoRefreshInterval", 5);
 			case 2:
 				//2 to 3: 
 				//deprecated
@@ -261,6 +261,7 @@ function initSettings(){
 				// renamed myShareCode to shareCode
 				if(settings.myShareCode != null){
 					settings.shareCode = settings.myShareCode;
+					delete settings.myShareCode;
 				}
 			case 5:
 				//update to new share server
@@ -268,6 +269,13 @@ function initSettings(){
 				{
 					settings.serverUrl = defaultShareUrl;
 				}
+				case 6:
+					//case of mapShowNonGates changed
+					if(settings.mapShowNonGates != null)
+					{
+						settings.mapShowNongates = settings.mapShowNonGates;
+						delete settings.mapShowNonGates;
+					}
 			default:
 				//done
 				break;
@@ -284,7 +292,7 @@ function initSettings(){
 	changed |= initProperty(settings, "mapShowPrediscovered", true);
 	changed |= initProperty(settings, "mapShowLocationsOnNirnroot", false);
 	changed |= initProperty(settings, "classnameCheck", false);
-	changed |= initProperty(settings, "mapShowNonGates", true);
+	changed |= initProperty(settings, "mapShowNongates", true);
 	changed |= initProperty(settings, "mapShowGates", true);
 	
 	if(settings.shareDownloadTimeInternal != null)

@@ -92,8 +92,8 @@ let icons = {};
 
 const randomGateDisplay = document.getElementById("randomGateCount");
 
-function updateRandomGateCount(Found){
-    if(Found){
+function updateRandomGateCount(found){
+    if(found){
         randomGateCount++;
     }
     else{
@@ -136,6 +136,15 @@ function initRandomGateCount(){
     }
 }
 
+function normalizeCase(urlParam)
+{
+    if(urlParam == null || urlParam.length < 1)
+    {
+        return null;
+    }
+    return urlParam[0].toUpperCase() + urlParam.substring(1).toLowerCase();
+}
+
 async function initMap(){
     initAutoSettings(drawFrame, drawFrame);
     
@@ -144,8 +153,16 @@ async function initMap(){
     if(windowParams.get("topbar") == "false"){
         document.getElementById("topbar").remove();
     }
+
+    let str = "possible params: ";
+    str += ["button_","mapShow"].map(
+        prefix=>[...document.querySelectorAll(`[id^=${prefix}]`)].map(x=>x.id.substring(prefix.length)).join(", ")
+    ).join(", ");
+    console.log(str);
+
     //Setting parameters
     for(let paramName of windowParams.keys()){
+        paramName = normalizeCase(paramName);
         let settingBox = document.getElementById("button_" + paramName);
         if(settingBox == null)
         {
@@ -162,9 +179,9 @@ async function initMap(){
         }
     }
     //Prediscovered appears to be tied to settings, so I can't figure out how to make that one changable. Most people won't turn it off anyway.
-    let tspSetting = windowParams.get("tsp")
-    if(tspSetting == "none" || tspSetting == "location" || tspSetting == "nirnroot"){
-        document.getElementById("button_tsp" + tspSetting.charAt(0).toUpperCase() + tspSetting.slice(1)).checked = true;
+    let tspSetting = normalizeCase(windowParams.get("tsp"))
+    if(tspSetting == "None" || tspSetting == "Location" || tspSetting == "Nirnroot"){
+        document.getElementById("button_tsp" + tspSetting).checked = true;
     }
 
     //start map loading here, we will wait for it later.
@@ -485,13 +502,13 @@ function initListeners(){
     const button_location = document.getElementById("button_Location");
     const button_nirnroot = document.getElementById("button_Nirnroot");
     const button_wayshrine = document.getElementById("button_Wayshrine");
-    const button_nearbyGates = document.getElementById("button_NearbyGates");
+    const button_nearbyGates = document.getElementById("button_Nearbygates");
 
     const button_tspNone = document.getElementById("button_tspNone");
     const button_tspLocation = document.getElementById("button_tspLocation");
     const button_tspNirnroot = document.getElementById("button_tspNirnroot");
 
-    const showNonGates = document.getElementById("mapShowNonGates");
+    const showNonGates = document.getElementById("mapShowNongates");
     const showGates = document.getElementById("mapShowGates");
 
     let settings = document.getElementsByClassName("autosetting");

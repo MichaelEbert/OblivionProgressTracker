@@ -17,6 +17,10 @@ body{
 	font-family: Calibri;
 }
 
+article{
+	text-indent: 2em hanging;
+}
+
 .fullscreenBody{
 	display: flex;
 	flex-direction: column;
@@ -271,6 +275,10 @@ kbd {
 	contain: content;
 }
 
+.category{
+	margin-top: 2em;
+}
+
 .categoryTitle{
 	font-family: serif;
 	font-size: 1.5em;
@@ -283,8 +291,8 @@ kbd {
 	font-style: italic;
 	color: grey;
 	padding-top: 0.2em;
-	padding-left:1em;
-	font-size:1.1em;
+	padding-left: 1em;
+	font-size: 1.1em;
 }
 
 .itemContainer{
@@ -426,6 +434,11 @@ h1{
 	margin-left: 0;
 }
 
+p{
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+
 /*mobile/thin window CSS*/
 @media only screen and (orientation: portrait) and (max-width: 800px){
 	.topbarNav{
@@ -439,6 +452,12 @@ h1{
 	.topbarSection:hover .topbarSublist{
 		display: none;/*no more crazy links for mobile*/
 	}
+}
+
+/* advanced settings not used by most users.*/
+.extraSetting{
+	color:light-dark(grey,lightgrey);
+	font-size: smaller;
 }
 
 /* Scroll bar stuff to make them less obnoxiously large */

@@ -22,6 +22,8 @@ function CanvasObject(){
     this.y = 0;
     this.width = 0;
     this.height = 0;
+    //if not visible, do not draw and do not respond to clicks.
+    this.visible = true;
 }
 
 /**
@@ -29,7 +31,7 @@ function CanvasObject(){
  * @param {Point} point point to check
  */
 CanvasObject.prototype.contains = function(point){
-    if(point == null){
+    if(point == null || !this.visible){
         return false;
     }
     return (this.x < point.x &&
@@ -51,6 +53,7 @@ CanvasObject.prototype.maxY = function(){
 function MapObject(worldLoc)
 {
     //we cache the mapX and mapY so we only have to recalculate those when we scale the entire map.
+    CanvasObject.call(this);
     this.mapLoc = null;
     this.worldLoc = worldLoc;
 }
@@ -63,12 +66,12 @@ MapObject.prototype = Object.create(CanvasObject.prototype);
 MapObject.prototype.recalculateBoundingBox = function(){
     this.mapLoc = worldSpaceToMapSpace(this.worldLoc);
 }
-
-
 MapObject.prototype.draw = function(_ctx){
-    const uiCoords = mapSpaceToScreenSpace(this.mapLoc);
-    this.x = uiCoords.x;
-    this.y = uiCoords.y;
+    if(this.visible){
+        const uiCoords = mapSpaceToScreenSpace(this.mapLoc);
+        this.x = uiCoords.x;
+        this.y = uiCoords.y;
+    }
 }
 
 /**
@@ -88,10 +91,12 @@ function MapImage(iconName, imageOffsetX, imageOffsetY, worldLocation){
 MapImage.prototype = Object.create(MapObject.prototype);
 
 MapImage.prototype.draw = function(ctx){
-    const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.iconOffsetPx);
-    this.x = screenSpaceOrigin.x;
-    this.y = screenSpaceOrigin.y;
-    ctx.drawImage(this.icon, screenSpaceOrigin.x, screenSpaceOrigin.y, this.width, this.height);
+    if(this.visible){
+        const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.iconOffsetPx);
+        this.x = screenSpaceOrigin.x;
+        this.y = screenSpaceOrigin.y;
+        ctx.drawImage(this.icon, screenSpaceOrigin.x, screenSpaceOrigin.y, this.width, this.height);
+    }
 }
 
 MapImage.prototype.recalculateBoundingBox = function(){
@@ -104,6 +109,13 @@ MapImage.prototype.recalculateBoundingBox = function(){
     this.y = screenSpaceOrigin.y;
 }
 
+/**
+ * represent a game concept with a location (could be dungeon, quest marker, gate)
+ * @param {*} iconName image name for iconSwitch.
+ * @param {*} xOffset fractional offset from top left of image to where the icon should be drawn. Use for centering, left justify, etc.
+ * @param {*} yOffset fractional offset from top left of image to where the icon should be drawn. Use for centering, left justify, etc.
+ * @param {*} worldLocation Where image should be drawn in world coordinates.
+ */
 function MapPOI(iconName,xOffset, yOffset, worldLocation){
     this.image = new MapImage(iconName, xOffset, yOffset, worldLocation);
     this.name = "aaaaa";
@@ -169,53 +181,56 @@ function GateIcon(iconName, imageOffsetX, imageOffsetY, worldLocation){
 GateIcon.prototype = Object.create(LocationIcon.prototype);
 
 GateIcon.prototype.draw = function(ctx){
-    //override the default locationIcon draw because we do effects!
-    //copied from LocationIcon.draw
-    let usingCheckedIcon = !(this.icon.src.endsWith("_Undiscovered.png"))
-    if(this.checked && !usingCheckedIcon){
-        this.icon = iconSwitch(this.name);
-    }
-    else if(!this.checked && usingCheckedIcon){
-        this.icon = iconSwitch(this.name+"_Undiscovered");
-    }
+    //re-check visible here cause this is a lot of extra work to do if we're not drawing
+    if(this.visible){
+        //override the default locationIcon draw because we do effects!
+        //copied from LocationIcon.draw
+        let usingCheckedIcon = !(this.icon.src.endsWith("_Undiscovered.png"))
+        if(this.checked && !usingCheckedIcon){
+            this.icon = iconSwitch(this.name);
+        }
+        else if(!this.checked && usingCheckedIcon){
+            this.icon = iconSwitch(this.name+"_Undiscovered");
+        }
 
-    const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.iconOffsetPx);
-    this.x = screenSpaceOrigin.x;
-    this.y = screenSpaceOrigin.y;
-    //draw icon to secondary buffer, then draw buffer to main window.
-    const iWidth = this.width;
-    const iHeight = this.height;
-    let bufferCtx = imageBuffer.getContext("2d");
+        const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.iconOffsetPx);
+        this.x = screenSpaceOrigin.x;
+        this.y = screenSpaceOrigin.y;
+        //draw icon to secondary buffer, then draw buffer to main window.
+        const iWidth = this.width;
+        const iHeight = this.height;
+        let bufferCtx = imageBuffer.getContext("2d");
 
-    //draw icon
-    bufferCtx.globalCompositeOperation = "copy"
-    bufferCtx.drawImage(this.icon, 0, 0, iWidth, iHeight);
+        //draw icon
+        bufferCtx.globalCompositeOperation = "copy"
+        bufferCtx.drawImage(this.icon, 0, 0, iWidth, iHeight);
 
-    //effects.
-    if(this.enabled == false){
-        //desaturate
-        bufferCtx.globalCompositeOperation = "color";
-        bufferCtx.fillStyle = "#222222";
-        bufferCtx.fillRect(0,0,iWidth, iHeight);
-    }
+        //effects.
+        if(this.enabled == false){
+            //desaturate
+            bufferCtx.globalCompositeOperation = "color";
+            bufferCtx.fillStyle = "#222222";
+            bufferCtx.fillRect(0,0,iWidth, iHeight);
+        }
 
-    bufferCtx.globalCompositeOperation = "source-over";
+        bufferCtx.globalCompositeOperation = "source-over";
 
-    //draw gate icons
-    if(this.fixed){
-        bufferCtx.drawImage(icons.Overlay_Fixed, 0, 0, iWidth, iHeight);
-    }
-    if(this.noReroll){
-        bufferCtx.drawImage(icons.Overlay_No_Reroll, 0, 0, iWidth, iHeight);
-    }
-    if(this.twoFame){
-        bufferCtx.drawImage(icons.Overlay_Two_Fame, 0, 0, iWidth, iHeight);
-    }
-    //finally, draw the buffer image to main.
-    ctx.drawImage(imageBuffer,0,0,iWidth,iHeight, this.x, this.y, iWidth, iHeight);
+        //draw gate icons
+        if(this.fixed){
+            bufferCtx.drawImage(icons.Overlay_Fixed, 0, 0, iWidth, iHeight);
+        }
+        if(this.noReroll){
+            bufferCtx.drawImage(icons.Overlay_No_Reroll, 0, 0, iWidth, iHeight);
+        }
+        if(this.twoFame){
+            bufferCtx.drawImage(icons.Overlay_Two_Fame, 0, 0, iWidth, iHeight);
+        }
+        //finally, draw the buffer image to main.
+        ctx.drawImage(imageBuffer,0,0,iWidth,iHeight, this.x, this.y, iWidth, iHeight);
 
-    if(this.closed){
-        ctx.drawImage(icons.Check, this.x, this.y, this.width, this.height);
+        if(this.closed){
+            ctx.drawImage(icons.Check, this.x, this.y, this.width, this.height);
+        }
     }
 
 }

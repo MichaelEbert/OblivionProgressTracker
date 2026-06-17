@@ -46,6 +46,7 @@
 				<a href="./tools/tools.html">Tools</a>
 				<a href="https://oblivion.azuriteforest.net/wiki/Oblivion:Glitches/Tech">Glitches</a>
 				<a href="https://oblivion.azuriteforest.net/wiki/Oblivion:Tools/Resources">Tools/Resources Directory</a>
+				<a href="https://github.com/MichaelEbert/OblivionSaveReaderCS">Local Save Uploader</a>
 			</div>
 		</div>
 
@@ -63,7 +64,7 @@
 				<label title="Shows all Locations that need to be discovered."><input type="checkbox" name="icon_selection" id="button_Location" checked >Locations</label>
 				<label title="Shows where all Nirnroot are in the overworld."><input type="checkbox" name="icon_selection" id="button_Nirnroot"/>Nirnroots</label>
 				<label title="Shows where all Wayshrines are in the overworld."><input type="checkbox" name="icon_selection" id="button_Wayshrine"/>Wayshrines/Heaven Stones</label>
-				<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_NearbyGates"/>Nearby Gates</label>
+				<label title="Shows gates that can be seen from each location."><input type="checkbox" name="icon_selection" id="button_Nearbygates"/>Nearby Gates</label>
 				<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 				<button id="showSettingsButton">Show Settings</button>
 				<button id="helpButton">Help!</button>
@@ -81,10 +82,10 @@
 				<label><input type="radio" name="tsp_selection" id="button_tspNirnroot" title="The fastest way to visit each nirnroot"/>Nirnroot TSP</label>
 				<br/>
 				<label><input type="checkbox" id="mapShowPrediscovered" class="autosetting" checked>Show prediscovered locations</label>
-				<label><input type="checkbox" id="mapShowDistanceCheck" class="autosetting">Show distance between locations</label>
-				<label><input type="checkbox" id="mapShowFormId" class="autosetting">Show formID on map</label>
-        		<label><input type="checkbox" id="mapShowNonGates" class="autosetting">Show non-gate locations</label>
+        		<label><input type="checkbox" id="mapShowNongates" class="autosetting">Show non-gate locations</label>
         		<label><input type="checkbox" id="mapShowGates" class="autosetting">Show gate locations</label>
+				<label class="extraSetting"><input type="checkbox" id="mapShowDistancecheck" class="autosetting">Show distance between locations</label>
+				<label class="extraSetting"><input type="checkbox" id="mapShowFormid" class="autosetting">Show formID on map</label>
 				<br/>
 				<button id="resetMapButton">Reset Map</button>
 			</div>
@@ -138,10 +139,12 @@
 	import * as progress from './js/progressCalculation.mjs';
 	
 	window.mapjs = map;
-
-	if(userdata.loadCookie("debug") == true){
-		window.debug = true;
+	let dbg = userdata.loadCookie("debug");
+	if(dbg != null)
+	{
+		window.debug = dbg;
 	}
+
 	document.getElementById("helpButton").addEventListener('click',function (){
 		const button = document.getElementById("helpButton");
 		const helpWindow = document.getElementById("help");

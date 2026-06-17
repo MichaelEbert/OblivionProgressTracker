@@ -79,97 +79,100 @@ MapLocation.prototype.recalculateBoundingBox = function(){
  * @param {CanvasRenderingContext2D} ctx 
  */
 MapLocation.prototype.draw = function(ctx, mouseLoc, currentSelection){
-    //draws the name for the map icon if hovered.
-    //for drawing, we have to convert back to screen space.
-    //offset by 1/2 width of icon.
-    const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.icon.iconOffsetPx);
-    const TEXT_PADDING_PX = 2;
-    
-    this.x = screenSpaceOrigin.x;
-    this.y = screenSpaceOrigin.y;
-
-    if(window.settings.mapShowPrediscovered == false && this.prediscovered){
-        return;
-    }
-    if(this.contains(mouseLoc)){
-        //start with array with single element
-        let formattedName = this.cell.name;
-        if(this.cell.hive.classname == "nirnroot"){
-            formattedName += " (#" + this.cell.tspId + ")";
-        }
-        let linesToRender = [formattedName];
-
-        if(window.settings.mapShowFormId == true){
-            linesToRender.push("formId " + this.cell.formId.toString());
-        }
-
-        if(this.cell.notes){
-            this.cell.notes.split(", ").forEach(note => {
-                linesToRender.push(note);
-            });
-        }
-
-        //calculate distance to display.
-        if(currentSelection != null && window.settings.mapShowDistanceCheck){
-            let dx = this.cell.x - currentSelection.cell.x;
-            let dy = this.cell.y - currentSelection.cell.y;
-            let dist = Math.round(Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2)));
-            linesToRender.push("distance: "+dist)
-        }
-        //create rect that contains text and the icon.
-
-        //start by initializing font stuff
-        const TEXT_HEIGHT = 16;
-        ctx.font = "16px serif";
-
-        //create background of popup window
+    if(this.visible){
+        //draws the name for the map icon if hovered.
+        //for drawing, we have to convert back to screen space.
+        //offset by 1/2 width of icon.
+        const screenSpaceOrigin = mapSpaceToScreenSpace(this.mapLoc).subtract(this.icon.iconOffsetPx);
+        const TEXT_PADDING_PX = 2;
         
-        let maxTextWidth = 0;
-        for(let i = 0; i < linesToRender.length; i++){
-            let textMetrics = ctx.measureText(linesToRender[i]);
-            if(textMetrics.width > maxTextWidth){
-                maxTextWidth = textMetrics.width;
-            }
+        this.x = screenSpaceOrigin.x;
+        this.y = screenSpaceOrigin.y;
+
+        //todo: replace with this.visible check
+        if(window.settings.mapShowPrediscovered == false && this.prediscovered){
+            return;
         }
-
-        let backgroundWidth = this.icon.width + maxTextWidth + TEXT_PADDING_PX * 2;
-        let backgroundHeight = Math.max(this.icon.height, (TEXT_HEIGHT+TEXT_PADDING_PX) * linesToRender.length);
-        ctx.beginPath();
-        ctx.fillStyle = "#E5D9B9";
-        ctx.fillRect(screenSpaceOrigin.x, screenSpaceOrigin.y, backgroundWidth, backgroundHeight);
-
-        //draw all text
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "left";
-
-        const startingOffset = TEXT_PADDING_PX + TEXT_HEIGHT / 2;
-        for(let i = 0; i < linesToRender.length; i++){
-            if(linesToRender.length == 1){
-                ctx.fillText(linesToRender[i], screenSpaceOrigin.x + this.icon.width + TEXT_PADDING_PX, screenSpaceOrigin.y + this.icon.height / 2);
+        if(this.contains(mouseLoc)){
+            //start with array with single element
+            let formattedName = this.cell.name;
+            if(this.cell.hive.classname == "nirnroot"){
+                formattedName += " (#" + this.cell.tspId + ")";
             }
-            else{
-                let currentLineY = screenSpaceOrigin.y + startingOffset + (TEXT_HEIGHT + TEXT_PADDING_PX) * i;
-                ctx.fillText(linesToRender[i], screenSpaceOrigin.x + this.icon.width + TEXT_PADDING_PX, currentLineY);
+            let linesToRender = [formattedName];
+
+            if(window.settings.mapShowFormid == true){
+                linesToRender.push("formId " + this.cell.formId.toString());
             }
+
+            if(this.cell.notes){
+                this.cell.notes.split(", ").forEach(note => {
+                    linesToRender.push(note);
+                });
+            }
+
+            //calculate distance to display.
+            if(currentSelection != null && window.settings.mapShowDistancecheck){
+                let dx = this.cell.x - currentSelection.cell.x;
+                let dy = this.cell.y - currentSelection.cell.y;
+                let dist = Math.round(Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2)));
+                linesToRender.push("distance: "+dist)
+            }
+            //create rect that contains text and the icon.
+
+            //start by initializing font stuff
+            const TEXT_HEIGHT = 16;
+            ctx.font = "16px serif";
+
+            //create background of popup window
+            
+            let maxTextWidth = 0;
+            for(let i = 0; i < linesToRender.length; i++){
+                let textMetrics = ctx.measureText(linesToRender[i]);
+                if(textMetrics.width > maxTextWidth){
+                    maxTextWidth = textMetrics.width;
+                }
+            }
+
+            let backgroundWidth = this.icon.width + maxTextWidth + TEXT_PADDING_PX * 2;
+            let backgroundHeight = Math.max(this.icon.height, (TEXT_HEIGHT+TEXT_PADDING_PX) * linesToRender.length);
+            ctx.beginPath();
+            ctx.fillStyle = "#E5D9B9";
+            ctx.fillRect(screenSpaceOrigin.x, screenSpaceOrigin.y, backgroundWidth, backgroundHeight);
+
+            //draw all text
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "left";
+
+            const startingOffset = TEXT_PADDING_PX + TEXT_HEIGHT / 2;
+            for(let i = 0; i < linesToRender.length; i++){
+                if(linesToRender.length == 1){
+                    ctx.fillText(linesToRender[i], screenSpaceOrigin.x + this.icon.width + TEXT_PADDING_PX, screenSpaceOrigin.y + this.icon.height / 2);
+                }
+                else{
+                    let currentLineY = screenSpaceOrigin.y + startingOffset + (TEXT_HEIGHT + TEXT_PADDING_PX) * i;
+                    ctx.fillText(linesToRender[i], screenSpaceOrigin.x + this.icon.width + TEXT_PADDING_PX, currentLineY);
+                }
+            }
+            ctx.fill();
         }
-        ctx.fill();
-    }
-    //green highlight
-    if(currentSelection == this){
-        const bordersize = 2;
-        ctx.beginPath();
-        ctx.fillStyle = "#00DD00";
-        ctx.rect(screenSpaceOrigin.x - bordersize, screenSpaceOrigin.y - bordersize, this.icon.width + (bordersize * 2), this.icon.height + (bordersize*2));
-        ctx.fill();
+        //green highlight
+        if(currentSelection == this){
+            const bordersize = 2;
+            ctx.beginPath();
+            ctx.fillStyle = "#00DD00";
+            ctx.rect(screenSpaceOrigin.x - bordersize, screenSpaceOrigin.y - bordersize, this.icon.width + (bordersize * 2), this.icon.height + (bordersize*2));
+            ctx.fill();
 
+        }
+        this.icon.draw(ctx);
     }
-    this.icon.draw(ctx);
 }
 
 MapLocation.prototype.onClick = function(clickPos){
-    if(window.settings.mapShowPrediscovered == false && this.prediscovered){
+    if(!this.visible || (window.settings.mapShowPrediscovered == false && this.prediscovered)){
         return false;
     }
     if(window.debug){
