@@ -149,14 +149,13 @@ async function initMap(){
     if(windowParams.get("topbar") == "false"){
         document.getElementById("topbar").remove();
     }
-    if(window.debug)
-    {
-        let str = "possible params: ";
-        str += ["button_","mapShow"].map(
-            prefix=>[...document.querySelectorAll(`[id^=${prefix}]`)].map(x=>x.id.substring(prefix.length)).join(", ")
-        ).join(", ");
-        console.log(str);
-    }
+
+    let str = "possible params: ";
+    str += ["button_","mapShow"].map(
+        prefix=>[...document.querySelectorAll(`[id^=${prefix}]`)].map(x=>x.id.substring(prefix.length)).join(", ")
+    ).join(", ");
+    console.log(str);
+
     //Setting parameters
     for(let paramName of windowParams.keys()){
         paramName = normalizeCase(paramName);
