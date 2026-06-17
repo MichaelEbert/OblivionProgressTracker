@@ -15,6 +15,9 @@ body{
 	background-color: var(--base-color);
 	margin: 0;
 	font-family: Calibri;
+}
+
+article{
 	text-indent: 2em hanging;
 }
 

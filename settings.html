@@ -69,7 +69,7 @@
 	<p><i>You can share your progress with other people in real time, so anything you check off will appear on their spectator view! This is highly recommended for streamers so their viewers can follow their progress easily.</i></p>
 	<div class="sharingUI">
 		<p><b>Share: </b><button id="shareProgressButton" onclick="sharingjs.uploadCurrentSave()">Share Progress*</button><input type="text" id="myShareUrl" size="60" readonly="true"/><button onclick="settingsjs.copytoClipboard()" class="clipboardButton">📋</button><span id="shareUrlCopy"></span></p>
-		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — enter a 6 letter code and press <kbd>enter</kbd> to enter Spectator Mode.</span>
+		<p><b>Spectate: </b><input type="text" id="remoteShareCode"/><button id="clearRemoteButton">Clear</button><span style="font-size: 0.75em;"> — enter a 6 letter code and press <kbd>enter</kbd> to enter Spectator Mode.</span></p>
 	</div>
 	<p><label><input type="checkbox" id="autoUploadCheck" class="autosetting"/>Auto Update Shared Progress</label> — <i>If you have a Share URL, this setting automatically pushes your new changes to spectators. You will generally want to leave this on.</i></p>
 	<p><button id="syncShareKeyButton">Connect to Desktop</button> — <i>Allow writes from desktop app or another browser.</i></p>
@@ -90,7 +90,7 @@
 	<p><i>Generate a Stream Widget browser source to use in software like OBS!</i></p>
 	<p><b>This feature only works with a share code since the OBS browser is not linked to your normal browser.</b> <i>If you want to view the tracker outside of your stream software, copy/paste the code <b>into an incognito window</b> since this feature activates spectator mode for the browser it loads into.</i></p>
 	<div>
-		Share Code: <input type="text" value="" id="popoutShareCode" maxlength="6" size="3"/>
+		Share Code: <input type="text" value="" id="popoutShareCode" maxlength="6" size="6"/>
 		Width: <input type="number" value="460" id="browserSourceWidth"/>
 		Height: <input type="number" value="330" id="browserSourceHeight"/>
 		Columns: 
