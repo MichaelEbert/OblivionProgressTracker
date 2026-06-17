@@ -28,7 +28,7 @@ const SETTINGS_VERSION = 6;
 
 function saveCookie(name,valu){
 	var stringValue = JSON.stringify(valu);
-	if(window.debugSaving)
+	if(window.debug?.saving)
 	{
 		console.log("saving "+name+" with value:"+stringValue);
 	}
@@ -36,7 +36,7 @@ function saveCookie(name,valu){
 }
 
 function loadCookie(name){
-	if(window.debugSaving)
+	if(window.debug?.saving)
 	{
 		console.log("loading "+name);
 	}
@@ -177,6 +177,7 @@ function decompressSaveData(compressedSaveData){
 				decompressedSaveData[propname] = compressedSaveData[propname];
 			}
 		}
+		decompressedSaveData.compressed = false;
 	}
 	else{
 		decompressedSaveData = compressedSaveData;
