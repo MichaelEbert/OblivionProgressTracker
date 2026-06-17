@@ -1,5 +1,7 @@
 # Interactive Progress Tracker for Oblivion 100% Speedrun
 
+View Online: [https://oblivion.azuriteforest.net/guide](https://oblivion.azuriteforest.net/guide)
+
 # Installation
 To run locally:
 1. Install python3
