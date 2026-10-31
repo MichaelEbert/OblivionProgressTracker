@@ -21,7 +21,6 @@ namespace ShareApi
             " WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime);";
         private const string keySelectString = "SELECT userkey FROM urls WHERE url = @col1";
 
-
         private SqlConnection conn;
 
 
@@ -40,7 +39,6 @@ namespace ShareApi
                 DbType.AnsiString => SqlDbType.VarChar,
                 DbType.DateTime => SqlDbType.DateTime2,
                 _ => throw new InvalidCastException("param type not handled")
-
             };
 
             return new SqlParameter(parameterName, mssqlType);
