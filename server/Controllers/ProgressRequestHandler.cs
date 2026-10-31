@@ -18,7 +18,7 @@ namespace ShareApi
             }
             else
             {
-                ReadProgress result;
+                ReadProgress? result;
                 if(!ProgressManager.Instance.TryGetValue(url, out result))
                 {
                     return NotFound();

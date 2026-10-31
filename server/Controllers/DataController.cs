@@ -27,22 +27,21 @@ namespace ShareApi.Controllers
         [HttpPost]
         public ActionResult<string> Handle(ProgressUpdate update, string url, string? jsonPath)
         {
-            if(update == null)
+            ValidationFailedReason validationFailedReason = ValidationFailedReason.UPDATE_IS_NULL;
+            if(update != null && update.Validate(out validationFailedReason))
             {
-                ModelState.AddModelError("error", ValidationFailedReason.UPDATE_IS_NULL.ToString());
-                return BadRequest(ModelState);
+                var saveEditor = new SaveDataEditor(url, update);
+                if (saveEditor.ReadOnly)
+                {
+                    return Unauthorized();
+                }
+                return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, JsonNode.Parse(update.SaveData)));
             }
-            if(!update.Validate(out ValidationFailedReason validationFailedReason))
+            else
             {
                 ModelState.AddModelError("error", validationFailedReason.ToString());
                 return BadRequest(ModelState);
             }
-            var saveEditor = new SaveDataEditor(url, update);
-            if(saveEditor.ReadOnly)
-            {
-                return Unauthorized();
-            }
-            return Ok(saveEditor.HandleData(new HttpMethod(Request.Method), jsonPath, JsonNode.Parse(update.SaveData)));
         }
     }
 
@@ -78,6 +77,7 @@ namespace ShareApi.Controllers
             }
             else
             {
+                if (contents == null) throw new NullReferenceException("save json is null?");
                 return contents;
             }
             
