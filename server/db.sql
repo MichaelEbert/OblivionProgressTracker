@@ -1,3 +1,6 @@
+
+CREATE DATABASE ShareItems;
+USE ShareItems;
 -- these have not been vetted for accuracy. they are only what I remeber writing a week
 -- ago when I created the tables.
 CREATE TABLE urls(
@@ -9,7 +12,7 @@ CREATE TABLE urls(
 CREATE TABLE saves (
     [url] char(6) NOT NULL PRIMARY KEY,
 	[saveData] JSON NULL,
-	[accessed] datetime NULL
+	[accessed] datetime2 NULL
 )
 
 --create role that has access to urls and saves, and can write to ips, but not read ips. (TODO: ips table)
