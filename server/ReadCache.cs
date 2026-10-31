@@ -7,7 +7,7 @@ namespace ShareApi
     //this is heavily balanced towards cache misses.
     // so we put entries in a linked list instead of recording date for LRU eviction.
 
-    class CacheEntry<T>
+    class CacheEntry<T> where T : notnull
     {
         public string Key;//useful for removing itself from the cache
         public T Value;
@@ -26,7 +26,7 @@ namespace ShareApi
     /// <summary>
     /// Transparent read cache 
     /// </summary>
-    public class ReadCache<T>
+    public class ReadCache<T> where T : notnull
     {
         const int NUM_CACHE_ENTRIES = 50;
 
@@ -103,7 +103,7 @@ namespace ShareApi
                         SetMostRecentlyUsed(maybeValue);
                     }
                 }
-                result = maybeValue.Value;
+                result = maybeValue.Value!;
                 return true;
             }
             else

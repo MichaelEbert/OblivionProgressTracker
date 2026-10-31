@@ -120,7 +120,6 @@ namespace ShareApi
             {
                 return GetNode(path.Slice(1), root?[path[0]]);
             }
-            return null;
         }
     }
 }

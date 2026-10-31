@@ -20,8 +20,10 @@ namespace ShareApi
         [HttpPost]
         public ActionResult<ProgressUpdate> HandleProgressUpdate(ProgressUpdate update){
 
-            bool passed = ProgressUpdateValidator.Validate(update, out var reason);
-            if (passed)
+            //validate ensures update.key is not null
+            ValidationFailedReason reason = ValidationFailedReason.UPDATE_IS_NULL;
+
+            if (update != null && update.Validate(out reason))
             {
                 
                 if(update.Url != null)

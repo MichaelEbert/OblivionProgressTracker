@@ -27,8 +27,12 @@ namespace ShareApi.Controllers
         [HttpPost]
         public ActionResult<string> Handle(ProgressUpdate update, string url, string? jsonPath)
         {
-            ProgressUpdateValidator.Validate(update, out ValidationFailedReason validationFailedReason);
-            if(validationFailedReason != ValidationFailedReason.NONE)
+            if(update == null)
+            {
+                ModelState.AddModelError("error", ValidationFailedReason.UPDATE_IS_NULL.ToString());
+                return BadRequest(ModelState);
+            }
+            if(!update.Validate(out ValidationFailedReason validationFailedReason))
             {
                 ModelState.AddModelError("error", validationFailedReason.ToString());
                 return BadRequest(ModelState);
