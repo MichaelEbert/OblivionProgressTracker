@@ -1,7 +1,6 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Text.Json.Nodes;
+using Microsoft.Data.SqlClient;
 
 namespace ShareApi
 {
@@ -22,8 +21,28 @@ namespace ShareApi
             " WHEN NOT MATCHED THEN INSERT (url, savedata, accessed) VALUES (@col1, @col2, @accesstime);";
         private const string keySelectString = "SELECT userkey FROM urls WHERE url = @col1";
 
-
         private SqlConnection conn;
+
+
+        /// <summary>
+        /// for easier conversion to other db engines
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <returns></returns>
+        private static SqlParameter param(string parameterName, DbType dbType)
+        {
+            SqlDbType mssqlType = dbType switch
+            {
+                DbType.Binary => SqlDbType.Binary,
+                DbType.AnsiStringFixedLength => SqlDbType.Char,
+                DbType.AnsiString => SqlDbType.VarChar,
+                DbType.DateTime => SqlDbType.DateTime2,
+                _ => throw new InvalidCastException("param type not handled")
+            };
+
+            return new SqlParameter(parameterName, mssqlType);
+        }
 
         /// <summary>
         /// Create a new SQL connection to the server.
@@ -42,9 +61,9 @@ namespace ShareApi
         /// <returns>if insert succeeded</returns>
         public bool SqlUrlInsert(byte[] key, string url){
             var cmd = new SqlCommand(urlInsertString, conn);
-            cmd.Parameters.Add("@col1",SqlDbType.Binary);
+            cmd.Parameters.Add(param("@col1",DbType.Binary));
             cmd.Parameters["@col1"].Value = key;
-            cmd.Parameters.Add("@col2",SqlDbType.Char);
+            cmd.Parameters.Add(param("@col2",DbType.AnsiStringFixedLength));
             cmd.Parameters["@col2"].Value = url;
             try
             {
@@ -68,11 +87,11 @@ namespace ShareApi
         /// <returns></returns>
         public bool SqlSaveMerge(string url, ReadProgress data){
             var cmd = new SqlCommand(saveMergeString, conn);
-            cmd.Parameters.Add("@col1",SqlDbType.Char);
+            cmd.Parameters.Add(param("@col1",DbType.AnsiStringFixedLength));
             cmd.Parameters["@col1"].Value = url;
-            cmd.Parameters.Add("@col2",SqlDbType.VarChar);
+            cmd.Parameters.Add(param("@col2", DbType.AnsiString));
             cmd.Parameters["@col2"].Value = data.SaveData;
-            cmd.Parameters.Add("@accesstime",SqlDbType.DateTime2);
+            cmd.Parameters.Add(param("@accesstime",DbType.DateTime));
             cmd.Parameters["@accesstime"].Value = data.LastModified;
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
@@ -83,7 +102,7 @@ namespace ShareApi
 
         public string? SqlUrlSelect(byte[] key){
             var cmd = new SqlCommand(urlSelectString, conn);
-            cmd.Parameters.Add("@col1",SqlDbType.Binary);
+            cmd.Parameters.Add(param("@col1",DbType.Binary));
             cmd.Parameters["@col1"].Value = key;
             using(SqlDataReader reader = cmd.ExecuteReader()){
                 reader.Read();
@@ -102,7 +121,7 @@ namespace ShareApi
         public byte[]? SqlKeySelect(string url)
         {
             var cmd = new SqlCommand(keySelectString, conn);
-            cmd.Parameters.Add("@col1", SqlDbType.Char);
+            cmd.Parameters.Add(param("@col1", DbType.AnsiStringFixedLength));
             cmd.Parameters["@col1"].Value = url;
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
@@ -127,7 +146,7 @@ namespace ShareApi
         public ReadProgress? SqlSaveSelect(string url)
         {
             var cmd = new SqlCommand(saveSelectString, conn);
-            cmd.Parameters.Add("@col1", SqlDbType.Char);
+            cmd.Parameters.Add(param("@col1", DbType.AnsiStringFixedLength));
             cmd.Parameters["@col1"].Value = url;
             using (SqlDataReader reader = cmd.ExecuteReader())
             {

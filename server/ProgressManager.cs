@@ -79,23 +79,5 @@ namespace ShareApi
             return sql.SqlUrlSelect(saveKey) == saveId;
         }
 
-        /// <summary>
-        /// Do progress update stuff. Called if update passes validation.
-        /// </summary>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        public string? HandleUpdate(ProgressUpdate update){
-            string? url = update.Url;
-            using(ProgressManagerSql sql = new ProgressManagerSql()) { 
-
-                //we have a valid URL.
-                Cache.Set(url, new ReadProgress(update.SaveData, DateTime.UtcNow),
-                    (url, data) => { sql.SqlSaveMerge(url, data); });
-
-                //return OK
-                return url;
-            }
-        }
-
     }
 }

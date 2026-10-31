@@ -36,9 +36,15 @@ namespace ShareApi
             ReadOnly = true;
         }
 
+        /// <summary>
+        /// Should only be called after validate().
+        /// </summary>
+        /// <param name="shareCode"></param>
+        /// <param name="userUpdate"></param>
         public SaveDataEditor(string shareCode, ProgressUpdate userUpdate) : this(shareCode)
         {
-            if (ProgressManager.Instance.VerifyKey(sql, shareCode, userUpdate.Key))
+            //called after validate(), so key is nonnull.
+            if (ProgressManager.Instance.VerifyKey(sql, shareCode, userUpdate.Key!))
             {
                 ReadOnly = false;
             }
@@ -120,7 +126,6 @@ namespace ShareApi
             {
                 return GetNode(path.Slice(1), root?[path[0]]);
             }
-            return null;
         }
     }
 }
